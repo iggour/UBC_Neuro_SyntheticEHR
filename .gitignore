@@ -1,0 +1,6 @@
+data/raw/
+data/by_disease/*.json
+__pycache__/
+*.pyc
+.env
+.DS_Store
