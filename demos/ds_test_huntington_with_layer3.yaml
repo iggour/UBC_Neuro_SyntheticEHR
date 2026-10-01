@@ -1,0 +1,259 @@
+```yaml
+patient:
+  initials: "R.M."
+  sex: male
+  dob: 1979-04-12
+  age: 47
+
+timeline:
+  2024-11-03:
+    - "Insidious onset of involuntary, irregular, non-purposeful movements of the fingers and distal upper limbs noted by patient's spouse."
+    - "Patient attributed symptoms to stress and fatigue; no medical attention sought."
+  2025-06-18:
+    - "Chorea had spread to involve shoulders, trunk, and lower limbs; mild imbalance on stairs."
+    - "Irritability and reduced motivation noted by family; patient continued full-time work."
+  2026-02-09:
+    - "Family physician documented generalized choreiform movements and referred to neurology."
+  2026-03-16:
+    - "First neurology consultation. UHDRS Total Motor Score 34/124. MoCA 25/30. SDMT 38. Verbal fluency (letter F) 11 words/minute."
+    - "Brain MRI ordered; genetic testing for HTT CAG expansion ordered after structured family history obtained."
+  2026-04-02:
+    - "Brain MRI performed: caudate and putaminal atrophy, frontal-predominant cortical volume loss, no focal lesion, no abnormal enhancement."
+  2026-04-21:
+    - "HTT genetic testing result returned: 44 and 19 CAG repeats. Diagnosis of Huntington disease confirmed."
+  2026-05-05:
+    - "Genetic counseling session completed; inheritance, 50% risk to each child, and reproductive options discussed."
+    - "Predictive testing declined by two adult siblings; no testing performed on any minor children."
+  2026-05-26:
+    - "Baseline PHQ-9 = 6 (mild); C-SSRS = 0 (no suicidal ideation). Baseline laboratory panel and ECG within normal limits."
+  2026-06-09:
+    - "Multidisciplinary HD clinic review: neurology, psychiatry, physiotherapy, speech-language pathology, social work."
+    - "Tetrabenazine initiated for functionally impairing chorea after shared decision-making."
+  2026-06-16:
+    - "Week 1 tetrabenazine review: tolerated, no sedation, no mood change. PHQ-9 = 6, C-SSRS = 0."
+  2026-06-23:
+    - "Week 2 tetrabenazine dose increase to 25 mg/day divided twice daily. Chorea subjectively reduced."
+  2026-06-30:
+    - "Week 3 tetrabenazine dose increase to 37.5 mg/day divided three times daily."
+  2026-07-07:
+    - "Week 4 tetrabenazine dose increase to 50 mg/day divided three times daily. UHDRS Total Motor Score 27/124."
+  2026-07-21:
+    - "Follow-up: chorea further improved on 50 mg/day; no dose escalation beyond 50 mg/day planned without CYP2D6 genotyping."
+  2026-08-18:
+    - "CYP2D6 genotyping performed because of residual chorea and consideration of exceeding 50 mg/day."
+  2026-09-01:
+    - "CYP2D6 result: *1/*1, extensive metabolizer. Tetrabenazine increased to 62.5 mg/day divided three times daily (25 mg, 25 mg, 12.5 mg)."
+  2026-09-29:
+    - "Current review. Chorea well controlled on tetrabenazine 62.5 mg/day. PHQ-9 = 5, C-SSRS = 0. No dysphagia, no falls in past 3 months."
+
+presentation:
+  onset: "Insidious, progressive"
+  chief_features: "Generalized choreiform movements beginning distally in the upper limbs and progressing to involve trunk and lower limbs; associated irritability, apathy, and mild imbalance."
+  symptom_duration: "Approximately 22 months from first symptom to current review; approximately 7 months from first neurological consultation to initiation of symptomatic treatment."
+
+clinical:
+  diagnosis: "Huntington disease, genetically confirmed (HTT CAG repeat expansion, 44 repeats), with manifest motor and behavioral features."
+  disease_course: "Slowly progressive since late 2024; motor symptoms now functionally impairing; no evidence of rapid deterioration or intercurrent illness."
+  relevant_history: "No prior psychiatric hospitalization. No history of seizure. No head trauma. No exposure to dopamine-blocking agents prior to diagnosis. No known liver or renal disease."
+  examination: >
+    Awake, alert, oriented to person, place, and time. Speech mildly dysarthric but intelligible.
+    Saccadic pursuit with impaired initiation of horizontal saccades. No gaze palsy.
+    Generalized choreiform movements of face, tongue, trunk, and all four limbs, moderate amplitude,
+    partially suppressible. Mild motor impersistence on tongue protrusion and grip.
+    Tone normal; no rigidity; no bradykinesia. Deep tendon reflexes 2+ symmetric; plantar responses flexor.
+    Finger-to-nose mildly dysmetric bilaterally; gait mildly wide-based with occasional choreic lurch;
+    tandem gait impaired. No sensory deficit. No focal weakness.
+  severity_scores:
+    - "UHDRS Total Motor Score: 34/124 on 2026-03-16; 27/124 on 2026-07-07; 24/124 on 2026-09-29."
+    - "UHDRS Total Functional Capacity: 11/13 on 2026-03-16; 11/13 on 2026-09-29."
+    - "UHDRS Functional Assessment: 22/25 on 2026-03-16; 23/25 on 2026-09-29."
+    - "PBA-s (Problem Behaviours Assessment short form): irritability 2, apathy 2, depression 1, anxiety 1 on 2026-03-16; irritability 1, apathy 2, depression 1, anxiety 1 on 2026-09-29."
+    - "Cognitive screen (independent of UHDRS and PBA-s): MoCA 25/30 on 2026-03-16, 25/30 on 2026-09-29; SDMT 38 on 2026-03-16, 36 on 2026-09-29; letter fluency (F) 11 words/min on 2026-03-16, 10 words/min on 2026-09-29."
+    - "PHQ-9: 6 on 2026-05-26; 6 on 2026-06-16; 5 on 2026-09-29. C-SSRS: 0 at all assessments."
+
+investigations:
+  laboratory:
+    key_results: >
+      CBC, electrolytes, creatinine, liver enzymes, TSH, vitamin B12, and folate all within normal limits
+      on 2026-05-26. No laboratory evidence of alternative metabolic, endocrine, or inflammatory cause
+      of chorea.
+  imaging:
+    modality: "Brain MRI without and with gadolinium, 2026-04-02"
+    findings: >
+      Bilateral caudate head atrophy with convexity of the lateral ventricular frontal horns,
+      putaminal volume loss, and frontal-predominant cortical atrophy. No restricted diffusion.
+      No susceptibility artifact to suggest prior hemorrhage. No abnormal parenchymal or leptomeningeal enhancement.
+    lesion_distribution: "Bilateral, symmetric, deep gray nuclei (caudate, putamen) and frontal cortex."
+    lesion_count: "Not applicable (diffuse atrophy, no discrete lesion)."
+    enhancement: "None."
+    other_key_markers: "No microhemorrhage on SWI; no T2 hyperintensity in basal ganglia."
+  pathology:
+    diagnosis: "Not applicable"
+    grade: "Not applicable"
+    key_features: "Not performed; no tissue biopsy indicated."
+  molecular:
+    key_results: >
+      HTT gene CAG repeat expansion analysis (2026-04-21): allele 1 = 44 CAG repeats,
+      allele 2 = 19 CAG repeats. 44 repeats is in the fully penetrant range (>=40),
+      confirming the diagnosis of Huntington disease. No other pathogenic variant identified.
+      CYP2D6 genotype (2026-08-18): *1/*1, extensive metabolizer.
+  CSF:
+    key_results: "Not performed; no clinical indication for lumbar puncture."
+
+diagnostic_criteria:
+  criteria_name: "Genetic confirmation of Huntington disease (HTT CAG repeat expansion) with clinical motor manifestations"
+  criteria_version: "ACMG/ASHG HD Genetic Testing Working Group reference ranges (1998), consistent with current laboratory reference ranges"
+  findings_supporting:
+    - "HTT CAG repeat length 44 on one allele, within the fully penetrant range (>=40)."
+    - "Progressive choreiform movements with insidious onset and gradual progression over approximately 22 months."
+    - "Impaired horizontal saccade initiation and motor impersistence on examination."
+    - "Brain MRI showing bilateral caudate and putaminal atrophy."
+    - "Positive family history consistent with autosomal dominant inheritance."
+    - "Cognitive and behavioral features (reduced processing speed, irritability, apathy) consistent with manifest HD."
+  findings_not_supporting:
+    - "No alternative acquired cause identified on laboratory or imaging workup."
+    - "No exposure to dopamine-blocking agents that could explain chorea."
+    - "No evidence of a second neurodegenerative or metabolic disorder."
+
+differential:
+  - diagnosis: "Sydenham chorea / post-streptococcal autoimmune chorea"
+    status: "not_supported"
+    evidence: >
+      No history of recent streptococcal infection, no elevated ASO or anti-DNase B titers,
+      no acute or subacute inflammatory presentation, and no spontaneous remission pattern.
+      Age at onset and chronic progressive course are inconsistent.
+  - diagnosis: "Wilson disease"
+    status: "not_supported"
+    evidence: >
+      Normal serum ceruloplasmin, normal 24-hour urinary copper, normal liver enzymes,
+      no Kayser-Fleischer rings on slit-lamp examination, and no hepatic or psychiatric
+      presentation typical of Wilson disease. Genetic testing identified HTT expansion instead.
+  - diagnosis: "Drug-induced chorea / tardive dyskinesia"
+    status: "not_supported"
+    evidence: >
+      No prior exposure to dopamine receptor blocking agents, metoclopramide, or other
+      chorea-inducing medications. Movements predated any neuroleptic exposure.
+  - diagnosis: "Neuroacanthocytosis (chorea-acanthocytosis)"
+    status: "not_supported"
+    evidence: >
+      Normal peripheral blood smear without acanthocytes, normal creatine kinase,
+      no orolingual self-mutilation, no peripheral neuropathy, and no evidence of
+      a VPS13A pathogenic variant. HTT expansion confirmed instead.
+  - diagnosis: "Benign hereditary chorea"
+    status: "not_supported"
+    evidence: >
+      Non-progressive childhood-onset chorea is expected in benign hereditary chorea;
+      this patient had adult onset with clear progression, cognitive decline, and
+      confirmed HTT CAG expansion.
+  - diagnosis: "Spinocerebellar ataxia (SCA) subtype with chorea"
+    status: "not_supported"
+    evidence: >
+      Predominant presentation is chorea with behavioral and cognitive change rather than
+      cerebellar ataxia; MRI shows caudate and putaminal atrophy rather than prominent
+      cerebellar atrophy; HTT expansion confirmed.
+  - diagnosis: "Hyperthyroid or metabolic chorea"
+    status: "not_supported"
+    evidence: >
+      TSH, free T4, electrolytes, glucose, renal and liver function all normal on 2026-05-26.
+      No systemic features of thyrotoxicosis or metabolic derangement.
+
+treatment:
+  acute:
+    - "No acute inpatient treatment required. Chorea managed in outpatient HD clinic."
+  disease_modifying:
+    - "No disease-modifying therapy available. Patient enrolled in a longitudinal observational HD registry and informed about eligibility for future clinical trials."
+  symptomatic:
+    - "Tetrabenazine initiated 2026-06-09 for functionally impairing chorea."
+    - "Titration plan (verified against FDA prescribing information, 2018 revision, retrieved 2026-09-28):"
+    - "Week 1 (2026-06-09 to 2026-06-15): tetrabenazine 12.5 mg once daily in the morning."
+    - "Week 2 (2026-06-16 to 2026-06-22): increase to 25 mg/day, given as 12.5 mg twice daily."
+    - "Week 3 (2026-06-23 to 2026-06-29): increase to 37.5 mg/day, given as 12.5 mg three times daily."
+    - "Week 4 (2026-06-30 to 2026-07-06): increase to 50 mg/day, given as 12.5 mg, 12.5 mg, and 25 mg three times daily (single dose not exceeding 25 mg)."
+    - "From 2026-07-07: maintained on 50 mg/day divided three times daily; no further escalation beyond 50 mg/day without CYP2D6 genotyping."
+    - "CYP2D6 genotyping performed 2026-08-18; result *1/*1 extensive metabolizer."
+    - "From 2026-09-01: increased to 62.5 mg/day divided three times daily (25 mg, 25 mg, 12.5 mg), consistent with extensive metabolizer maximum of 100 mg/day and single-dose maximum of 37.5 mg."
+    - "Current dose as of 2026-09-29: tetrabenazine 62.5 mg/day divided three times daily."
+    - "No antipsychotic or antidepressant added; mood and apathy monitored at each visit."
+  monitoring:
+    - "PHQ-9 and C-SSRS at baseline (2026-05-26) and at each follow-up visit (2026-06-16, 2026-07-21, 2026-09-29)."
+    - "UHDRS Total Motor Score at each neurology visit."
+    - "Blood pressure, heart rate, and assessment for sedation, akathisia, parkinsonism, and depression at each dose change."
+    - "Liver enzymes and CBC every 6 months while on tetrabenazine."
+  follow_up:
+    - "Neurology/HD clinic every 3 months for motor and medication review."
+    - "Psychiatry every 6 months or sooner if mood changes."
+    - "Physiotherapy for gait and balance; speech-language pathology for dysarthria and swallowing surveillance."
+    - "Social work and genetic counseling for family support and reproductive planning."
+    - "Annual MoCA, SDMT, and letter fluency for cognitive monitoring."
+
+medications:
+  current:
+    - drug: "Tetrabenazine"
+      dose: "62.5 mg/day divided three times daily (25 mg, 25 mg, 12.5 mg)"
+      start_date: "2026-09-01"
+      response_or_side_effect: "Chorea well controlled; no sedation, no akathisia, no worsening depression. PHQ-9 5, C-SSRS 0 on 2026-09-29."
+  changes:
+    - "2026-06-09: tetrabenazine 12.5 mg once daily started."
+    - "2026-06-16: increased to 25 mg/day divided twice daily."
+    - "2026-06-23: increased to 37.5 mg/day divided three times daily."
+    - "2026-06-30: increased to 50 mg/day divided three times daily."
+    - "2026-09-01: increased to 62.5 mg/day divided three times daily after CYP2D6 genotyping confirmed extensive metabolizer status."
+
+functional_status:
+  relevant_scores:
+    - "UHDRS Total Functional Capacity 11/13 (2026-03-16 and 2026-09-29)."
+    - "UHDRS Functional Assessment 22/25 (2026-03-16), 23/25 (2026-09-29)."
+    - "MoCA 25/30 (2026-03-16 and 2026-09-29)."
+    - "SDMT 38 (2026-03-16), 36 (2026-09-29)."
+  residual_deficits: "Mild chorea, mild dysarthria, mild gait imbalance, reduced processing speed, irritability, and apathy."
+  ADL: "Independent in all basic and most instrumental activities of daily living; requires occasional assistance with complex financial tasks."
+  work: "Continues full-time employment as an accountant with reduced hours and workplace accommodations; no plan for retirement at this time."
+  driving: "Driving privileges retained after formal driving assessment on 2026-08-04; recommended reassessment every 12 months or sooner if symptoms progress."
+
+safety_and_screening:
+  contraindications: "No contraindication to tetrabenazine. No active suicidal ideation or untreated major depression. No hepatic impairment."
+  baseline_screening:
+    - "PHQ-9 = 6 and C-SSRS = 0 on 2026-05-26 before starting tetrabenazine."
+    - "Baseline CBC, liver enzymes, renal function, and ECG within normal limits on 2026-05-26."
+    - "CYP2D6 genotype *1/*1 (extensive metabolizer) confirmed 2026-08-18 before exceeding 50 mg/day."
+  monitoring_requirements:
+    - "PHQ-9 and C-SSRS at each visit; immediate review if mood worsens or suicidal ideation emerges."
+    - "Monitor for sedation, akathisia, parkinsonism, and orthostatic hypotension at each dose change."
+    - "CBC and liver enzymes every 6 months."
+  pregnancy: "Not applicable; patient is male and has no current partner pregnancy concerns. Reproductive risk to offspring discussed in genetic counseling."
+  vaccination: "Routine adult vaccinations up to date, including influenza and COVID-19."
+  infection_risk: "No increased infection risk from tetrabenazine. No immunosuppressive therapy."
+
+social:
+  occupation: "Accountant; currently working full-time with accommodations."
+  language: "English; no interpreter required."
+  smoking: "Former smoker; quit 2015; approximately 10 pack-years."
+  family_history: >
+    Father died at age 61 with progressive chorea and dementia, clinically consistent with
+    Huntington disease but never genetically tested. Paternal aunt reportedly had similar
+    symptoms. Two adult siblings are at 50% risk and have declined predictive testing.
+    Patient has two children, ages 16 and 19; neither has undergone predictive testing,
+    consistent with guidance that minors should not be tested. Inheritance pattern is
+    autosomal dominant. Prior genetic counseling completed 2026-05-05.
+
+key_consistency_facts:
+  - "Patient initials R.M., male, date of birth 1979-04-12, age 47."
+  - "Final diagnosis: Huntington disease, genetically confirmed."
+  - "HTT CAG repeat alleles: 44 and 19; 44 repeats is fully penetrant (>=40)."
+  - "CYP2D6 genotype: *1/*1, extensive metabolizer (result 2026-08-18)."
+  - "Brain MRI 2026-04-02: bilateral caudate and putaminal atrophy, frontal-predominant cortical volume loss, no enhancement, no discrete lesion."
+  - "UHDRS Total Motor Score 34/124 on 2026-03-16; 27/124 on 2026-07-07; 24/124 on 2026-09-29."
+  - "UHDRS Total Functional Capacity 11/13 on 2026-03-16 and 2026-09-29."
+  - "UHDRS Functional Assessment 22/25 on 2026-03-16; 23/25 on 2026-09-29."
+  - "PBA-s on 2026-03-16: irritability 2, apathy 2, depression 1, anxiety 1; on 2026-09-29: irritability 1, apathy 2, depression 1, anxiety 1."
+  - "MoCA 25/30 on 2026-03-16 and 2026-09-29; SDMT 38 on 2026-03-16 and 36 on 2026-09-29; letter fluency (F) 11 words/min on 2026-03-16 and 10 words/min on 2026-09-29."
+  - "PHQ-9 6 on 2026-05-26 and 2026-06-16; 5 on 2026-09-29. C-SSRS 0 at all assessments."
+  - "Tetrabenazine started 2026-06-09 at 12.5 mg once daily in the morning."
+  - "Tetrabenazine titration: 25 mg/day divided twice daily from 2026-06-16; 37.5 mg/day divided three times daily from 2026-06-23; 50 mg/day divided three times daily from 2026-06-30; 62.5 mg/day divided three times daily from 2026-09-01."
+  - "Current tetrabenazine dose as of 2026-09-29: 62.5 mg/day divided three times daily (25 mg, 25 mg, 12.5 mg)."
+  - "No dose above 50 mg/day was given before CYP2D6 genotyping on 2026-08-18."
+  - "Family history: father with clinically consistent HD, paternal aunt affected; two adult siblings at 50% risk declined predictive testing; two children ages 16 and 19 have not been tested."
+  - "Genetic counseling completed 2026-05-05; autosomal dominant inheritance with 50% risk to each child discussed."
+  - "Driving privileges retained after assessment on 2026-08-04, with reassessment every 12 months."
+  - "No disease-modifying therapy available; patient enrolled in longitudinal HD registry."
+```
