@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HD Care Training: Prototype</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7f9;--card:#fff;--ink:#1d2433;--mute:#5b6577;--line:#d9dee7;--acc:#2a5db0;--ok:#1f7a4d;--okbg:#e5f4ec;--no:#a8321f;--nobg:#fbeae6;--warn:#7a5a00;--warnbg:#fff4d6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--ok:#6fd1a0;--okbg:#17342a;--no:#f08d7a;--nobg:#3a1f1a;--warn:#f0cd6b;--warnbg:#3a3010}}
+:root[data-theme="dark"]{--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--ok:#6fd1a0;--okbg:#17342a;--no:#f08d7a;--nobg:#3a1f1a;--warn:#f0cd6b;--warnbg:#3a3010}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:820px;margin:0 auto;padding:16px}h1{font-size:1.3rem;margin:.2rem 0}h2{font-size:1.1rem;margin:1.1rem 0 .4rem}h3{font-size:1rem;margin:.7rem 0 .3rem}
+.bar{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 11px;font-size:.85rem;margin:.5rem 0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:.6rem 0 1rem}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);padding:9px 11px;font:inherit;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--acc);border-color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer;text-align:left}
+.btn:hover{border-color:var(--acc)}.btn.sel{border-color:var(--acc);background:var(--bg)}
+.opt{display:block;width:100%;margin:6px 0}.opt.ok{border-color:var(--ok);background:var(--okbg)}.opt.no{border-color:var(--no);background:var(--nobg)}
+.fb{border-radius:8px;padding:9px 12px;margin:8px 0;font-size:.93rem}.fb.ok{background:var(--okbg);border-left:4px solid var(--ok)}.fb.no{background:var(--nobg);border-left:4px solid var(--no)}
+.anchor,.note{font-size:.82rem;color:var(--mute)}.anchor{margin-top:6px}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:1px 8px;margin:2px 4px 2px 0;font-size:.78rem;color:var(--mute)}
+.chip.v{border-color:var(--ok);color:var(--ok)}.chip.p{border-color:var(--warn);color:var(--warn)}
+table{border-collapse:collapse;width:100%;font-size:.9rem}td,th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.scroll{overflow-x:auto}details{margin:8px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
+.safe{border:2px solid var(--no);border-radius:10px;padding:10px 13px;margin:10px 0;background:var(--card);font-size:.92rem}
+#gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
+#gate div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}
+#gate[hidden]{display:none}
+</style></head><body>
+<div id="gate"><div><h2 style="margin-top:0">Before you start</h2>
+<p>This is an educational prototype with <b>fictional</b> patients and families. It is <b>not medical advice</b>, does not diagnose or triage, and is not a substitute for a clinician or care team. Content has <b>not yet been clinically reviewed</b>. Do not enter personal health information.</p>
+<p>In an emergency call your local emergency number (911 in Canada).</p>
+<button class="btn" onclick="document.getElementById('gate').hidden=true">I understand</button></div></div>
+<div class="wrap">
+<h1>Huntington Disease Care: Learn and Practise (Prototype)</h1>
+<div class="bar">Draft · fictional cases · educational only · not medical advice · not yet clinically reviewed</div>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="clin">Clinicians</button>
+<button role="tab" aria-selected="false" data-t="carer">Carers</button>
+<button role="tab" aria-selected="false" data-t="src">Sources and disclaimers</button>
+<button role="tab" aria-selected="false" data-t="about">About</button></div>
+<section id="clin"></section><section id="carer" hidden></section>
+<section id="src" hidden></section>
+<section id="about" hidden>
+<div class="card"><h2>How it works</h2><p>Each fictional case has a fixed fact sheet. Questions and feedback are checked against it, and learning cards cite their sources. In this demo feedback is scripted so it works without a live model.</p>
+<p>Planned: a locally hosted open-source model drafts scenarios; automated checks flag anything that contradicts the fact sheet or its cited source; clinical review comes before any real use.</p></div>
+<div class="card"><h2>Phase 1 scope (no human participants)</h2><ul><li>Build and check the scenario library and cards.</li><li>Compare content quality across language models.</li><li>Plan clinical review and user testing as a follow-on study under ethics approval.</li></ul></div>
+</section></div>
+<script>
+var SRC={
+s1:{v:1,t:"Clinical laboratory reference ranges for HTT CAG repeat analysis (Mayo Clinic Laboratories; ARUP Laboratories). Checked Sept 2026."},
+s2:{v:1,t:"Tetrabenazine tablets, FDA prescribing information (2018 revision, checked Sept 2026). Health Canada product monograph to be checked before release."},
+s3:{v:0,t:"Published guidance on HD genetic testing and counselling: specific document to be added."},
+s4:{v:0,t:"Clinical expert feedback that imaging is not part of the standard diagnostic pathway: published source to be added."},
+s5:{v:0,t:"Patient-education material from established HD organisations (for example the Huntington Society of Canada): to be matched card by card, linked rather than copied."}};
+var CARDS={clin:[
+{t:"Confirming the diagnosis",p:["Genetic testing (HTT CAG repeat sizing) confirms Huntington disease.","Repeat ranges: 26 or fewer normal; 27 to 35 intermediate; 36 to 39 reduced penetrance; 40 or more full penetrance.","Brain MRI is not part of the standard diagnostic pathway; it may support the picture."],s:["s1","s4"]},
+{t:"Starting tetrabenazine safely",p:["Week 1: 12.5 mg once daily in the morning. Week 2: 25 mg/day as 12.5 mg twice daily. Then increase weekly by 12.5 mg/day as tolerated.","37.5 to 50 mg/day is given in three divided doses, single dose at most 25 mg.","Check CYP2D6 genotype before going above 50 mg/day."],s:["s2"]},
+{t:"Mood and suicide-risk screening",p:["The drug carries a depression and suicidality warning.","Record baseline mood and suicide-risk screening before the first dose and repeat at visits."],s:["s2"]},
+{t:"Family and genetic counselling",p:["Huntington disease is autosomal dominant: each child of an affected parent has a 50% chance of inheriting the gene.","Predictive testing is not offered to minors; adults considering it need counselling first."],s:["s3"]}],
+carer:[
+{t:"What changes can happen",p:["Movement (jerky, restless or unsteady), mood (irritability, low mood, apathy), thinking (planning, organising), swallowing and weight, and sleep can all change over time.","Not every person has all of these, and they appear at different times."],s:["s5"]},
+{t:"Noticing and recording changes",p:["Write the date, what happened, how long it lasted and what was going on at the time.","Bring the notes to appointments so the care team sees the pattern."],s:["s5"]},
+{t:"Preparing for a visit and genetic counselling",p:["Write your top three questions before each visit.","Genetic counselling is a conversation that explains inheritance and the choices around testing. Each child of an affected parent has a 50% chance of inheriting the gene, and testing is a personal decision made with support."],s:["s3","s5"]}]};
+var S={clin:[
+{id:"a",title:"Scenario 1: Chorea and behaviour change",v:"Patient A, 38, has had two years of worsening involuntary movements, irritability and trouble organising work tasks. Her father died at 57 after a poorly documented movement disorder. Wilson disease, acanthocytosis, drug and autoimmune causes have been screened and are negative.",
+f:[["onset","insidious, about 2 years"],["family_history","father died at 57; unconfirmed movement disorder"],["genetics.HTT_CAG","alleles 19 and 42"],["children","ages 9 and 6"]],
+q:[{q:"Which test confirms the diagnosis?",a:"card: Confirming the diagnosis",o:[["HTT CAG repeat sizing",1,"Correct. Genetic testing is the confirmatory test."],["Brain MRI",0,"MRI may support the picture but is not part of the standard diagnostic pathway."],["EEG",0,"EEG is not a diagnostic test for this condition."],["Muscle biopsy",0,"Not relevant to this presentation."]]},
+{q:"Alleles of 19 and 42 CAG repeats. Interpretation?",a:"genetics.HTT_CAG = 19 / 42",o:[["Normal",0,"Normal is 26 repeats or fewer."],["Intermediate",0,"Intermediate is 27 to 35."],["Reduced penetrance",0,"Reduced penetrance is 36 to 39."],["Full penetrance, consistent with HD",1,"Correct. 40 or more is full penetrance."]]},
+{q:"Her children are 9 and 6. What do you advise?",a:"card: Family and genetic counselling",o:[["Test both children now",0,"Predictive testing is not offered to minors."],["Explain the 50% chance, do not test minors, refer for genetic counselling",1,"Correct."],["No action is needed",0,"The family has a real inherited risk and needs counselling."],["Test only the older child",0,"Age alone does not make childhood testing appropriate."]]}]},
+{id:"b",title:"Scenario 2: Starting tetrabenazine safely",v:"Patient A has genetically confirmed HD. Chorea interferes with handwriting and eating. The team agrees to start tetrabenazine.",
+f:[["diagnosis","HD, genetically confirmed"],["baseline_PHQ9","8 (mild)"],["baseline_CSSRS","negative"]],
+q:[{q:"What is documented before the first dose?",a:"card: Mood and suicide-risk screening",o:[["Baseline mood and suicide-risk screening",1,"Correct. The drug carries a depression and suicidality warning."],["Nothing special",0,"Baseline screening is required."],["Only a blood count",0,"Blood counts do not address the key safety concern."]]},
+{q:"Which starting schedule is correct?",a:"card: Starting tetrabenazine safely",o:[["Week 1: 12.5 mg once daily. Week 2: 25 mg/day as 12.5 mg twice daily",1,"Correct. Then increase weekly as tolerated."],["25 mg twice daily from day 1",0,"Too high for a start."],["12.5 mg daily for four weeks, no change",0,"The dose is increased weekly according to response."],["50 mg as one dose from week 2",0,"Single doses are capped and 37.5 to 50 mg/day is divided in three."]]},
+{q:"At 50 mg/day some chorea remains. Next step?",a:"card: Starting tetrabenazine safely",o:[["Go straight to 62.5 mg/day",0,"Above 50 mg/day the genotype must be known first."],["Obtain CYP2D6 genotype before exceeding 50 mg/day",1,"Correct."],["Give 50 mg as one dose",0,"37.5 to 50 mg/day is divided in three doses."],["Stop treatment automatically",0,"Residual chorea alone is not a reason to stop."]]}]}],
+carer:[{id:"c",title:"Situation: Noticing changes and staying safe",v:"Sam looks after her husband, who has Huntington disease. Over two weeks he has been more irritable and is sleeping badly. She wants the care team to understand what is happening.",
+f:[["setting","fictional family situation"],["purpose","information and communication practice only"]],
+q:[{q:"What is most useful to bring to the next appointment?",a:"card: Noticing and recording changes",o:[["Dated notes: what happened, how long, what was going on",1,"Correct. Dated notes help the care team see the pattern."],["A guess about what is causing it",0,"The team is better placed to work out causes; bring what you observed."],["Nothing, the team will already know",0,"The team only knows what they are told."],["Only the worst day",0,"The pattern over time is more helpful."]]},
+{q:"One night he says he does not want to go on. What is the safest response?",a:"safety: always contact help",o:[["Contact emergency services or a crisis line right away, then tell the care team",1,"Correct. In Canada you can call or text 9-8-8, or call 911 in an emergency."],["Wait until the next appointment",0,"Thoughts of ending life need immediate help."],["Try to cheer him up and see how tomorrow goes",0,"Reassurance alone is not enough."]]}]}]};
+var cur={clin:0,carer:0},done={};
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function chips(ids){return ids.map(function(i){return '<span class="chip '+(SRC[i].v?'v':'p')+'">'+i.toUpperCase()+(SRC[i].v?' verified':' pending')+'</span>'}).join("")}
+function build(au){
+ var h='<h2>Learn</h2>';
+ if(au==="carer")h+='<div class="safe"><b>If you are worried:</b> contact the care team. In an emergency call 911. If someone talks about ending their life, call or text 9-8-8 in Canada. This tool cannot advise about a real person.</div>';
+ CARDS[au].forEach(function(c){h+='<details open><summary>'+esc(c.t)+'</summary><div class="card"><ul>'+c.p.map(function(x){return '<li>'+esc(x)+'</li>'}).join("")+'</ul><div class="anchor">Sources: '+chips(c.s)+'</div></div></details>'});
+ h+='<h2>Practise</h2><div class="row">';
+ S[au].forEach(function(s,i){h+='<button class="btn'+(i===cur[au]?' sel':'')+'" onclick="pick(\''+au+'\','+i+')">'+esc(s.title)+'</button>'});
+ h+='</div>';var s=S[au][cur[au]],st=done[s.id]||(done[s.id]={}),n=0,c=0;
+ h+='<div class="card"><p>'+esc(s.v)+'</p><details><summary>Fact sheet used for feedback</summary><div class="scroll"><table>'+s.f.map(function(f){return '<tr><td><code>'+esc(f[0])+'</code></td><td>'+esc(f[1])+'</td></tr>'}).join("")+'</table></div></details></div>';
+ s.q.forEach(function(q,qi){var a=st[qi];h+='<div class="card"><div class="note">Question '+(qi+1)+' of '+s.q.length+'</div><h3>'+esc(q.q)+'</h3>';
+  q.o.forEach(function(o,oi){var cl="btn opt";if(a!==undefined){if(o[1])cl+=" ok";else if(a===oi)cl+=" no"}h+='<button class="'+cl+'" '+(a!==undefined?'disabled':'')+' onclick="ans(\''+au+'\','+qi+','+oi+')">'+esc(o[0])+'</button>'});
+  if(a!==undefined){var o=q.o[a];n++;if(o[1])c++;h+='<div class="fb '+(o[1]?'ok':'no')+'"><b>'+(o[1]?'Correct. ':'Not quite. ')+'</b>'+esc(o[2])+'</div>';
+   if(!o[1]){var r=q.o.filter(function(x){return x[1]})[0];h+='<div class="fb ok"><b>Best answer: </b>'+esc(r[0])+'</div>'}h+='<div class="anchor">Anchored to: <span class="chip">'+esc(q.a)+'</span></div>'}h+='</div>'});
+ h+='<div class="card"><b>This scenario:</b> '+c+' / '+n+' correct <button class="btn" style="margin-left:8px" onclick="reset()">Reset</button></div>';
+ h+='<p class="note">Fictional. Educational only. Not medical advice. Not yet clinically reviewed.</p>';document.getElementById(au).innerHTML=h}
+function pick(au,i){cur[au]=i;build(au)}function ans(au,qi,oi){done[S[au][cur[au]].id][qi]=oi;build(au)}function reset(){done={};build("clin");build("carer")}
+function srcPage(){var h='<div class="card"><h2>Sources</h2><p class="note">Verified = checked against the cited source on the date shown. Pending = source still to be added. Cards are paraphrased, not copied, and link out where material is copyrighted.</p><ul>';
+ Object.keys(SRC).forEach(function(k){h+='<li><b>'+k.toUpperCase()+'</b> '+chips([k])+' '+esc(SRC[k].t)+'</li>'});
+ h+='</ul></div><div class="card"><h2>Disclaimers</h2><ul><li>All people and cases are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, triage or advise about any real person.</li><li>Not a substitute for a clinician, care team or emergency services.</li><li>Content has not yet been clinically reviewed and must not be treated as validated training.</li><li>Scenarios are drafted with AI assistance and checked against fact sheets; checks reduce but do not remove the chance of error.</li></ul></div>';
+ document.getElementById("src").innerHTML=h}
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){document.querySelectorAll(".tabs button").forEach(function(x){x.setAttribute("aria-selected",x===b)});["clin","carer","src","about"].forEach(function(id){document.getElementById(id).hidden=(id!==b.dataset.t)})}});
+build("clin");build("carer");srcPage();
+</script></body></html>
