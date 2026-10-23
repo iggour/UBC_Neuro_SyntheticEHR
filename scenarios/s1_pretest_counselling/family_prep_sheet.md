@@ -1,6 +1,6 @@
 # Thinking about a predictive test for Huntington disease
 ## Appointment preparation sheet (for people at risk and their families)
-Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: [pending]
+Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: project clinician (sources and content checked 2026-10-23)
 Educational only. Not medical advice. Your genetics team is your main source of information.
 
 ### What may happen at the first appointment

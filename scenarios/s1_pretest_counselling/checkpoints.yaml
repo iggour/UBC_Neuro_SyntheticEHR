@@ -1,14 +1,21 @@
 # Scenario 1: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: [pending]
+# Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: project clinician (sources and content checked 2026-10-23)
 #
 # Sources:
 #   s6 = MacLeod R, Tibben A, Frontali M, et al. Recommendations for the predictive genetic test
-#        in Huntington's disease. Clin Genet 2012 (EHDN). Status: verified (read in full Oct 2026).
+#        in Huntington's disease. Clin Genet 2013;83(3):221-31 (online 2012; EHDN). PMID 22642570.
+#        https://pubmed.ncbi.nlm.nih.gov/22642570/  Status: verified (read in full Oct 2026).
+#        Note: Goldman JS et al. "40+ years of the HD predictive genetic testing protocol:
+#        recommendations for an update", J Genet Couns 2026, doi:10.1002/jgc4.70226 - check before release.
 #   s1 = Laboratory reference ranges for HTT CAG repeats (Mayo Clinic Laboratories; ARUP). Status: verified.
-#   s7 = Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3). Status: PENDING, wording to check.
-#   s8 = Suicide-risk screening in HD / at-risk persons: source to be added. Status: PENDING.
+#   s7 = Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3), ss. 3-6.
+#        https://laws-lois.justice.gc.ca/eng/acts/g-2.5/FullText.html  Status: verified by human reviewer 2026-10-23.
+#   s8 = Paulsen JS et al. Critical periods of suicide risk in Huntington's disease.
+#        Am J Psychiatry 2005;162(4):725-31. https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725
+#        Supporting: systematic review of suicide risk factors in HD, https://pmc.ncbi.nlm.nih.gov/articles/PMC11205005/
+#        Status: verified by human reviewer 2026-10-23.
 
 hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
 

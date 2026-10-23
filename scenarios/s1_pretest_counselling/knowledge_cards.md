@@ -1,5 +1,5 @@
 # Scenario 1: Knowledge cards (read before practising)
-Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: [pending]
+Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: project clinician (sources and content checked 2026-10-23)
 Source keys as in checkpoints.yaml.
 
 ## pre-test-counselling-essentials
@@ -18,9 +18,9 @@ Source keys as in checkpoints.yaml.
 
 ## privacy-and-insurance
 - Do not share test information with third parties without the person's explicit permission. [s6]
-- In Canada, the Genetic Non-Discrimination Act restricts requiring a genetic test or its results as a condition of a contract or service. [s7, PENDING: check current wording before release]
+- In Canada, the Genetic Non-Discrimination Act means no one may require a person to take a genetic test, or to disclose test results, as a condition of goods, services or a contract. Health care practitioners treating the person and researchers are exempt. [s7]
 
 ## mood-and-safety
-- Learning about genetic risk can be overwhelming. Ask about mood, coping and support. [s8, PENDING]
-- Asking directly about thoughts of not wanting to live is safe and helps you plan support. [s8, PENDING]
+- In people at risk of HD, suicidal ideation becomes more frequent as early signs appear, and peaks in early-stage disease (about 1 in 5 in one large study). Ask about mood, coping and support. [s8]
+- Asking directly about thoughts of not wanting to live is safe and helps you plan support. [general clinical practice; source to add]
 - In Canada, anyone can call or text 9-8-8 for suicide crisis support.
