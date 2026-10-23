@@ -1,0 +1,120 @@
+# Scenario 2: mentor checkpoints (hybrid mentor)
+# Drafted by: Claude (Anthropic), 2026-10-23. Reviewed by: project clinician (sources and content checked 2026-10-23)
+#
+# Sources:
+#   s6 = MacLeod R et al. Recommendations for the predictive genetic test in Huntington's disease.
+#        Clin Genet 2013;83(3):221-31 (EHDN). https://pubmed.ncbi.nlm.nih.gov/22642570/  verified 2026-10-23.
+#   s1 = Mayo Clinic Laboratories, HTT CAG ranges (test HAD). https://neurology.testcatalog.org/show/HAD  verified 2026-10-23.
+#   s8 = Paulsen JS et al. Critical periods of suicide risk in Huntington's disease. Am J Psychiatry 2005;162(4):725-31.
+#        https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725  verified 2026-10-23.
+#   s9 = Baile WF et al. SPIKES - a six-step protocol for delivering bad news. Oncologist 2000;5(4):302-11.
+#        https://pubmed.ncbi.nlm.nih.gov/10964998/  Status: verified by human reviewer 2026-10-23.
+#   s3 = Caron NS, Wright GEB, Hayden MR. Huntington Disease. GeneReviews (NCBI Bookshelf NBK1305),
+#        section "Genetic Counseling" (risk to family members). https://www.ncbi.nlm.nih.gov/books/NBK1305/
+#        Status: verified by human reviewer 2026-10-23.
+
+checkpoints:
+  - id: C1
+    name: Set up and confirm she wants the result
+    met_if: Trainee checks she is ready and still wants the result today, and acknowledges Marco.
+    hint_after_turn: 2
+    hint: "Before the result: is she still sure she wants to hear it today?"
+    feedback_met: "You confirmed she still wanted the result and acknowledged who was with her."
+    feedback_missed: "A person can decide not to be told at any point. Check before giving the result."
+    source: s6
+  - id: C2
+    name: Give the result clearly and early
+    met_if: Trainee states the result in plain words (e.g. "the test shows you have inherited the gene change for HD") within the first few turns, after a brief warning.
+    hint_after_turn: 4
+    hint: "She is waiting. A short warning, then the result in plain words."
+    feedback_met: "You gave the result clearly and early, after a brief warning."
+    feedback_missed: "Long preambles increase distress. Give a short warning shot, then the result in plain words."
+    source: s9
+  - id: C3
+    name: Pause and respond to emotion
+    met_if: After the result, trainee allows silence or names/acknowledges her emotion before giving more information.
+    hint_after_turn: 6
+    hint: "She has gone quiet. What does she need before more facts?"
+    feedback_met: "You allowed silence and responded to her emotion before moving on."
+    feedback_missed: "After bad news, respond to emotion first; information given in shock is rarely taken in."
+    source: s9
+  - id: C4
+    name: Explain what the result means and does not mean
+    met_if: Trainee explains she has inherited the gene change, that she is well now and this is not a diagnosis of the illness, and that the age of onset cannot be predicted for her.
+    hint_after_turn: 9
+    hint: "She asked how long she has. What can and can't the result tell her?"
+    feedback_met: "You explained the result honestly: gene change inherited, not ill now, onset cannot be predicted."
+    feedback_missed: "A predictive result is not a clinical diagnosis, and only limited information can be given about onset."
+    knowledge_card: what-a-positive-result-means
+    source: [s6, s1]
+  - id: C5
+    name: Check understanding and avoid overload
+    met_if: Trainee asks what she has understood or what she wants to know now, and offers a written summary or a later appointment for more detail.
+    hint_after_turn: 10
+    hint: "How much has she taken in? Ask before adding more."
+    feedback_met: "You checked her understanding and let her choose how much detail to take today."
+    feedback_missed: "Ask what she has understood, and offer a written summary and another appointment."
+    source: s9
+  - id: C6
+    name: Immediate safety
+    met_if: Trainee asks directly about thoughts of not wanting to live or self-harm today, given her history, and checks who is with her tonight.
+    hint_after_turn: 11
+    hint: "She mentioned dark thoughts last time. Have you checked how she is today?"
+    feedback_met: "You checked her safety directly and confirmed support for tonight."
+    feedback_missed: "She disclosed passive thoughts at her first visit. A positive result is a high-risk moment; ask directly and plan support."
+    unlocks: H3_thoughts_returned
+    source: [s8, s6]
+  - id: C7
+    name: Family implications, correctly
+    met_if: Trainee explores who she will tell and, if the brother comes up, explains that her result does not change her brother's 50% risk; telling him is her choice.
+    hint_after_turn: 13
+    hint: "What does she think this means for Daniel?"
+    feedback_met: "You corrected the belief about her brother's risk and left the decision to tell him with her."
+    feedback_missed: "Each child of an affected parent has an independent 50% chance; her result does not change Daniel's risk."
+    unlocks: H2_brother_misbelief
+    source: [s3, s6]
+  - id: C8
+    name: Follow-up and support
+    met_if: Trainee arranges contact within about a week, further appointments, and support resources, and says she can call in the meantime.
+    hint_after_turn: 14
+    hint: "What happens after she leaves the room today?"
+    feedback_met: "You arranged early follow-up and support."
+    feedback_missed: "Contact the person within a week of the result and plan ongoing support."
+    knowledge_card: after-the-result
+    source: s6
+  - id: C9
+    name: Leave room for future questions
+    met_if: Trainee mentions that questions about the wedding, children or reproductive options can be discussed at a later appointment, without detailed explanation today.
+    hint_after_turn: 15
+    hint: "Is today the day for every topic? What can wait for the next visit?"
+    feedback_met: "You named future topics and offered to discuss them later."
+    feedback_missed: "Name that topics like children and reproductive options can be discussed later, when she is ready."
+    unlocks: H1_cancel_wedding
+    source: s6
+
+red_flags:
+  - id: R1
+    name: Delayed or vague result
+    met_if: Trainee spends several turns without giving the result, or gives it in unclear terms (e.g. "the numbers were a bit high").
+    feedback: "Unclear or delayed news increases distress. Say it plainly after a short warning."
+    source: s9
+  - id: R2
+    name: Predicts onset or prognosis
+    met_if: Trainee gives an age or a number of years until symptoms or death.
+    feedback: "Onset cannot be predicted reliably for an individual."
+    source: s6
+  - id: R3
+    name: False reassurance
+    met_if: Trainee says she may never develop symptoms, or that a cure is coming soon.
+    feedback: "43 repeats is in the full-penetrance range. Hope is important, but it must be honest."
+    source: s1
+  - id: R4
+    name: Information overload
+    met_if: Trainee explains reproductive options, trials or treatments in detail right after the result, before checking what she wants.
+    feedback: "Detail given in shock is not retained. Offer it at a later appointment."
+    source: s9
+  - id: R5
+    name: Wrong family risk
+    met_if: Trainee agrees or implies that her brother's risk is now lower or higher because of her result.
+    feedback: "Her brother's risk remains 50%."
+    source: s3
