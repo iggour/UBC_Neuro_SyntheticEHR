@@ -1,0 +1,114 @@
+# Scenario 1: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-22. Reviewed by: [pending]
+#
+# Sources:
+#   s6 = MacLeod R, Tibben A, Frontali M, et al. Recommendations for the predictive genetic test
+#        in Huntington's disease. Clin Genet 2012 (EHDN). Status: verified (read in full Oct 2026).
+#   s1 = Laboratory reference ranges for HTT CAG repeats (Mayo Clinic Laboratories; ARUP). Status: verified.
+#   s7 = Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3). Status: PENDING, wording to check.
+#   s8 = Suicide-risk screening in HD / at-risk persons: source to be added. Status: PENDING.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Explore reasons and timing
+    met_if: Trainee asks an open question about why she wants testing or why now.
+    hint_after_turn: 3
+    hint: "She keeps saying 'today'. What might be behind the urgency?"
+    feedback_met: "You explored why she wanted testing now, which brought out the wedding and plans for children."
+    feedback_missed: "Asking 'What made you decide to come now?' would have uncovered what is driving the urgency."
+    unlocks: H1_wedding_children
+    source: s6
+  - id: C2
+    name: Check her understanding
+    met_if: Trainee asks what she already knows about HD, her risk, or the test before explaining.
+    hint_after_turn: 4
+    hint: "Before explaining, could you find out what she already knows?"
+    feedback_met: "You checked what she already understood before giving information."
+    feedback_missed: "Start from what she knows; it shows you what to explain and what to correct."
+    source: s6
+  - id: C3
+    name: Choice is hers alone
+    met_if: Trainee says the decision to be tested is hers, and no one (family, partner, employer, insurer) should pressure her.
+    hint_after_turn: 6
+    hint: "Has she heard that this decision belongs only to her?"
+    feedback_met: "You made clear the decision is hers alone."
+    feedback_missed: "Say explicitly that the decision is hers and no one should pressure her, including family, partner or insurers."
+    source: s6
+  - id: C4
+    name: Explain what the test can and cannot tell
+    met_if: Trainee explains the test shows whether the gene change was inherited, but cannot reliably predict when symptoms start, which symptoms, or how fast they progress; and that results can include intermediate or reduced-penetrance ranges.
+    hint_after_turn: 8
+    hint: "Does she know what a positive result would and would not tell her?"
+    feedback_met: "You explained the limits of the test, including onset age and in-between results."
+    feedback_missed: "Pre-test counselling should cover all possible outcomes, including intermediate (27-35) and reduced penetrance (36-39), and that age at onset cannot be predicted reliably."
+    knowledge_card: what-a-predictive-test-can-and-cannot-tell
+    source: [s6, s1]
+  - id: C5
+    name: Explain the process and reflection period
+    met_if: Trainee explains that testing follows counselling, that at least a month to think is usually allowed before deciding, that results are given in person, and that she can change her mind or choose not to hear the result.
+    hint_after_turn: 8
+    hint: "What does the usual testing process look like from here?"
+    feedback_met: "You explained the process: counselling, time to reflect, results in person, and the right to change her mind."
+    feedback_missed: "Explain the steps: counselling first, usually at least one month to reflect, results in person (never by phone or mail), and she can stop at any point."
+    knowledge_card: pre-test-counselling-essentials
+    source: s6
+  - id: C6
+    name: Support person
+    met_if: Trainee asks who supports her and suggests bringing a companion to future appointments.
+    hint_after_turn: 9
+    hint: "She came alone. Who could come with her next time?"
+    feedback_met: "You asked about support and suggested bringing a companion."
+    feedback_missed: "Ask who supports her and encourage her to bring a companion to the next appointments."
+    source: s6
+  - id: C7
+    name: Emotional state and safety
+    met_if: Trainee asks about mood and coping AND asks directly about thoughts of not wanting to live or self-harm.
+    hint_after_turn: 10
+    hint: "How is she coping with all this? Have you asked how low it has got?"
+    feedback_met: "You asked directly and kindly about thoughts of not wanting to live, and she felt able to tell you."
+    feedback_missed: "People at risk of HD can feel overwhelmed around testing. Asking directly about thoughts of not wanting to live does not plant the idea and lets you plan support."
+    unlocks: H3_passive_thoughts
+    source: s8
+  - id: C8
+    name: Family and wider implications
+    met_if: Trainee discusses how a result might affect others (partner, brother, future children) and/or insurance concerns.
+    hint_after_turn: 11
+    hint: "Who else could be affected by her result?"
+    feedback_met: "You explored implications for her family and future plans."
+    feedback_missed: "A result can affect a partner, siblings and future children. In Canada, the Genetic Non-Discrimination Act limits requests for genetic test results (check the current wording)."
+    unlocks: H2_brother
+    source: [s6, s7]
+  - id: C9
+    name: Close with a plan
+    met_if: Trainee summarises, checks her understanding, and agrees next steps (follow-up appointment, support) without testing today.
+    hint_after_turn: 13
+    hint: "Can you sum up and agree what happens next?"
+    feedback_met: "You ended with a summary and a clear plan."
+    feedback_missed: "End by summarising, checking what she has understood, and booking the next step."
+    source: s6
+
+red_flags:   # errors the judge also watches for; each one lowers the score
+  - id: R1
+    name: Agrees to test today
+    met_if: Trainee agrees to draw blood or order the predictive test at this first visit.
+    feedback: "Testing on the day skips counselling and the reflection period. Offer the next appointment instead."
+    source: s6
+  - id: R2
+    name: False reassurance
+    met_if: Trainee says she probably does not have it, or that a result will be fine.
+    feedback: "Her risk is 50%. Reassurance without basis can damage trust when the result comes."
+    source: s6
+  - id: R3
+    name: Pressure about disclosure
+    met_if: Trainee tells her she must tell her fiance or brother, or tells her to get tested for their sake.
+    feedback: "Whether and when to tell others is her choice. You can explore it, not require it."
+    source: s6
+  - id: R4
+    name: Predicts onset
+    met_if: Trainee gives an age when symptoms will start.
+    feedback: "Age at onset cannot be predicted reliably for an individual."
+    source: s6
