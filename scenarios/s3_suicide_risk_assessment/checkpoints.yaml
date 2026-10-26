@@ -1,0 +1,142 @@
+# Scenario 3: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-23. Reviewed by: project clinician (sources and content checked 2026-10-26)
+#
+# Sources (s6, s8 as in scenarios 1-2; new sources s10-s15 need human verification):
+#   s6  = MacLeod R et al. Recommendations for the predictive genetic test in Huntington's disease.
+#         Clin Genet 2013;83(3):221-31 (EHDN). https://pubmed.ncbi.nlm.nih.gov/22642570/  verified 2026-10-23.
+#   s8  = Paulsen JS et al. Critical periods of suicide risk in Huntington's disease. Am J Psychiatry 2005;162(4):725-31.
+#         https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725  verified 2026-10-23.
+#   s10 = Hubers AAM et al. Suicidal ideation in a European Huntington's disease population.
+#         J Affect Disord 2013;151(1):248-58. doi:10.1016/j.jad.2013.06.001  Status: verified by human reviewer 2026-10-26.
+#   s11 = Wetzel HH et al. (Huntington Study Group 2CARE investigators). Risk factors for suicidality in
+#         Huntington disease: an analysis of the 2CARE clinical trial. Neurology 2019;92(14):e1643-51.
+#         https://pubmed.ncbi.nlm.nih.gov/30850442/  Status: verified by human reviewer 2026-10-26.
+#   s12 = Dazzi T, Gribble R, Wessely S, Fear NT. Does asking about suicide and related behaviours induce
+#         suicidal ideation? What is the evidence? Psychol Med 2014;44(16):3361-3.
+#         https://pubmed.ncbi.nlm.nih.gov/24998511/  Status: verified by human reviewer 2026-10-26.
+#   s13 = Stanley B, Brown GK. Safety planning intervention: a brief intervention to mitigate suicide risk.
+#         Cogn Behav Pract 2012;19(2):256-64. doi:10.1016/j.cbpra.2011.01.001  Status: verified by human reviewer 2026-10-26.
+#   s14 = Bachoud-Levi AC et al. International guidelines for the treatment of Huntington's disease.
+#         Front Neurol 2019;10:710. doi:10.3389/fneur.2019.00710  Status: verified by human reviewer 2026-10-26.
+#   s15 = Tetrabenazine prescribing information, boxed warning "Depression and suicidality" (US label;
+#         e.g. https://www.hikma.com/news/hikma-launches-tetrabenazine-tablets/ ; check DailyMed and the
+#         Health Canada product monograph). Status: verified by human reviewer 2026-10-26.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Address Teresa directly and offer time alone
+    met_if: Trainee speaks to Teresa herself (not only Luis) and, early on, asks permission to speak with her alone for part of the visit.
+    hint_after_turn: 3
+    hint: "Luis is answering for her. Who do you need to hear from, and where?"
+    feedback_met: "You spoke to Teresa directly and gave her time alone, which made it possible for her to be honest."
+    feedback_missed: "Offer time alone. People often cannot talk about suicidal thoughts in front of the person caring for them."
+    source: s14
+  - id: C2
+    name: Acknowledge emotion and irritability without arguing
+    met_if: Trainee responds to her frustration or low mood with empathy (names or validates the feeling) rather than correcting or arguing.
+    hint_after_turn: 4
+    hint: "She is irritable and on guard. What would help her feel respected?"
+    feedback_met: "You responded to her irritation calmly and with respect."
+    feedback_missed: "Irritability is common in HD and linked to suicidal thoughts. Validate the feeling before moving on."
+    source: [s11, s10]
+  - id: C3
+    name: Explore mood and recent changes
+    met_if: Trainee asks open questions about mood, sleep, interest, and what has changed in the last few months.
+    hint_after_turn: 5
+    hint: "What has changed in her life in the last few months?"
+    feedback_met: "You explored her mood and recent changes, which brought out her guilt about Leah."
+    feedback_missed: "Ask about mood and recent life events. Depression and guilt are key risk factors in HD."
+    unlocks: H1_guilt_leah
+    source: [s11, s10]
+  - id: C4
+    name: Ask directly about suicidal thoughts
+    met_if: Trainee asks plainly whether she has had thoughts of ending her life or killing herself (not a leading question such as "You're not thinking of hurting yourself, are you?").
+    hint_after_turn: 7
+    hint: "Luis heard her say they'd be better off without her. Have you asked her what she meant?"
+    feedback_met: "You asked about suicidal thoughts clearly and kindly."
+    feedback_missed: "Asking directly about suicide does not increase suicidal thoughts. Ask plainly, using the word."
+    unlocks: H2_active_thoughts
+    knowledge_card: asking-about-suicide
+    source: [s12, s8]
+  - id: C5
+    name: Explore the thoughts in detail
+    met_if: Trainee explores at least frequency or timing, any plan or preparation, access to means at home, intent, past attempts, and reasons for living.
+    hint_after_turn: 9
+    hint: "She has had the thoughts. What else do you need to know to judge the risk?"
+    feedback_met: "You explored plans, preparation, means and reasons for living, which uncovered the tablets at home."
+    feedback_missed: "After a yes, ask about plans, preparation, access to means, intent, past attempts and reasons for living."
+    unlocks: H3_means
+    knowledge_card: asking-about-suicide
+    source: [s13, s8]
+  - id: C6
+    name: Review medication and depression
+    met_if: Trainee recognises that tetrabenazine can worsen depression and suicidality and plans to review it with the prescriber, and plans assessment or treatment of depression.
+    hint_after_turn: 10
+    hint: "Look at her medication list. Is anything relevant to her mood?"
+    feedback_met: "You linked her mood to tetrabenazine and planned a medication review and depression treatment."
+    feedback_missed: "Tetrabenazine carries a warning for depression and suicidality and is contraindicated in active suicidality or untreated depression. Review it with the prescriber."
+    knowledge_card: medication-and-mood
+    source: [s15, s14]
+  - id: C7
+    name: Collaborative safety plan, including means safety
+    met_if: Trainee works with Teresa on a safety plan (warning signs, coping, people to contact, crisis line) and agrees, with her consent, that the sleeping tablets are removed and Luis holds her medications.
+    hint_after_turn: 12
+    hint: "What will she do tonight if the thoughts come back? What is in the drawer?"
+    feedback_met: "You built a safety plan with her and made her home safer with her agreement."
+    feedback_missed: "Agree a written safety plan with her, including making means safer at home, and involve Luis with her consent."
+    knowledge_card: safety-plan
+    source: s13
+  - id: C8
+    name: Urgent assessment and follow-up
+    met_if: Trainee arranges same-day urgent mental health or crisis assessment (or explains the local pathway), gives crisis contacts (9-8-8 / 911), and arranges early follow-up.
+    hint_after_turn: 13
+    hint: "Given what she has told you, can she simply go home with a routine appointment?"
+    feedback_met: "You arranged urgent assessment, crisis contacts and early follow-up."
+    feedback_missed: "Active suicidal thoughts with preparation need urgent assessment the same day, not a routine appointment."
+    source: [s15, s13]
+  - id: C9
+    name: Ask about the carer
+    met_if: Trainee asks Luis how he is coping and offers carer support or resources.
+    hint_after_turn: 15
+    hint: "Luis has carried this alone. Have you asked about him?"
+    feedback_met: "You asked how Luis was coping and pointed him to support."
+    feedback_missed: "Carers of people with HD are under heavy strain. Ask about them and offer support."
+    unlocks: H4_luis_exhausted
+    knowledge_card: supporting-the-carer
+    source: s14
+
+red_flags:
+  - id: R1
+    name: Avoids or leads the question
+    met_if: Trainee never asks about suicidal thoughts, or only asks a leading closed question that invites "no".
+    feedback: "Leading questions such as 'You're not thinking of anything silly, are you?' make honest answers harder."
+    source: s12
+  - id: R2
+    name: Normalises or dismisses
+    met_if: Trainee says her thoughts are just "normal with HD" or "understandable" and moves on without exploring risk.
+    feedback: "Understanding why she feels this way is important, but it does not replace a risk assessment."
+    source: [s8, s10]
+  - id: R3
+    name: Promises total confidentiality
+    met_if: Trainee promises that nothing she says will be shared with anyone.
+    feedback: "Be honest that information may need to be shared to keep her safe, and explain how."
+    source: s13
+  - id: R4
+    name: Sends her home without a plan
+    met_if: After active suicidal thoughts are disclosed, trainee ends the visit with only a routine follow-up and no safety plan or urgent assessment.
+    feedback: "Active thoughts with preparation need a safety plan and urgent assessment the same day."
+    source: [s13, s15]
+  - id: R5
+    name: Talks about her, not with her
+    met_if: Trainee mainly talks to Luis about Teresa in the third person while she is present.
+    feedback: "Speak with her directly; being talked about adds to loss of dignity and control."
+    source: s14
+  - id: R6
+    name: Discusses method details
+    met_if: Trainee discusses doses or lethality of the tablets with Teresa.
+    feedback: "Ask whether means are available and make them safer; do not discuss lethality or amounts."
+    source: s13
