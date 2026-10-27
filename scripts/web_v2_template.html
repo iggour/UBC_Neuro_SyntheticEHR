@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HD Anchor</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2433;--mute:#5b6577;--line:#d9dee7;--acc:#2a5db0;--accbg:#e9f0fb;--ok:#1f7a4d;--okbg:#e6f4ec;--no:#b3412b;--nobg:#fbeae6;--warn:#8a6100;--warnbg:#fdf3d8;--bub:#eef1f5}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--ok:#6fd1a0;--okbg:#17342a;--no:#f08d7a;--nobg:#3a1f1a;--warn:#f0cd6b;--warnbg:#3a3010;--bub:#232a35}}
+:root[data-theme="dark"]{--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--ok:#6fd1a0;--okbg:#17342a;--no:#f08d7a;--nobg:#3a1f1a;--warn:#f0cd6b;--warnbg:#3a3010;--bub:#232a35}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:.2rem 0}h2{font-size:1.12rem;margin:1.1rem 0 .4rem}h3{font-size:1rem;margin:.6rem 0 .3rem}
+.sub{color:var(--mute);margin:0 0 .4rem}
+.bar{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 11px;font-size:.85rem;margin:.5rem 0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:.6rem 0 1rem}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);padding:9px 11px;font:inherit;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--acc);border-color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pick{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.pick:hover{border-color:var(--acc)}.pick.sel{border:2px solid var(--acc);background:var(--accbg)}
+.pick .n{font-size:.78rem;color:var(--mute)}.pick .t{font-weight:600;display:block;margin:2px 0}.pick .q{font-size:.88rem;color:var(--mute)}
+.steps{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.steps button{flex:1;min-width:120px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 10px;font:inherit;color:var(--mute);cursor:pointer}
+.steps button.on{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer}
+.btn:hover{border-color:var(--acc)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:0 7px;margin:0 2px;font-size:.74rem;color:var(--mute);text-decoration:none;white-space:nowrap}
+a.chip:hover{border-color:var(--acc);color:var(--acc)}
+.note{font-size:.84rem;color:var(--mute)}
+ul{padding-left:1.2rem;margin:.3rem 0}li{margin:.25rem 0}
+details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
+.chat{border:1px solid var(--line);border-radius:10px;background:var(--bg);padding:12px;min-height:150px}
+.bub{background:var(--bub);border-radius:12px 12px 12px 3px;padding:8px 12px;max-width:85%;margin:4px 0}
+.who{font-size:.78rem;color:var(--mute)}
+.inrow{display:flex;gap:8px;margin-top:10px}.inrow input{flex:1;min-width:0;padding:9px 11px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit}
+.toggle{display:flex;align-items:center;gap:8px;font-size:.92rem;margin:8px 0}
+.hintbox{border-left:4px solid var(--acc);background:var(--accbg);border-radius:6px;padding:8px 11px;font-size:.92rem}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line)}
+.chk:last-child{border-bottom:0}.chk input{margin-top:5px;width:18px;height:18px;flex:none}
+.fb{border-radius:8px;padding:9px 12px;margin:8px 0;font-size:.93rem}.fb.ok{background:var(--okbg);border-left:4px solid var(--ok)}.fb.no{background:var(--nobg);border-left:4px solid var(--no)}
+.safe{border:2px solid var(--no);border-radius:10px;padding:10px 13px;margin:10px 0;background:var(--card);font-size:.92rem}
+.list{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:10px 14px;white-space:pre-wrap}
+#gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
+#gate>div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}#gate[hidden]{display:none}
+@media print{.tabs,.no-print,#gate,.bar{display:none!important}body{background:#fff}}
+</style></head><body>
+<div id="gate"><div><h2 style="margin-top:0">Before you start</h2>
+<p>This is an educational prototype with <b>fictional</b> patients and families. It is <b>not medical advice</b> and does not diagnose, treat or triage. It is not a substitute for a clinician or care team.</p>
+<p>In an emergency call 911. If you or someone you know has thoughts of ending their life, call or text <b>9-8-8</b> (Canada).</p>
+<button class="btn pri" id="gateok">I understand</button></div></div>
+<div class="wrap">
+<h1>HD Anchor</h1>
+<p class="sub">Practising key conversations in Huntington disease care</p>
+<div class="bar">Prototype · fictional cases · educational only · not medical advice</div>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="clin">For clinicians</button>
+<button role="tab" aria-selected="false" data-t="fam">For families</button>
+<button role="tab" aria-selected="false" data-t="src">Sources</button>
+<button role="tab" aria-selected="false" data-t="about">About</button></div>
+<section id="clin"></section><section id="fam" hidden></section><section id="src" hidden></section>
+<section id="about" hidden>
+<div class="card"><h2 style="margin-top:0">Why</h2><p>Huntington disease is rare, so many clinicians meet few affected families. Some of the hardest parts of care are conversations: counselling before a genetic test, giving a positive result, and assessing suicide risk. HD Anchor lets clinicians practise these conversations before they happen for real.</p></div>
+<div class="card"><h2 style="margin-top:0">How it works</h2><ol>
+<li><b>Learn.</b> Short notes on the key facts, each linked to a published source.</li>
+<li><b>Practise.</b> Talk with an AI-simulated patient who follows a fixed, reviewed profile. An AI mentor can give hints, which you can switch off.</li>
+<li><b>Feedback.</b> A checklist shows what you did well and what you missed, with links back to the notes.</li></ol>
+<p>The mentor only uses pre-written advice linked to sources. It does not write advice of its own.</p></div>
+<div class="card"><h2 style="margin-top:0">Current stage</h2><ul>
+<li>Three scenarios for one fictional family are written and clinically reviewed.</li>
+<li>The AI patient is being tested on a locally hosted open-source model, so no data leaves the institution.</li>
+<li>No human participants in this phase. Testing with trainees will follow ethics approval.</li></ul></div>
+</section>
+<p class="note">All people are fictional. No personal data is stored.</p>
+</div>
+<script>
+var D=/*__DATA__*/null;
+var st={sc:0,step:0,hints:true,ticks:{},flags:{},shown:{},famsc:0,famq:{}};
+function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
+function linkify(h){return h.replace(/(https?:\/\/[^\s<)]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
+function srcChips(ids){if(!ids)return"";if(!Array.isArray(ids))ids=[ids];return ids.map(function(i){return '<a class="chip" href="#src-'+i+'" onclick="go(\'src\')">'+esc(i.toUpperCase())+'</a>'}).join("")}
+function point(p){var m=p.match(/^(.*?)\s*\[([^\]]+)\]\s*$/);if(!m)return linkify(esc(p));var tag=m[2],ids=tag.split(/[,\s]+/).filter(function(x){return /^s\d+$/.test(x)});
+ var t=linkify(esc(m[1]));if(ids.length)return t+" "+srcChips(ids);return t+' <span class="chip">general clinical practice</span>'}
+function cardHtml(c){return '<details id="card-'+c.id+'" open><summary>'+esc(c.title)+'</summary><div class="card" style="margin-top:6px"><ul>'+c.points.map(function(p){return "<li>"+point(p)+"</li>"}).join("")+'</ul></div></details>'}
+function go(t){document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});["clin","fam","src","about"].forEach(function(x){document.getElementById(x).hidden=x!==t})}
+function picker(sel,fn){return '<div class="grid">'+D.scenarios.map(function(s,i){return '<button class="pick'+(i===sel?' sel':'')+'" onclick="'+fn+'('+i+')"><span class="n">Scenario '+(i+1)+'</span><span class="t">'+esc(s.topic)+'</span><span class="q">“'+esc(s.title)+'”</span></button>'}).join("")+'</div>'}
+function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+picker(st.sc,"pickSc");
+ var names=["1. Learn","2. Practise","3. Feedback"];
+ h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+'</div>';
+ if(st.step===0){h+='<div class="card"><h3 style="margin-top:0">The situation</h3><p>'+esc(s.brief)+'</p><p class="note">Setting: '+esc(s.setting)+'</p><h3>In this conversation, aim to</h3><ul>'+s.goals.map(function(g){return"<li>"+esc(g)+"</li>"}).join("")+'</ul></div><h2>Key facts</h2>'+s.cards.map(cardHtml).join("")+'<div class="no-print"><button class="btn pri" onclick="step(1)">Start practising</button></div>'}
+ if(st.step===1){var p=s.patient,who=esc(p.name)+(p.age?", "+p.age:"")+(p.companion?' · with '+esc(p.companion.name)+(p.companion.relation?' ('+esc(p.companion.relation)+')':''):'');
+  h+='<div class="card"><div class="who">'+who+'</div><div class="chat"><div class="who">'+esc(p.name)+'</div><div class="bub">'+esc(p.opening)+'</div></div>'+
+  '<div class="inrow"><input disabled placeholder="Type what you would say…"><button class="btn pri" disabled>Send</button></div>'+
+  '<p class="note">The live AI patient is not connected in this prototype. It is being tested on a local open-source model. For now, think through or say aloud how you would respond, then go to Feedback.</p>'+
+  '<label class="toggle"><input type="checkbox" '+(st.hints?'checked':'')+' onchange="st.hints=this.checked;clin()"> Mentor hints</label>'+
+  (st.hints?'<div class="hintbox">When connected, the mentor will offer short hints here if you have not yet covered an important step. Switch hints off to practise as a test.</div>':'<p class="note">Hints are off (test mode).</p>')+
+  '</div><div class="no-print"><button class="btn pri" onclick="step(2)">I have finished. Show feedback</button></div>'}
+ if(st.step===2){var key=s.id,t=st.ticks[key]||(st.ticks[key]={}),f=st.flags[key]||(st.flags[key]={}),shown=st.shown[key];
+  h+='<div class="card"><h3 style="margin-top:0">Self-check</h3><p class="note">Tick what you did. When the AI mentor is connected, it will fill this in for you from the conversation.</p>'+
+  s.checkpoints.map(function(c){return '<label class="chk"><input type="checkbox" '+(t[c.id]?'checked':'')+' onchange="tick(\'ticks\',\''+c.id+'\',this.checked)"><span>'+esc(c.name)+'</span></label>'}).join("")+
+  '<h3>Did any of these happen?</h3>'+s.flags.map(function(r){return '<label class="chk"><input type="checkbox" '+(f[r.id]?'checked':'')+' onchange="tick(\'flags\',\''+r.id+'\',this.checked)"><span>'+esc(r.name)+'</span></label>'}).join("")+
+  '<div class="no-print" style="margin-top:10px"><button class="btn pri" onclick="st.shown[\''+key+'\']=1;clin()">Show feedback</button> <button class="btn" onclick="resetSc()">Start again</button></div></div>';
+  if(shown){var n=s.checkpoints.filter(function(c){return t[c.id]}).length;
+   h+='<h2>Your feedback: '+n+' of '+s.checkpoints.length+' steps</h2>'+s.checkpoints.map(function(c){var ok=!!t[c.id];return '<div class="fb '+(ok?'ok':'no')+'"><b>'+esc(c.name)+'.</b> '+esc(ok?c.met:c.missed)+' '+srcChips(c.src)+(c.card&&!ok?' <a class="chip" href="#card-'+c.card+'" onclick="step(0)">review the key facts</a>':'')+'</div>'}).join("");
+   var hit=s.flags.filter(function(r){return f[r.id]});if(hit.length)h+='<h3>Things to avoid next time</h3>'+hit.map(function(r){return '<div class="fb no"><b>'+esc(r.name)+'.</b> '+esc(r.fb)+' '+srcChips(r.src)+'</div>'}).join("")}}
+ document.getElementById("clin").innerHTML=h}
+function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
+function step(i){st.step=i;clin()}
+function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
+function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];clin()}
+function fam(){var s=D.scenarios[st.famsc],p=s.prep,q=st.famq[s.id]||(st.famq[s.id]={});
+ var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2>'+picker(st.famsc,"pickFam");
+ h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');
+ p.sections.forEach(function(sec,si){h+='<h3>'+esc(sec.h)+'</h3>';
+  if(sec.items.length)h+='<ul>'+sec.items.map(function(x){return"<li>"+linkify(esc(x))+"</li>"}).join("")+'</ul>';
+  if(sec.checks.length){h+=sec.checks.map(function(x,qi){var k=si+"-"+qi;return '<label class="chk"><input type="checkbox" '+(q[k]?'checked':'')+' onchange="famTick(\''+k+'\',this.checked)"><span>'+esc(x)+'</span></label>'}).join("");
+   var picked=[];sec.checks.forEach(function(x,qi){if(q[si+"-"+qi])picked.push(x)});
+   h+='<h3>My questions</h3>'+(picked.length?'<div class="list" id="mylist">'+esc(picked.map(function(x,i){return(i+1)+". "+x}).join("\n"))+'</div><div class="no-print" style="margin-top:8px"><button class="btn" onclick="copyList()">Copy</button> <button class="btn" onclick="window.print()">Print</button> <span class="note" id="copied"></span></div>':'<p class="note">Tick the questions above to build your list.</p>')}});
+ h+='</div>';document.getElementById("fam").innerHTML=h}
+function pickFam(i){st.famsc=i;fam()}
+function famTick(k,v){st.famq[D.scenarios[st.famsc].id][k]=v;fam()}
+function copyList(){var t=document.getElementById("mylist").textContent,m=document.getElementById("copied");
+ try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied"},function(){m.textContent="Select the text to copy"})}catch(e){m.textContent="Select the text to copy"}}
+function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by a clinical reviewer. Content is paraphrased, not copied.</p><ul>';
+ Object.keys(D.sources).forEach(function(k){h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
+ h+='</ul></div><div class="card"><h2 style="margin-top:0">Disclaimers</h2><ul><li>All people and situations are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, treat or triage.</li><li>Always follow local guidelines and your care team.</li></ul></div>';
+ document.getElementById("src").innerHTML=h}
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){go(b.dataset.t)}});
+document.getElementById("gateok").onclick=function(){document.getElementById("gate").hidden=true};
+clin();fam();src();
+</script></body></html>
