@@ -1,0 +1,132 @@
+# Scenario B2: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group B; all new, need human verification):
+#   s31 = Government of British Columbia, RoadSafetyBC. Reporting a patient who may be unfit to drive (Motor Vehicle Act,
+#         section 230). https://www2.gov.bc.ca/gov/content/transportation/driving-and-cycling/roadsafetybc/medical-fitness/medical-prof/reporting-person
+#         Status: summary read by Claude 2026-10-29; needs human verification against the current Act.
+#   s32 = Government of British Columbia. Advance care planning, and My Voice: Expressing my wishes for future health care
+#         treatment (advance care planning guide). https://www2.gov.bc.ca/gov/content/family-social-supports/seniors/health-safety/advance-care-planning
+#         Guide: https://www2.gov.bc.ca/assets/gov/people/seniors/health-safety/pdf/myvoiceadvancecareplanningguide.pdf
+#         Status: guide read by Claude 2026-10-29 (PDF dated 2013; check for a newer edition); needs human verification.
+#   s34 = Government of British Columbia. Long-term care services (home and community care).
+#         https://www2.gov.bc.ca/gov/content/health/accessing-health-care/home-community-care/care-options-and-cost/long-term-care-services
+#         Status: URL checked by Claude 2026-10-29; content needs human verification.
+#   s35 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,
+#         chapters 2 (genetic counselling and testing), 3 (team care), 3a (driving cessation) and 8 (late stage HD).
+#         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: chapters read by Claude 2026-10-29; needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Raise driving with Ruth and hear her view
+    met_if: Trainee speaks to Ruth directly, acknowledges what driving means to her, and asks openly how she feels her driving has been, before giving an opinion.
+    hint_after_turn: 2
+    hint: "Ruth is braced for a fight. What might she tell you if she did not feel judged?"
+    feedback_met: "You asked for Ruth's own view first, which let her admit she had been frightened."
+    feedback_missed: "Ask the person how they think their driving is going, and acknowledge what it means to them, before giving your view."
+    unlocks: H1_ruth_frightened
+    knowledge_card: driving-and-hd
+    source: s35
+  - id: C2
+    name: Hear from family, openly
+    met_if: Trainee asks Ruth's permission to speak with Anna alone for a few minutes (or asks Anna gently in front of Ruth what she has observed), so that Anna can speak freely and Ruth knows it is happening.
+    hint_after_turn: 4
+    hint: "Anna asked to talk about the car, but is holding back. How could she speak freely without going behind Ruth's back?"
+    feedback_met: "You gave Anna a chance to speak openly, with Ruth's knowledge."
+    feedback_missed: "Families may fear the person's reaction. Offer them a chance to speak alone, with the person's knowledge."
+    unlocks: H2_anna_incidents
+    knowledge_card: driving-and-hd
+    source: s35
+  - id: C3
+    name: Explain kindly why driving is no longer safe
+    met_if: Trainee explains, based on the history and observations rather than blaming Anna, that HD can slow reactions in ways the person may not notice, and advises Ruth to stop driving, or not to drive until a formal driving assessment.
+    hint_after_turn: 7
+    hint: "How can you be clear about the danger while protecting her dignity, and without making Anna the messenger?"
+    feedback_met: "You were clear about the danger, with care, and took responsibility for the advice."
+    feedback_missed: "Explain, with care, that slowed reactions may not be noticeable to her, and give a clear instruction or a formal assessment."
+    knowledge_card: driving-and-hd
+    source: s35
+  - id: C4
+    name: Be honest about reporting
+    met_if: Trainee explains honestly that in British Columbia clinicians must report a patient who has a condition that makes driving dangerous and continues to drive after being warned, and that the licensing decision is made by RoadSafetyBC; says the advice will be documented.
+    hint_after_turn: 9
+    hint: "Anna asks whether you will report her mother. What is true in BC?"
+    feedback_met: "You explained the reporting rule honestly and without threat."
+    feedback_missed: "Be honest about the duty to report a patient who keeps driving after a warning, and that RoadSafetyBC makes the licensing decision."
+    knowledge_card: driving-and-hd
+    source: [s31, s35]
+  - id: C5
+    name: Acknowledge the loss and plan alternatives
+    met_if: Trainee acknowledges what stopping driving means, recognises Ruth's decision with respect, and plans practical alternatives (family rides, church friends, community transport, taxis).
+    hint_after_turn: 8
+    hint: "Church and the grandchildren matter to her. How will she get there?"
+    feedback_met: "You acknowledged the loss and made a practical transport plan with them."
+    feedback_missed: "Stopping driving is a real loss. Acknowledge it and plan how she will still get to the places that matter."
+    knowledge_card: driving-and-hd
+    source: s35
+  - id: C6
+    name: Ask about safety at home
+    met_if: Trainee asks open questions about stairs, falls and cooking, without threatening a move, and offers an occupational therapy home safety assessment and practical changes (for example stove safety, moving the bedroom downstairs, stair rails).
+    hint_after_turn: 10
+    hint: "George cannot manage the stairs and Ruth is cooking. What happens at home?"
+    feedback_met: "You asked about home safety without threats, and she told you about the stove and the fall."
+    feedback_missed: "Ask about falls, stairs and cooking, and offer an occupational therapy home assessment."
+    unlocks: H3_home_risks
+    knowledge_card: staying-safe-at-home
+    source: s35
+  - id: C7
+    name: Respect her wish to stay at home, with support
+    met_if: Trainee respects Ruth's wish to stay at home, discusses home supports (home and community care, a referral) and agrees which risks are acceptable, rather than deciding she must move.
+    hint_after_turn: 12
+    hint: "Anna asks about moving. What does Ruth want, and what would make that possible?"
+    feedback_met: "You respected Ruth's wish to stay at home and planned support to make it safer."
+    feedback_missed: "Explore what Ruth wants. Home supports and shared decisions about risk often allow people to stay at home longer."
+    knowledge_card: staying-safe-at-home
+    source: [s35, s34]
+  - id: C8
+    name: Begin advance care planning
+    met_if: Trainee raises planning ahead while Ruth can express complex wishes, asks what matters to her and who should decide for her if she cannot, and suggests recording her wishes (for example a representation agreement or advance directive).
+    hint_after_turn: 13
+    hint: "Ruth can still tell you what she would want later on. Has anyone asked her?"
+    feedback_met: "You started advance care planning, and Ruth told you her wishes about feeding tubes and staying at home."
+    feedback_missed: "People with HD lose the ability to express complex wishes later. Start advance care planning early, and help them record it."
+    unlocks: H4_wishes
+    knowledge_card: planning-ahead
+    source: [s35, s32]
+
+red_flags:
+  - id: R1
+    name: Avoids the driving question
+    met_if: Trainee does not address driving, or leaves the decision entirely to the family.
+    feedback: "Driving safety should be discussed with every person with manifest HD; families should not carry it alone."
+    source: s35
+  - id: R2
+    name: Abrupt or humiliating instruction
+    met_if: Trainee orders Ruth to stop driving without explanation, or calls her dangerous, without acknowledging the loss.
+    feedback: "Advice to stop driving should be clear, caring and explained, with support to follow."
+    source: s35
+  - id: R3
+    name: Breaks the family's trust
+    met_if: Trainee repeats to Ruth what Anna said alone without Anna's agreement, or makes Anna's report the main argument.
+    feedback: "Agree with the family how their information will be used; the clinician can take responsibility for the advice."
+    source: s35
+  - id: R4
+    name: Misstates the reporting rule
+    met_if: Trainee promises Ruth she will never be reported, or threatens to report her immediately without warning.
+    feedback: "In BC, reporting is required when a patient keeps driving after being warned. Be accurate and honest."
+    source: s31
+  - id: R5
+    name: Decides she must move
+    met_if: Trainee tells Ruth she must move to a care home or can no longer live at home, without exploring her wishes and supports.
+    feedback: "Explore supports and shared decisions about risk before suggesting a move."
+    source: [s35, s34]
+  - id: R6
+    name: Talks about Ruth, not with her
+    met_if: Trainee mainly talks to Anna about Ruth in the third person while Ruth is present.
+    feedback: "Ruth is able to take part. Speak with her directly."
+    source: s35

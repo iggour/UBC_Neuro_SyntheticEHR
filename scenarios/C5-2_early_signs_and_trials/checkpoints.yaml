@@ -1,0 +1,140 @@
+# Scenario C5-2: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Case 5; s40-s46 are new and need human verification).
+# Trial status changes quickly: s42 and s43 carry the date they were checked; re-check before each use.
+# Reused, defined elsewhere (not redefined here):
+#   s8 (scenarios/s1_pretest_counselling): Paulsen JS et al. Critical periods of suicide risk in HD. Am J Psychiatry
+#         2005;162(4):725-31. https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725
+#   s12 (scenarios/s3_suicide_risk_assessment): Dazzi T et al. Psychol Med 2014;44(16):3361-3. https://pubmed.ncbi.nlm.nih.gov/24998511/
+#   s35 (scenarios/B1_late_onset_diagnosis, draft): HSC Physician's Guide, chapters 2, 3, 3a and 8 (chapter 2 includes
+#         "Research and observational trials"). https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#   s36 (scenarios/C4-1_recognising_possible_hd, draft): HSC Physician's Guide, chapters 1, 5 and 6.
+#         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+# New:
+#   s41 = Ross CA, Reilmann R, Cardoso F, et al. Movement Disorder Society Task Force viewpoint: Huntington's disease
+#         diagnostic categories. Mov Disord Clin Pract 2019;6(7):541-6. https://pubmed.ncbi.nlm.nih.gov/31538087/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC6749806/  Status: full text searched by Claude 2026-10-29; needs human verification.
+#   s42 = Enroll-HD: a worldwide observational study and clinical research platform for HD families. https://enroll-hd.org/
+#         Find a site: https://enroll-hd.org/find-an-enroll-hd-site/  Checked 2026-10-29.
+#         Status: home page read by Claude; eligibility and visit details need human verification.
+#   s43 = HD trial status, checked 2026-10-29: HDTrialFinder trial news, https://hdtrialfinder.net/en/trial-news/ ;
+#         HDBuzz, "May 2026: This month in Huntington's disease research", https://en.hdbuzz.net/545-may-2026-this-month-in-huntingtons-disease-research/ ;
+#         ClinicalTrials.gov search for Huntington disease, https://clinicaltrials.gov/search?cond=Huntington%20Disease ;
+#         Farag M, Kinyomi O, Tabrizi SJ, Wild EJ. Huntington's disease clinical trials update: August 2026. J Huntingtons Dis 2026,
+#         https://journals.sagepub.com/doi/10.1177/18796397261499360 (abstract only seen). Checked 2026-10-29.
+#         Status: news pages read by Claude; must be re-checked before each use.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Prepare, then say clearly that HD has started
+    met_if: Trainee gives a warning, explains what was found on examination and in testing, and states plainly that these show HD has started (manifest HD), in words Kevin can use.
+    hint_after_turn: 3
+    hint: "Kevin hopes for 'in and out'. Have you told him clearly what today's findings mean?"
+    feedback_met: "You prepared Kevin and told him clearly that HD has started, explaining what you found."
+    feedback_missed: "Give a warning, describe the findings, and say plainly that HD has started. Vague phrases leave people unsure."
+    knowledge_card: when-hd-starts
+    source: s41
+  - id: C2
+    name: Ask what Kevin has noticed, and respond to emotion
+    met_if: Trainee asks what Kevin and Mei have noticed, and acknowledges their reaction before moving to information.
+    hint_after_turn: 4
+    hint: "Has Kevin noticed anything himself?"
+    feedback_met: "You asked what Kevin had noticed and acknowledged the shock."
+    feedback_missed: "Ask what they have noticed; people often have, and have not said. Acknowledge emotion before information."
+    unlocks: H1_noticed
+    knowledge_card: when-hd-starts
+    source: [s41, s36]
+  - id: C3
+    name: Explain what early manifest HD means
+    met_if: Trainee explains that this is the early stage, that many people keep working and living independently for some time with support, that symptoms can be treated, and that a team will help.
+    hint_after_turn: 6
+    hint: "What does 'it has started' mean for next month, not twenty years from now?"
+    feedback_met: "You explained what early HD means in practical terms."
+    feedback_missed: "Explain that early-stage HD often still allows work and independence, and what help is available."
+    knowledge_card: when-hd-starts
+    source: s36
+  - id: C4
+    name: Check mood and suicidal thoughts
+    met_if: Trainee asks directly and kindly about mood and thoughts of ending his life, explores protective factors, and plans follow-up.
+    hint_after_turn: 8
+    hint: "A new diagnosis and a father in a care home. Have you asked about suicidal thoughts?"
+    feedback_met: "You asked directly about suicidal thoughts at a critical time and planned follow-up."
+    feedback_missed: "The time around diagnosis is a critical period for suicide risk in HD. Ask directly and kindly."
+    unlocks: H4_dark_thought
+    knowledge_card: when-hd-starts
+    source: [s8, s12]
+  - id: C5
+    name: Give realistic, dated information about trials
+    met_if: Trainee says what is known as of a stated date (no approved treatment that slows HD at that date; several treatments in clinical trials), explains eligibility criteria and placebo, avoids promises, and offers to check specific trials.
+    hint_after_turn: 9
+    hint: "Kevin has read about gene therapy. What is true today, and how do you know it is current?"
+    feedback_met: "You gave honest, dated information about trials, without promises or dismissal."
+    feedback_missed: "Trial news changes fast. Give what you know with its date; explain eligibility and placebo; avoid promises and avoid dismissing hope."
+    knowledge_card: trials-and-research
+    source: s43
+  - id: C6
+    name: Explain observational research and how to find trials
+    met_if: Trainee explains that observational studies such as Enroll-HD collect information over time without giving treatment, that taking part supports research and may help with finding trials, and how to find trials (ClinicalTrials.gov, HDTrialFinder, the Huntington Society of Canada, the clinic).
+    hint_after_turn: 10
+    hint: "Kevin wants to do something now. What is open to him?"
+    feedback_met: "You explained Enroll-HD and how to look for trials."
+    feedback_missed: "Explain observational research such as Enroll-HD (no treatment, but valuable) and where to find trials."
+    knowledge_card: trials-and-research
+    source: [s42, s35, s43]
+  - id: C7
+    name: Respond to unproven paid treatments
+    met_if: Trainee asks what treatments Kevin has considered, and explains without mocking why paid 'treatments' outside regulated trials are risky (unproven, costly, possible harm, may exclude him from real trials).
+    hint_after_turn: 11
+    hint: "Kevin is very motivated to act. Has he come across anything you should know about?"
+    feedback_met: "You found out about the clinic and explained the risks respectfully."
+    feedback_missed: "Ask what people have considered. Explain the risks of unproven paid treatments without ridicule."
+    unlocks: H2_unproven_clinic
+    knowledge_card: trials-and-research
+    source: [s43, s35]
+  - id: C8
+    name: Plan care and support, including Mei
+    met_if: Trainee asks Mei how she is, outlines symptom care and team support, previews work planning, and arranges early follow-up.
+    hint_after_turn: 13
+    hint: "Mei has a five-month-old and has just heard this. How is she?"
+    feedback_met: "You included Mei and left them with a plan."
+    feedback_missed: "Ask the partner how they are, outline care and work planning, and follow up soon."
+    unlocks: H3_mei_fear
+    knowledge_card: when-hd-starts
+    source: [s36, s35]
+
+red_flags:
+  - id: R1
+    name: Vague or evasive about onset
+    met_if: Trainee describes the findings only as 'soft signs' or 'nothing to worry about' without saying HD has started.
+    feedback: "Be clear. People need to know where they stand to plan."
+    source: s41
+  - id: R2
+    name: Overpromises trials or a cure
+    met_if: Trainee promises access to a specific trial, says a cure is near, or presents early trial results as proven.
+    feedback: "Trial results are uncertain and access depends on eligibility. Give dated, realistic information."
+    source: s43
+  - id: R3
+    name: Dismisses research
+    met_if: Trainee says research is pointless or that nothing will help.
+    feedback: "Honest hope matters. Explain what research exists and how to take part."
+    source: [s42, s43]
+  - id: R4
+    name: Endorses or ignores unproven paid treatment
+    met_if: Trainee encourages, or does not respond to, a paid unproven treatment.
+    feedback: "Unproven paid treatments outside regulated trials can harm health and finances."
+    source: s43
+  - id: R5
+    name: Skips the mood and suicide check
+    met_if: Trainee does not ask about mood or suicidal thoughts.
+    feedback: "Diagnosis is a critical period for suicide risk in HD. Ask directly."
+    source: [s8, s12]
+  - id: R6
+    name: Leaves Mei out
+    met_if: Trainee never asks Mei how she is or involves her.
+    feedback: "The partner is affected too, and is often the main support. Include them."
+    source: s36

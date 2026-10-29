@@ -1,0 +1,200 @@
+# Scenario A3: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Sarah has a folder of printouts on her lap. Adam sits slightly back.)"
+  - "Sarah: We've thought about this a lot. We want Owen tested. We're his parents; it's our decision."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "I'm sorry, we don't test children. It's the rules."
+        quality: poor
+        flag: R2
+        reply: ["Sarah: Then we want a second opinion."]
+        mentor: "A flat refusal without exploring or explaining pushes families away. Start with their reasons."
+      - text: "It sounds like you've thought hard about this. Can you tell me what you're hoping a test would give you, and why now?"
+        quality: best
+        reply: ["Sarah: (pause) I watch him all the time. Every time he trips, every bad mark, I think: it's starting.", "Sarah: If we knew he was clear, I could breathe again."]
+        mentor: "Good. Asking about hopes and timing uncovered the fear behind the request."
+      - text: "Let me explain the guidelines on testing children."
+        quality: partial
+        reply: ["Sarah: I've read them. I still want it."]
+        mentor: "Explaining before listening makes the conversation a debate. Explore their reasons first."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "You really shouldn't worry so much. He's fine."
+        quality: poor
+        flag: R6
+        reply: ["Sarah: You don't know that. Nobody knows that."]
+        mentor: "Dismissing the fear, and reassuring without basis, does not help. Acknowledge it."
+      - text: "After this year, watching for signs all the time sounds exhausting."
+        quality: best
+        reply: ["Sarah: (eyes fill) It is. I don't sleep.", "Adam: (quietly) Neither of us does."]
+        mentor: "Good. You named the exhaustion and fear without arguing."
+      - text: "I understand. But testing isn't the answer."
+        quality: partial
+        reply: ["Sarah: Then what is?"]
+        mentor: "The 'but' cancels the empathy. Acknowledge first, and hold the explanation for later."
+
+  - id: T3
+    checkpoint: C3
+    patient_asks: "Sarah: Isn't it our right as his parents to decide?"
+    options:
+      - text: "You make many decisions for Owen, and this one matters a lot. With HD, the usual advice is to wait until he can decide for himself whether he wants to know. Knowing now wouldn't change his health care. And some people, when they grow up, choose never to find out. A test now would take that choice away from him."
+        quality: best
+        reply: ["Adam: (slowly) I haven't been able to decide for myself. And I'm forty-three.", "Sarah: (silent)"]
+        mentor: "Good. You respected their role and explained the reasons in terms of Owen's own future choice."
+      - text: "No. It's Owen's right, not yours."
+        quality: poor
+        reply: ["Sarah: How dare you."]
+        mentor: "The point is right but the delivery is confrontational. Respect their role, then explain."
+      - text: "Most guidelines say no testing under eighteen."
+        quality: partial
+        reply: ["Sarah: Guidelines aren't my son."]
+        mentor: "Correct, but a rule without reasons rarely persuades. Explain why, in terms of Owen."
+
+  - id: T4
+    checkpoint: C4
+    options:
+      - text: "Can we think it through together? If the result were negative, what would change for you? And if it were positive, what would you do, and when would you tell Owen?"
+        quality: best
+        reply: ["Sarah: If it was negative... I'd stop watching him.", "Sarah: If it was positive, we wouldn't tell him. Not until he's older. (pause) I hadn't thought about how we'd keep that from him."]
+        mentor: "Good. Weighing both results together showed what a positive result would mean in practice."
+      - text: "OK. If you feel that strongly, I'll arrange it."
+        quality: poor
+        flag: R1
+        reply: ["Sarah: Thank you. How soon do we get the result?"]
+        mentor: "Predictive testing of a healthy child is generally deferred until the child can decide."
+      - text: "The answer is still no, but you can ask another clinic."
+        quality: partial
+        reply: ["Sarah: We will."]
+        mentor: "Discussing both results together helps parents reach their own view. Say you will document the discussion."
+
+  - id: T5
+    checkpoint: C4
+    options:
+      - text: "A positive result would be a secret you'd carry for years, and he might work it out. A negative result would help you, but he still wouldn't have chosen to know. Neither result would change his care now. That's why we'd usually wait. I'll write down what we've talked about, and we can come back to it."
+        quality: best
+        reply: ["Sarah: (long pause) So we'd be doing it for us. Not for him.", "Adam: Maybe that's true."]
+        mentor: "Good. You set out benefits and harms honestly and said the discussion will be recorded."
+      - text: "He'll probably be fine anyway."
+        quality: poor
+        flag: R3
+        reply: ["Sarah: Probably? What does that mean?"]
+        mentor: "Each child of a parent who carries the expansion has a 50% chance. Do not reassure without basis."
+      - text: "Some families do regret testing a child."
+        quality: partial
+        reply: ["Sarah: And some don't."]
+        mentor: "True, but help them think through what each result would mean for them and for Owen."
+
+  - id: T6
+    checkpoint: C5
+    patient_asks: "Adam: And if he starts tripping, or his marks go down, like Maya?"
+    options:
+      - text: "Then you'd call us, and a neurologist would see him. If there were clear signs, a test to confirm a diagnosis would be a different question from testing him now, when he's well. A lot of things make a ten-year-old trip or get a bad mark, so let's agree you write down any changes and bring them to a review."
+        quality: best
+        reply: ["Adam: So we wouldn't be stuck waiting if something changed.", "Sarah: Write it down, rather than watching him every minute."]
+        mentor: "Good. You separated assessment of symptoms from predictive testing, and gave them a practical plan."
+      - text: "That's very unlikely."
+        quality: poor
+        flag: R3
+        reply: ["Adam: That's what we thought about Maya."]
+        mentor: "Reassurance without basis. Explain that symptoms would be assessed."
+      - text: "We'd still wait until he's eighteen."
+        quality: partial
+        reply: ["Adam: Even if he's ill?"]
+        mentor: "Incorrect. Symptoms would be assessed, and diagnostic testing may then be appropriate."
+
+  - id: T7
+    checkpoint: C6
+    options:
+      - text: "What does Owen know about Maya's illness? Has he asked you anything?"
+        quality: best
+        reply: ["Sarah: Two weeks ago he heard us. He asked, 'Am I going to get sick like Maya?'", "Sarah: I said, 'No, of course not.' I lied to him. I want the test so it's true."]
+        mentor: "Good. Asking what Owen knows uncovered a key reason for the request."
+      - text: "It's best not to say anything to Owen until he's older."
+        quality: poor
+        reply: ["Sarah: He's not stupid. He lives with Maya."]
+        mentor: "Children notice. Help the parents talk honestly at his level instead."
+      - text: "Owen will need to be told eventually."
+        quality: partial
+        reply: ["Sarah: Told what? That he might have it?"]
+        mentor: "Find out first what Owen knows and has asked."
+
+  - id: T8
+    checkpoint: C6
+    options:
+      - text: "You were protecting him. You could go back to it and say: 'I don't know, and nobody knows yet. When you're older, you can decide if you want to find out. And whatever happens, we'll look after you.' Our counsellor can help you plan it, and HDYO has material for kids his age."
+        quality: best
+        reply: ["Sarah: 'Nobody knows yet.' I could say that.", "Sarah: (to Adam) We could say it together."]
+        mentor: "Good. No blame for the reassurance, and practical help to be honest at his level."
+      - text: "You shouldn't have told him that."
+        quality: poor
+        reply: ["Sarah: (looks away) I know."]
+        mentor: "Blame adds to guilt. Acknowledge that she was protecting him, and offer help."
+      - text: "Let's leave Owen out of it for now."
+        quality: partial
+        reply: ["Sarah: He's already in it."]
+        mentor: "He already has questions. Offer help to answer them honestly."
+
+  - id: T9
+    checkpoint: C7
+    options:
+      - text: "Adam, the simplest thing would be for you to get tested first."
+        quality: poor
+        flag: R4
+        reply: ["Adam: This isn't about me."]
+        mentor: "Pressing a parent to test goes against the predictive testing guidance. It is his choice."
+      - text: "Adam, you've been quiet. How are you doing with all this, for yourself?"
+        quality: best
+        reply: ["Adam: (long pause) Not great. I never went back to the counsellor. I'm scared of what I'd find.", "Adam: I suppose part of me hoped if Owen was clear, I wouldn't have to know."]
+        mentor: "Good. A kind, direct question gave Adam room to speak about himself."
+      - text: "And how are you both coping?"
+        quality: partial
+        reply: ["Sarah: We're managing.", "Adam: (silent)"]
+        mentor: "Asking both together lets Adam stay silent. Ask him directly and kindly."
+
+  - id: T10
+    checkpoint: C7
+    options:
+      - text: "That makes sense. The counsellor's door is open whenever you want it, and it's your decision whether, and when, to test. It might also help to talk about how low you've been. Would you like me to arrange that?"
+        quality: best
+        reply: ["Adam: Yeah. Maybe just to talk. Not the test.", "Sarah: (takes his hand) I didn't know it was this bad."]
+        mentor: "Good. Support offered at his pace, with his own testing left as his choice."
+      - text: "You'll have to face it sometime."
+        quality: poor
+        flag: R4
+        reply: ["Adam: (shuts down) Can we just go?"]
+        mentor: "Pressure makes him withdraw. His own testing is his choice."
+      - text: "OK. Let's get back to Owen."
+        quality: partial
+        reply: ["Adam: (silent)"]
+        mentor: "Adam has just said something important. Acknowledge it and offer support."
+
+  - id: T11
+    checkpoint: C8
+    patient_asks: "Sarah: Couldn't we just order one of those online tests?"
+    options:
+      - text: "Some sites might sell one, I don't know."
+        quality: poor
+        flag: R5
+        reply: ["Sarah: Then I'll look tonight."]
+        mentor: "Direct-to-consumer genetic testing is not recommended for children. Say so clearly and explain why."
+      - text: "I'd really advise against it. Online tests aren't recommended for children, and you'd get a result with no one to help you with it, and no way to un-know it for Owen. Here's what we've agreed: no test for now, notes on any changes, help talking with Owen, and support for you both. I'll write it up, and let's meet again in three months."
+        quality: best
+        reply: ["Sarah: (closes the folder) Three months. OK.", "Adam: Thank you for not just saying no."]
+        mentor: "Good. You advised against an online test, summarised the plan, documented it, and offered to revisit."
+      - text: "Please don't."
+        quality: partial
+        reply: ["Sarah: Why not?"]
+        mentor: "Right advice, but give the reasons and a plan they can hold on to."
+
+closing: "Before they leave: a written summary of the discussion, a note to bring any changes in Owen to a review, counselling support (including for Adam, at his pace), HDYO materials for Owen, and a follow-up in three months."

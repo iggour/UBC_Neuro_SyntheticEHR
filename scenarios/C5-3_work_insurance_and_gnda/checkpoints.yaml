@@ -1,0 +1,139 @@
+# Scenario C5-3: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Case 5; s40-s46 are new and need human verification).
+# Laws change: each legal source below carries the date it was checked. Re-check before each use.
+# Reused, defined elsewhere (not redefined here):
+#   s7 (scenarios/s1_pretest_counselling): Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3), ss. 2-7.
+#         https://laws-lois.justice.gc.ca/eng/acts/g-2.5/FullText.html
+#         Checked 2026-10-29: page states "current to 2026-09-30". Sections 3-5 (no requirement to take a test or disclose
+#         results as a condition of goods, services or contracts; no collection, use or disclosure of results without written
+#         consent); section 6 exceptions for health care practitioners and researchers.
+#   s35, s36 (scenarios/B1_late_onset_diagnosis and C4-1_recognising_possible_hd, draft): HSC Physician's Guide,
+#         chapters 2, 3, 3a, 8 and 1, 5, 6. https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+# New:
+#   s44 = Canadian Human Rights Act (R.S.C. 1985, c. H-6), s. 3: prohibited grounds include "genetic characteristics";
+#         s. 3(3) refusal of a genetic test or disclosure deemed discrimination. Applies to federally regulated matters.
+#         https://laws-lois.justice.gc.ca/eng/acts/h-6/page-1.html  Checked 2026-10-29 (current to 2026-09-30).
+#         Status: section 3 read by Claude; scope (section 66) needs human verification.
+#   s45 = BC Human Rights Tribunal. Personal characteristics protected under the BC Human Rights Code.
+#         https://www.bchrt.bc.ca/human-rights-duties/personal-characteristics/  Checked 2026-10-29: genetic
+#         characteristics not listed; physical and mental disability, including perceived disability, protected in employment.
+#         Status: page read by Claude; the Code itself needs human verification.
+#   s46 = Canadian Association of Genetic Counsellors. Genetic Non-Discrimination Act (GNA) fact sheet, revised 2017-05-17.
+#         https://www.bcchr.ca/sites/default/files/group-silent-genomes/Genetic%20Non-Discrimination%20Act_CAGC%20fact%20sheet_%20May%2017%202017.pdf
+#         Checked 2026-10-29. Status: read by Claude; dated 2017, so check against the current Act.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Find out what he wants and fears
+    met_if: Trainee asks what Kevin is trying to decide, what has prompted it now, and what he is most worried about.
+    hint_after_turn: 2
+    hint: "Kevin wants rules. What decisions is he actually facing, and why now?"
+    feedback_met: "You found out what Kevin needs to decide and what he fears."
+    feedback_missed: "Start from his situation: the decisions, the timing and the fears."
+    knowledge_card: what-the-gnda-covers
+    source: s36
+  - id: C2
+    name: Explain what the Act protects
+    met_if: Trainee explains that no one providing goods, services or contracts (including insurers and employers) may require a genetic test or disclosure of genetic test results, or use results without written consent, and mentions when the law was checked.
+    hint_after_turn: 4
+    hint: "What exactly does the Act protect?"
+    feedback_met: "You explained the protections accurately."
+    feedback_missed: "The Act protects genetic test results: no requirement to test or disclose, and no use without written consent."
+    knowledge_card: what-the-gnda-covers
+    source: [s7, s46]
+  - id: C3
+    name: Explain what it does not protect
+    met_if: Trainee explains that the Act does not cover a diagnosed condition, symptoms or family medical history, so insurance questions about these must be answered truthfully; suggests independent advice (insurance adviser or lawyer).
+    hint_after_turn: 6
+    hint: "Kevin thinks he can leave HD off the form. Is a diagnosis the same as a genetic test result?"
+    feedback_met: "You explained the gap clearly: a diagnosis and family history are not covered, and questions must be answered truthfully."
+    feedback_missed: "Insurers can base decisions on diagnosed conditions, symptoms and family history. Answer honestly; get independent advice."
+    unlocks: H1_plans_to_omit
+    knowledge_card: what-the-gnda-covers
+    source: s46
+  - id: C4
+    name: Explain employment protection in BC
+    met_if: Trainee explains that the federal 'genetic characteristics' protection applies to federally regulated employers, and that for a BC private employer protection comes mainly from the BC Human Rights Code on physical disability (including perceived disability), with a duty to accommodate; suggests independent advice.
+    hint_after_turn: 8
+    hint: "Kevin works for a private BC company. Which law protects him there?"
+    feedback_met: "You explained where his employment protection comes from, accurately and with limits."
+    feedback_missed: "Federal genetic-characteristics protection covers federally regulated employers. In a BC company, disability protection under the BC Human Rights Code applies."
+    knowledge_card: work-and-disclosure
+    source: [s44, s45, s46]
+  - id: C5
+    name: Ask about work now, and warn against resigning
+    met_if: Trainee asks how work is going right now, learns of the HR meeting, and advises not to resign before talking to the social worker and checking the long-term disability plan.
+    hint_after_turn: 10
+    hint: "Is anything happening at work soon? What would resigning cost him?"
+    feedback_met: "You found out about the HR meeting and warned against resigning before planning."
+    feedback_missed: "Ask what is happening at work now. Resigning can mean losing group disability coverage; plan first."
+    unlocks: H2_hr_meeting
+    knowledge_card: work-and-disclosure
+    source: [s36, s35]
+  - id: C6
+    name: Help him decide what to tell at work
+    met_if: Trainee helps Kevin think about what he needs at work (for example extra time, code-review support, a different role), who he trusts, and what to share (functional needs rather than necessarily the diagnosis), and that disclosure is his decision.
+    hint_after_turn: 11
+    hint: "Who at work does he trust, and what does he actually need from them?"
+    feedback_met: "You helped Kevin plan what to tell, to whom, and why."
+    feedback_missed: "Disclosure is his choice. Help him think about what he needs, who to tell, and what to share."
+    unlocks: H3_trusts_manager
+    knowledge_card: work-and-disclosure
+    source: [s36, s45]
+  - id: C7
+    name: Include his support at home
+    met_if: Trainee asks what Mei thinks and who he has talked this over with, and acknowledges that partners may see disclosure differently.
+    hint_after_turn: 12
+    hint: "Has Kevin talked this over with anyone?"
+    feedback_met: "You asked about Mei's view and helped Kevin think about how to talk with her."
+    feedback_missed: "Decisions about disclosure affect the family. Ask who he has talked with."
+    unlocks: H4_mei_disagrees
+    knowledge_card: work-and-disclosure
+    source: s36
+  - id: C8
+    name: Refer and follow up
+    met_if: Trainee refers to the social worker (work, disability plan, insurance), suggests independent legal or insurance advice for specific questions, says that this is general information not legal advice, and arranges follow-up after the HR meeting.
+    hint_after_turn: 13
+    hint: "Who can help with the details, and when will you see him again?"
+    feedback_met: "You referred to the right help, were clear about the limits of your advice, and set follow-up."
+    feedback_missed: "Refer to social work and independent advice; be clear you are giving general information; follow up soon."
+    knowledge_card: work-and-disclosure
+    source: [s35, s46]
+
+red_flags:
+  - id: R1
+    name: Says the Act covers his diagnosis
+    met_if: Trainee tells Kevin the Act means insurers or employers cannot use his HD diagnosis, symptoms or family history.
+    feedback: "The Act covers genetic test results, not diagnosed conditions, symptoms or family history."
+    source: [s7, s46]
+  - id: R2
+    name: Advises leaving the diagnosis off insurance forms
+    met_if: Trainee suggests or agrees that Kevin should omit or misstate his diagnosis or symptoms on an application.
+    feedback: "Health questions must be answered truthfully. Get independent advice before applying."
+    source: s46
+  - id: R3
+    name: Tells him he must disclose to his employer, or must never
+    met_if: Trainee states that Kevin is required to tell his employer, or should never tell anyone at work.
+    feedback: "Disclosure at work is usually his choice; help him weigh needs, timing and audience."
+    source: s45
+  - id: R4
+    name: Encourages resigning
+    met_if: Trainee suggests resigning before the HR meeting without checking the disability plan.
+    feedback: "Resigning can end group disability coverage. Plan with social work first."
+    source: s36
+  - id: R5
+    name: Gives definitive legal advice
+    met_if: Trainee gives confident legal conclusions about his case without stating limits or suggesting independent advice.
+    feedback: "Give general information with dates, and refer to legal or insurance advice for specifics."
+    source: s46
+  - id: R6
+    name: Wrong law for his employer
+    met_if: Trainee tells Kevin the federal genetic-characteristics protection covers his BC private employer.
+    feedback: "The Canadian Human Rights Act covers federally regulated employers. A BC private company falls under the BC Human Rights Code."
+    source: [s44, s45]

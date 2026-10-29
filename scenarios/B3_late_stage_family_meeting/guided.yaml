@@ -1,0 +1,234 @@
+# Scenario B3: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every family reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(A small family meeting room. George sits stiffly, holding his back. Anna has a list of questions. A phone on the table is on speaker.)"
+  - "George: Thank you for seeing us. I'm not sure what we're supposed to decide."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Let's get started. The swallowing study was bad."
+        quality: poor
+        reply: ["Anna: Bad how?", "(The phone is silent.)"]
+        mentor: "Jumping in leaves people behind, and Michael has not been included. Set up the meeting first."
+      - text: "Thank you for coming. Michael, can you hear us all right? I'd like to talk about how Ruth is eating, where she'll be cared for, and planning ahead. First, can each of you tell me what you understand about how she is?"
+        quality: best
+        reply: ["Michael: I can hear you. Thanks for including me.", "Anna: She's getting over the pneumonia. But she chokes on everything now.", "George: She's tired. She hardly eats."]
+        mentor: "Good. You included Michael, set out the purpose, and started from what they understand."
+      - text: "I'll explain what's going on, then we can talk."
+        quality: partial
+        reply: ["George: All right."]
+        mentor: "Find out what they understand first, and make sure Michael is included."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "As HD reaches its later stages, the muscles for swallowing don't work well. Food and drink go into her lungs, which is why she keeps getting chest infections, and why she's losing weight. I'm sorry to say this is part of HD, and it isn't expected to get better."
+        quality: best
+        reply: ["(Silence.)", "George: (quietly) I think we knew. We didn't want to say it."]
+        mentor: "Good. Plain, honest, and linked to late-stage HD."
+      - text: "She has severe oropharyngeal dysphagia with recurrent aspiration."
+        quality: poor
+        reply: ["Anna: In English, please."]
+        mentor: "Use plain words. Families need to understand to take part."
+      - text: "Her swallowing is a bit worse, but we'll try thickened drinks."
+        quality: partial
+        reply: ["Anna: So it might improve?"]
+        mentor: "Softening the picture gives false hope. Explain honestly that this is part of late HD."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "(pause) This is very hard to hear."
+        quality: best
+        reply: ["Anna: (tearful) She was fine five years ago. Well, not fine. But she was Mum."]
+        mentor: "Good. A pause and acknowledgement before moving to decisions."
+      - text: "So, we need a decision about a feeding tube today."
+        quality: poor
+        flag: R4
+        reply: ["George: Today?"]
+        mentor: "Demanding an immediate decision adds pressure. Acknowledge the news first."
+      - text: "On the positive side, the pneumonia is improving."
+        quality: partial
+        reply: ["Anna: For now."]
+        mentor: "True, but acknowledge the hard news before moving on."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "Before we talk about options, this decision is about Ruth. If she could join us now, as she was a few years ago, what would she say?"
+        quality: best
+        reply: ["George: (long pause) She'd say no tube. She said it at the clinic. 'No tube. Never again.' After her aunt.", "George: But if I say that, it's like I'm letting her die."]
+        mentor: "Good. You turned the question to Ruth's own wishes, and George shared her clear words."
+      - text: "What do you all want us to do?"
+        quality: poor
+        flag: R4
+        reply: ["George: You're the doctor.", "Anna: We want everything done."]
+        mentor: "This puts the whole weight on the family. Ask what Ruth would want, and offer guidance."
+      - text: "Did she have an advance directive?"
+        quality: partial
+        reply: ["George: No. She meant to. She never did the forms."]
+        mentor: "A useful fact, but ask what she said and valued; her words matter even without a form."
+
+  - id: T5
+    checkpoint: C3
+    options:
+      - text: "Thank you, George. You're not letting her die by telling us what she wanted. Her words are in her clinic notes from five years ago too. We're trying to do what she would choose."
+        quality: best
+        reply: ["George: (nods, eyes wet) She was very clear."]
+        mentor: "Good. You relieved George of the sense that speaking her wishes means abandoning her."
+      - text: "Well, things she said years ago may not count now."
+        quality: poor
+        flag: R3
+        reply: ["Anna: Exactly. She didn't know then."]
+        mentor: "Clear earlier wishes should guide substitute decisions. Do not set them aside."
+      - text: "OK. Let's park that for now."
+        quality: partial
+        reply: ["George: (looks down)"]
+        mentor: "George has said something important. Acknowledge it."
+
+  - id: T6
+    checkpoint: C4
+    patient_asks: "Anna: If she doesn't get a tube, won't she just starve?"
+    options:
+      - text: "Without a tube she'll starve, so really there's no choice."
+        quality: poor
+        flag: R1
+        reply: ["Anna: Then she has to have it.", "(George goes silent.)"]
+        mentor: "Careful hand feeding for comfort is a real option. Fear of 'starving' should not drive the decision."
+      - text: "That's a very natural fear. There are two paths. One is a tube into the stomach. It's a medical treatment; it can give nutrition, but it doesn't stop saliva going into the lungs, and in people with advanced brain illnesses it hasn't been shown to prevent pneumonia or make people more comfortable. The other is careful hand feeding: small amounts of food she enjoys, for comfort, accepting that she'll eat less. She wouldn't be left hungry or uncared for."
+        quality: best
+        reply: ["Anna: (quietly) So she'd still eat. Just... less.", "George: She'd still have her tea."]
+        mentor: "Good. Both options explained honestly, without fear or false promises."
+      - text: "A tube will stop the pneumonias and keep her going for years."
+        quality: partial
+        flag: R2
+        reply: ["Anna: Then why would we not do it?"]
+        mentor: "A false promise. Tube feeding does not remove the aspiration risk, and its benefits are uncertain."
+
+  - id: T7
+    checkpoint: C6
+    options:
+      - text: "Michael, you've been listening. What are your thoughts? Your view matters, even from Calgary."
+        quality: best
+        reply: ["Michael: (pause) I heard her say it too. At Christmas, years ago. No tubes.", "Michael: I didn't feel I had the right to say. Anna does everything."]
+        mentor: "Good. Inviting Michael by name brought in a voice that would otherwise have been lost."
+      - text: "(continues talking to George and Anna)"
+        quality: poor
+        flag: R6
+        reply: ["(The phone stays silent.)"]
+        mentor: "Family on the phone are easily left out. Invite them in by name."
+      - text: "Does anyone else have anything to add?"
+        quality: partial
+        reply: ["Anna: I think we've covered it."]
+        mentor: "A general question lets the quietest voice stay silent. Invite Michael by name."
+
+  - id: T8
+    checkpoint: C7
+    options:
+      - text: "Anna, you're fighting hard for your mum. Can you tell me what's behind it for you?"
+        quality: best
+        reply: ["Anna: (long pause) Two years ago I had the test. I have it too. The same as Mum.", "Anna: If it were me, I'd want them to fight for me. Michael doesn't know. (crying)", "Michael: Anna... I didn't know."]
+        mentor: "Good. Exploring the feelings behind her view brought out a hidden fear. Respond gently; this is hers to share."
+      - text: "Anna, the evidence doesn't support a tube."
+        quality: poor
+        reply: ["Anna: I don't care about the evidence. She's my mother."]
+        mentor: "Arguing hardens positions. Ask what lies behind her view."
+      - text: "I understand. It's hard."
+        quality: partial
+        reply: ["Anna: You don't understand."]
+        mentor: "Kind, but general. Ask what lies behind her view."
+
+  - id: T9
+    checkpoint: C7
+    options:
+      - text: "Thank you for trusting us with that. That's a huge thing to carry, alongside your mum. Your own future choices will be yours, and we can talk about them another time. Today, we're thinking about what your mum wanted for herself."
+        quality: best
+        reply: ["Anna: (wiping her eyes) What she wanted. Yes. She'd hate a tube. I know she would."]
+        mentor: "Good. You acknowledged Anna, separated her future from Ruth's choice, and kept the focus on Ruth."
+      - text: "That changes things. Let's talk about your testing."
+        quality: poor
+        reply: ["Anna: Not now."]
+        mentor: "Anna's own care is important, but not today's focus. Acknowledge and offer support later."
+      - text: "(says nothing and moves on)"
+        quality: partial
+        reply: ["(Anna looks away.)"]
+        mentor: "A disclosure like this needs acknowledgement."
+
+  - id: T10
+    checkpoint: C5
+    patient_asks: "Michael: Has anyone asked Mum?"
+    options:
+      - text: "Good question. We'll sit with her and ask simple questions, like whether she wants the tube, and watch how she responds, though she may not be able to answer. From what she told the clinic, and what all three of you have said, my recommendation is careful hand feeding for comfort, and no tube. In BC, George, as her husband, makes this decision on her behalf, by choosing what she would have chosen. You're not deciding alone; we're deciding with you."
+        quality: best
+        reply: ["George: (long breath) Then that's what she'd want. No tube.", "Anna: (nods) OK. OK.", "Michael: Thank you."]
+        mentor: "Good. You involved Ruth as far as possible, gave a recommendation based on her wishes, and explained George's role."
+      - text: "She can't really communicate, so there's no point."
+        quality: poor
+        flag: R3
+        reply: ["Michael: She still smiles at Noah on video."]
+        mentor: "Involve the person as far as possible; some people with late HD can still show agreement or displeasure."
+      - text: "So, what have you decided?"
+        quality: partial
+        flag: R4
+        reply: ["George: I... don't know."]
+        mentor: "Offer a recommendation based on Ruth's wishes and explain George's role, so they are not alone."
+
+  - id: T11
+    checkpoint: C8
+    options:
+      - text: "George, you've been caring for Ruth at home for a long time. How are you managing?"
+        quality: best
+        reply: ["George: (pause) I hurt my back two weeks ago, picking her up off the floor. I sleep three hours a night.", "George: I can't do it any more. But I promised her I'd never put her in a home."]
+        mentor: "Good. Asking George directly let him say what he could not say before."
+      - text: "She'll need to go into a care home now."
+        quality: poor
+        flag: R5
+        reply: ["George: I can manage."]
+        mentor: "Imposing placement without asking about the carer makes him defend the impossible. Ask how he is."
+      - text: "Is everything OK at home?"
+        quality: partial
+        reply: ["George: We manage."]
+        mentor: "A closed question invites 'fine'. Ask him directly how he is coping."
+
+  - id: T12
+    checkpoint: C8
+    patient_asks: "George: If she goes into a home, is that giving up on her?"
+    options:
+      - text: "Yes, I suppose in a way it is."
+        quality: poor
+        flag: R5
+        reply: ["George: (stands up, holding his back) Then I'll keep going."]
+        mentor: "This deepens his guilt. Long-term care in late HD is often needed and is a way of caring."
+      - text: "No. Ruth now needs care day and night, which no one person can give. Moving to long-term care is a way of caring for her; you'd still be her husband, and you'd have the energy to just be with her. When you promised, you were promising to look after her. This is looking after her. We can ask home and community care to start a long-term care assessment."
+        quality: best
+        reply: ["George: (crying for the first time) Just be with her. I'd like that.", "Anna: Dad, we'll help you choose somewhere close."]
+        mentor: "Good. You relieved the guilt, explained why, and named the next step."
+      - text: "You could try more home care first."
+        quality: partial
+        reply: ["George: I'm already falling apart."]
+        mentor: "More home care can help some families, but listen to what George has just said."
+
+  - id: T13
+    checkpoint: C9
+    options:
+      - text: "Let me sum up. Careful hand feeding for comfort, no tube, as Ruth wanted. A long-term care assessment. If she gets another chest infection, what would she want: to come to hospital, or to be kept comfortable where she is? And would she want resuscitation? We don't have to settle all of it today. I'd also like our palliative care team to meet you. I'll write it all down, and let's meet again on Friday, when Michael's here."
+        quality: best
+        reply: ["George: Comfortable where she is. That's what she'd want. No machines.", "Michael: Friday. I'll be there.", "Anna: Thank you for not rushing us."]
+        mentor: "Good. You summarised, raised wider goals of care, offered palliative care and set a follow-up meeting."
+      - text: "Great, decision made. The ward will sort the rest."
+        quality: poor
+        reply: ["Anna: What about next time she gets sick?"]
+        mentor: "Wider goals of care, documentation and follow-up are needed."
+      - text: "I'll put 'no tube' in the chart."
+        quality: partial
+        reply: ["George: And the rest?"]
+        mentor: "Recording the decision is good, but also discuss wider goals of care, palliative support and follow-up."
+
+closing: "After the meeting: decisions documented, careful hand feeding with the speech-language pathologist's advice, long-term care assessment requested, palliative care referral, support for George, and a family meeting on Friday with Michael present."

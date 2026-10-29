@@ -1,0 +1,198 @@
+# Scenario A1: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Sarah and Adam Novak sit down. Maya is at school.)"
+  - "Sarah: We've hardly slept. Is it what we think it is?"
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "The test shows 71 CAG repeats in one copy of the HTT gene."
+        quality: poor
+        flag: R1
+        reply: ["Sarah: Sorry... what does that mean? Is that bad?"]
+        mentor: "Numbers and jargon first leave them lost. Find out what they understand, then give the news in plain words."
+      - text: "I do have the result. Before I go through it, can you tell me what you've been thinking it might be?"
+        quality: best
+        reply: ["Sarah: I've been reading about Huntington's. Since you mentioned it last month.", "Adam: (quietly) She's read everything."]
+        mentor: "Good. You checked their understanding first. Now you know where to start."
+      - text: "Let's not worry yet. How has Maya been this week?"
+        quality: partial
+        reply: ["Sarah: The same. Please, do you have the result?"]
+        mentor: "Delaying when they are waiting adds to their anxiety. Check what they understand, then give the result."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "I'm afraid the news isn't what we hoped. The test confirms that Maya has Huntington disease, the form that starts in young people."
+        quality: best
+        reply: ["(Silence. Sarah puts her pen down.)", "Adam: (stares at the floor)"]
+        mentor: "Good. A short warning, then the diagnosis in plain words."
+      - text: "It's positive, so it's juvenile HD."
+        quality: partial
+        reply: ["Sarah: Positive... so she has it?"]
+        mentor: "Clear, but abrupt and a little technical. A short warning first helps people take it in."
+      - text: "Well, there's good news and bad news."
+        quality: poor
+        reply: ["Sarah: What's the good news?"]
+        mentor: "This sets up false hope. Give a warning that the news is serious, then say it plainly."
+
+  - id: T3
+    checkpoint: C3
+    options:
+      - text: "So, the next step is a referral to physiotherapy and occupational therapy."
+        quality: poor
+        reply: ["Sarah: I... sorry, I'm not taking this in."]
+        mentor: "After bad news people take in little. Pause and respond to how they feel first."
+      - text: "(pause) This is a lot to hear. Take whatever time you need."
+        quality: best
+        reply: ["Sarah: (crying) We were so hard on her. All last year. I thought she was just being lazy.", "Sarah: I took her phone away over homework."]
+        mentor: "Good. Silence and acknowledgement let Sarah say what was weighing on her."
+      - text: "I know it's hard, but there's a lot we can do."
+        quality: partial
+        reply: ["Sarah: Can we? Like what?"]
+        mentor: "Kind, but it moves to reassurance before they have had a moment. Pause first."
+
+  - id: T4
+    checkpoint: C4
+    before: ["(After a while)"]
+    patient_asks: "Sarah: How long does she have?"
+    options:
+      - text: "Usually around ten to fifteen years."
+        quality: poor
+        flag: R4
+        reply: ["Sarah: Ten years. She'd be twenty-four.", "(Adam gets up and walks to the window.)"]
+        mentor: "The course of juvenile HD varies and cannot be predicted at diagnosis. Avoid figures."
+      - text: "No one can say for one person. It changes slowly, over years. What I can tell you is what it means now, and how we'll help. Would that be OK?"
+        quality: best
+        reply: ["Sarah: Yes. Please."]
+        mentor: "Good. Honest about uncertainty, no numbers, and asking permission before explaining."
+      - text: "Research is moving fast. There may well be a cure by the time she's older."
+        quality: partial
+        reply: ["Sarah: Really? So there's hope?"]
+        mentor: "Hope matters, but promising a cure is false reassurance. Be honest that the course cannot be predicted."
+
+  - id: T5
+    checkpoint: C4
+    options:
+      - text: "It affects movement, thinking and mood. That's why her schoolwork and her legs have changed. There's no cure yet, but a team can treat many of the symptoms and help her at school. What questions do you have so far?"
+        quality: best
+        reply: ["Sarah: So the stiffness, the grades, the temper... it's all this?", "Sarah: It wasn't her being difficult."]
+        mentor: "Good. Plain words, a link to what they have seen, and a check on understanding."
+      - text: "It's caused by an expanded trinucleotide repeat that leads to striatal neurodegeneration."
+        quality: poor
+        reply: ["Sarah: I don't know what that means."]
+        mentor: "Technical language does not help today. Explain in a few plain sentences."
+      - text: "Here's a booklet. It explains everything."
+        quality: partial
+        reply: ["Sarah: (holds it without opening it) Thank you."]
+        mentor: "Written information helps later, but they need a few plain words from you now."
+
+  - id: T6
+    checkpoint: C5
+    options:
+      - text: "As you know, it comes from Adam's side, so Adam will need to get tested too."
+        quality: poor
+        flag: R3
+        reply: ["Adam: (stands up) I need some air."]
+        mentor: "Bluntly assigning the source and telling a parent to test causes harm. A parent's own testing is their choice."
+      - text: "HD is inherited. I imagine this raises questions about your own families, too. Adam, how are you doing with all this?"
+        quality: best
+        reply: ["Adam: My dad. That's what he had, isn't it. They said dementia. And the drink.", "Adam: So it came from me. I gave her this."]
+        mentor: "Good. You opened the inherited side gently and gave Adam room to speak."
+      - text: "Do you know of anyone else in the family with HD?"
+        quality: partial
+        reply: ["Adam: My dad was ill at the end. Nobody ever said what it was."]
+        mentor: "A reasonable question, but it can feel like an investigation. Acknowledge what this may mean for them first."
+
+  - id: T7
+    checkpoint: C5
+    options:
+      - text: "No one chooses the genes they pass on. You couldn't have known. If and when you want to think about what it means for you, a genetic counsellor can talk it through, and any decision about a test would be yours."
+        quality: best
+        reply: ["Adam: (nods slowly) Not today.", "Sarah: (takes his hand)"]
+        mentor: "Good. No blame, and his own testing is left as his choice, with support offered."
+      - text: "It's important you get tested soon, for your own health planning."
+        quality: poor
+        flag: R3
+        reply: ["Adam: I said I'm not ready."]
+        mentor: "Pressing a parent to test goes against the predictive testing guidance. It is his choice."
+      - text: "Let's focus on Maya today."
+        quality: partial
+        reply: ["Adam: (silent)"]
+        mentor: "Keeping the focus on Maya is fair, but Adam has just said something important. Acknowledge it and offer support."
+
+  - id: T8
+    checkpoint: C6
+    options:
+      - text: "If you'd rather not tell Maya, that's your decision as her parents."
+        quality: poor
+        flag: R6
+        reply: ["Sarah: Good. She's fourteen. It would destroy her."]
+        mentor: "Maya has symptoms and had the test. Help her parents plan an honest conversation rather than agreeing to keep it from her."
+      - text: "Have you thought about how Maya might be told?"
+        quality: partial
+        reply: ["Sarah: We can't tell her. Not yet. Maybe not for years."]
+        mentor: "A good start. Now explore their fears and explain why honest information usually helps."
+      - text: "Maya had the test too, and she's living with the symptoms. What worries you most about her knowing?"
+        quality: best
+        reply: ["Sarah: That she'll give up. She's fourteen. It would destroy her.", "Adam: She already knows something's wrong, Sarah."]
+        mentor: "Good. You raised it and asked about their fears before giving your view."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "Many young people are relieved to have a name for what's been happening. We can plan it together, in your words, and I can be there. It doesn't have to be today."
+        quality: best
+        reply: ["Sarah: (long pause) Not today. But... with you there. In a few days."]
+        mentor: "Good. You explained why it usually helps and offered support, without forcing the timing."
+      - text: "You have to tell her this week. It's her right."
+        quality: partial
+        reply: ["Sarah: Don't tell me what I have to do with my daughter."]
+        mentor: "Her right to know matters, but forcing it makes parents resist. Explore and plan together."
+      - text: "I'll tell her myself at her next appointment."
+        quality: poor
+        reply: ["Sarah: Without us? No."]
+        mentor: "Plan this with the parents, not around them."
+
+  - id: T10
+    checkpoint: C7
+    patient_asks: "Sarah: What about Owen? Can you test him too? Today?"
+    options:
+      - text: "Of course. We can take blood before you go."
+        quality: poor
+        flag: R5
+        reply: ["Sarah: Yes. Please. We need to know where we stand."]
+        mentor: "Predictive testing of a healthy child is generally deferred until the child can decide."
+      - text: "I understand why you'd want to know. Owen is well, and testing a child who has no symptoms is usually not done, so he can decide for himself when he's older. A genetics appointment can go through this with you, and if you ever notice changes in Owen, we would see him."
+        quality: best
+        reply: ["Sarah: (quietly) I just want to know he's all right.", "Adam: Let's talk about it another day."]
+        mentor: "Good. You acknowledged the worry, explained the usual approach, and offered genetics and review if symptoms appear."
+      - text: "There's no point worrying about Owen now."
+        quality: partial
+        reply: ["Sarah: How can I not worry?"]
+        mentor: "Not testing now is right, but the worry needs acknowledging and a plan to discuss it."
+
+  - id: T11
+    checkpoint: C8
+    options:
+      - text: "Here's what happens next: the team will see Maya within two weeks, we'll contact the school with your permission, and a genetic counsellor will call you. This is our number, and the Huntington Society of Canada supports families."
+        quality: best
+        reply: ["Sarah: (writes it down) Two weeks. And we can call before then?", "Adam: Thank you."]
+        mentor: "Good. A clear plan, support contacts, and an early follow-up."
+      - text: "We'll send you a follow-up appointment."
+        quality: partial
+        reply: ["Sarah: When? What do we do until then?"]
+        mentor: "Families need to leave with next steps, a contact, and support resources."
+      - text: "Any questions? No? Then that's everything for today."
+        quality: poor
+        reply: ["Sarah: I... I don't know what to ask."]
+        mentor: "After bad news people rarely know what to ask. Give a plan, contacts and an early follow-up."
+
+closing: "Before they leave: written information, the clinic number, the Huntington Society of Canada, a genetic counselling appointment, and a visit within two weeks to plan telling Maya."

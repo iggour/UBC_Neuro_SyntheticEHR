@@ -1,0 +1,219 @@
+# Scenario C5-2: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Trial information in this file was checked on 2026-10-29 and must be re-checked before use.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(You have just finished the examination. Kevin buttons his shirt. Mei watches your face.)"
+  - "Kevin: Same as last year, I hope. In and out?"
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "A few soft signs, nothing to worry about yet."
+        quality: poor
+        flag: R1
+        reply: ["Kevin: Soft signs. So has it started or not?"]
+        mentor: "Vague phrases leave people unsure. Be clear about what you found."
+      - text: "I'm afraid it's not quite the same as last year. Can I go through what I found?"
+        quality: best
+        reply: ["(Kevin sits down slowly.)", "Kevin: Go on."]
+        mentor: "Good. A clear warning before the news."
+      - text: "Your UHDRS motor score is up and your diagnostic confidence level is 4."
+        quality: partial
+        reply: ["Kevin: Four. That's... the top one, isn't it?"]
+        mentor: "Accurate but technical. Prepare him and use plain words."
+
+  - id: T2
+    checkpoint: C1
+    options:
+      - text: "Today I can see small involuntary movements in your fingers and toes, and your eye movements are slower. Your thinking-speed test is lower than last year. Together, these show that HD has started."
+        quality: best
+        reply: ["(Silence. Mei puts her hand over her mouth.)", "Kevin: (quietly) So it's started."]
+        mentor: "Good. You described the findings and said plainly what they mean."
+      - text: "It may be starting. Let's see next year."
+        quality: poor
+        flag: R1
+        reply: ["Kevin: May be? You just examined me."]
+        mentor: "When you are confident, say so. Uncertainty you do not have does not help."
+      - text: "You've converted to manifest disease."
+        quality: partial
+        reply: ["Mei: What does that mean?"]
+        mentor: "Correct, but jargon. Explain the findings in plain words."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "(pause) That's hard to hear. Have either of you noticed anything yourselves?"
+        quality: best
+        reply: ["Kevin: (long breath) My fingers dance on the keyboard. Six months. Two people commented in code reviews.", "Kevin: I didn't say anything. We had a newborn.", "Mei: (tearful) Kevin..."]
+        mentor: "Good. A pause, then a question that let Kevin say what he had kept to himself."
+      - text: "Let's talk about next steps."
+        quality: poor
+        reply: ["(Kevin nods without looking up.)"]
+        mentor: "Respond to the news before moving on, and ask what they have noticed."
+      - text: "This must be a shock."
+        quality: partial
+        reply: ["Kevin: Not really a shock."]
+        mentor: "Good to acknowledge. Also ask what they have noticed; people often have."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "This is the early stage. Many people keep working and living much as before for some time, especially with some adjustments. There's treatment for some symptoms, and our team will be with you. It usually changes slowly."
+        quality: best
+        reply: ["Kevin: Slowly. Dad kept working for a few years after.", "Mei: OK. OK."]
+        mentor: "Good. Practical meaning of early-stage HD, without false promises."
+      - text: "You'll probably need to stop working soon."
+        quality: poor
+        reply: ["Kevin: I've got a baby and a mortgage."]
+        mentor: "Early HD often still allows work, with adjustments. Do not predict job loss."
+      - text: "Everyone's different."
+        quality: partial
+        reply: ["Kevin: So what does it mean for me?"]
+        mentor: "True, but explain what early HD usually means in daily life."
+
+  - id: T5
+    checkpoint: C4
+    options:
+      - text: "Kevin, news like this, and seeing your dad, can bring very dark thoughts. Have you had any thoughts of ending your life?"
+        quality: best
+        reply: ["Kevin: (pause) Since I saw Dad last month... I've thought, I'm not ending up like that. That I'd rather not be here than get there.", "Kevin: No plan. Nothing like that. Ava is everything."]
+        mentor: "Good. You asked directly and kindly at a critical time. Explore further and plan follow-up."
+      - text: "You're coping really well."
+        quality: poor
+        flag: R5
+        reply: ["Kevin: (smiles thinly) Yeah."]
+        mentor: "Diagnosis is a critical period for suicide risk in HD. Ask directly."
+      - text: "How's your mood been?"
+        quality: partial
+        reply: ["Kevin: Tired. New baby."]
+        mentor: "A start, but ask directly about thoughts of ending his life."
+
+  - id: T6
+    checkpoint: C4
+    options:
+      - text: "Thank you for telling me. Those thoughts are common when people see what a parent went through, and they deserve care. Ava, and Mei, matter a lot. I'd like you to see our psychologist soon, and if the thoughts get stronger, call or text 9-8-8, or come in. Is that OK?"
+        quality: best
+        reply: ["Kevin: Yeah. That's OK.", "Mei: (holding his hand) Please."]
+        mentor: "Good. You took it seriously, named protective factors, and planned follow-up and crisis contacts."
+      - text: "You'd never do that, though."
+        quality: poor
+        flag: R5
+        reply: ["Kevin: No. Probably not."]
+        mentor: "Do not close the topic. Explore and plan support."
+      - text: "Lots of people feel that way."
+        quality: partial
+        reply: ["Kevin: Right."]
+        mentor: "Normalising is fine, but plan follow-up and give crisis contacts."
+
+  - id: T7
+    checkpoint: C5
+    patient_asks: "Kevin: What about the gene therapy trial? I read it slowed things down. Can I get it?"
+    options:
+      - text: "Gene therapy will probably be available within a year or two. I can get you on the list."
+        quality: poor
+        flag: R2
+        reply: ["Kevin: (lights up) Really?", "Mei: (looks worried)"]
+        mentor: "Do not promise access or timelines. Give dated, realistic information."
+      - text: "Nothing works yet, I'm afraid. I wouldn't get your hopes up."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: Then I'll find something myself."]
+        mentor: "Dismissing research pushes people to unsafe options. Give honest, dated information."
+      - text: "Here's where things stand as of what I checked recently, at the end of October 2026: no treatment has yet been approved to slow HD. The gene therapy you mean was given by surgery in small early studies, and its approval is still being discussed with regulators. A few other drugs are in larger trials. Trials have strict criteria and often a placebo group, and many sites are abroad. I can check what you'd be eligible for."
+        quality: best
+        reply: ["Kevin: Not approved. Still being discussed. (nods) OK. That's honest. Please check."]
+        mentor: "Good. Dated, honest, neither promising nor dismissing, with a concrete offer."
+
+  - id: T8
+    checkpoint: C6
+    patient_asks: "Kevin: Is there anything I can join? I want to do something, not just wait."
+    options:
+      - text: "There is. Enroll-HD is a large observational study: you'd come for regular visits and assessments, and your information helps research. It doesn't give treatment, but it's a real contribution, and it may help connect you with trials. You can also search ClinicalTrials.gov or HDTrialFinder, and the Huntington Society of Canada keeps an eye on Canadian studies."
+        quality: best
+        reply: ["Kevin: Something I can do now. Sign me up for the information."]
+        mentor: "Good. Clear about what observational research is and is not, with concrete ways to find trials."
+      - text: "Enroll-HD will get you the new drugs first."
+        quality: poor
+        flag: R2
+        reply: ["Kevin: Great, that's what I'll do."]
+        mentor: "Enroll-HD is observational and does not give treatment. Do not overstate it."
+      - text: "There's a registry. I'll send a link."
+        quality: partial
+        reply: ["Kevin: What does it involve?"]
+        mentor: "Explain what it involves, what it does not do, and how to find trials."
+
+  - id: T9
+    checkpoint: C7
+    options:
+      - text: "Have you come across anything else, maybe online, that you've been thinking about?"
+        quality: best
+        reply: ["Kevin: (glances at Mei) There's a clinic abroad. Stem cell therapy for Huntington's. They want a deposit. I haven't paid.", "Mei: You didn't tell me."]
+        mentor: "Good. A neutral question uncovered a risky plan."
+      - text: "Don't go looking at stuff on the internet."
+        quality: poor
+        flag: R4
+        reply: ["Kevin: (shrugs)"]
+        mentor: "This shuts down the conversation, and you miss what he is considering. Ask openly."
+      - text: "Any other questions?"
+        quality: partial
+        reply: ["Kevin: Not right now."]
+        mentor: "Ask specifically about treatments he has read about or been offered."
+
+  - id: T10
+    checkpoint: C7
+    options:
+      - text: "I'm really glad you told me. I understand wanting to act. Clinics that charge for 'treatments' outside registered trials haven't shown they work, can cause harm, can cost a lot, and having one could make you ineligible for a proper trial. Can we look at it together before you pay anything?"
+        quality: best
+        reply: ["Kevin: Ineligible for real trials. I hadn't thought of that. (pause) I won't pay. Let's look together."]
+        mentor: "Good. You explained the risks respectfully, without ridicule."
+      - text: "That's a scam. Don't be stupid."
+        quality: poor
+        reply: ["Kevin: (defensive) I'm not stupid."]
+        mentor: "Ridicule makes people hide things. Explain the risks respectfully."
+      - text: "It's your money, your choice."
+        quality: partial
+        flag: R4
+        reply: ["Mei: Kevin, no."]
+        mentor: "It is his choice, but give him the information he needs about the risks."
+
+  - id: T11
+    checkpoint: C8
+    options:
+      - text: "Mei, you've had a lot to take in, with a five-month-old too. How are you doing?"
+        quality: best
+        reply: ["Mei: (crying) I'm terrified of looking after both of them. And I feel guilty. I wanted the baby so much."]
+        mentor: "Good. Asking Mei directly gave her room to say what she is carrying."
+      - text: "(continues talking only to Kevin)"
+        quality: poor
+        flag: R6
+        reply: ["(Mei looks out of the window.)"]
+        mentor: "Include the partner. She is affected too."
+      - text: "Mei, you'll need to keep an eye on him."
+        quality: partial
+        reply: ["Mei: I already do."]
+        mentor: "This adds to her load without asking how she is."
+
+  - id: T12
+    checkpoint: C8
+    patient_asks: "Mei: What does this mean for his job?"
+    options:
+      - text: "For now Kevin can usually keep working, and some changes might help. It's worth planning before anything goes wrong: our social worker can talk about work, his employer's disability plan, insurance and what to tell people. I'd like to see you both in three months, the psychologist soon, and Mei, there's support for partners too. Ava wanting you both is a very good reason to plan."
+        quality: best
+        reply: ["Kevin: Planning before anything goes wrong. Yes. Work and insurance worry me.", "Mei: Support for me too. Thank you."]
+        mentor: "Good. Practical plan, team support, support for Mei, and follow-up."
+      - text: "He should tell his manager tomorrow."
+        quality: poor
+        reply: ["Kevin: Hang on. I'm not ready for that."]
+        mentor: "What to tell an employer needs thought and planning. Offer support to decide."
+      - text: "We can talk about work next time."
+        quality: partial
+        reply: ["Mei: OK..."]
+        mentor: "Work worries are pressing. At least outline the plan and offer the social worker."
+
+closing: "Before they leave: written summary of today's findings, psychology appointment soon and crisis contacts (9-8-8), Enroll-HD information, a promise to check trial eligibility (with the date checked), no payment to the overseas clinic, social work for work and insurance, support for Mei, and follow-up in three months."

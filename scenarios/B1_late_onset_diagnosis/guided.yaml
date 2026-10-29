@@ -1,0 +1,231 @@
+# Scenario B1: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Ruth sits upright with a notebook open. George sits beside her.)"
+  - "Ruth: My doctor said this test was mostly to rule things out. So, is it ruled out?"
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Yes, I have the result. Before I go through it, can I ask what you were expecting, and what you know about why we tested?"
+        quality: best
+        reply: ["Ruth: Honestly? I expected nothing. You mentioned Huntington's, but there's none in my family.", "George: We thought it was her nerves."]
+        mentor: "Good. You found out she expects 'nothing'. Now you know a clear warning is needed."
+      - text: "Your HTT gene shows 17 and 39 CAG repeats."
+        quality: poor
+        flag: R1
+        reply: ["Ruth: (writes it down) Seventeen and thirty-nine. And what does that mean for me?"]
+        mentor: "Numbers first, without meaning, leave her anxious. Check expectations and prepare her."
+      - text: "Let's go through how you've been first."
+        quality: partial
+        reply: ["Ruth: Fine, mostly. But I'd rather know the result."]
+        mentor: "Delaying adds to anxiety. Check what she expects, then give the result."
+
+  - id: T2
+    checkpoint: C1
+    options:
+      - text: "I'm afraid it's not the result we were hoping for."
+        quality: best
+        reply: ["(Ruth puts her pen down.)", "Ruth: Go on."]
+        mentor: "Good. A short warning prepares her for serious news."
+      - text: "Well, it isn't nothing, but don't worry too much."
+        quality: partial
+        reply: ["Ruth: Then what is it?"]
+        mentor: "Mixed signals confuse. Give a clear warning, then the result."
+      - text: "George, perhaps you'd like to hear this first?"
+        quality: poor
+        flag: R6
+        reply: ["Ruth: I'm the patient. Tell me."]
+        mentor: "Ruth is fully able to take part. Speak with her directly."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "The test, together with the changes you've had, shows that you have Huntington disease."
+        quality: best
+        reply: ["(Silence. George takes Ruth's hand.)"]
+        mentor: "Good. Plain words. Now give them time."
+      - text: "The test is in the positive range for HD, though at the lower end."
+        quality: partial
+        reply: ["Ruth: Lower end. So... do I have it or not?"]
+        mentor: "Hedged language leaves her unsure. With her symptoms, the diagnosis is clear; say so plainly."
+      - text: "Results like this are sometimes wrong at your age, so let's not jump to conclusions."
+        quality: poor
+        flag: R2
+        reply: ["George: So it might be nothing?"]
+        mentor: "Late-onset HD is well recognised. Casting doubt on a clear result gives false hope."
+
+  - id: T4
+    checkpoint: C2
+    options:
+      - text: "(pause) This is a lot to take in, especially when you expected nothing."
+        quality: best
+        reply: ["Ruth: (quietly) I really thought it would be nothing."]
+        mentor: "Good. You acknowledged the shock before moving on."
+      - text: "The good news is it's usually slow at your age."
+        quality: partial
+        reply: ["Ruth: (nods slowly, says nothing)"]
+        mentor: "True and kind, but it moves on before the shock has been acknowledged."
+      - text: "Let me explain the genetics."
+        quality: poor
+        reply: ["Ruth: (stares at the notebook)"]
+        mentor: "After bad news people take in little. Pause and acknowledge first."
+
+  - id: T5
+    checkpoint: C3
+    patient_asks: "Ruth: But I'm sixty-eight. How can it be something genetic now?"
+    options:
+      - text: "It's in your genes from birth, but it can take many years to show. Some people only notice changes after sixty. Can I ask about your parents?"
+        quality: best
+        reply: ["Ruth: My mother lived to eighty-eight. My father died at seventy, in a car accident.", "Ruth: He was clumsy and short-tempered at the end. His hands jerked. And the accident was on a clear day. (pause) Was it this?"]
+        mentor: "Good. You explained late onset simply and asked about her parents, which brought out a possible clue."
+      - text: "HD doesn't usually start this late, so it's unusual."
+        quality: partial
+        reply: ["Ruth: So why me?"]
+        mentor: "Late onset is less common, but well recognised. Explain how, and ask about her family."
+      - text: "There must be someone in your family with it."
+        quality: poor
+        reply: ["Ruth: Are you saying I don't know my own family?"]
+        mentor: "This can feel like an accusation. Explain possible reasons, then ask gently about her parents."
+
+  - id: T6
+    checkpoint: C3
+    options:
+      - text: "We can't know for sure. But HD is often missed in a parent, especially if they died before it was recognised, or it was called something else. It's not unusual for HD to be found for the first time this way."
+        quality: best
+        reply: ["Ruth: So it may have been there all along. In him. In me."]
+        mentor: "Good. You explained possible reasons without certainty, and that a first diagnosis like this is recognised."
+      - text: "Your father definitely had it."
+        quality: poor
+        reply: ["Ruth: You never met him."]
+        mentor: "There is no way to be sure. Offer possible explanations without certainty."
+      - text: "It doesn't really matter where it came from."
+        quality: partial
+        reply: ["Ruth: It matters to me."]
+        mentor: "The question matters to her and to her family. Explain possible reasons."
+
+  - id: T7
+    checkpoint: C4
+    options:
+      - text: "HD affects movement, thinking and mood. That's why you've had the restlessness, the falls and trouble planning. When it starts later in life it often changes slowly. There's no cure, but there's a lot we can do, and a team to help. What would be most useful to know today?"
+        quality: best
+        reply: ["Ruth: Slowly. That helps.", "Ruth: I'd like to know what happens next for me. And for the children."]
+        mentor: "Good. Plain words, linked to what she has noticed, and she sets the next topic."
+      - text: "Here are the UHDRS motor and functional scales we'll use to stage you."
+        quality: poor
+        reply: ["Ruth: I don't know what any of that means."]
+        mentor: "Technical detail does not help today. Explain in plain words."
+      - text: "It will get worse over time, I'm afraid."
+        quality: partial
+        reply: ["Ruth: How much worse? How fast?"]
+        mentor: "Honest, but on its own it frightens. Add what can be done and that later-onset HD often changes slowly."
+
+  - id: T8
+    checkpoint: C5
+    patient_asks: "Ruth: What does this mean for Anna and Michael? Anna has two little ones."
+    options:
+      - text: "With 39 repeats, almost all of them stay healthy. I wouldn't worry."
+        quality: poor
+        flag: R3
+        reply: ["Ruth: Almost all? Then why did I get it?"]
+        mentor: "False reassurance. Each child has a 50% chance of inheriting the gene change, and the outcome is uncertain."
+      - text: "Each of your children has a one in two chance of having inherited this gene change. At 39, the number you have, not everyone who carries it gets ill in their lifetime, and the number can change when it's passed on. It's complicated, so a genetic counsellor can go through what it means for each of them."
+        quality: best
+        reply: ["Ruth: One in two. (long pause) Michael and Priya are trying for a baby. They told me last month.", "Ruth: I can't tell Michael now. I can't."]
+        mentor: "Good. You gave what is certain, what is uncertain, and offered expert help. It uncovered her worry about Michael."
+      - text: "Penetrance at 39 repeats by age 65 is estimated at around..."
+        quality: partial
+        flag: R1
+        reply: ["Ruth: (writing) Wait. What's penetrance?"]
+        mentor: "Figures at 39 repeats are uncertain and hard to use. Explain in plain words and offer genetic counselling."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "You'll need to tell them both this week. They should all be tested."
+        quality: poor
+        flag: R4
+        reply: ["Ruth: That's for me to decide."]
+        mentor: "Telling relatives and any testing are personal decisions. Offer help, not instructions."
+      - text: "When and how to tell them is your decision, and there's no rush today. If it helps, a genetic counsellor can help you plan what to say, or meet them with you. Whether they test is their own choice."
+        quality: best
+        reply: ["Ruth: (breathes out) Thank you. I need to think about Michael.", "George: We'll do it together."]
+        mentor: "Good. You respected her choice and offered practical help."
+      - text: "Maybe you don't need to tell them at all."
+        quality: partial
+        reply: ["George: Don't they have a right to know?"]
+        mentor: "Her choice, but help her think it through rather than suggesting silence."
+
+  - id: T10
+    checkpoint: C6
+    patient_asks: "George: Should the grandchildren be tested?"
+    options:
+      - text: "We could test them now, so everyone knows where they stand."
+        quality: poor
+        flag: R5
+        reply: ["George: Yes. Let's do that.", "Ruth: (hesitates) Are you sure?"]
+        mentor: "Predictive testing of healthy children is generally deferred until they can decide."
+      - text: "No. Children aren't tested for this unless they have symptoms. It would be their decision when they're adults. And whether Anna is tested is her decision first."
+        quality: best
+        reply: ["George: Of course. I wasn't thinking.", "Ruth: They're eleven and eight. Let them be children."]
+        mentor: "Good. Clear and kind, and you linked it to Anna's own choice."
+      - text: "That's up to Anna."
+        quality: partial
+        reply: ["George: So she could have them tested?"]
+        mentor: "Anna's own testing is her choice, but predictive testing of children is generally not done. Say so."
+
+  - id: T11
+    checkpoint: C7
+    options:
+      - text: "If they do decide to test, in Canada no insurer or employer can require them to take a genetic test or share a result."
+        quality: best
+        reply: ["George: That was my next question. Good."]
+        mentor: "Good. You answered a common worry before it was asked."
+      - text: "Insurance isn't something I can help with."
+        quality: poor
+        reply: ["George: Then who can?"]
+        mentor: "The Genetic Non-Discrimination Act is directly relevant. Mention it."
+      - text: "They might want to sort out insurance before testing."
+        quality: partial
+        reply: ["George: Why? Would it matter?"]
+        mentor: "Mention the legal protection in Canada, and leave detailed questions to genetic counselling."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "George, how are you doing with this? And Ruth, what worries you most?"
+        quality: best
+        reply: ["George: I've noticed things. A scratch on the car. She got lost once, coming back from Anna's. I didn't want to upset her.", "Ruth: What frightens me is ending up in a home, not knowing anyone. Like my aunt."]
+        mentor: "Good. Asking both of them uncovered George's observations and Ruth's biggest fear: both will matter later."
+      - text: "Any questions before you go?"
+        quality: poor
+        reply: ["Ruth: I can't think of any right now."]
+        mentor: "People rarely know what to ask after bad news. Ask about their fears and give a plan."
+      - text: "We'll see you in six months."
+        quality: partial
+        reply: ["George: Six months? What do we do until then?"]
+        mentor: "Give clear next steps, support and an earlier contact."
+
+  - id: T13
+    checkpoint: C8
+    options:
+      - text: "Thank you both. Next steps: I'll see you again in four weeks, with our nurse and a genetic counsellor. Here's written information and the Huntington Society of Canada. When you're ready, we'll also talk about planning ahead, including driving and what matters most to you, while it's easier to do."
+        quality: best
+        reply: ["Ruth: Four weeks. Planning ahead. Yes. (writes it down)"]
+        mentor: "Good. A clear plan, support, and an early start on planning ahead."
+      - text: "Don't worry about the future. Take it one day at a time."
+        quality: partial
+        reply: ["Ruth: I'm not good at that."]
+        mentor: "Ruth plans. Offer a structured start on planning ahead."
+      - text: "You should stop driving today."
+        quality: poor
+        reply: ["Ruth: Today? Because of a scratch on the car?"]
+        mentor: "Driving needs to be discussed, but a sudden order without assessment or discussion is not the way. Plan it for an early visit."
+
+closing: "Before they leave: the diagnosis in writing, a visit in four weeks with a nurse and genetic counsellor, the Huntington Society of Canada, information on the Genetic Non-Discrimination Act, and an offer to help plan how to tell Anna and Michael."

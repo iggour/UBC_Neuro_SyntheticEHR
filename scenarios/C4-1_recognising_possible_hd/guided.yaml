@@ -1,0 +1,221 @@
+# Scenario C4-1: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Mark sits back with his arms folded. His fingers drum on his arm. Anna holds her phone.)"
+  - "Mark: Honestly, I'm only here because Anna made me come. Work's stressful. That's all."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Anna, what's been going on with him?"
+        quality: poor
+        flag: R4
+        reply: ["Mark: I'm sitting right here."]
+        mentor: "Talking about Mark to Anna makes him defensive. Start with him."
+      - text: "Thanks for coming in, even if it wasn't your idea. Tell me about the stress. What's been happening?"
+        quality: best
+        reply: ["Mark: Work's a pressure cooker. Everyone's on edge. I've got a shorter fuse, I suppose. Who wouldn't?"]
+        mentor: "Good. You started with Mark and accepted his framing for now."
+      - text: "Let's get you on the scale and check your blood pressure first."
+        quality: partial
+        reply: ["Mark: Fine by me."]
+        mentor: "Practical, but you miss the reason for the visit. Ask Mark what has been happening."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "What's been hardest at work lately?"
+        quality: best
+        reply: ["Mark: (pause) I got a written warning two weeks ago. Shouted at a client. Missed a safety inspection.", "Anna: (turns) You didn't tell me."]
+        mentor: "Good. A specific, non-judgemental question uncovered the warning at work."
+      - text: "You need to keep your temper at work, or you'll lose your job."
+        quality: poor
+        flag: R6
+        reply: ["Mark: Thanks, Doc. Very helpful."]
+        mentor: "Lecturing closes the conversation. Ask what has been happening."
+      - text: "Is work going OK?"
+        quality: partial
+        reply: ["Mark: It's fine. Busy."]
+        mentor: "A closed question invites 'fine'. Ask what has been hardest."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "How's your sleep and mood been? And on a typical evening, how many drinks?"
+        quality: best
+        reply: ["Mark: Sleep's rubbish. Mood's... fed up.", "Mark: (shrugs) Four, five beers. More since the warning. Helps me switch off."]
+        mentor: "Good. Specific questions about sleep, mood and alcohol got honest answers."
+      - text: "You're not drinking too much, are you?"
+        quality: partial
+        reply: ["Mark: A couple of beers. Like everyone."]
+        mentor: "A leading question invites 'no'. Ask how many on a typical evening."
+      - text: "Drinking every night is a problem. You need to stop."
+        quality: poor
+        flag: R6
+        reply: ["Mark: (arms tighter) Right."]
+        mentor: "Judgement first makes him defensive. Ask, then discuss."
+
+  - id: T4
+    checkpoint: C1
+    options:
+      - text: "Mark, I often see each person alone for a few minutes. Would you mind if I spoke with Anna first, then you?"
+        quality: best
+        reply: ["Mark: Whatever. I'll get a coffee.", "Anna: (once alone, quietly) Last month he punched a hole in the kitchen door. Over Chloe's curfew.", "Anna: He's never hit us. But I'm starting to be scared of him. And his hands, they twitch. He drops things."]
+        mentor: "Good. With Mark's agreement, Anna could say what she couldn't in front of him."
+      - text: "Anna, do you have anything to add?"
+        quality: partial
+        reply: ["Anna: (glances at Mark) Just that he's not himself."]
+        mentor: "Few people speak freely in front of a partner who has outbursts. Offer time alone, with his agreement."
+      - text: "Anna, you can tell me anything; he doesn't need to know."
+        quality: poor
+        reply: ["Mark: Excuse me?"]
+        mentor: "Secret arrangements in front of him damage trust. Ask his permission to see each of you alone."
+
+  - id: T5
+    checkpoint: C7
+    before: ["(Still alone with Anna.)"]
+    options:
+      - text: "Thank you for telling me. Do you feel safe at home right now? Are there any weapons in the house?"
+        quality: best
+        reply: ["Anna: Safe... mostly. He's never touched me.", "Anna: There's his hunting rifle. It's locked in the basement."]
+        mentor: "Good. You asked directly about safety and firearms."
+      - text: "I'm sure he'd never hurt you."
+        quality: poor
+        flag: R5
+        reply: ["Anna: (looks down) I hope not."]
+        mentor: "You cannot know that. Ask directly about safety and weapons."
+      - text: "That's very concerning. Should we call the police?"
+        quality: partial
+        reply: ["Anna: No! Please. He hasn't done anything to me."]
+        mentor: "Ask about safety first and follow her lead, unless there is immediate danger."
+
+  - id: T6
+    checkpoint: C7
+    before: ["(Mark comes back. Anna steps out.)"]
+    options:
+      - text: "Mark, when people are under this much pressure they sometimes feel very low. Have you had any thoughts of harming yourself, or of hurting anyone else?"
+        quality: best
+        reply: ["Mark: (surprised) No. Nothing like that. I'm fed up, not... that."]
+        mentor: "Good. You asked directly and kindly. Asking does not put the idea in someone's head."
+      - text: "You're not going to do anything stupid, are you?"
+        quality: partial
+        reply: ["Mark: No."]
+        mentor: "A leading question invites 'no'. Ask plainly."
+      - text: "(moves straight on to the examination)"
+        quality: poor
+        flag: R5
+        reply: ["(Mark rolls up his sleeve.)"]
+        mentor: "With irritability, drinking and job stress, ask about suicidal thoughts and aggression."
+
+  - id: T7
+    checkpoint: C4
+    options:
+      - text: "Can I have a look at your movements and balance? While we talked, I noticed your fingers and shoulders moving a little. Have you noticed anything with your hands?"
+        quality: best
+        reply: ["Mark: (looks at his hands) Sometimes they... do their own thing. I spilled coffee in a meeting. I put it down to being tired."]
+        mentor: "Good. You described what you saw neutrally and asked specifically. Mark admitted what he had been hiding."
+      - text: "Your hands are twitching. That's a sign of a brain disease."
+        quality: poor
+        flag: R2
+        reply: ["Mark: You've known me five minutes."]
+        mentor: "Naming a disease as fact before assessment frightens and alienates. Describe what you see neutrally."
+      - text: "Let me check your reflexes."
+        quality: partial
+        reply: ["Mark: Go ahead."]
+        mentor: "Examination is right, but ask about his hands and what he has noticed too."
+
+  - id: T8
+    checkpoint: C3
+    patient_asks: "Mark: So what are you saying, I'm going mad?"
+    options:
+      - text: "No. Several things could cause this together: stress, low mood, the drinking, something like thyroid, or a problem in the part of the brain that controls movement and temper. I'd like to do blood tests and look into all of them properly."
+        quality: best
+        reply: ["Mark: (unfolds his arms) Right. Blood tests I can do."]
+        mentor: "Good. A broad, honest list of causes, without jumping to one."
+      - text: "It's probably just stress. Try a holiday."
+        quality: poor
+        flag: R1
+        reply: ["Mark: See, Anna? Told you."]
+        mentor: "Stress alone does not explain the movements. Keep a broad differential and examine."
+      - text: "It sounds like depression."
+        quality: partial
+        reply: ["Mark: I'm not depressed. I'm annoyed."]
+        mentor: "Depression is possible, but the movements and work changes need a broader view."
+
+  - id: T9
+    checkpoint: C5
+    before: ["(Anna comes back in.)"]
+    options:
+      - text: "One of the neurological causes I'd want to rule out is Huntington disease. It's inherited. Because you were adopted, we can't use family history to rule it in or out, which is exactly why it's worth checking. It's one possibility, not a diagnosis."
+        quality: best
+        reply: ["Mark: (quiet) Huntington's. I've heard of it.", "Anna: (takes his hand)"]
+        mentor: "Good. You named HD honestly as one possibility and explained why an unknown family history matters."
+      - text: "I think you have Huntington disease."
+        quality: poor
+        flag: R2
+        reply: ["Mark: Based on what? Twitchy fingers?"]
+        mentor: "HD is a possibility to assess, not a diagnosis to announce at this visit."
+      - text: "There might be something neurological. Let's see what the specialist says."
+        quality: partial
+        reply: ["Mark: Something like what?"]
+        mentor: "Vagueness can frighten more than honesty. Consider naming HD as one possibility, and why."
+
+  - id: T10
+    checkpoint: C6
+    patient_asks: "Mark: How would I even have something genetic? I don't know who my parents were."
+    options:
+      - text: "That's the point: if one of your birth parents had it, you'd never have been told. With your OK, I'd like to refer you to the neurology clinic. If they think it's worth testing, they'd explain the genetic test first, with a counsellor. It would only happen if you agree, and it could matter for Chloe too, so you'd have time to think."
+        quality: best
+        reply: ["Mark: (long breath) If it shuts everyone up. OK. Refer me.", "Anna: Chloe..."]
+        mentor: "Good. Consent for referral, and a clear explanation that any test needs counselling and his agreement."
+      - text: "I'll add the HD gene test to your blood work today, to save time."
+        quality: poor
+        flag: R3
+        reply: ["Mark: Hang on. You didn't ask me."]
+        mentor: "Genetic testing needs explanation, counselling and consent, and has implications for relatives."
+      - text: "Genetics is complicated. The specialist will explain."
+        quality: partial
+        reply: ["Mark: Explain what?"]
+        mentor: "Answer his question and explain what he is agreeing to."
+
+  - id: T11
+    checkpoint: C6
+    patient_asks: "Anna: If it is something like that, what does it mean for Chloe?"
+    options:
+      - text: "If Mark did have it, Chloe would have a 50% chance of having inherited it. But we're a long way from that. Let's find out what's going on with Mark first. The clinic can talk you both through it if it comes to that."
+        quality: best
+        reply: ["Anna: One step at a time. OK."]
+        mentor: "Good. Honest, without getting ahead of the assessment."
+      - text: "We should test Chloe as well."
+        quality: poor
+        reply: ["Mark: Leave Chloe out of it."]
+        mentor: "Chloe is 17 and has no symptoms. There is nothing to test her for now, and predictive testing is generally for adults."
+      - text: "Don't worry about Chloe."
+        quality: partial
+        reply: ["Anna: How can I not?"]
+        mentor: "Be honest about what it could mean, without getting ahead of Mark's assessment."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "Until the appointment: blood tests this week, try cutting down the beer, and hold off on any big decisions at work or with money. If things get heated at home, step away, and call us or 911 if anyone's at risk. I'll see you both in two weeks."
+        quality: best
+        reply: ["Mark: No big decisions. Fine.", "Anna: Two weeks. Thank you."]
+        mentor: "Good. A concrete interim plan, safety advice and early follow-up."
+      - text: "The neurology wait is a few months. See you then."
+        quality: poor
+        flag: R1
+        reply: ["Anna: (quietly) A few months?"]
+        mentor: "Do not leave a family alone for months with escalating problems. Follow up early."
+      - text: "Come back if things get worse."
+        quality: partial
+        reply: ["Anna: How will we know?"]
+        mentor: "Give specific interim steps and a follow-up date."
+
+closing: "Before they leave: blood tests, referral to neurology or the HD clinic with Mark's consent, advice on alcohol and big decisions, safety advice for home, and follow-up in two weeks."

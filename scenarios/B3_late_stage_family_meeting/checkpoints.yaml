@@ -1,0 +1,140 @@
+# Scenario B3: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group B; s27-s35 are new and need human verification).
+# Reused, defined elsewhere (not redefined here):
+#   s20 (scenarios/A1_disclosing_jhd_diagnosis, draft): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
+#         https://pubmed.ncbi.nlm.nih.gov/10964998/
+#   s32, s34, s35 (scenarios/B2_driving_and_independence, draft): BC advance care planning / My Voice guide;
+#         BC long-term care services; HSC Physician's Guide chapters 2, 3, 3a and 8.
+#         https://www2.gov.bc.ca/gov/content/family-social-supports/seniors/health-safety/advance-care-planning
+#         https://www2.gov.bc.ca/gov/content/health/accessing-health-care/home-community-care/care-options-and-cost/long-term-care-services
+#         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+# New:
+#   s33 = American Geriatrics Society Ethics Committee and Clinical Practice and Models of Care Committee. American Geriatrics
+#         Society feeding tubes in advanced dementia position statement. J Am Geriatr Soc 2014;62(8):1590-3.
+#         https://pubmed.ncbi.nlm.nih.gov/25039796/  Status: abstract read by Claude 2026-10-29; needs human verification.
+#         Note: about advanced dementia, not HD specifically.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Set up the meeting and include everyone
+    met_if: Trainee introduces themselves, checks that Michael can hear and is included, explains the purpose of the meeting, and asks what each person understands about Ruth's situation.
+    hint_after_turn: 2
+    hint: "Who is in the meeting, including on the phone? What do they already understand?"
+    feedback_met: "You set up the meeting, included Michael, and started from what the family understood."
+    feedback_missed: "Introduce the meeting's purpose, include everyone (including anyone on the phone), and ask what they understand."
+    knowledge_card: family-meetings
+    source: [s20, s35]
+  - id: C2
+    name: Explain the swallowing problem honestly
+    met_if: Trainee explains in plain words that Ruth's swallowing problem is part of late-stage HD, that it causes the chest infections and weight loss, and that it is not expected to get better.
+    hint_after_turn: 4
+    hint: "Do they understand why the chest infections keep happening, and that this is part of HD?"
+    feedback_met: "You explained the swallowing problem honestly and linked it to late-stage HD."
+    feedback_missed: "Explain plainly that swallowing problems are part of late HD, cause the infections and weight loss, and are not expected to improve."
+    knowledge_card: swallowing-and-tube-feeding
+    source: s35
+  - id: C3
+    name: Ask what Ruth would want
+    met_if: Trainee asks what Ruth valued and what she said about feeding tubes or late-stage care, mentions her recorded wishes, and frames the question as what Ruth would choose, not what the family wants.
+    hint_after_turn: 5
+    hint: "This decision is about Ruth. Did she ever say what she would want?"
+    feedback_met: "You turned the question to what Ruth would want, and George shared her clear words."
+    feedback_missed: "Ask what Ruth said or would choose. Her earlier wishes should guide the decision."
+    unlocks: H1_george_remembers
+    knowledge_card: deciding-for-someone
+    source: [s35, s32]
+  - id: C4
+    name: Explain the options honestly
+    met_if: Trainee explains tube feeding and careful hand feeding for comfort as real options, with honest benefits and burdens (a tube is a medical treatment, does not remove all aspiration risk, may not lengthen life or improve comfort), without saying she will 'starve'.
+    hint_after_turn: 7
+    hint: "Anna asked whether Ruth will starve. What are the real options, and what can each do and not do?"
+    feedback_met: "You explained both options honestly, without fear or false promises."
+    feedback_missed: "Explain both options. Careful hand feeding focused on comfort is a real choice; tube feeding has burdens and limits."
+    knowledge_card: swallowing-and-tube-feeding
+    source: [s33, s35]
+  - id: C5
+    name: Share the decision and explain who decides
+    met_if: Trainee offers a recommendation that follows Ruth's known wishes, explains that in BC George, as spouse, is the substitute decision maker and must decide as Ruth would have wanted, and makes clear the family is not deciding alone.
+    hint_after_turn: 9
+    hint: "George is looking to you for 'the right answer'. How can you take some of the weight?"
+    feedback_met: "You offered a recommendation based on Ruth's wishes and explained George's role, so the family did not carry it alone."
+    feedback_missed: "Do not leave the family to choose alone. Offer a recommendation based on Ruth's wishes and explain who decides."
+    knowledge_card: deciding-for-someone
+    source: [s32, s33]
+  - id: C6
+    name: Hear Michael
+    met_if: Trainee directly invites Michael's view and acknowledges that it matters even though he lives far away.
+    hint_after_turn: 8
+    hint: "Michael has been silent on the phone. Have you heard from him?"
+    feedback_met: "You invited Michael in, and he shared that he had heard his mother's wishes too."
+    feedback_missed: "Family members on the phone are easily left out. Invite them in by name."
+    unlocks: H4_michael_view
+    knowledge_card: family-meetings
+    source: s20
+  - id: C7
+    name: Explore the feelings behind the views
+    met_if: Trainee responds to Anna's distress with empathy and asks what is behind her wish for a tube, rather than arguing with her.
+    hint_after_turn: 10
+    hint: "Anna is fighting hard for the tube. What might be behind it?"
+    feedback_met: "You explored the feelings behind Anna's view, and she shared her own carrier status."
+    feedback_missed: "Disagreement in families is often about grief and fear. Ask what is behind each view before trying to resolve it."
+    unlocks: H2_anna_carrier
+    knowledge_card: family-meetings
+    source: s20
+  - id: C8
+    name: Ask about George, and discuss care-home placement without blame
+    met_if: Trainee asks George how he is managing, acknowledges carer strain, and explains that moving to long-term care when 24-hour care is needed is a way of caring, not giving up; outlines how a long-term care assessment is arranged.
+    hint_after_turn: 12
+    hint: "George is holding his back. Can he keep caring for Ruth at home?"
+    feedback_met: "You asked about George, and helped him see long-term care as a way of caring for Ruth."
+    feedback_missed: "Ask the carer how they are coping. Most people with late-stage HD need 24-hour care, and moving is not abandonment."
+    unlocks: H3_george_cannot_continue
+    knowledge_card: care-setting-and-carers
+    source: [s35, s34]
+  - id: C9
+    name: Agree goals of care and next steps
+    met_if: Trainee summarises the agreed approach, discusses wider goals of care (for example hospital transfer, resuscitation, treating infections) in line with Ruth's wishes, offers palliative care involvement, documents it, and arranges a follow-up meeting when Michael arrives.
+    hint_after_turn: 14
+    hint: "What happens the next time she has a chest infection? Who will write this down?"
+    feedback_met: "You agreed goals of care, offered palliative support, and set a follow-up meeting."
+    feedback_missed: "Agree wider goals of care, document them, offer palliative care, and plan to meet again."
+    knowledge_card: care-setting-and-carers
+    source: [s35, s32]
+
+red_flags:
+  - id: R1
+    name: Presents the tube as the only option
+    met_if: Trainee says Ruth will starve without a tube, or presents tube feeding as the only acceptable choice.
+    feedback: "Careful hand feeding for comfort is a real option; fear of 'starving' should not drive the decision."
+    source: [s33, s35]
+  - id: R2
+    name: Promises the tube will fix things
+    met_if: Trainee says a tube will stop the chest infections, or will clearly lengthen her life or make her more comfortable.
+    feedback: "Tube feeding does not remove all aspiration risk, and its benefits in late-stage disease are uncertain."
+    source: s33
+  - id: R3
+    name: Ignores Ruth's wishes
+    met_if: Trainee does not ask about, or sets aside, Ruth's recorded wishes.
+    feedback: "Substitute decisions should follow what the person would have wanted."
+    source: [s32, s35]
+  - id: R4
+    name: Leaves the family to decide alone
+    met_if: Trainee asks the family "What do you want us to do?" without offering information or a recommendation, or demands a decision immediately.
+    feedback: "Offer a recommendation based on the person's wishes; do not leave the family alone with the choice."
+    source: s33
+  - id: R5
+    name: Calls a care home 'giving up' or imposes it
+    met_if: Trainee frames long-term care as giving up, or insists on it without asking how George is coping.
+    feedback: "Long-term care is often needed in late HD and can be a way of caring. Explore it with the carer."
+    source: s35
+  - id: R6
+    name: Leaves Michael out
+    met_if: Trainee never speaks to Michael during the meeting.
+    feedback: "Include all family members present, including those on the phone."
+    source: s20

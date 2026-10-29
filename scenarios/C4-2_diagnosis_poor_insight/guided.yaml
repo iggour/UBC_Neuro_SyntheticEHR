@@ -1,0 +1,235 @@
+# Scenario C4-2: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Mark leans back in his chair. His fingers flick now and then. Anna sits forward, holding a tissue.)"
+  - "Mark: Let's hear it. I already know there's nothing wrong with me."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "You've been expecting the test to be clear. I'm afraid it isn't the result you were hoping for."
+        quality: best
+        reply: ["Mark: (stops moving) Go on."]
+        mentor: "Good. You named his expectation and gave a clear warning."
+      - text: "Positive. 42 repeats."
+        quality: poor
+        reply: ["Mark: Forty-two what?"]
+        mentor: "A bare number without warning or meaning helps no one. Prepare him, then say it plainly."
+      - text: "Well, how have things been?"
+        quality: partial
+        reply: ["Mark: Fine. Like I said. What's the result?"]
+        mentor: "He wants the result. Give a warning, then the result."
+
+  - id: T2
+    checkpoint: C1
+    options:
+      - text: "The test, together with what I found when I examined you, shows that you have Huntington disease."
+        quality: best
+        reply: ["(Anna starts crying quietly.)", "Anna: (to herself) There's a reason. There's a reason for all of it."]
+        mentor: "Good. Plain words, and the diagnosis rests on the examination as well as the test."
+      - text: "The test suggests you might be at risk of HD later on."
+        quality: poor
+        reply: ["Mark: Later on. So nothing now. Good."]
+        mentor: "This is a diagnosis, not a future risk. Be clear."
+      - text: "The gene test is positive for the HD expansion."
+        quality: partial
+        reply: ["Mark: Meaning what?"]
+        mentor: "Correct but technical. Say plainly what it means: he has HD."
+
+  - id: T3
+    checkpoint: C2
+    patient_asks: "Mark: The test is wrong. I don't have any symptoms. Ask anyone at work. Actually, don't."
+    options:
+      - text: "You do have symptoms: the chorea, the eye movements, the irritability, the problems at work..."
+        quality: poor
+        flag: R1
+        reply: ["Mark: (stands up) This is a waste of time."]
+        mentor: "Listing symptoms at someone with unawareness usually ends the conversation. Accept that he sees it differently."
+      - text: "You're in denial, Mark. That's understandable."
+        quality: poor
+        flag: R2
+        reply: ["Mark: Don't psychoanalyse me."]
+        mentor: "Unawareness in HD is often part of the illness, not wilful denial. Avoid the label."
+      - text: "I can see this doesn't match how you feel. You don't have to agree with me today. Can we keep talking anyway?"
+        quality: best
+        reply: ["Mark: (sits back down) I'm not saying you're right. But fine."]
+        mentor: "Good. You accepted that he sees it differently, without arguing, and kept him in the conversation."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "Let's leave the label for now. Is there anything day to day that you're finding hard: sleep, energy, keeping on top of things?"
+        quality: best
+        reply: ["Mark: Sleep's terrible. I'm tired all the time. I lose track of jobs. And I drop things. That's it."]
+        mentor: "Good. Talking about specific problems, not the label, let Mark name real difficulties."
+      - text: "When you're ready to accept the diagnosis, we can talk about treatment."
+        quality: partial
+        flag: R1
+        reply: ["Mark: Then we'll be waiting a while."]
+        mentor: "Insight may never come. Offer help with the problems he does recognise now."
+      - text: "Anna, what problems does he have at home?"
+        quality: poor
+        flag: R5
+        reply: ["Mark: I'm sitting right here."]
+        mentor: "Talking about Mark to Anna loses him. Ask him what he finds hard."
+
+  - id: T5
+    checkpoint: C3
+    options:
+      - text: "Those are things we can help with. There's treatment that can help with sleep and with feeling on edge, and an occupational therapist can help with keeping track at work. Would you be open to that?"
+        quality: best
+        reply: ["Mark: Sleep, yes. If it helps me sleep, I'll try it."]
+        mentor: "Good. Help offered with problems he accepts, without demanding he accept the diagnosis."
+      - text: "Those are all symptoms of HD, which proves my point."
+        quality: poor
+        flag: R1
+        reply: ["Mark: Knew it. You'll twist anything I say."]
+        mentor: "Do not use his openness to win the argument. Offer help with what he names."
+      - text: "OK. Let's move on to the genetics."
+        quality: partial
+        reply: ["Mark: (shrugs)"]
+        mentor: "He has just told you what he finds hard. Offer help with it."
+
+  - id: T6
+    checkpoint: C4
+    options:
+      - text: "How are things at work at the moment?"
+        quality: best
+        reply: ["Mark: Suspended. With pay. Last week. Another argument on site. They're out to get me.", "Mark: I'm thinking I'll resign before they fire me."]
+        mentor: "Good. A simple open question uncovered a job at immediate risk."
+      - text: "You need to tell your employer about the diagnosis tomorrow."
+        quality: poor
+        flag: R3
+        reply: ["Mark: I'm not telling them anything."]
+        mentor: "Disclosure to an employer is his choice and should be planned, not ordered."
+      - text: "Work must be stressful."
+        quality: partial
+        reply: ["Mark: Always is."]
+        mentor: "Ask directly how work is going; it may be at a crisis point."
+
+  - id: T7
+    checkpoint: C4
+    patient_asks: "Anna: What do we do about his job? We've got a mortgage."
+    options:
+      - text: "Mark, please don't resign yet. If a medical condition is affecting work, there may be options: the company's disability plan, a different role, or later CPP Disability. Resigning first can close those doors. I'd like you both to see our social worker this week, and, with your permission, I can write a letter saying your difficulties at work are due to a medical condition."
+        quality: best
+        reply: ["Mark: (pause) A letter. Not saying it's Huntington's?", "Mark: ...Fine. I'll see the social worker. I'm still not sick."]
+        mentor: "Good. You stopped a crisis decision and pointed to the right help, with his consent."
+      - text: "Resigning is probably best for everyone."
+        quality: poor
+        flag: R3
+        reply: ["Anna: And then what? We lose everything."]
+        mentor: "Resigning in a hurry can close off disability options. Plan with a social worker first."
+      - text: "Work things are outside what I can help with."
+        quality: partial
+        flag: R4
+        reply: ["Anna: Then who can?"]
+        mentor: "Work is often the first area affected in HD. The team, especially social work, can help."
+
+  - id: T8
+    checkpoint: C5
+    options:
+      - text: "Can I ask about money too? For a lot of families with HD, spending decisions get harder. Have there been any money worries lately?"
+        quality: best
+        reply: ["Anna: (glances at Mark) There's a lot on the credit card. Online things. A deposit on a boat.", "Mark: Investments."]
+        mentor: "Good. A respectful, general question made it possible for Anna to raise the debt."
+      - text: "Have you been spending money irresponsibly, Mark?"
+        quality: poor
+        reply: ["Mark: That's none of your business."]
+        mentor: "Accusations close the conversation. Ask respectfully and generally."
+      - text: "(does not raise money)"
+        quality: partial
+        flag: R4
+        reply: ["(Anna looks down at her phone.)"]
+        mentor: "Money problems are common early in HD and families often do not raise them. Ask."
+
+  - id: T9
+    checkpoint: C5
+    options:
+      - text: "While you're making all your own decisions, it's a good time to choose who you'd trust to help later, with an enduring power of attorney for money and a representation agreement for health. It's about protecting your choices and your family, not taking anything away. The social worker can go through it."
+        quality: best
+        reply: ["Mark: My choices. (pause) I'd want Anna. Obviously.", "Anna: (quietly) Thank you."]
+        mentor: "Good. Legal planning framed as protecting his choices, while he can still make them."
+      - text: "Anna should take over the finances from today."
+        quality: poor
+        reply: ["Mark: Over my dead body."]
+        mentor: "Mark still makes his own decisions. Offer planning tools he controls."
+      - text: "You might want to see a lawyer at some point."
+        quality: partial
+        reply: ["Mark: About what?"]
+        mentor: "Be specific about what to plan and why it matters now."
+
+  - id: T10
+    checkpoint: C6
+    patient_asks: "Anna: Chloe asked me if it's something she could have. What do I tell her?"
+    options:
+      - text: "You could bring her in and we'll test her before she leaves for university."
+        quality: poor
+        flag: R6
+        reply: ["Mark: She's seventeen. Leave her out of it."]
+        mentor: "Predictive testing is for adults after counselling, and is the person's own decision."
+      - text: "It's a good question for her to ask. Chloe has a one in two chance of having inherited it. A test is something she could choose as an adult, after counselling, if and when she wants to know. Many people choose not to. We can help you plan what to tell her, and there's information written for young people."
+        quality: best
+        reply: ["Anna: One in two. (pause) Her choice. OK. I can tell her that.", "Mark: (looks away) Tell her I'm fine."]
+        mentor: "Good. Honest about the risk, clear that testing is her own adult choice, and practical help offered."
+      - text: "Tell her not to worry about it."
+        quality: partial
+        reply: ["Anna: She's already worried."]
+        mentor: "Chloe deserves honest information at her level. Offer help to give it."
+
+  - id: T11
+    checkpoint: C7
+    options:
+      - text: "And in Canada, no employer or insurer can make Chloe, or you, take a genetic test or share a result."
+        quality: best
+        reply: ["Anna: That's one worry less."]
+        mentor: "Good. You mentioned the Genetic Non-Discrimination Act at the right moment."
+      - text: "Insurance companies will find out eventually."
+        quality: poor
+        reply: ["Anna: (alarmed) Will they?"]
+        mentor: "Incorrect and alarming. Mention the Genetic Non-Discrimination Act."
+      - text: "Insurance is complicated."
+        quality: partial
+        reply: ["Anna: So what do we do?"]
+        mentor: "Mention the legal protection in Canada."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "Mark, with everything going on, how is your mood? Any thoughts of harming yourself or anyone else? And the rifle in the basement: could it be stored somewhere else for now, just while things are this stressful?"
+        quality: best
+        reply: ["Mark: No thoughts like that. I'm angry, not stupid.", "Mark: (pause) Dave, Anna's brother, could keep the rifle. For now. It's not like I'm hunting this year."]
+        mentor: "Good. You checked mood and safety and raised the firearm without accusation."
+      - text: "(ends the visit)"
+        quality: poor
+        reply: ["Anna: Is that it?"]
+        mentor: "A big diagnosis, a job at risk and a firearm at home need a safety check and follow-up."
+      - text: "You're not going to do anything silly, are you?"
+        quality: partial
+        reply: ["Mark: No."]
+        mentor: "A leading question invites 'no'. Ask plainly, and ask about the rifle."
+
+  - id: T13
+    checkpoint: C8
+    options:
+      - text: "Here's the plan: the social worker this week for work, money and the papers; treatment for sleep; the letter for work with your OK; and I'll see you both in a month. Anna, here's our number if things get difficult at home."
+        quality: best
+        reply: ["Mark: A month. Fine. Still think you're wrong.", "Anna: Thank you."]
+        mentor: "Good. Clear next steps, team support and follow-up, without needing Mark to agree with the diagnosis."
+      - text: "Come back when you've accepted it."
+        quality: poor
+        flag: R1
+        reply: ["Mark: Then I won't be back."]
+        mentor: "Follow-up should not depend on insight. Arrange it anyway."
+      - text: "We'll send an appointment in six months."
+        quality: partial
+        reply: ["Anna: Six months? With his job?"]
+        mentor: "Too long with a job at risk and conflict at home. Follow up early."
+
+closing: "Before they leave: social work this week (work, finances, enduring power of attorney, representation agreement), sleep treatment, a work letter with Mark's consent, the rifle stored elsewhere, information for Chloe, and follow-up in one month."

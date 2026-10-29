@@ -1,0 +1,217 @@
+# Scenario C4-3: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Anna sits on the edge of the chair, sleeves pulled down over her hands. She checks her phone.)"
+  - "Anna: I'm sorry, I didn't know who else to talk to. Please don't tell Mark I came."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Of course. Everything you've done is between us."
+        quality: partial
+        reply: ["Anna: Thank you. (pause) Everything?"]
+        mentor: "Reassuring, but be honest about the limits of confidentiality."
+      - text: "I'm glad you came. What you tell me today stays between us, and I won't tell Mark you were here unless you agree. The only exception would be if I thought someone was in serious danger, and then I'd talk with you first. What's been happening?"
+        quality: best
+        reply: ["Anna: (breathes out) It's home. It's just... the shouting. It's a lot. I don't know who he is any more."]
+        mentor: "Good. Clear about confidentiality and its limits, then an open question."
+      - text: "As Mark's doctor too, I'll need to tell him about this conversation."
+        quality: poor
+        flag: R4
+        reply: ["Anna: Then forget it. I shouldn't have come."]
+        mentor: "Anna's visit is her own confidential consultation. Agree with her how information is used."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "That sounds exhausting. Living with this is really hard, and it makes sense to feel frightened. Can I ask you directly: has Mark ever hurt you, threatened you, or made you afraid?"
+        quality: best
+        reply: ["Anna: (long pause, pulls at her sleeve) Last week. He threw a plate. And he grabbed my arm. Hard. There's a bruise.", "Anna: He'd never done that before. An hour later he acted like nothing happened. I'm scared in the evenings now."]
+        mentor: "Good. You validated her and asked directly. She told you about the first physical incident."
+      - text: "Shouting is normal when someone's ill. It'll pass."
+        quality: poor
+        flag: R2
+        reply: ["Anna: (looks down) I suppose."]
+        mentor: "Minimising stops disclosure. Validate and ask directly about safety."
+      - text: "Is everything OK at home?"
+        quality: partial
+        reply: ["Anna: Mostly. It's just the shouting."]
+        mentor: "A general question invites 'mostly'. Ask directly about harm, threats and fear."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "Thank you for telling me. That's not OK, and it's not your fault. You were right to come."
+        quality: best
+        reply: ["Anna: (tearful) I keep thinking I said the wrong thing."]
+        mentor: "Good. Clear validation that the violence is not acceptable and not her fault."
+      - text: "What did you say before he grabbed you?"
+        quality: poor
+        reply: ["Anna: ...I don't know. Something about money."]
+        mentor: "This can sound like blame. Validate first."
+      - text: "OK. Let's think about what to do."
+        quality: partial
+        reply: ["Anna: (nods)"]
+        mentor: "Moving to action is fine, but acknowledge what she has just shared first."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "I need to ask about something in Mark's notes. Is the rifle still at Dave's? And has Mark said anything about not wanting to live, or about hurting anyone?"
+        quality: best
+        reply: ["Anna: (pale) He took it back three weeks ago. 'My rifle, my house.' I don't know where it is now.", "Anna: Last week he said, 'If they take everything away from me, there's no point.' I don't know if he meant himself."]
+        mentor: "Good. Direct questions about the firearm and Mark's words revealed a much higher level of risk."
+      - text: "(does not ask about weapons)"
+        quality: poor
+        flag: R5
+        reply: ["(Anna checks her phone again.)"]
+        mentor: "A firearm was in the notes. With escalating aggression, ask about weapons and threats."
+      - text: "Are there any weapons in the house?"
+        quality: partial
+        reply: ["Anna: There's his rifle. I think. He took it back from my brother."]
+        mentor: "Good start; also ask about anything Mark has said about not wanting to live or hurting anyone."
+
+  - id: T5
+    checkpoint: C3
+    options:
+      - text: "What Mark said worries me too. I'd like to make sure his HD team sees him urgently, and that the rifle is out of the house. Would Dave be able to help with that, if it's safe? If he ever says anything like that again, or you think he's about to act on it, call 911."
+        quality: best
+        reply: ["Anna: Dave could talk to him. Mark listens to Dave.", "Anna: Can his team see him without him knowing I told you?"]
+        mentor: "Good. You took Mark's statement seriously, planned firearm removal and urgent review, and gave emergency advice."
+      - text: "He's probably just venting."
+        quality: poor
+        flag: R5
+        reply: ["Anna: I hope so."]
+        mentor: "A possible suicidal statement plus a firearm needs action, not reassurance."
+      - text: "I'll phone Mark now and ask him."
+        quality: partial
+        flag: R4
+        reply: ["Anna: No! He'll know I was here."]
+        mentor: "Mark's risk must be addressed, but plan with Anna how to do it without endangering her."
+
+  - id: T6
+    checkpoint: C5
+    patient_asks: "Anna: Is this the HD, or is he just angry with me?"
+    options:
+      - text: "It's the disease, so he can't help it. You'll have to try not to provoke him."
+        quality: poor
+        flag: R2
+        reply: ["Anna: (quietly) So it is my fault."]
+        mentor: "This blames Anna and excuses violence. Irritability can be a symptom, but her safety comes first."
+      - text: "Irritability and outbursts are very common in HD, and they can often be treated. So it's probably not about you. But even if it's the illness, being hurt is not OK, and your safety comes first. With your agreement, I'll ask his HD team for an urgent review. They see families' concerns all the time; we can agree together what I say."
+        quality: best
+        reply: ["Anna: It's the illness, but it's still not OK. (nods) Yes. Please ask them. Just be careful how."]
+        mentor: "Good. Explained irritability as a symptom without excusing violence, and arranged review with her agreement."
+      - text: "It's hard to say."
+        quality: partial
+        reply: ["Anna: Then what do I do?"]
+        mentor: "Explain what is known: irritability is common in HD and treatable, but safety comes first."
+
+  - id: T7
+    checkpoint: C4
+    options:
+      - text: "You have to leave him. Today."
+        quality: poor
+        flag: R3
+        reply: ["Anna: It's not that bad. Forget I said anything."]
+        mentor: "Telling her what to do makes her retreat. Make a plan with her, respecting her choices."
+      - text: "Let's make a plan for if things get bad. What are the warning signs? If an argument starts in the evening, where could you go? Could you keep your phone and keys handy? And here are the numbers: 911 in an emergency, and VictimLinkBC, any time, call or text."
+        quality: best
+        reply: ["Anna: He goes quiet first, then loud. I could go to Dave's. It's ten minutes.", "Anna: (puts the number in her phone) I'll keep my keys by the door."]
+        mentor: "Good. A practical plan she chose herself, with crisis contacts."
+      - text: "Call the police if anything happens."
+        quality: partial
+        reply: ["Anna: Over a plate? They'd think I was overreacting."]
+        mentor: "Emergency advice is right, but build a fuller plan with her: warning signs, a place to go, support lines."
+
+  - id: T8
+    checkpoint: C6
+    options:
+      - text: "And how are you doing, Anna? Not Mark or Chloe. You."
+        quality: best
+        reply: ["Anna: (crying) I sleep four hours a night. I've told no one but Dave.", "Anna: I keep thinking 'in sickness and in health'. And sometimes I think about leaving. And then I hate myself for it."]
+        mentor: "Good. Asking about her directly let her say what she has been carrying."
+      - text: "You need to look after yourself so you can look after him."
+        quality: partial
+        reply: ["Anna: I know. I just don't know how."]
+        mentor: "Kind, but it keeps the focus on Mark. Ask how she is."
+      - text: "Lots of carers cope with much worse."
+        quality: poor
+        reply: ["Anna: (stops talking)"]
+        mentor: "Comparison dismisses her. Ask how she is coping and offer support."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "Those thoughts are very common, and they don't make you a bad person. You need support too. I'd like to refer you to a counsellor, and the Huntington Society of Canada has family support. Whatever you decide about the future is your decision."
+        quality: best
+        reply: ["Anna: Common. (wipes eyes) OK. A counsellor. Yes."]
+        mentor: "Good. You normalised her mixed feelings, offered support, and respected her decisions."
+      - text: "You should stay. He needs you."
+        quality: poor
+        flag: R3
+        reply: ["Anna: (silent)"]
+        mentor: "Do not decide for her, either way. Support her choices."
+      - text: "Maybe some time apart would help."
+        quality: partial
+        reply: ["Anna: I don't know if I could."]
+        mentor: "Explore her own thoughts rather than suggesting an answer."
+
+  - id: T10
+    checkpoint: C7
+    patient_asks: "Anna: Chloe wants to be tested. She'll be eighteen in five months. Can she do it now?"
+    options:
+      - text: "I can order the test today, since she's nearly eighteen."
+        quality: poor
+        flag: R6
+        reply: ["Anna: Really? She'd be so relieved. Or not."]
+        mentor: "Predictive testing is for adults after counselling, and is Chloe's own decision."
+      - text: "How is Chloe doing?"
+        quality: best
+        reply: ["Anna: She's staying at a friend's most nights. Her grades have dropped.", "Anna: She wants the test now 'so she can plan university'."]
+        mentor: "Good. Asking about Chloe first showed what is behind her request."
+      - text: "She can't be tested. That's the rule."
+        quality: partial
+        reply: ["Anna: So she just waits?"]
+        mentor: "Correct for now, but explain why, what she can do in the meantime, and ask how Chloe is."
+
+  - id: T11
+    checkpoint: C7
+    options:
+      - text: "That sounds really hard for her. The guidance is that predictive testing is for adults, after talking it through with a genetic counsellor, and it's Chloe's own decision, not yours or Mark's. When she turns eighteen she can start that process if she wants; it usually takes several appointments. In the meantime she could see a counsellor to talk about her worries, and there are good resources for young people. Would she come and see me?"
+        quality: best
+        reply: ["Anna: Her own decision. And she can start talking to someone now. (pause) I think she'd come. She likes you."]
+        mentor: "Good. Clear guidance, Chloe's autonomy, and support for her now."
+      - text: "You and Mark could consent for her, since she's under eighteen."
+        quality: poor
+        flag: R6
+        reply: ["Anna: Mark would never agree to anything right now."]
+        mentor: "Predictive testing is the person's own decision as an adult, not the parents'."
+      - text: "She should wait until she's thirty, when she's more mature."
+        quality: partial
+        reply: ["Anna: Thirty? She'll go mad."]
+        mentor: "There is no such rule. As an adult it is her decision, with counselling."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "Let me sum up. Your safety plan, with Dave's place and the numbers. I'll ask Mark's HD team for an urgent review, in the way we agreed, and Dave will try to get the rifle out. A counsellor for you, and an appointment for Chloe if she'd like. How can I contact you safely? I'd like to see you again next week."
+        quality: best
+        reply: ["Anna: Text my work phone, not my mobile. Next week. Thank you. I feel less alone."]
+        mentor: "Good. A clear summary, a safe way to reach her, and early follow-up."
+      - text: "Come back if anything else happens."
+        quality: poor
+        reply: ["Anna: (nods, stands up)"]
+        mentor: "With rising risk, agree a safe way to contact her and follow up soon."
+      - text: "I'll write all this in your notes."
+        quality: partial
+        reply: ["Anna: Can Mark see my notes?"]
+        mentor: "Documenting carefully is right; also reassure her about privacy, agree safe contact and follow up."
+
+closing: "Before she leaves: a safety plan (Dave's house, keys by the door, 911, VictimLinkBC), urgent review of Mark's care through his HD team as agreed with Anna, removal of the rifle, a counselling referral for Anna, an offer to see Chloe, a safe contact method, and follow-up next week."

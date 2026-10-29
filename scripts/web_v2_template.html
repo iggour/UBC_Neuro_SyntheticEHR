@@ -48,9 +48,12 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 .stage{font-size:.86rem;color:var(--mute);font-style:italic;margin:6px 0}
 .choice{display:block;width:100%;text-align:left;margin:6px 0}.choice.tried{opacity:.55;text-decoration:line-through}
 .prog{font-size:.84rem;color:var(--mute);margin-bottom:6px}
+.grp{margin:1.3rem 0 .5rem}.grp:first-of-type{margin-top:.4rem}
+.pick .d{display:block;font-size:.8rem;color:var(--mute);margin-top:5px;border-top:1px solid var(--line);padding-top:5px}
+.chip.draft{color:var(--warn);border-color:var(--warn);background:var(--warnbg);font-weight:600;vertical-align:middle}
 #gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
 #gate>div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}#gate[hidden]{display:none}
-@media print{.tabs,.no-print,#gate,.bar{display:none!important}body{background:#fff}}
+@media print{.tabs,.no-print,#gate,.bar:not(.notice){display:none!important}body{background:#fff}}
 </style></head><body>
 <div id="gate"><div><h2 style="margin-top:0">Before you start</h2>
 <p>This is an educational prototype with <b>fictional</b> patients and families. It is <b>not medical advice</b> and does not diagnose, treat or triage. It is not a substitute for a clinician or care team.</p>
@@ -59,7 +62,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 <div class="wrap">
 <h1>HD Anchor</h1>
 <p class="sub">Practising key conversations in Huntington disease care</p>
-<div class="bar">Prototype · fictional cases · educational only · not medical advice</div>
+<div class="bar notice"><b>All patients are fictional. AI-generated content for education only. Not medical advice.</b></div>
 <div class="tabs" role="tablist">
 <button role="tab" aria-selected="true" data-t="clin">For clinicians</button>
 <button role="tab" aria-selected="false" data-t="fam">For families</button>
@@ -90,9 +93,14 @@ function point(p){var m=p.match(/^(.*?)\s*\[([^\]]+)\]\s*$/);if(!m)return linkif
  var t=linkify(esc(m[1]));if(ids.length)return t+" "+srcChips(ids);return t+' <span class="chip">general clinical practice</span>'}
 function cardHtml(c){return '<details id="card-'+c.id+'" open><summary>'+esc(c.title)+'</summary><div class="card" style="margin-top:6px"><ul>'+c.points.map(function(p){return "<li>"+point(p)+"</li>"}).join("")+'</ul></div></details>'}
 function go(t){document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});["clin","fam","src","about"].forEach(function(x){document.getElementById(x).hidden=x!==t})}
-function picker(sel,fn){return '<div class="grid">'+D.scenarios.map(function(s,i){return '<button class="pick'+(i===sel?' sel':'')+'" onclick="'+fn+'('+i+')"><span class="n">Scenario '+(i+1)+'</span><span class="t">'+esc(s.topic)+'</span><span class="q">“'+esc(s.title)+'”</span></button>'}).join("")+'</div>'}
+function picker(sel,fn){var h="";
+ function btn(i,label){var s=D.scenarios[i];return '<button class="pick'+(i===sel?' sel':'')+'" onclick="'+fn+'('+i+')"><span class="n">'+label+'</span><span class="t">'+esc(s.topic)+'</span><span class="q">“'+esc(s.title)+'”</span>'+(s.desc?'<span class="d">'+esc(s.desc)+'</span>':'')+'</button>'}
+ D.cases.forEach(function(c){var idx=[];D.scenarios.forEach(function(s,i){if(s["case"]===c.n)idx.push(i)});if(!idx.length)return;
+  h+='<h3 class="grp">Case '+c.n+': '+esc(c.name)+(c.draft?' <span class="chip draft">Draft – not yet reviewed</span>':'')+'</h3><div class="grid">'+idx.map(function(i,k){return btn(i,'Scenario '+(k+1))}).join("")+'</div>'});
+ return h}
 function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+picker(st.sc,"pickSc");
  var names=["1. Learn","2. Practise","3. Feedback"];
+ if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
  h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+'</div>';
  if(st.step===0){h+='<div class="card"><h3 style="margin-top:0">The situation</h3><p>'+esc(s.brief)+'</p><p class="note">Setting: '+esc(s.setting)+'</p><h3>In this conversation, aim to</h3><ul>'+s.goals.map(function(g){return"<li>"+esc(g)+"</li>"}).join("")+'</ul></div><h2>Key facts</h2>'+s.cards.map(cardHtml).join("")+'<div class="no-print"><button class="btn pri" onclick="step(1)">Start practising</button></div>'}
  if(st.step===1){h+=practise(s)}
@@ -148,6 +156,7 @@ function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
 function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
 function fam(){var s=D.scenarios[st.famsc],p=s.prep,q=st.famq[s.id]||(st.famq[s.id]={});
  var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2>'+picker(st.famsc,"pickFam");
+ if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
  h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');
  p.sections.forEach(function(sec,si){h+='<h3>'+esc(sec.h)+'</h3>';
   if(sec.items.length)h+='<ul>'+sec.items.map(function(x){return"<li>"+linkify(esc(x))+"</li>"}).join("")+'</ul>';
@@ -160,8 +169,12 @@ function famTick(k,v){st.famq[D.scenarios[st.famsc].id][k]=v;fam()}
 function copyList(){var t=document.getElementById("mylist").textContent,m=document.getElementById("copied");
  try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied"},function(){m.textContent="Select the text to copy"})}catch(e){m.textContent="Select the text to copy"}}
 function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by a clinical reviewer. Content is paraphrased, not copied.</p><ul>';
- Object.keys(D.sources).forEach(function(k){h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
- h+='</ul></div><div class="card"><h2 style="margin-top:0">Disclaimers</h2><ul><li>All people and situations are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, treat or triage.</li><li>Always follow local guidelines and your care team.</li></ul></div>';
+ var dr=D.draftSources||[];
+ Object.keys(D.sources).forEach(function(k){if(dr.indexOf(k)<0)h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
+ h+='</ul></div>';
+ if(dr.length){h+='<div class="card"><h2 style="margin-top:0">Sources for draft cases (not yet reviewed)</h2><p class="note">Used by Cases 2 and 3, which are drafts. Not yet checked by a clinical reviewer.</p><ul>';
+  dr.forEach(function(k){h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});h+='</ul></div>'}
+ h+='<div class="card"><h2 style="margin-top:0">Disclaimers</h2><ul><li>All people and situations are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, treat or triage.</li><li>Always follow local guidelines and your care team.</li></ul></div>';
  document.getElementById("src").innerHTML=h}
 document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){go(b.dataset.t)}});
 document.getElementById("gateok").onclick=function(){document.getElementById("gate").hidden=true};

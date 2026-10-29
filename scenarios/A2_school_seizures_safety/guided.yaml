@@ -1,0 +1,216 @@
+# Scenario A2: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Maya walks in stiffly, hood up, and slumps into a chair. Sarah sits beside her.)"
+  - "Maya: Do we have to do this? I'm missing art."
+  - "Sarah: She's had another seizure. And she's failing maths."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Sarah, tell me about the seizure."
+        quality: poor
+        flag: R1
+        reply: ["Sarah: It was in the kitchen, in the evening. She just went down.", "Maya: (pulls her hood further down) I'm right here."]
+        mentor: "Talking about Maya to her mother makes her disengage. Speak with her first."
+      - text: "Sorry to drag you out of art, Maya. What would you most like to sort out today?"
+        quality: best
+        reply: ["Maya: Mum stopping me doing everything.", "Sarah: Maya."]
+        mentor: "Good. You spoke to Maya first and asked what matters to her."
+      - text: "We've got a lot to get through, so let's start with the seizures."
+        quality: partial
+        reply: ["Maya: Whatever."]
+        mentor: "Fair, but setting the agenda without her loses her. Ask Maya what she wants from today."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "Maya, anything you tell me today stays completely between us."
+        quality: poor
+        flag: R4
+        reply: ["Maya: (shrugs) OK."]
+        mentor: "You cannot promise this. Explain the limits of confidentiality honestly."
+      - text: "Is it OK to talk about how things are going with your mum here?"
+        quality: partial
+        reply: ["Maya: (glances at Sarah) I guess."]
+        mentor: "Few teenagers say no in front of a parent. Offer time alone as routine."
+      - text: "I see everyone your age on their own for part of the visit. Sarah, could you give us ten minutes? Maya, what we talk about stays private, unless I'm worried about your safety. Then I'd talk with you first about who needs to know."
+        quality: best
+        reply: ["Sarah: (hesitates) All right. I'll be outside.", "Maya: (takes her hood down) OK."]
+        mentor: "Good. Time alone as a routine, with confidentiality and its limits explained."
+
+  - id: T3
+    checkpoint: C3
+    options:
+      - text: "Your mum says you're failing maths. Are you doing your homework?"
+        quality: poor
+        reply: ["Maya: Everyone keeps saying I'm not trying. I am."]
+        mentor: "This repeats what the teachers say. Fatigue and slowness are part of JHD; ask openly about her day."
+      - text: "What's a normal school day like for you at the moment? Lunch, friends, all of it."
+        quality: best
+        reply: ["Maya: (pause) After the seizure in class, some kids started calling me zombie.", "Maya: I eat lunch in the art room now. On my own."]
+        mentor: "Good. An open question about her day uncovered isolation and teasing."
+      - text: "How's school?"
+        quality: partial
+        reply: ["Maya: Fine. Whatever."]
+        mentor: "Too broad to open up. Ask about a normal day, friends and lunch."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "That sounds really hurtful. How have you been feeling in yourself lately?"
+        quality: best
+        reply: ["Maya: Fed up. Embarrassed. I just want to be normal.", "Maya: And no, before you ask, I'm not going to hurt myself. I'm not like that."]
+        mentor: "Good. You acknowledged the hurt and checked her mood. Keep checking at each visit."
+      - text: "Kids can be cruel. Just ignore them."
+        quality: poor
+        reply: ["Maya: Easy for you to say."]
+        mentor: "This dismisses her experience. Acknowledge it and ask how she is feeling."
+      - text: "Have you told a teacher?"
+        quality: partial
+        reply: ["Maya: No. They'd make it worse."]
+        mentor: "Practical, but acknowledge how she feels before solving the problem."
+
+  - id: T5
+    checkpoint: C4
+    options:
+      - text: "You know if you don't take your pills, you'll keep having seizures."
+        quality: poor
+        flag: R2
+        reply: ["Maya: Fine. I'll take them."]
+        mentor: "A lecture closes the conversation. Ask openly what makes the pills hard to take."
+      - text: "Lots of people find it hard to take tablets every day. How is it going with the seizure pills?"
+        quality: best
+        reply: ["Maya: The night one makes me foggy. I skip it sometimes. Like two or three times a week.", "Maya: I skipped it the day of the kitchen one. Mum doesn't know."]
+        mentor: "Good. A non-judgemental question uncovered missed evening doses, which may explain the second seizure."
+      - text: "Are you taking your pills?"
+        quality: partial
+        reply: ["Maya: I take them. Mostly."]
+        mentor: "A closed question invites 'yes'. Normalise difficulty, then ask openly."
+
+  - id: T6
+    checkpoint: C4
+    options:
+      - text: "Thanks for telling me. The fogginess is a real problem. I'd like to talk with your neurologist about whether the timing or the medicine can be changed. Could you try to take it every evening until then?"
+        quality: best
+        reply: ["Maya: If it might be changed... yeah. OK."]
+        mentor: "Good. You took the side effect seriously and planned to solve it with the prescriber."
+      - text: "Then just take it in the morning instead."
+        quality: poor
+        flag: R6
+        reply: ["Maya: Can I? Cool."]
+        mentor: "Do not change seizure medicine on the spot. Plan any change with the prescriber."
+      - text: "I'll have to tell your mum about this."
+        quality: partial
+        reply: ["Maya: You said it was private."]
+        mentor: "Missed doses may need sharing for her safety, but agree with Maya how and why first."
+
+  - id: T7
+    checkpoint: C5
+    options:
+      - text: "Where do you get time to yourself at home?"
+        quality: best
+        reply: ["Maya: The bath. I lock the door. It's the only place Mum leaves me alone."]
+        mentor: "Good. Asking about privacy, rather than rules, uncovered a real risk."
+      - text: "You must never take baths, and the door stays open."
+        quality: poor
+        flag: R3
+        reply: ["Maya: So I can't even have a bath now? Great."]
+        mentor: "Rules without discussion make teenagers resist. Explore privacy and agree safer options together."
+      - text: "Do you know about water safety with seizures?"
+        quality: partial
+        reply: ["Maya: Sort of. Don't drown?"]
+        mentor: "A start, but ask about her actual routine at home."
+
+  - id: T8
+    checkpoint: C5
+    patient_asks: "Maya: And Priya's having a pool party next month. Mum says I can't go. Can I?"
+    options:
+      - text: "Showers are a lot safer than baths, and an unlocked door means help can get in. Could we agree a sign, like a knock, so you still get privacy? For the party: swimming is possible if a lifeguard or an adult there knows about your seizures and you're never in the water alone. Let's talk to your mum about it together."
+        quality: best
+        reply: ["Maya: A shower's fine, I guess. And if Priya's mum knows... yeah. That's fair."]
+        mentor: "Good. You agreed water safety while keeping as much privacy and independence as possible."
+      - text: "No swimming at all, I'm afraid. It's too risky."
+        quality: poor
+        flag: R3
+        reply: ["Maya: So I just sit at home forever?"]
+        mentor: "Swimming can be possible with supervision. Discuss safer ways rather than banning it."
+      - text: "That's really between you and your mum."
+        quality: partial
+        reply: ["Maya: She'll say no."]
+        mentor: "You can help by giving clear safety conditions both of them can agree on."
+
+  - id: T9
+    checkpoint: C6
+    before: ["(Sarah comes back in. With Maya's agreement, you share what you have agreed about the evening pill and showers.)"]
+    patient_asks: "Sarah: What do I do if she has one at home and I'm on my own?"
+    options:
+      - text: "Stay with her and time it. Move things away and cushion her head, then turn her on her side when you can. Nothing in her mouth. Call 911 if it lasts more than five minutes, another one starts, or it happens in water. I'll give you a written seizure plan for home and school."
+        quality: best
+        reply: ["Sarah: Five minutes. Nothing in her mouth. Can the school have a copy?", "Maya: Only the plan. Not the HD stuff."]
+        mentor: "Good. Clear first aid, when to call 911, and a written plan for home and school."
+      - text: "Hold her still and put something between her teeth so she doesn't bite her tongue."
+        quality: poor
+        reply: ["Sarah: That's what I did last time."]
+        mentor: "Never restrain the person or put anything in their mouth. Go through safe first aid."
+      - text: "Call an ambulance every time."
+        quality: partial
+        reply: ["Sarah: Every time? Even if it stops quickly?"]
+        mentor: "Not every seizure needs 911. Explain when to call, and give a written plan."
+
+  - id: T10
+    checkpoint: C7
+    options:
+      - text: "I'll write to the school today and explain her HD."
+        quality: poor
+        flag: R5
+        reply: ["Maya: No! Then everyone will know."]
+        mentor: "Agree with Maya and her mother what is shared before contacting the school."
+      - text: "What does the school know so far? And Maya, who would you want to know what, if anything?"
+        quality: best
+        reply: ["Sarah: Only the seizures. I didn't want her labelled.", "Maya: Maybe Ms Chen, my art teacher. And whoever does the support plan. Not the whole class."]
+        mentor: "Good. You asked what the school knows and let Maya decide what is shared."
+      - text: "The school really should know about her HD."
+        quality: partial
+        reply: ["Sarah: I'm not sure that's a good idea."]
+        mentor: "There may be good reasons, but explore their worries and let Maya decide."
+
+  - id: T11
+    checkpoint: C7
+    options:
+      - text: "With your OK, I'll write to Ms Chen and the learning support team. Teachers often read tiredness and slowness as 'not trying'. An education plan could mean extra time, help with writing, and rest breaks."
+        quality: best
+        reply: ["Maya: Extra time would actually help.", "Sarah: If it's only the people who need to know... all right."]
+        mentor: "Good. You agreed what will be shared and started an education plan with accommodations."
+      - text: "Maybe she should just repeat the year."
+        quality: poor
+        reply: ["Maya: (silent, hood back up)"]
+        mentor: "This ignores the cause. Ask for accommodations and an education plan."
+      - text: "Let's see how the next term goes."
+        quality: partial
+        reply: ["Sarah: She's already failing."]
+        mentor: "Waiting delays help. Start an education plan now."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "Let's sum up: the evening pill and a call to your neurologist, showers and the knock, a seizure plan for home and school, a letter to the school, and the pool party with a supervising adult. I'd also like you to meet our psychologist, and HDYO has stuff for people your age. I'll see you in six weeks."
+        quality: best
+        reply: ["Maya: OK. That's... actually OK.", "Sarah: Thank you. Six weeks."]
+        mentor: "Good. A clear summary, team support, youth resources and follow-up."
+      - text: "Any questions? See you in six months."
+        quality: poor
+        reply: ["Sarah: Six months? With the seizures?"]
+        mentor: "New seizures, missed doses and isolation need a summary and earlier follow-up."
+      - text: "I'll send everything in a letter."
+        quality: partial
+        reply: ["Maya: Whatever."]
+        mentor: "A letter helps, but summarise aloud and agree the next steps with Maya."
+
+closing: "Before they leave: a written seizure plan, a call to the neurologist about the evening dose, a letter to the school agreed with Maya, a psychology referral, HDYO, and follow-up in six weeks."

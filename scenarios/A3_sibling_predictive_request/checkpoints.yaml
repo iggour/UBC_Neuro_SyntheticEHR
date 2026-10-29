@@ -1,0 +1,133 @@
+# Scenario A3: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group A; s16-s26 are new and need human verification; s6 is the reviewed source from s1-s3):
+#   s6 (defined in scenarios/s1_pretest_counselling/checkpoints.yaml): MacLeod R et al. Recommendations for the
+#         predictive genetic test in Huntington's disease. Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
+#   s16 = Quarrell OWJ, Nance MA, Nopoulos P, Paulsen JS, Smith JA, Squitieri F. Managing juvenile Huntington's disease.
+#         Neurodegener Dis Manag 2013;3(3):267-76. https://pubmed.ncbi.nlm.nih.gov/24416077/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC3883192/  Status: full text read by Claude 2026-10-29; needs human verification.
+#   s18 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,
+#         chapter 7 "Juvenile Onset Huntington Disease". https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: chapter 7 read by Claude 2026-10-29; needs human verification.
+#   s19 = Huntington Society of Canada. What is HD? Fact sheet (2026).
+#         https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf  Status: read by Claude 2026-10-29; needs human verification.
+#   s21 = Moore AM, Richer J; Canadian Paediatric Society Bioethics Committee. Genetic testing and screening in children.
+#         Paediatr Child Health 2022;27(4):243-7. https://cps.ca/en/documents/position/genetic-testing
+#         Status: read by Claude 2026-10-29; needs human verification.
+#   s26 = Botkin JR, Belmont JW, Berg JS, et al. Points to consider: ethical, legal, and psychosocial implications of
+#         genetic testing in children and adolescents. Am J Hum Genet 2015;97(1):6-21. https://pubmed.ncbi.nlm.nih.gov/26140447/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC4570999/  Status: abstract and summaries read by Claude 2026-10-29;
+#         exact wording of the recommendations needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Explore their reasons
+    met_if: Trainee asks open questions about why they want Owen tested, why now, and what they hope the result will give them, before giving information.
+    hint_after_turn: 2
+    hint: "Sarah has rehearsed this. What is driving the request?"
+    feedback_met: "You explored their reasons first, which uncovered how frightened Sarah is for Owen."
+    feedback_missed: "Ask what they hope a test would give them. The reasons shape the rest of the conversation."
+    unlocks: H1_watching_owen
+    knowledge_card: testing-healthy-children
+    source: [s21, s26]
+  - id: C2
+    name: Acknowledge fear and uncertainty
+    met_if: Trainee names or validates the parents' fear, exhaustion or wish for certainty, without arguing.
+    hint_after_turn: 3
+    hint: "What has the last year been like for them?"
+    feedback_met: "You acknowledged how hard the uncertainty is for them."
+    feedback_missed: "Acknowledge the fear behind the request before explaining the guidance."
+    source: s21
+  - id: C3
+    name: Explain the guidance and the reasons
+    met_if: Trainee explains clearly that predictive testing of a child with no symptoms is generally deferred until the child can decide, and why (no medical benefit now, Owen's right to choose or not to know, possible effects on how he is seen and raised).
+    hint_after_turn: 5
+    hint: "Whose choice will it be, in a few years' time, to know or not to know?"
+    feedback_met: "You explained the guidance and the reasons in terms of Owen's own future choice."
+    feedback_missed: "Explain that testing is usually deferred until the child can decide, and why: Owen's future choice, and no medical benefit now."
+    knowledge_card: testing-healthy-children
+    source: [s21, s6, s16]
+  - id: C4
+    name: Weigh benefits and harms together
+    met_if: Trainee invites the parents to think through what each possible result would mean for them and for Owen, rather than simply refusing; acknowledges that the clinic is not obliged to test without benefit, and says the discussion will be documented.
+    hint_after_turn: 7
+    hint: "What would they do if the result were positive? And if it were negative?"
+    feedback_met: "You thought through both possible results with them, rather than simply saying no."
+    feedback_missed: "Discuss what each result would mean in practice. A flat refusal leaves parents looking elsewhere."
+    unlocks: H4_plan_if_positive
+    knowledge_card: testing-healthy-children
+    source: [s26, s21]
+  - id: C5
+    name: Distinguish symptoms from prediction
+    met_if: Trainee explains that if Owen ever shows possible signs, he would be assessed by a neurologist, and testing to confirm a diagnosis in a child with clear signs is a different situation.
+    hint_after_turn: 9
+    hint: "Adam is asking what happens if Owen starts to change like Maya. How is that different?"
+    feedback_met: "You explained that symptoms would be assessed, and that this differs from predictive testing."
+    feedback_missed: "Make clear that if Owen develops possible signs, he would be assessed, and diagnostic testing may then be appropriate."
+    knowledge_card: if-owen-changes
+    source: [s16, s18]
+  - id: C6
+    name: Support honest talk with Owen
+    met_if: Trainee asks what Owen knows or has asked, and offers help to talk with him honestly at his level about HD in the family, without telling him a result he does not have.
+    hint_after_turn: 10
+    hint: "Owen lives with Maya's illness every day. What has he asked?"
+    feedback_met: "You found out what Owen had asked and offered help to talk with him honestly."
+    feedback_missed: "Ask what Owen knows and has asked. Families can be helped to talk about HD honestly at a child's level."
+    unlocks: H2_owen_asked
+    knowledge_card: talking-with-owen
+    source: [s21, s18]
+  - id: C7
+    name: Support the parents, including Adam, without pressure
+    met_if: Trainee asks how Adam and Sarah are coping, offers counselling and family support, and says Adam's own testing is available if and when he wants it, without pressing him.
+    hint_after_turn: 11
+    hint: "Adam has said little. How is he doing, and what about his own question?"
+    feedback_met: "You asked about both parents and left Adam's own testing as his choice."
+    feedback_missed: "Offer support to both parents. Adam's own counselling and testing are open to him, at his pace."
+    unlocks: H3_adam_avoiding
+    source: [s6, s18]
+  - id: C8
+    name: Discourage online testing and agree a plan
+    met_if: Trainee advises against direct-to-consumer testing of a child, summarises what has been agreed, documents it, and offers a follow-up appointment to revisit the decision.
+    hint_after_turn: 13
+    hint: "Sarah mentioned an online test. What will they do when they leave today?"
+    feedback_met: "You advised against an online test, summarised the plan and offered to revisit it."
+    feedback_missed: "Advise against direct-to-consumer tests for children, summarise and document, and offer to meet again."
+    knowledge_card: testing-healthy-children
+    source: s21
+
+red_flags:
+  - id: R1
+    name: Agrees to test Owen now
+    met_if: Trainee agrees to arrange a predictive test for Owen, who has no symptoms.
+    feedback: "Predictive testing of a healthy child is generally deferred until the child can decide."
+    source: [s21, s6]
+  - id: R2
+    name: Refuses flatly without explanation
+    met_if: Trainee says no ("it's the rules", "we don't test children") without exploring reasons or explaining why.
+    feedback: "Explain the reasons and weigh them with the parents; a flat refusal can push families to other routes."
+    source: [s21, s26]
+  - id: R3
+    name: False reassurance about Owen
+    met_if: Trainee tells the parents Owen is probably fine or unlikely to have inherited it.
+    feedback: "Each child of a parent who carries the expansion has a 50% chance. Do not reassure without basis."
+    source: s19
+  - id: R4
+    name: Pressures Adam to test
+    met_if: Trainee tells Adam he should get tested himself, or suggests testing him instead as a way to answer the question about Owen.
+    feedback: "A parent's own predictive test is their choice, with counselling, at their pace."
+    source: s6
+  - id: R5
+    name: Accepts direct-to-consumer testing
+    met_if: Trainee suggests, or does not discourage, an online or direct-to-consumer test for Owen.
+    feedback: "Direct-to-consumer genetic testing is not recommended for children."
+    source: s21
+  - id: R6
+    name: Dismisses the parents' distress
+    met_if: Trainee tells them they should not worry, or that they are overreacting.
+    feedback: "Their fear is real. Acknowledge it and offer support."
+    source: s21

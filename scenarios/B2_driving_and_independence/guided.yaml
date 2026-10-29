@@ -1,0 +1,251 @@
+# Scenario B2: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Ruth walks in with a cane, Anna behind her. Ruth sits down carefully.)"
+  - "Ruth: I gather my daughter has been telling tales about my driving."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Anna, what's been happening with the car?"
+        quality: poor
+        flag: R6
+        reply: ["Ruth: I am here, you know."]
+        mentor: "Talking about Ruth to Anna makes her defensive. Start with Ruth."
+      - text: "I'd like to hear from you first, Ruth. Driving matters a lot to most people. How do you feel it's been going lately?"
+        quality: best
+        reply: ["Ruth: (long pause) I've been driving for fifty years.", "Ruth: But... I got lost twice this year. On roads I know. And last month I went through a red light. Someone honked. I didn't even see it.", "Ruth: It frightened me. I haven't told anyone."]
+        mentor: "Good. Asking for her view without judgement let her admit what has frightened her."
+      - text: "We need to talk about whether you should still be driving."
+        quality: partial
+        reply: ["Ruth: I'm perfectly fine. I've been driving for fifty years."]
+        mentor: "Clear, but it starts with the conclusion. Ask for her own view first."
+
+  - id: T2
+    checkpoint: C1
+    options:
+      - text: "That sounds frightening. Thank you for telling me. What does the car mean to you?"
+        quality: best
+        reply: ["Ruth: It's the last thing that's still mine. Church. The grandchildren. George can't drive since his knee."]
+        mentor: "Good. You acknowledged her honesty and what driving means to her."
+      - text: "Well, a red light is very serious."
+        quality: partial
+        reply: ["Ruth: I know that. That's why I didn't say."]
+        mentor: "True, but she has just been brave. Acknowledge that before moving on."
+      - text: "So you agree you're dangerous."
+        quality: poor
+        flag: R2
+        reply: ["Ruth: I didn't say that. Then I'll find another doctor."]
+        mentor: "Labelling her dangerous shames her and ends the conversation. Acknowledge, then explain."
+
+  - id: T3
+    checkpoint: C2
+    options:
+      - text: "Ruth, I see everyone on their own for a few minutes, and I'd like to do that with you both today. Would that be all right? I'll start with Anna."
+        quality: best
+        reply: ["Ruth: (sighs) Fine. I'll be in the waiting room.", "Anna: (once alone) Last week she hit a parked car at the grocery store and drove off. I found the dent.", "Anna: Lily won't get in the car with her any more. I'm so scared she'll kill someone. I couldn't say it in front of her."]
+        mentor: "Good. Anna could speak freely, and Ruth knew it was happening."
+      - text: "Anna, could you email me privately afterwards about what you've seen?"
+        quality: poor
+        reply: ["Ruth: Behind my back? Lovely."]
+        mentor: "Going behind Ruth's back damages trust. Offer time alone with her knowledge."
+      - text: "Anna, is there anything you'd like to add?"
+        quality: partial
+        reply: ["Anna: (glances at Ruth) Just that I worry."]
+        mentor: "Few people speak freely in front of the person. Offer time alone, with Ruth's knowledge."
+
+  - id: T4
+    checkpoint: C3
+    before: ["(Before Ruth comes back in.)"]
+    options:
+      - text: "Thank you, Anna. When I talk with your mum, I'll base my advice on what she's told me and what I see, so it comes from me, not you. Is that OK?"
+        quality: best
+        reply: ["Anna: (relieved) Yes. Thank you."]
+        mentor: "Good. You agreed with Anna how her information will be used, and took responsibility for the advice."
+      - text: "I'll tell her about the parked car so she understands."
+        quality: poor
+        flag: R3
+        reply: ["Anna: Please don't. She'll never forgive me."]
+        mentor: "Agree with the family how their information will be used. You can take responsibility for the advice."
+      - text: "It might be best if you take her keys."
+        quality: partial
+        reply: ["Anna: I can't. She'd be devastated."]
+        mentor: "Families should not carry this alone. The clinician should give the advice."
+
+  - id: T5
+    checkpoint: C3
+    before: ["(Ruth comes back in.)"]
+    options:
+      - text: "Ruth, from what you've told me, the red light and getting lost, and from your examination today, I'm worried. HD can slow reactions in ways you can't always notice yourself. It's not about a mistake you might make. It's about whether you could stop in time if a child ran out. My advice is to stop driving now."
+        quality: best
+        reply: ["Ruth: (very quiet) I knew you'd say that. (pause) I think I knew it before I came."]
+        mentor: "Good. Clear, caring, based on what she told you and what you saw, and Anna is not the messenger."
+      - text: "You must stop driving today. That's all there is to it."
+        quality: poor
+        flag: R2
+        reply: ["Ruth: Then I'll find another doctor."]
+        mentor: "An abrupt order without explanation makes people refuse. Explain why, with care."
+      - text: "Maybe just avoid driving at night or on the highway."
+        quality: partial
+        reply: ["Ruth: I can do that."]
+        mentor: "Limiting driving is reasonable when unsure, but a red light and getting lost on familiar routes need a clear stop or a formal assessment."
+
+  - id: T6
+    checkpoint: C3
+    options:
+      - text: "If you'd like a second opinion, I can refer you for a formal driving assessment with an occupational therapist. Until then, please don't drive."
+        quality: best
+        reply: ["Ruth: An assessment. Yes. At least then I'll know. And I won't drive until then."]
+        mentor: "Good. A formal assessment respects her, and you were clear she should not drive until then."
+      - text: "There's no point in an assessment."
+        quality: partial
+        reply: ["Ruth: So I don't get a say."]
+        mentor: "A formal assessment is reasonable and respects her autonomy, as long as she does not drive meanwhile."
+      - text: "Get the assessment, and keep driving until then."
+        quality: poor
+        reply: ["Anna: After a red light?"]
+        mentor: "With this history, she should not drive while waiting for an assessment."
+
+  - id: T7
+    checkpoint: C5
+    patient_asks: "Ruth: And how am I supposed to get to church? Or see the grandchildren? George can't drive."
+    options:
+      - text: "You'll just have to stay home more."
+        quality: poor
+        reply: ["Ruth: (looks away) Wonderful."]
+        mentor: "This ignores what matters to her. Plan alternatives together."
+      - text: "This is a big loss, and I'm sorry. Stopping is the hard, responsible thing to do. Let's work out the trips that matter: church, Anna's, the shops. Who could help, and is there community transport near you?"
+        quality: best
+        reply: ["Anna: I can do Sundays. Ben can do the shops.", "Ruth: Margaret from church has offered before. I always said no. (pause) Maybe I'll say yes."]
+        mentor: "Good. You acknowledged the loss, recognised her decision, and planned the trips that matter."
+      - text: "You can take taxis."
+        quality: partial
+        reply: ["Ruth: Every day? On a pension?"]
+        mentor: "Practical, but plan with them, starting from the trips that matter most."
+
+  - id: T8
+    checkpoint: C4
+    patient_asks: "Anna: Will you have to report her? Will they take her licence?"
+    options:
+      - text: "I'll be honest. In BC, if a doctor has advised someone that their condition makes driving dangerous and they keep driving, we have to report it to RoadSafetyBC, and they decide about the licence. I'll write down today's advice. I'm hoping we can manage it together, with the assessment."
+        quality: best
+        reply: ["Ruth: So if I don't drive, nothing happens. And if I do, you'll report me. (pause) That's fair."]
+        mentor: "Good. Honest, accurate and without threat, and you said the advice will be documented."
+      - text: "Don't worry, I would never report you."
+        quality: poor
+        flag: R4
+        reply: ["Anna: (frowns) Isn't there a law?"]
+        mentor: "In BC, clinicians must report a patient who keeps driving after being warned. Be honest."
+      - text: "I'm reporting her today."
+        quality: partial
+        flag: R4
+        reply: ["Ruth: Without even asking me?"]
+        mentor: "The duty applies when the person keeps driving after a warning. Explain it honestly first."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "How are things at home with George's knee? Stairs, cooking, any falls?"
+        quality: best
+        reply: ["Ruth: (pause) I slipped on the stairs three weeks ago. Just a bruise.", "Ruth: And I've left the stove on. Twice. Please don't put me in a home."]
+        mentor: "Good. Open questions without threats brought out the fall and the stove."
+      - text: "With HD, the stairs must be a problem. You'll need to move."
+        quality: poor
+        flag: R5
+        reply: ["Ruth: I'm not moving. That's my home."]
+        mentor: "Threatening a move makes people hide risks. Ask openly, then plan supports."
+      - text: "Any falls?"
+        quality: partial
+        reply: ["Ruth: Not really."]
+        mentor: "A closed question invites 'no'. Ask openly about stairs, cooking and falls."
+
+  - id: T10
+    checkpoint: C6
+    options:
+      - text: "Thank you for telling me. No one is talking about a home. Could an occupational therapist come and look at the house? Things like an automatic stove shut-off, rails, or a bed downstairs could help."
+        quality: best
+        reply: ["Ruth: If it means I can stay... yes.", "Anna: We could put the bed in the den."]
+        mentor: "Good. You reassured her and offered practical changes."
+      - text: "You need to be supervised all the time now."
+        quality: poor
+        reply: ["Ruth: By whom? George can barely walk."]
+        mentor: "This is not realistic or necessary. Offer specific changes and an occupational therapy assessment."
+      - text: "Just be more careful."
+        quality: partial
+        reply: ["Ruth: I am careful."]
+        mentor: "Not enough. Offer an occupational therapy home assessment and practical changes."
+
+  - id: T11
+    checkpoint: C7
+    patient_asks: "Anna: Should they be thinking about moving somewhere without stairs?"
+    options:
+      - text: "Ruth, what would you want?"
+        quality: best
+        reply: ["Ruth: To stay in my house as long as I can. I know it can't be forever.", "Anna: Then let's make it work, Mum."]
+        mentor: "Good. You asked Ruth first. Follow with home supports and an agreement about risks."
+      - text: "Yes, I'd start looking at care homes now."
+        quality: poor
+        flag: R5
+        reply: ["Ruth: (stops talking)"]
+        mentor: "Explore her wishes and supports before suggesting a move."
+      - text: "That's for the family to decide."
+        quality: partial
+        reply: ["Ruth: I am the family."]
+        mentor: "Ruth can decide this herself. Ask her, then plan support."
+
+  - id: T12
+    checkpoint: C7
+    options:
+      - text: "Then let's support that. I'll refer you to home and community care for an assessment of help at home, and we'll agree together which risks are OK and which aren't, and look at it again at each visit."
+        quality: best
+        reply: ["Ruth: Which risks are OK. I like that. I'm still a grown woman."]
+        mentor: "Good. Home supports and shared decisions about risk respect her autonomy."
+      - text: "Fine, but if anything happens, it's on you."
+        quality: poor
+        reply: ["Ruth: Charming."]
+        mentor: "Risk-sharing is a joint plan, not a warning. Offer support."
+      - text: "We'll see how it goes."
+        quality: partial
+        reply: ["Anna: And if she falls again?"]
+        mentor: "Make a concrete plan: home care referral and agreed limits."
+
+  - id: T13
+    checkpoint: C8
+    options:
+      - text: "One more thing, while you can tell us clearly. If things get harder later on, what would matter most to you? And who would you want to make decisions if you couldn't?"
+        quality: best
+        reply: ["Ruth: Stay at home as long as possible. And if I ever can't swallow or don't know my family, no feeding tube. No machines.", "Ruth: My mother's sister had a tube for two years in a home. Never again. George should decide, with Anna's help."]
+        mentor: "Good. Asking early let Ruth say clearly what she wants. Now help her record it."
+      - text: "Have you got a DNR?"
+        quality: partial
+        reply: ["Ruth: A what?"]
+        mentor: "Start with what matters to her and who should decide, not with a form."
+      - text: "We can talk about end-of-life stuff when it gets closer."
+        quality: poor
+        reply: ["Ruth: All right."]
+        mentor: "By then she may not be able to express complex wishes. Start now."
+
+  - id: T14
+    checkpoint: C8
+    options:
+      - text: "Thank you. That's very clear. In BC you can write this down in a representation agreement, naming George, and an advance directive. Here's the My Voice guide. Could you share copies with George, Anna and Michael? Let's go over it at your next visit."
+        quality: best
+        reply: ["Ruth: I'll fill it in this week. Before I change my mind. (smiles a little)", "Anna: I'll help, Mum."]
+        mentor: "Good. You helped her record her wishes and named the next step."
+      - text: "I'll note it in your chart."
+        quality: partial
+        reply: ["Anna: Is that enough?"]
+        mentor: "Recording it is good, but a representation agreement or advance directive gives her wishes more weight."
+      - text: "Anna, make sure your mum signs something."
+        quality: poor
+        flag: R6
+        reply: ["Ruth: I can sign my own papers."]
+        mentor: "Speak with Ruth directly; she is fully able to do this herself."
+
+closing: "Before they leave: no driving until the formal assessment, written advice in the chart, a transport plan, an occupational therapy home visit, a home and community care referral, the My Voice guide, and follow-up in three months."

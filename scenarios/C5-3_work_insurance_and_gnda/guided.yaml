@@ -1,0 +1,219 @@
+# Scenario C5-3: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Legal points in this file were checked on 2026-10-29 and must be re-checked before use.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Kevin has a printout of the Genetic Non-Discrimination Act with highlighted lines.)"
+  - "Kevin: I need to know what I'm legally allowed to keep to myself. Work and insurance."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Let's work through it. What decisions are you facing right now, and what's prompted this today?"
+        quality: best
+        reply: ["Kevin: Two things. I'm applying for life and critical illness insurance, for Ava. And I've been offered a promotion. I don't know what to tell anyone."]
+        mentor: "Good. You found the real decisions behind his question."
+      - text: "Legally, you can keep everything to yourself."
+        quality: poor
+        flag: R5
+        reply: ["Kevin: That's what I hoped. Great."]
+        mentor: "A blanket legal answer is wrong and beyond your role. Start with his situation."
+      - text: "That's really a question for a lawyer."
+        quality: partial
+        reply: ["Kevin: I can't afford a lawyer for every question."]
+        mentor: "Referral matters, but you can give general information and help him think. Start with what he is deciding."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "Here's what the Genetic Non-Discrimination Act does, as of when I checked it this week. No one providing a service or a contract, including insurers and employers, can make you take a genetic test, or make you show them your test results. And they can't collect or use your results without your written consent."
+        quality: best
+        reply: ["Kevin: Right. That's the bit I highlighted."]
+        mentor: "Good. Accurate, specific, and dated."
+      - text: "It protects all your genetic information from everyone."
+        quality: poor
+        flag: R1
+        reply: ["Kevin: Everything. Good."]
+        mentor: "Overstated. It covers genetic test results in specific situations."
+      - text: "It's about genetic discrimination."
+        quality: partial
+        reply: ["Kevin: Meaning what, exactly?"]
+        mentor: "Too vague. Explain what it actually prohibits."
+
+  - id: T3
+    checkpoint: C3
+    patient_asks: "Kevin: The Act says they can't use my genetic results. So I don't have to mention HD at all, right?"
+    options:
+      - text: "Right, you don't have to mention it."
+        quality: poor
+        flag: R2
+        reply: ["Kevin: Great, that's what I thought. I'll leave it off."]
+        mentor: "This is the key mistake. The Act covers test results, not a diagnosed condition or symptoms."
+      - text: "This is the important part. The Act protects your test results, not your diagnosis. You now have a diagnosed condition with symptoms, and insurers can ask about diagnosed conditions, symptoms and family history. Those questions need honest answers. Leaving it off could cause big problems later, when Mei or Ava most need the policy."
+        quality: best
+        reply: ["Kevin: (sits back) So the Act doesn't help me at all here. I was going to leave it off.", "Kevin: So what do I do?"]
+        mentor: "Good. You explained the gap clearly and why honesty matters, and he told you his plan."
+      - text: "It's complicated. I'd be careful."
+        quality: partial
+        reply: ["Kevin: Careful how?"]
+        mentor: "Be specific: test results vs diagnosis, and answering honestly."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "It still helps: if they ask about genetic tests, you don't have to answer, and they can't use your result without consent. For the application, an independent insurance adviser can tell you what's realistic, and you may still have options. The group cover you already have through work doesn't go away because of the diagnosis."
+        quality: best
+        reply: ["Kevin: An adviser. And keep the work cover. OK."]
+        mentor: "Good. What the Act still does, plus independent advice and a reminder about existing cover."
+      - text: "You won't get insurance now, so don't bother."
+        quality: poor
+        reply: ["Kevin: (deflated) Great."]
+        mentor: "Do not predict outcomes you cannot know. Point to independent advice."
+      - text: "Just answer the questions."
+        quality: partial
+        reply: ["Kevin: And then what?"]
+        mentor: "Right, but add independent advice and what protections remain."
+
+  - id: T5
+    checkpoint: C4
+    patient_asks: "Kevin: Can my employer fire me for having HD?"
+    options:
+      - text: "No, the Act and the Canadian Human Rights Act protect genetic characteristics at every job."
+        quality: poor
+        flag: R6
+        reply: ["Kevin: Every job. Good."]
+        mentor: "The Canadian Human Rights Act covers federally regulated employers only. A BC company falls under the BC Human Rights Code."
+      - text: "Your studio is a private BC company, so the BC Human Rights Code applies, not the federal one. The BC Code doesn't list 'genetic' as such, but it protects people with a physical disability, including a disability an employer thinks you have or might get. Employers also have to accommodate a disability unless it causes undue hardship. That's general information; for your situation, a lawyer or the social worker can help."
+        quality: best
+        reply: ["Kevin: So the protection is because it's a disability, not because it's genetic. That's... different from what I thought."]
+        mentor: "Good. Accurate about which law applies, with limits and a referral."
+      - text: "They can't fire you for that."
+        quality: partial
+        flag: R5
+        reply: ["Kevin: Under which law?"]
+        mentor: "Be specific about which law applies and refer for individual advice."
+
+  - id: T6
+    checkpoint: C5
+    options:
+      - text: "How's work going right now? Is anything coming up?"
+        quality: best
+        reply: ["Kevin: HR wants a 'performance conversation' next week. A few coding errors.", "Kevin: I'm thinking of resigning before the meeting, so it doesn't go on my record."]
+        mentor: "Good. A simple question uncovered an urgent decision."
+      - text: "Congratulations on the promotion. You should take it."
+        quality: poor
+        reply: ["Kevin: (hesitates) Maybe."]
+        mentor: "Do not decide for him. Ask what is happening at work."
+      - text: "Is work stressful?"
+        quality: partial
+        reply: ["Kevin: Always."]
+        mentor: "Ask specifically whether anything is coming up."
+
+  - id: T7
+    checkpoint: C5
+    patient_asks: "Kevin: Should I just quit before the HR meeting?"
+    options:
+      - text: "Honestly, it might be easier to leave."
+        quality: poor
+        flag: R4
+        reply: ["Kevin: (relieved) Yeah. Then what about my disability insurance?"]
+        mentor: "Resigning can end group disability coverage. Plan first."
+      - text: "Please don't resign before we've planned. Your long-term disability insurance is through work; leaving could mean losing it. The errors may be part of HD, which matters for how the meeting goes. Let's get you to our social worker this week, before the meeting."
+        quality: best
+        reply: ["Kevin: I didn't think about the disability cover. OK. No resigning."]
+        mentor: "Good. You explained what resigning could cost and arranged help before the meeting."
+      - text: "That's up to you."
+        quality: partial
+        reply: ["Kevin: I know. I'm asking what you think."]
+        mentor: "It is his choice, but he needs to know what resigning could cost."
+
+  - id: T8
+    checkpoint: C6
+    options:
+      - text: "You'll need to tell HR everything before the meeting."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: I'm not putting HD in my HR file."]
+        mentor: "Disclosure is his decision. Help him weigh what he needs and who to tell."
+      - text: "What would help you do your job well right now? And who at work, if anyone, do you trust with this?"
+        quality: best
+        reply: ["Kevin: More time on reviews. A second pair of eyes on my code. Maybe not team lead yet.", "Kevin: My manager. His sister has MS. Not HR."]
+        mentor: "Good. You focused on his needs and the people he trusts."
+      - text: "Never tell anyone at work. It'll only hurt you."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: But then how do I explain the errors?"]
+        mentor: "Never telling can also cost him protection and support. Help him decide."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "That's a plan you could use. Some people tell a trusted manager first, and ask for changes based on what they need, for example a medical note that describes the support needed without naming the condition. If you later need formal accommodation, HR may need medical information. It's your choice, and you can do it in steps."
+        quality: best
+        reply: ["Kevin: In steps. Manager first, a note about what I need. I can do that."]
+        mentor: "Good. Practical, staged options, with disclosure left to him."
+      - text: "Just tell your manager and hope for the best."
+        quality: partial
+        reply: ["Kevin: And if HR finds out?"]
+        mentor: "Help him think about what to share and the next steps."
+      - text: "Give me your manager's email and I'll explain HD to them."
+        quality: poor
+        reply: ["Kevin: No. I'll do it."]
+        mentor: "Do not take over disclosure. Support him to do it his way."
+
+  - id: T10
+    checkpoint: C7
+    options:
+      - text: "Have you talked this over with Mei? What does she think?"
+        quality: best
+        reply: ["Kevin: She thinks I should tell everyone now and be done with it. We argued last night."]
+        mentor: "Good. You brought in his main support and found a source of stress."
+      - text: "Mei doesn't need to be involved in work stuff."
+        quality: poor
+        reply: ["Kevin: She kind of does. Her life changes too."]
+        mentor: "Disclosure affects the family. Ask about his support."
+      - text: "Talk it over at home."
+        quality: partial
+        reply: ["Kevin: We tried. It didn't go well."]
+        mentor: "Ask what she thinks and help him plan that conversation."
+
+  - id: T11
+    checkpoint: C7
+    options:
+      - text: "You both want to protect the family; you just see the risks differently. It might help to bring Mei to the social worker appointment, so you can plan it together."
+        quality: best
+        reply: ["Kevin: Together. Yeah. She'd like that."]
+        mentor: "Good. You reframed the disagreement and offered a shared next step."
+      - text: "She's right; just tell everyone."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: Thanks for taking her side."]
+        mentor: "Do not take sides. Help them decide together."
+      - text: "It's your decision, not hers."
+        quality: partial
+        reply: ["Kevin: Technically. But I live with her."]
+        mentor: "True, but help him include her."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "Let me sum up, and this is general information, not legal advice. The Act protects your test results, not your diagnosis, so answer insurance health questions honestly and talk to an independent adviser first. At work, the BC Human Rights Code is your main protection. Don't resign. See our social worker this week with Mei, before the HR meeting, and tell your manager in your own way if you choose. I'll see you after the meeting."
+        quality: best
+        reply: ["Kevin: Test results, not diagnosis. Honest forms. Social worker with Mei. Don't quit. (folds the printout) Thanks."]
+        mentor: "Good. A clear, dated summary, the limits of your advice, referrals and follow-up."
+      - text: "You'll be fine; the law's on your side."
+        quality: poor
+        flag: R1
+        reply: ["Kevin: Good to hear."]
+        mentor: "Overstates the protection. Summarise accurately and refer."
+      - text: "Come back if you have more questions."
+        quality: partial
+        reply: ["Kevin: Before the HR meeting?"]
+        mentor: "Arrange concrete follow-up and referrals before the meeting."
+
+closing: "Before he leaves: a written summary (general information, laws checked 2026-10-29), a social work appointment this week with Mei, a suggestion of independent insurance and legal advice, no resignation before planning, and follow-up after the HR meeting."

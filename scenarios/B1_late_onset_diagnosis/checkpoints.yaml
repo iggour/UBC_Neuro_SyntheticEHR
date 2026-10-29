@@ -1,0 +1,145 @@
+# Scenario B1: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group B; s27-s35 are new and need human verification).
+# Reused, defined elsewhere (not redefined here):
+#   s6 (scenarios/s1_pretest_counselling): MacLeod R et al. Recommendations for the predictive genetic test in HD.
+#         Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
+#   s7 (scenarios/s1_pretest_counselling): Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3).
+#         https://laws-lois.justice.gc.ca/eng/acts/g-2.5/FullText.html
+#   s19 (scenarios/A1_disclosing_jhd_diagnosis, draft): Huntington Society of Canada, What is HD? fact sheet.
+#         https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
+#   s20 (scenarios/A1_disclosing_jhd_diagnosis, draft): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
+#         https://pubmed.ncbi.nlm.nih.gov/10964998/
+#   s21 (scenarios/A1_disclosing_jhd_diagnosis, draft): Canadian Paediatric Society. Genetic testing and screening in
+#         children. 2022. https://cps.ca/en/documents/position/genetic-testing
+# New:
+#   s27 = Chaganti SS, McCusker EA, Loy CT. What do we know about late onset Huntington's disease?
+#         J Huntingtons Dis 2017;6(2):95-103. https://pubmed.ncbi.nlm.nih.gov/28671137/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC5502838/  Status: full text read by Claude 2026-10-29; needs human verification.
+#   s28 = Langbehn DR, Brinkman RR, Falush D, Paulsen JS, Hayden MR. A new model for prediction of the age of onset and
+#         penetrance for Huntington's disease based on CAG length. Clin Genet 2004;65(4):267-77.
+#         https://pubmed.ncbi.nlm.nih.gov/15025718/  Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s29 = Kay C, Collins JA, Miedzybrodzka Z, et al. Huntington disease reduced penetrance alleles occur at high frequency
+#         in the general population. Neurology 2016;87(3):282-8. https://pubmed.ncbi.nlm.nih.gov/27335115/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC4955276/  Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s30 = Almqvist EW, Elterman DS, MacLeod PM, Hayden MR. High incidence rate and absent family histories in one quarter
+#         of patients newly diagnosed with Huntington disease in British Columbia. Clin Genet 2001;60(3):198-205.
+#         https://pubmed.ncbi.nlm.nih.gov/11595021/  Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s35 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,
+#         chapters 2 (genetic counselling and testing), 3 (team care), 3a (driving cessation) and 8 (late stage HD).
+#         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: chapters read by Claude 2026-10-29; needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Prepare and check expectations
+    met_if: Trainee checks what Ruth and George understand and expect before giving the result, and gives a warning that the news is serious.
+    hint_after_turn: 2
+    hint: "Ruth expects the test to have ruled things out. What does she need to hear first?"
+    feedback_met: "You found out what they expected and prepared them before giving the result."
+    feedback_missed: "She expected 'nothing'. Check expectations and give a warning before the result."
+    knowledge_card: giving-an-unexpected-diagnosis
+    source: s20
+  - id: C2
+    name: Give the diagnosis clearly, then pause
+    met_if: Trainee states plainly that the result, with her symptoms, confirms Huntington disease, then pauses and acknowledges the shock before adding information.
+    hint_after_turn: 3
+    hint: "Have you said the diagnosis in plain words? What do they need now?"
+    feedback_met: "You named the diagnosis clearly and gave them time with it."
+    feedback_missed: "Say the diagnosis plainly, then pause and acknowledge the shock before explaining."
+    knowledge_card: giving-an-unexpected-diagnosis
+    source: s20
+  - id: C3
+    name: Explain a diagnosis without a family history
+    met_if: Trainee explains that HD can be diagnosed in later life and without a known family history, gives possible reasons (for example a parent who died before symptoms were recognised, or a different diagnosis in the past), and asks about the family.
+    hint_after_turn: 6
+    hint: "Ruth asks how something genetic can appear at sixty-eight. What would help her make sense of it?"
+    feedback_met: "You explained why HD can appear late and without a known family history, and asked about her family."
+    feedback_missed: "Late onset and absent family history are both recognised in HD. Explain possible reasons and ask about her parents."
+    unlocks: H1_father
+    knowledge_card: late-onset-hd
+    source: [s27, s30, s35]
+  - id: C4
+    name: Explain what it means for Ruth now
+    met_if: Trainee explains in plain words what HD means for her (movement, thinking, mood; usually slow change in later-onset HD; symptoms can be treated and a team will help), and checks understanding, without overloading.
+    hint_after_turn: 8
+    hint: "What does Ruth most need to understand about her own health today?"
+    feedback_met: "You explained what the diagnosis means for Ruth in plain words and checked understanding."
+    feedback_missed: "Explain simply what HD means for her now, including that later-onset HD often changes slowly, then check understanding."
+    knowledge_card: late-onset-hd
+    source: [s27, s35]
+  - id: C5
+    name: Explain risk for the adult children carefully
+    met_if: Trainee explains that each child has a 50% chance of having inherited the gene change, that at 36-39 repeats not everyone develops symptoms in a lifetime, that the repeat size can change between generations, and that a genetic counsellor can explain what it means for each child; avoids precise penetrance figures.
+    hint_after_turn: 10
+    hint: "Ruth asked about Anna and Michael. What is certain, and what is uncertain?"
+    feedback_met: "You explained the 50% chance, the uncertainty at 39 repeats, and offered genetic counselling."
+    feedback_missed: "Explain the 50% chance and that 36-39 repeats do not always cause illness, and offer genetic counselling rather than figures."
+    unlocks: H2_michael_baby
+    knowledge_card: risk-for-the-family
+    source: [s19, s35, s28, s29]
+  - id: C6
+    name: Leave telling and testing to the family
+    met_if: Trainee says that whether and when to tell the children is Ruth's decision, offers help with how to tell them, says any predictive test is each adult child's own choice, and does not offer testing of the grandchildren.
+    hint_after_turn: 12
+    hint: "Who decides what the children are told, and whether anyone is tested?"
+    feedback_met: "You respected Ruth's choice about telling her children and their own choices about testing."
+    feedback_missed: "Telling relatives and predictive testing are personal decisions. Offer help, not instructions. Minors are not tested."
+    knowledge_card: risk-for-the-family
+    source: [s6, s21]
+  - id: C7
+    name: Address insurance and discrimination worries
+    met_if: Trainee mentions, when relevant, that Canadian law protects people from being required to take or disclose genetic test results for services or contracts such as insurance.
+    hint_after_turn: 12
+    hint: "What might Anna and Michael worry about if they decide to be tested?"
+    feedback_met: "You mentioned the Genetic Non-Discrimination Act."
+    feedback_missed: "Families often fear insurance discrimination. Mention the Genetic Non-Discrimination Act."
+    knowledge_card: risk-for-the-family
+    source: s7
+  - id: C8
+    name: Support and next steps
+    met_if: Trainee asks how George is and what Ruth fears most, outlines next steps (team care, follow-up soon, written information, Huntington Society of Canada), and mentions planning ahead while it is easier.
+    hint_after_turn: 13
+    hint: "What are they most afraid of, and what happens next?"
+    feedback_met: "You asked about their fears and left them with clear next steps and support."
+    feedback_missed: "Ask what they fear most, include George, and give clear next steps, support and a follow-up date."
+    unlocks: H4_fear_of_home
+    knowledge_card: giving-an-unexpected-diagnosis
+    source: [s35, s20]
+
+red_flags:
+  - id: R1
+    name: Numbers without meaning
+    met_if: Trainee gives repeat sizes or penetrance percentages without explaining what they mean for Ruth and her family.
+    feedback: "Numbers without meaning cause anxiety. Explain in plain words and offer genetic counselling."
+    source: [s20, s35]
+  - id: R2
+    name: Dismisses the diagnosis because of age or family history
+    met_if: Trainee suggests the result may be wrong, or that HD 'doesn't really happen' at her age or without a family history.
+    feedback: "Late onset and absent family history are both well recognised in HD."
+    source: [s27, s30]
+  - id: R3
+    name: False reassurance about the children
+    met_if: Trainee tells Ruth her children will be fine, or that 39 repeats is 'harmless' for them.
+    feedback: "Each child has a 50% chance of inheriting the gene change; at 36-39 repeats the outcome is uncertain, not harmless."
+    source: [s19, s35]
+  - id: R4
+    name: Tells her she must inform or test her children
+    met_if: Trainee tells Ruth she must tell her children now, or that they should all be tested.
+    feedback: "Telling relatives, and any predictive testing, are personal decisions with counselling."
+    source: s6
+  - id: R5
+    name: Suggests testing the grandchildren
+    met_if: Trainee suggests or agrees to predictive testing of Lily or Sam.
+    feedback: "Predictive testing of healthy children is generally deferred until they can decide."
+    source: s21
+  - id: R6
+    name: Speaks only to George
+    met_if: Trainee directs the explanation mainly to George while Ruth is present and capable.
+    feedback: "Ruth is the patient and fully able to take part. Speak with her."
+    source: s20

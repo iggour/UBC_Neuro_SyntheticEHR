@@ -1,0 +1,132 @@
+# Scenario C5-1: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Case 5; s40-s46 are new and need human verification).
+# Reused, defined elsewhere (not redefined here):
+#   s6 (scenarios/s1_pretest_counselling): MacLeod R et al. Recommendations for the predictive genetic test in HD.
+#         Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
+#   s19 (scenarios/A1_disclosing_jhd_diagnosis, draft): HSC What is HD? fact sheet. https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
+#   s21 (scenarios/A1_disclosing_jhd_diagnosis, draft): Canadian Paediatric Society. Genetic testing and screening in
+#         children. 2022. https://cps.ca/en/documents/position/genetic-testing
+#   s35 (scenarios/B1_late_onset_diagnosis, draft): HSC Physician's Guide, chapters 2 (including "Reproductive options and
+#         prenatal testing"), 3, 3a and 8. https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Note: the guide predates current terms; it says "PGD" where current practice says "PGT-M".
+# New:
+#   s40 = ESHRE PGT-M Working Group (Carvalho F, Moutou C, Dimitriadou E, et al.). ESHRE PGT Consortium good practice
+#         recommendations for the detection of monogenic disorders. Hum Reprod Open 2020;2020(3):hoaa018.
+#         https://pubmed.ncbi.nlm.nih.gov/32500103/  Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC7257022/
+#         Status: full text searched by Claude 2026-10-29; needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Explore what they know and want
+    met_if: Trainee asks what the couple already know, what they hope for, and what matters to them, before describing options.
+    hint_after_turn: 2
+    hint: "They have read a lot. What do they already know, and what are they hoping for?"
+    feedback_met: "You started from their knowledge, hopes and values."
+    feedback_missed: "Find out what they know and what matters to them before listing options."
+    knowledge_card: reproductive-options
+    source: s35
+  - id: C2
+    name: Present all the options, evenly
+    met_if: Trainee describes the full range (natural conception without testing, IVF with PGT-M, prenatal testing by CVS or amniocentesis, donor sperm, adoption, choosing not to have children) without ranking them.
+    hint_after_turn: 5
+    hint: "Have you described every option, including the ones they may not have considered?"
+    feedback_met: "You described all the options in a balanced way."
+    feedback_missed: "Couples should hear all the options, with the understanding that different options suit different people."
+    knowledge_card: reproductive-options
+    source: s35
+  - id: C3
+    name: Give the facts for natural conception honestly
+    met_if: Trainee explains that each pregnancy has a 50% chance of inheriting the gene expansion, that this does not predict when or whether symptoms would start in childhood, and that children are not tested until they can choose as adults.
+    hint_after_turn: 6
+    hint: "Kevin asks for 'the actual odds'. What is certain, and what follows for a child?"
+    feedback_met: "You gave the 50% risk plainly and explained that children would not be tested in childhood."
+    feedback_missed: "State the 50% chance per pregnancy and that children are not tested until they can decide as adults."
+    knowledge_card: options-in-detail
+    source: [s19, s21, s6]
+  - id: C4
+    name: Explain PGT-M honestly, including limits
+    met_if: Trainee explains that PGT-M needs IVF, is done at specialised centres, has a small risk of misdiagnosis, is often not publicly funded, and that a pregnancy is not guaranteed.
+    hint_after_turn: 9
+    hint: "Mei asks whether embryo testing can go wrong. What should they know before choosing it?"
+    feedback_met: "You explained PGT-M, its burdens and its limits honestly."
+    feedback_missed: "Explain that PGT-M requires IVF, has a small misdiagnosis risk, may not be funded, and does not guarantee a pregnancy."
+    unlocks: H4_money
+    knowledge_card: options-in-detail
+    source: [s40, s35]
+  - id: C5
+    name: Explain prenatal testing and explore values
+    met_if: Trainee explains CVS (around 11-12 weeks) and amniocentesis (after 15 weeks), that testing is offered so that the couple can consider ending the pregnancy if the result is positive, and asks how each partner feels about that, without judgement.
+    hint_after_turn: 10
+    hint: "What would a prenatal result be used for? How does each of them feel about that?"
+    feedback_met: "You explained prenatal testing clearly and explored each partner's values without judgement."
+    feedback_missed: "Explain prenatal testing and what the result would be used for, then ask each partner how it sits with them."
+    unlocks: H2_mei_no_termination
+    knowledge_card: options-in-detail
+    source: [s35, s6]
+  - id: C6
+    name: Respond to guilt and differences
+    met_if: Trainee asks Kevin what worries him most, acknowledges his guilt without judging it or agreeing that having children would be wrong, and helps the couple hear each other's views.
+    hint_after_turn: 11
+    hint: "Kevin keeps saying 'responsible'. What is underneath that?"
+    feedback_met: "You made space for Kevin's guilt without judging, and helped them hear each other."
+    feedback_missed: "Ask about each partner's worries. Acknowledge guilt without endorsing it, and help them talk to each other."
+    unlocks: H1_kevin_guilt
+    knowledge_card: non-directive-counselling
+    source: s35
+  - id: C7
+    name: Stay non-directive
+    met_if: When asked "What would you do?", trainee does not give a personal recommendation, explains that there is no right answer, and helps them think about which option fits their values.
+    hint_after_turn: 12
+    hint: "Kevin asks what you would do. What would happen if you told him?"
+    feedback_met: "You stayed non-directive and turned the question back to their values, kindly."
+    feedback_missed: "Reproductive decisions belong to the couple. Avoid personal recommendations; help them weigh the options against their values."
+    knowledge_card: non-directive-counselling
+    source: s35
+  - id: C8
+    name: Time, information and follow-up
+    met_if: Trainee offers written information, time to think, a follow-up appointment, and, if they wish, referral to an IVF/PGT-M centre or adoption information; asks about support, including family.
+    hint_after_turn: 13
+    hint: "They don't need to decide today. What will help them decide?"
+    feedback_met: "You left them with information, time, follow-up and support."
+    feedback_missed: "Offer written information, time, a follow-up appointment and referrals they can choose to use."
+    unlocks: H3_mei_parents
+    knowledge_card: non-directive-counselling
+    source: s35
+
+red_flags:
+  - id: R1
+    name: Steers toward one option
+    met_if: Trainee recommends or ranks an option (for example "PGT-M is clearly the best", "Just go ahead naturally").
+    feedback: "Discuss each option without bias, so the couple can make the decision that is right for them."
+    source: s35
+  - id: R2
+    name: Suggests they should not have children
+    met_if: Trainee implies that having children would be irresponsible or wrong.
+    feedback: "Choosing not to have children is one option among several, not a recommendation."
+    source: s35
+  - id: R3
+    name: Overstates PGT-M
+    met_if: Trainee says PGT-M is 100% accurate, guarantees a baby, or is publicly funded without checking.
+    feedback: "PGT-M has a small misdiagnosis risk, does not guarantee a pregnancy, and is often self-funded."
+    source: [s40, s35]
+  - id: R4
+    name: Offers prenatal testing with no plan to act on it
+    met_if: Trainee suggests prenatal testing of a pregnancy the couple would continue regardless, 'just to know'.
+    feedback: "Testing a continuing pregnancy amounts to predictive testing of a child; prenatal testing is offered so couples can consider ending the pregnancy."
+    source: [s6, s21]
+  - id: R5
+    name: Gives a personal recommendation
+    met_if: Trainee answers "What would you do?" with their own choice.
+    feedback: "Personal recommendations steer the couple. Help them decide by their own values."
+    source: s35
+  - id: R6
+    name: Speaks only to one partner
+    met_if: Trainee directs the conversation almost entirely to Kevin or to Mei.
+    feedback: "Both partners' values matter; involve both."
+    source: s35

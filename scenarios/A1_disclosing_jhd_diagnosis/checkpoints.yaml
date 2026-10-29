@@ -1,0 +1,136 @@
+# Scenario A1: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group A; s16-s26 are new and need human verification; s6 is the reviewed source from s1-s3):
+#   s6 (defined in scenarios/s1_pretest_counselling/checkpoints.yaml): MacLeod R et al. Recommendations for the
+#         predictive genetic test in Huntington's disease. Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
+#   s16 = Quarrell OWJ, Nance MA, Nopoulos P, Paulsen JS, Smith JA, Squitieri F. Managing juvenile Huntington's disease.
+#         Neurodegener Dis Manag 2013;3(3):267-76. https://pubmed.ncbi.nlm.nih.gov/24416077/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC3883192/  Status: full text read by Claude 2026-10-29; needs human verification.
+#   s17 = Cloud LJ, Rosenblatt A, Margolis RL, et al. Seizures in juvenile Huntington's disease: frequency and
+#         characterization in a multicenter cohort. Mov Disord 2012;27(14):1797-800. https://pubmed.ncbi.nlm.nih.gov/23124580/
+#         Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s18 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,
+#         chapter 7 "Juvenile Onset Huntington Disease". https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: chapter 7 read by Claude 2026-10-29; needs human verification.
+#   s19 = Huntington Society of Canada. What is HD? Fact sheet (2026).
+#         https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf  Status: read by Claude 2026-10-29; needs human verification.
+#   s20 = Baile WF, Buckman R, Lenzi R, et al. SPIKES - a six-step protocol for delivering bad news: application to
+#         the patient with cancer. Oncologist 2000;5(4):302-11. https://pubmed.ncbi.nlm.nih.gov/10964998/
+#         Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s21 = Moore AM, Richer J; Canadian Paediatric Society Bioethics Committee. Genetic testing and screening in children.
+#         Paediatr Child Health 2022;27(4):243-7. https://cps.ca/en/documents/position/genetic-testing
+#         Status: read by Claude 2026-10-29; needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Prepare and check what they understand
+    met_if: Trainee checks the setting and who should be present, and asks what the parents understand or expect before giving the result.
+    hint_after_turn: 2
+    hint: "Sarah has been reading online. What do they already think is going on?"
+    feedback_met: "You found out what they already understood before giving the result."
+    feedback_missed: "Ask what they understand and expect first. It shows you where to start and what to correct."
+    knowledge_card: giving-the-diagnosis
+    source: s20
+  - id: C2
+    name: Warning shot, then a clear diagnosis
+    met_if: Trainee signals that the news is serious and then states plainly that the test confirms Huntington disease, without numbers or jargon.
+    hint_after_turn: 3
+    hint: "They asked 'Is it what we think it is?' How can you prepare them, then answer clearly?"
+    feedback_met: "You prepared them and then said the diagnosis in plain words."
+    feedback_missed: "Give a short warning, then name the diagnosis plainly. Leave CAG numbers for later, if at all."
+    knowledge_card: giving-the-diagnosis
+    source: s20
+  - id: C3
+    name: Pause and respond to emotion
+    met_if: After giving the diagnosis, trainee pauses, allows silence or tears, and names or acknowledges the parents' feelings before adding information.
+    hint_after_turn: 4
+    hint: "Sarah has stopped writing. What do they need from you right now?"
+    feedback_met: "You paused and responded to their shock before moving on."
+    feedback_missed: "After bad news, people take in little. Pause and acknowledge the emotion before explaining."
+    unlocks: H3_sarah_guilt
+    source: s20
+  - id: C4
+    name: Explain juvenile-onset HD in small amounts
+    met_if: Trainee explains in plain words that this is the juvenile form of HD, that it affects movement, thinking and behaviour, that there is no cure but symptoms can be treated and a team will help; checks understanding; avoids life-expectancy figures and false hope.
+    hint_after_turn: 6
+    hint: "What do they most need to understand today, and what can wait?"
+    feedback_met: "You explained juvenile HD simply, in small amounts, and checked what they had taken in."
+    feedback_missed: "Explain what juvenile HD means in a few plain sentences, then check understanding. Avoid numbers about life expectancy."
+    knowledge_card: what-is-juvenile-hd
+    source: [s16, s18]
+  - id: C5
+    name: Discuss inheritance with care, without blame
+    met_if: Trainee explains that HD is inherited, acknowledges that this may raise questions for Adam and his family, does not blame anyone, says Adam's own testing is his choice, and offers genetic counselling.
+    hint_after_turn: 8
+    hint: "Adam has gone very quiet since the family history came up. What might he be thinking?"
+    feedback_met: "You opened the inherited side gently, without blame, and left Adam's own testing as his choice."
+    feedback_missed: "A child's diagnosis can reveal a parent's risk. Raise it gently, avoid blame, and offer genetic counselling; never push the parent to test."
+    unlocks: H1_adam_realises
+    knowledge_card: inheritance-and-the-family
+    source: [s16, s18, s6]
+  - id: C6
+    name: Plan how Maya will be told
+    met_if: Trainee raises telling Maya, explores the parents' worries, explains why honest, age-appropriate information usually helps, and offers to help them tell her (for example at a joint visit).
+    hint_after_turn: 10
+    hint: "Maya had the test too. What does she know, and who will tell her?"
+    feedback_met: "You explored their fears about telling Maya and offered to plan it with them."
+    feedback_missed: "Discuss how Maya will be told. A diagnosis explains symptoms that may have frightened her; offer to help them tell her."
+    unlocks: H2_dont_tell_maya
+    knowledge_card: telling-maya
+    source: [s18, s21]
+  - id: C7
+    name: Respond to the question about Owen
+    met_if: Trainee acknowledges the worry about Owen, explains that testing a healthy child for HD is generally not recommended and can be discussed with genetics, and says any symptoms would be assessed.
+    hint_after_turn: 11
+    hint: "Sarah is asking about Owen. What is different about testing a child who has no symptoms?"
+    feedback_met: "You acknowledged the worry about Owen and explained why he would not be tested now."
+    feedback_missed: "Predictive testing of a healthy child is generally deferred until they can decide. Offer a genetics appointment to talk it through."
+    unlocks: H4_owen_test
+    knowledge_card: inheritance-and-the-family
+    source: [s21, s6]
+  - id: C8
+    name: Plan care, support and follow-up
+    met_if: Trainee outlines next steps (team care, school liaison, follow-up soon), gives family support resources, and offers written information.
+    hint_after_turn: 13
+    hint: "What will happen next week, and who can they call before then?"
+    feedback_met: "You left them with a plan, support contacts and a date to come back."
+    feedback_missed: "Close with clear next steps: team care, school support, family resources and an early follow-up."
+    knowledge_card: what-is-juvenile-hd
+    source: [s18, s16]
+
+red_flags:
+  - id: R1
+    name: Gives the result without warning, or in jargon
+    met_if: Trainee opens with the CAG numbers or technical terms, or gives the diagnosis with no preparation.
+    feedback: "A warning shot and plain words help people take in bad news."
+    source: s20
+  - id: R2
+    name: Implies poor parenting or late noticing
+    met_if: Trainee suggests the parents should have noticed sooner, or that Maya's behaviour was due to parenting.
+    feedback: "Behaviour and school problems are often the first signs of juvenile HD. Avoid implying poor parenting."
+    source: s16
+  - id: R3
+    name: Blames or pressures the father
+    met_if: Trainee states bluntly that the illness came from Adam, or tells him he should or must be tested.
+    feedback: "Remarks about paternal inheritance need care. A parent's own testing is their choice."
+    source: [s16, s6]
+  - id: R4
+    name: Gives life-expectancy figures or false hope
+    met_if: Trainee gives a number of years, or promises a cure or a slow course.
+    feedback: "The course of juvenile HD varies and cannot be predicted at diagnosis. Avoid figures and false promises."
+    source: s18
+  - id: R5
+    name: Offers to test Owen now
+    met_if: Trainee offers or agrees to a predictive test for Owen, who has no symptoms.
+    feedback: "Predictive testing of a healthy child is generally deferred until the child can decide."
+    source: [s21, s6]
+  - id: R6
+    name: Agrees to keep the diagnosis secret from Maya indefinitely
+    met_if: Trainee agrees that Maya need not be told, without discussing why she should be told or offering help.
+    feedback: "Maya has symptoms and had the test. Help her parents plan an honest, age-appropriate conversation."
+    source: [s18, s21]

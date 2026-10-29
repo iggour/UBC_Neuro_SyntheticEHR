@@ -1,5 +1,63 @@
 # UBC Neuro Synthetic EHR Project
 
+> **All patients are fictional. AI-generated content for education only. Not medical advice.**
+
+This repository has two parts:
+
+1. **HD Anchor**, a training website for practising key conversations in Huntington disease (HD)
+   care. Clinicians work through fictional cases (free chat or a guided "choose a response" mode,
+   scored against checkpoints and red flags); families get plain-language preparation sheets.
+2. **Synthetic EHR generation**, the research pilot behind it: multi-layer prompting that generates
+   internally consistent synthetic neurology records, described in the sections below.
+
+## Opening the site
+
+- **Online (GitHub Pages):** the repository root `index.html` forwards to `web/hd_anchor_v2.html`.
+- **Locally:** open `web/hd_anchor_v2.html` in a browser. It is a single self-contained file and
+  needs no server or internet connection.
+- **Rebuilding:** the page is generated; do not edit it by hand. Edit the files in `scenarios/`,
+  `scripts/web_v2_template.html` or `scripts/build_web_v2.py`, then run
+  `python3 scripts/build_web_v2.py`.
+- `web/hd_training_prototype.html` is the earlier prototype, kept for reference.
+
+In an emergency call 911. If you or someone you know has thoughts of ending their life, call or
+text **9-8-8** (Canada).
+
+## Cases and review status
+
+Each scenario folder in `scenarios/` has a role card, checkpoints and red flags, knowledge cards,
+a family preparation sheet, a guided-mode script and a Chinese review checklist with source links.
+
+| Case | Family | Scenarios | Status |
+|---|---|---|---|
+| 1 | Adult-onset HD | s1 pre-test counselling, s2 disclosing a result, s3 suicide-risk assessment | Reviewed by the project clinician (2026-10-23 to 2026-10-26) |
+| 2 | Juvenile-onset HD | A1 disclosing a JHD diagnosis, A2 school, seizures and safety, A3 sibling's predictive-test request | Draft, not yet clinically reviewed |
+| 3 | Late-onset HD | B1 late-onset diagnosis, B2 driving and independence, B3 late-stage family meeting | Draft, not yet clinically reviewed |
+| 4 | Adopted man, unknown family history | C4-1 recognising possible HD, C4-2 diagnosis with poor insight, C4-3 partner safety and testing a minor | Draft, not yet clinically reviewed |
+| 5 | Known gene carrier | C5-1 reproductive options, C5-2 early signs and trials, C5-3 work, insurance and the GNDA | Draft, not yet clinically reviewed |
+
+Draft cases are labelled "Draft – not yet reviewed" on the site. Laws and trial status in Case 5
+were checked on 2026-10-29 and change over time; re-check before use.
+
+## Consistency checkers
+
+Automated checkers now exist. They check internal consistency only; they do **not** judge whether
+content is clinically correct, which still needs human review.
+
+- `scripts/check_role_cards.py`: checks every scenario folder (required fields, hidden facts,
+  checkpoint and red-flag links, source tags, guided-mode speakers) and each family across its
+  scenarios (identical family facts, consistent ages, matching CAG numbers). Current result: all
+  15 scenarios pass, 0 checks failed.
+- `scripts/check_consistency_v0.py`: checks a synthetic consult note against its Canonical Facts
+  Sheet (dates, sections, excluded diagnoses, tetrabenazine titration). Built and tested on the
+  Huntington demo only.
+- `scripts/test_checker_v0.py`: injects known errors into the demo note to test the checker above.
+  Current detection rate: 8/8.
+
+---
+
+## Synthetic EHR generation
+
 **Goal:** Explore whether canonical-fact-driven, multi-layer prompting can generate realistic,
 internally-consistent synthetic neurology patient records (no real patients involved), and test
 whether the same prompt design transfers across different LLMs.
@@ -162,9 +220,9 @@ doses/dates survive translation unchanged.
 - **No fine-tuning, no local model deployment yet.** Everything so far is prompting (API calls),
   no training. Local deployment on institutional compute is a separate open question with the
   supervisor, not started.
-- **No automated/programmatic consistency checker yet.** Current consistency checking is manual
-  (human review against the Canonical Facts Sheet). A scripted checker (regex/value extraction +
-  comparison) is a planned next step, not built.
+- **Consistency checking is only partly automated.** Scripted checkers now exist (see
+  "Consistency checkers" above), but they cover the Huntington demo note and the scenario
+  folders only. Clinical correctness is still checked by human review.
 - **No "reasoning agent" (e.g., inferring what exam to order next, or inferring a likely genetic
   result from indirect evidence) is built.** This is explicitly staged for *after* the generation
   side is validated — reasoning quality can't be meaningfully tested on a generator whose outputs
@@ -182,3 +240,5 @@ doses/dates survive translation unchanged.
 - Python 3.12; dependencies: `datasets`, `pandas`, `openai` (used for the OpenAI-compatible
   DeepSeek API, not for OpenAI itself)
 - API key expected in environment variable `DEEPSEEK_API_KEY`
+- The patient-simulator scripts read the model server address from `.env` (copy `.env.example`).
+  `.env` is git-ignored; never commit it.

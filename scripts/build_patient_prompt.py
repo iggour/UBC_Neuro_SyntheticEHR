@@ -30,6 +30,8 @@ def main(path):
              "", "## Who you are", dump(card["persona"])]
     if "companion" in card:
         parts += ["", "## Person with you", dump(card["companion"])]
+    if "others" in card:
+        parts += ["", "## Other people in the conversation", dump(card["others"])]
     parts += ["", "## Facts (never change these)", dump(card["facts"]),
               "", "## Hidden items (reveal only when the condition is met)", dump(card["hidden"])]
     if "expected_questions" in card:

@@ -1,0 +1,235 @@
+# Scenario C5-1: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor response (some trigger a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Kevin has a printed list of questions. Mei sits close to him.)"
+  - "Kevin: We've read a lot online. We'd like to hear the options from someone who actually knows."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Happy to. Before I go through them, can you tell me what you've read, and what you're each hoping for?"
+        quality: best
+        reply: ["Mei: I want us to have children. I always have.", "Kevin: I want that too. I just want to make the responsible choice. I've read about embryo testing, mostly."]
+        mentor: "Good. You started from their knowledge and hopes."
+      - text: "The best route for most couples like you is IVF with embryo testing."
+        quality: poor
+        flag: R1
+        reply: ["Mei: (stiffens) Is it?", "Kevin: Why not the other options?"]
+        mentor: "Ranking options steers the couple. Explore what they know and want first."
+      - text: "There are six main options. Let me go through them."
+        quality: partial
+        reply: ["Kevin: OK. (opens his notes)"]
+        mentor: "Information is coming, but you do not yet know what matters to them."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "There are several paths, and different couples choose different ones. You can conceive naturally without testing; use IVF with embryo testing, called PGT-M; conceive naturally and test during pregnancy; use donor sperm; adopt; or decide not to have children. I'll go through each, and none is the 'right' one."
+        quality: best
+        reply: ["Mei: Donor sperm. I hadn't thought about that.", "Kevin: Go on. All of them."]
+        mentor: "Good. All options, presented evenly."
+      - text: "Basically it's embryo testing or taking your chances."
+        quality: poor
+        flag: R1
+        reply: ["Mei: That's it?"]
+        mentor: "This leaves out options and frames one as a gamble. Present the full range evenly."
+      - text: "Most people choose between natural conception and IVF."
+        quality: partial
+        reply: ["Kevin: Are there others?"]
+        mentor: "Describe the full range: prenatal testing, donor sperm, adoption, and not having children too."
+
+  - id: T3
+    checkpoint: C3
+    patient_asks: "Kevin: If we just go ahead naturally, what are the actual odds?"
+    options:
+      - text: "Each pregnancy has a one in two chance of inheriting the gene. A child wouldn't be tested in childhood; they'd decide for themselves as an adult whether to know."
+        quality: best
+        reply: ["Kevin: Fifty-fifty, every time. And they'd grow up not knowing, like I did.", "Mei: Like you did. And you turned out OK."]
+        mentor: "Good. The 50% risk stated plainly, and what it means for a child."
+      - text: "At 41 repeats, it's mild, so your children would probably be fine."
+        quality: poor
+        reply: ["Mei: Really? Then why are we here?"]
+        mentor: "Each pregnancy has a 50% chance of inheriting the expansion. Do not reassure without basis."
+      - text: "Fifty percent."
+        quality: partial
+        reply: ["Kevin: And then what? Would we test the baby?"]
+        mentor: "Correct, but also explain that children are not tested until they can decide as adults."
+
+  - id: T4
+    checkpoint: C4
+    options:
+      - text: "With PGT-M, you'd go through IVF. Mei would take fertility drugs, eggs are collected and fertilised with Kevin's sperm, and the embryos are tested. Only embryos without the HD expansion are transferred. It's done at specialised clinics."
+        quality: best
+        reply: ["Mei: So the baby wouldn't have it at all.", "Kevin: That's what I read. What's the catch?"]
+        mentor: "Good. Clear description. Now give the limits too."
+      - text: "PGT-M is basically foolproof."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: Nothing's foolproof."]
+        mentor: "PGT-M is accurate but not perfect. Be honest about its limits."
+      - text: "It's a type of IVF. The fertility clinic can explain."
+        quality: partial
+        reply: ["Mei: But how does it work?"]
+        mentor: "They came to understand the options. Explain the basics."
+
+  - id: T5
+    checkpoint: C4
+    patient_asks: "Mei: How reliable is the embryo testing? Can it go wrong?"
+    options:
+      - text: "It's very accurate, but not perfect: there's a small chance of a wrong result for technical reasons. IVF also doesn't guarantee a pregnancy, and it's physically demanding for Mei. And in BC it's usually paid for privately, so I'd check current costs and funding with the clinic."
+        quality: best
+        reply: ["Kevin: (quietly) Paid for privately. I looked up prices. My gene might cost us our house savings.", "Mei: Kevin. It's not 'your gene' like that."]
+        mentor: "Good. Honest about accuracy, burden and cost. It brought out a worry about money."
+      - text: "It's 100% reliable, and the government covers it."
+        quality: poor
+        flag: R3
+        reply: ["Kevin: Are you sure? That's not what I read."]
+        mentor: "Overstating accuracy or funding misleads. Be honest, and check current funding."
+      - text: "It rarely goes wrong."
+        quality: partial
+        reply: ["Mei: Rarely. How rarely?"]
+        mentor: "Be clear: small risk of misdiagnosis, no guarantee of pregnancy, and the cost."
+
+  - id: T6
+    checkpoint: C5
+    options:
+      - text: "Another option is to conceive naturally and test the pregnancy, with a sample from the placenta at about 11 to 12 weeks, or amniocentesis after 15 weeks. Couples choose this so they can consider ending the pregnancy if the result shows HD. How does that sit with each of you?"
+        quality: best
+        reply: ["Mei: (pause) I couldn't end a pregnancy for this. It's just not something I could do.", "Mei: Does that mean we shouldn't even think about testing?"]
+        mentor: "Good. You explained what prenatal testing is for, and asked about values without judging."
+      - text: "You could test the pregnancy just to know, even if you'd keep it."
+        quality: poor
+        flag: R4
+        reply: ["Mei: Just to know? Would that help?"]
+        mentor: "Testing a continuing pregnancy is in effect predictive testing of a child. Explain what prenatal testing is for."
+      - text: "Prenatal testing involves termination, so most people don't do it."
+        quality: partial
+        reply: ["Mei: (looks down)"]
+        mentor: "Explain the option neutrally and ask how it sits with them, rather than dismissing it."
+
+  - id: T7
+    checkpoint: C5
+    options:
+      - text: "That's an important thing to know about yourselves, and it's completely valid. It means prenatal testing may not fit you, and other options might. There's no 'should'."
+        quality: best
+        reply: ["Mei: (relieved) OK. Good. I thought I was being difficult."]
+        mentor: "Good. You validated her limit and kept the other options open."
+      - text: "Then PGT-M is your only option."
+        quality: poor
+        flag: R1
+        reply: ["Kevin: Is it, though? What about donor sperm?"]
+        mentor: "Several options remain. Do not narrow them for the couple."
+      - text: "You might feel differently if it happens."
+        quality: partial
+        reply: ["Mei: I won't."]
+        mentor: "Respect her stated values."
+
+  - id: T8
+    checkpoint: C2
+    options:
+      - text: "Two more options. Donor sperm means a child wouldn't have Kevin's genes, so no HD risk from him. And adoption. Some couples also decide not to have children. Each of these suits some families and not others."
+        quality: best
+        reply: ["Kevin: Donor sperm. (pause) I don't know how I'd feel about that.", "Mei: We could think about it."]
+        mentor: "Good. The remaining options described evenly."
+      - text: "Adoption is hard in Canada, so I'd skip that."
+        quality: poor
+        flag: R1
+        reply: ["Mei: Oh. OK."]
+        mentor: "Do not rule options out for them. Describe each and let them explore."
+      - text: "There's also adoption."
+        quality: partial
+        reply: ["Kevin: Anything else?"]
+        mentor: "Include donor sperm and the choice not to have children."
+
+  - id: T9
+    checkpoint: C6
+    options:
+      - text: "Kevin, can I ask what worries you most in all of this?"
+        quality: best
+        reply: ["Kevin: (long pause) That I'll get sick when they're small. Like Dad. Is it selfish to have kids, knowing that?", "Mei: (takes his hand) You never said it like that."]
+        mentor: "Good. A direct, open question let Kevin name his guilt, and Mei heard it."
+      - text: "You'd be fine; lots of people with HD have kids."
+        quality: partial
+        reply: ["Kevin: That's not really the question."]
+        mentor: "Reassurance skips over his real worry. Ask what he is most afraid of."
+      - text: "It is a big responsibility, given what your dad went through."
+        quality: poor
+        flag: R2
+        reply: ["Mei: (hurt) So we shouldn't?"]
+        mentor: "This implies having children would be wrong. Explore his worry without judging."
+
+  - id: T10
+    checkpoint: C6
+    options:
+      - text: "That's a question many people in your position ask, and it's not a selfish one to ask. There's no right answer. Some couples plan for support if a parent becomes ill; others choose differently. What do you each think a good life for a child would need?"
+        quality: best
+        reply: ["Mei: Love. People around them. We'd have that.", "Kevin: And a plan for if I can't do everything. I could live with that."]
+        mentor: "Good. You acknowledged his guilt without endorsing it, and helped them talk to each other."
+      - text: "Yes, it would be a bit selfish."
+        quality: poor
+        flag: R2
+        reply: ["(Silence.)"]
+        mentor: "Judging their choice is harmful and directive."
+      - text: "Lots of parents get ill. You can't plan for everything."
+        quality: partial
+        reply: ["Kevin: I suppose."]
+        mentor: "Acknowledge his specific worry and help them explore it together."
+
+  - id: T11
+    checkpoint: C7
+    patient_asks: "Kevin: What would you do, if you were us?"
+    options:
+      - text: "Honestly, I'd do PGT-M."
+        quality: poor
+        flag: R5
+        reply: ["Kevin: (writes it down) Then that's probably what we should do."]
+        mentor: "A personal choice steers them. Help them decide by their own values."
+      - text: "I can hear how much you'd like someone to make this easier. But it really depends on what matters to you, and you know that better than I do. From what you've said, you both want children, Mei wouldn't end a pregnancy, and cost matters. Which options fit those?"
+        quality: best
+        reply: ["Mei: PGT-M, donor sperm... or just going ahead.", "Kevin: That's actually helpful. Three, not six."]
+        mentor: "Good. You stayed non-directive while helping them use their own values."
+      - text: "I'm not allowed to say."
+        quality: partial
+        reply: ["Kevin: That's frustrating."]
+        mentor: "Not answering is right, but help them use their values to narrow the choice."
+
+  - id: T12
+    checkpoint: C8
+    options:
+      - text: "You don't need to decide today. I'll give you written information on each option. If you'd like, I can refer you to an IVF centre just for information, without committing. Who else can you talk to about this?"
+        quality: best
+        reply: ["Mei: My parents don't know about Kevin's result. I'm scared they'd try to talk me out of it.", "Kevin: My mum knows. She'd help."]
+        mentor: "Good. Information, time and referral options, and asking about support uncovered a source of stress."
+      - text: "Let me know what you decide."
+        quality: poor
+        reply: ["Kevin: And if we have more questions?"]
+        mentor: "Offer written information, time, follow-up and referrals."
+      - text: "I'll refer you to IVF."
+        quality: partial
+        flag: R1
+        reply: ["Mei: We haven't decided yet."]
+        mentor: "Offer referral as an option, not a default."
+
+  - id: T13
+    checkpoint: C8
+    options:
+      - text: "Whether and when to tell your parents is your choice, Mei; we can help you think it through. Let's meet again in two months, or sooner if you want."
+        quality: best
+        reply: ["Mei: Two months. Thank you for not pushing us.", "Kevin: Yes. Thanks."]
+        mentor: "Good. Support for the family question, and a follow-up appointment."
+      - text: "You should tell your parents soon."
+        quality: poor
+        reply: ["Mei: That's for me to decide."]
+        mentor: "Telling family is the couple's decision. Offer support."
+      - text: "Good luck."
+        quality: partial
+        reply: ["Kevin: (smiles weakly) Thanks."]
+        mentor: "Arrange follow-up."
+
+closing: "Before they leave: written information on every option, an optional information referral to an IVF/PGT-M centre, details on donor sperm and adoption, an offer of help with telling family, and follow-up in two months."

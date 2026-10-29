@@ -1,0 +1,140 @@
+# Scenario A2: mentor checkpoints (hybrid mentor)
+# The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
+# All hint and feedback text below is pre-written; the AI never writes its own advice.
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+#
+# Sources (Group A; all new, need human verification. s16-s18 as in A1):
+#   s16 = Quarrell OWJ, Nance MA, Nopoulos P, Paulsen JS, Smith JA, Squitieri F. Managing juvenile Huntington's disease.
+#         Neurodegener Dis Manag 2013;3(3):267-76. https://pubmed.ncbi.nlm.nih.gov/24416077/
+#         Full text: https://pmc.ncbi.nlm.nih.gov/articles/PMC3883192/  Status: full text read by Claude 2026-10-29; needs human verification.
+#   s17 = Cloud LJ, Rosenblatt A, Margolis RL, et al. Seizures in juvenile Huntington's disease: frequency and
+#         characterization in a multicenter cohort. Mov Disord 2012;27(14):1797-800. https://pubmed.ncbi.nlm.nih.gov/23124580/
+#         Status: abstract read by Claude 2026-10-29; needs human verification.
+#   s18 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,
+#         chapter 7 "Juvenile Onset Huntington Disease". https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: chapter 7 read by Claude 2026-10-29; needs human verification.
+#   s22 = Epilepsy Ontario. Seizure first aid. https://epilepsyontario.org/about-epilepsy/first-aid/
+#         Supporting: London Health Sciences Centre, Seizure first aid, https://www.lhsc.on.ca/epilepsy-monitoring-unit/seizure-first-aid
+#         Status: read by Claude 2026-10-29; needs human verification.
+#   s23 = Epilepsy Ontario. Safety issues. https://epilepsyontario.org/safety-issues/
+#         Supporting: Seattle Children's, Water safety for children with epilepsy or seizures,
+#         https://www.seattlechildrens.org/health-safety/injury-prevention/water-safety-for-children-with-epilepsy-or-seizures/
+#         Status: read by Claude 2026-10-29; needs human verification.
+#   s24 = The Royal Children's Hospital Melbourne. Clinical Practice Guideline: Engaging with and assessing the
+#         adolescent patient. https://www.rch.org.au/clinicalguide/guideline_index/engaging_with_and_assessing_the_adolescent_patient/
+#         Status: summary read by Claude 2026-10-29; needs human verification (a Canadian source would be preferable).
+#   s25 = Nance M (medical ed.), Lovecky D, Tarapata K. Juvenile HD and the School Experience. Huntington's Disease Society
+#         of America, 2006. https://hdsa.org/wp-content/uploads/2015/03/JuvenileHD-and-the-School-Experience.pdf
+#         Status: text extracted and searched by Claude 2026-10-29; needs human verification.
+
+hint_timing: Show a checkpoint's hint if it is still not met after `hint_after_turn` trainee turns.
+
+checkpoints:
+  - id: C1
+    name: Speak with Maya directly
+    met_if: Trainee greets Maya first and directs questions to her, not only to her mother.
+    hint_after_turn: 2
+    hint: "Sarah is answering everything. Whose appointment is this?"
+    feedback_met: "You spoke with Maya directly and treated her as the person you were seeing."
+    feedback_missed: "Direct questions to the young person first, then ask the parent for their view."
+    knowledge_card: talking-with-teenagers
+    source: s24
+  - id: C2
+    name: Time alone, with honest confidentiality
+    met_if: Trainee explains that seeing teenagers alone for part of the visit is routine, asks Sarah to step out, and tells Maya what stays private and when information would have to be shared to keep her safe.
+    hint_after_turn: 4
+    hint: "What might a fifteen-year-old not say in front of her mother?"
+    feedback_met: "You gave Maya time alone and were honest about the limits of confidentiality."
+    feedback_missed: "Offer time alone as a routine part of the visit, and explain the limits of confidentiality before asking sensitive questions."
+    knowledge_card: talking-with-teenagers
+    source: s24
+  - id: C3
+    name: Explore school, friends and mood
+    met_if: Trainee asks open questions about school, friends and how Maya has been feeling, including a kind check on mood.
+    hint_after_turn: 5
+    hint: "You know her grades. What do you know about the rest of her school day?"
+    feedback_met: "You asked about school and friends openly, which uncovered that she is eating lunch alone."
+    feedback_missed: "Ask about friends and what a normal school day is like. Isolation is common and often hidden."
+    unlocks: H2_lunch_alone
+    knowledge_card: school-and-friends
+    source: [s25, s18]
+  - id: C4
+    name: Ask about the seizure medicine without judgement
+    met_if: Trainee asks Maya, without blame, how taking the seizure pills is going and what gets in the way, and plans to discuss any problem with the prescriber rather than changing the medicine on the spot.
+    hint_after_turn: 6
+    hint: "The second seizure was in the evening. How easy is it for her to take the pills every day?"
+    feedback_met: "You asked about the pills without judgement, and she told you about the missed evening doses."
+    feedback_missed: "Ask openly how taking the pills is going. Missed doses are common in teenagers and are easier to solve when spoken about."
+    unlocks: H1_missed_doses
+    knowledge_card: seizures-in-jhd
+    source: [s17, s18]
+  - id: C5
+    name: Water and home safety, keeping independence
+    met_if: Trainee discusses showers instead of baths, not locking the bathroom door, and swimming only when supervised by someone who knows about her seizures, in a way that keeps as much privacy and independence as possible.
+    hint_after_turn: 8
+    hint: "Where at home could a seizure be most dangerous? How can she stay safe and still have privacy?"
+    feedback_met: "You agreed practical water safety with Maya while respecting her privacy."
+    feedback_missed: "Discuss showers rather than baths, an unlocked bathroom door, and supervised swimming. Agree ways to keep her privacy."
+    unlocks: H3_locked_baths
+    knowledge_card: seizure-safety
+    source: s23
+  - id: C6
+    name: Seizure first aid and a written plan
+    met_if: Trainee checks that Maya, Sarah and the school know seizure first aid (time it, protect the head, turn on the side, nothing in the mouth, call 911 if it lasts over five minutes, repeats, or happens in water) and offers a written seizure plan.
+    hint_after_turn: 10
+    hint: "If she has a seizure at home with only Sarah there, or at school, what should people do?"
+    feedback_met: "You went through seizure first aid and agreed a written plan for home and school."
+    feedback_missed: "Make sure family and school know first aid and when to call 911, and give a written seizure plan."
+    knowledge_card: seizure-safety
+    source: s22
+  - id: C7
+    name: Plan school support with Maya's agreement
+    met_if: Trainee asks what the school knows, explores Maya's and Sarah's worries about telling the school, and agrees, with Maya's consent, what will be shared and that an education plan with accommodations will be requested.
+    hint_after_turn: 11
+    hint: "The teachers think she 'isn't trying'. What do they know, and who decides what they are told?"
+    feedback_met: "You agreed with Maya and Sarah what the school will be told and started planning support."
+    feedback_missed: "Teachers who do not know about JHD may misread fatigue and slowness. Decide with Maya what to share, and request an education plan."
+    unlocks: H4_school_not_told
+    knowledge_card: school-and-friends
+    source: [s25, s16]
+  - id: C8
+    name: Support and follow-up
+    met_if: Trainee summarises the plan, involves the team (for example psychology, occupational therapy, school liaison), points to youth support, and arranges follow-up.
+    hint_after_turn: 13
+    hint: "What has been agreed, and who will help with each part?"
+    feedback_met: "You summarised the plan and arranged support and follow-up."
+    feedback_missed: "End with a summary, the team members who will help, youth support resources and a follow-up date."
+    knowledge_card: school-and-friends
+    source: [s18, s16]
+
+red_flags:
+  - id: R1
+    name: Talks about Maya, not with her
+    met_if: Trainee mainly talks to Sarah about Maya in the third person while Maya is present.
+    feedback: "Speak with the young person directly; being talked about makes teenagers disengage."
+    source: s24
+  - id: R2
+    name: Scolds about missed doses
+    met_if: Trainee lectures, blames or threatens Maya about missed seizure pills.
+    feedback: "Blame makes teenagers hide missed doses. Ask openly and solve the problem together."
+    source: s24
+  - id: R3
+    name: Bans activities without safer options
+    met_if: Trainee tells Maya she can never swim or go out, without discussing supervised, safer ways to do things.
+    feedback: "Safety advice works better when it keeps as much independence as possible, for example supervised swimming."
+    source: s23
+  - id: R4
+    name: Promises total confidentiality
+    met_if: Trainee promises that nothing Maya says will be shared with anyone.
+    feedback: "Be honest that information may need to be shared to keep her safe, and explain how."
+    source: s24
+  - id: R5
+    name: Shares the diagnosis with the school without consent
+    met_if: Trainee says they will tell the school about HD without Maya's and her parent's agreement.
+    feedback: "Ask permission before contacting the school, and agree with Maya what will be shared."
+    source: s24
+  - id: R6
+    name: Changes the medicine on the spot
+    met_if: Trainee tells Maya to stop, skip or change her seizure medicine, or to take extra, without a plan with the prescriber.
+    feedback: "Do not change seizure medicine casually. Discuss problems such as tiredness with the prescriber."
+    source: s18
