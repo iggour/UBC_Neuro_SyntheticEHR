@@ -1,0 +1,198 @@
+# Scenario 3: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one that triggers a red flag.
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-27. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "Teresa: I don't know why Luis made such a fuss. I'm fine."
+  - "Luis: She's not fine. Last week she said—"
+  - "Teresa: Luis."
+
+turns:
+  - id: T1
+    checkpoint: C2
+    options:
+      - text: "If you're fine, let's start by looking at your movements."
+        quality: partial
+        reply: ["Teresa: Fine. Whatever you need."]
+        mentor: "Moving on skips the reason Luis is worried. Acknowledge how she feels first."
+      - text: "Teresa, I'd like to hear from you. It sounds like this morning has been frustrating."
+        quality: best
+        reply: ["Teresa: It has. Everyone talks about me like I'm not in the room."]
+        mentor: "Good. You spoke to her directly and named her frustration without arguing."
+      - text: "Luis, what did she say last week?"
+        quality: poor
+        flag: R5
+        reply: ["Teresa: I can speak for myself, you know."]
+        mentor: "Talking about her to Luis while she is present adds to her loss of control. Speak with her."
+
+  - id: T2
+    checkpoint: C1
+    options:
+      - text: "Luis, can you tell me what's been happening at home?"
+        quality: poor
+        flag: R5
+        reply: ["Teresa: (looks away) Go on then, tell them."]
+        mentor: "She has just said people talk over her. Keep the conversation with her."
+      - text: "Is it OK to talk about how you've been feeling with Luis here?"
+        quality: partial
+        reply: ["Teresa: (glances at Luis) It's fine."]
+        mentor: "Asking is kind, but few people say no in front of their partner. Offer time alone as a routine part of the visit."
+      - text: "Luis, would you mind giving us a few minutes? I'll bring you back in after."
+        quality: best
+        reply: ["Luis: Of course. I'll be just outside.", "Teresa: (quietly) Thank you."]
+        mentor: "Good. Time alone often makes it possible to talk about suicidal thoughts."
+
+  - id: T3
+    checkpoint: C3
+    options:
+      - text: "How has your mood been over the last couple of months? Your sleep, the things you enjoy?"
+        quality: best
+        reply: ["Teresa: Low, most days. I don't sleep. I haven't touched the garden since the summer."]
+        mentor: "Good. Open questions about mood, sleep and interest give you a clear picture."
+      - text: "Feeling low is pretty normal with HD, isn't it?"
+        quality: poor
+        flag: R2
+        reply: ["Teresa: So I'm told."]
+        mentor: "Calling it normal closes the conversation. Low mood in HD is a risk factor and needs exploring."
+      - text: "Are you depressed?"
+        quality: partial
+        reply: ["Teresa: I don't know. Maybe. Wouldn't you be?"]
+        mentor: "A closed question gets a short answer. Ask openly about mood, sleep and interest."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "Has anything happened at home?"
+        quality: partial
+        reply: ["Teresa: It's been a hard couple of months."]
+        mentor: "Close, but she can answer without saying much. An open question about what is on her mind works better."
+      - text: "Let's go through your medication list first."
+        quality: poor
+        reply: ["Teresa: If you like."]
+        mentor: "She has just told you her mood is low. Stay with it before moving to the medication list."
+      - text: "What has changed recently, or been on your mind?"
+        quality: best
+        reply: ["Teresa: Leah got her result. She has it. I gave this to my daughter.", "Teresa: I watched my father go through it. Now she will too."]
+        mentor: "Good. This uncovered her guilt about Leah, a key reason for her low mood."
+
+  - id: T5
+    checkpoint: C2
+    options:
+      - text: "There's no point feeling guilty. You couldn't have known."
+        quality: poor
+        reply: ["Teresa: That's easy for you to say."]
+        mentor: "Telling her how not to feel can sound dismissive. Acknowledge the feeling first."
+      - text: "That's a heavy thing to carry. It isn't something you chose."
+        quality: best
+        reply: ["Teresa: (crying) I know. It doesn't feel that way at night."]
+        mentor: "Good. You stayed with her feeling. Notice 'at night': it is a cue to ask more."
+      - text: "Leah's an adult. I'm sure she'll cope."
+        quality: partial
+        reply: ["Teresa: You don't know her."]
+        mentor: "Reassurance about Leah moves the focus away from Teresa. Stay with how she feels."
+
+  - id: T6
+    checkpoint: C4
+    options:
+      - text: "You're not thinking of doing anything silly, are you?"
+        quality: poor
+        flag: R1
+        reply: ["Teresa: No. I said I'm fine."]
+        mentor: "A leading question invites 'no'. Ask plainly, using the words."
+      - text: "Have you been having any dark thoughts?"
+        quality: partial
+        reply: ["Teresa: Sometimes things feel dark. Doesn't everyone's?"]
+        mentor: "Vague words get vague answers. Ask directly about ending her life."
+      - text: "Luis said you told him the family would be better off without you. Have you had thoughts of ending your life?"
+        quality: best
+        reply: ["Teresa: (long pause) Yes. For the last two or three weeks. Mostly at night.", "Teresa: I've never done anything."]
+        mentor: "Good. You asked clearly and kindly. Asking directly does not increase suicidal thoughts."
+
+  - id: T7
+    checkpoint: C5
+    options:
+      - text: "How often do the thoughts come?"
+        quality: partial
+        reply: ["Teresa: Most nights, lately."]
+        mentor: "Useful, but you still need to know about plans, preparation and access to means."
+      - text: "Thank you for telling me. Have you made any plans or preparations, or is there anything at home you've thought of using?"
+        quality: best
+        reply: ["Teresa: I've kept some old sleeping tablets in my bedside drawer. Just in case.", "Teresa: I haven't taken any. Luis doesn't know."]
+        mentor: "Good. Asking about preparation and means uncovered stored tablets, which raises the level of risk."
+      - text: "Whatever you tell me stays completely between us."
+        quality: poor
+        flag: R3
+        reply: ["Teresa: ...All right."]
+        mentor: "You cannot promise this. Be honest that information may need to be shared to keep her safe."
+
+  - id: T8
+    checkpoint: C6
+    patient_asks: "Teresa: Is it those tablets doing this to me? The ones for the movements?"
+    options:
+      - text: "No, that's very unlikely."
+        quality: poor
+        reply: ["Teresa: Then it's just me."]
+        mentor: "Tetrabenazine carries a warning for depression and suicidality. This is a key point to recognise."
+      - text: "Then just stop taking them."
+        quality: partial
+        reply: ["Teresa: Just like that?"]
+        mentor: "You are right to suspect the medication, but changes should be planned with the prescriber."
+      - text: "That tablet can affect mood in some people, so I'll review it with your prescriber today. Low mood like yours can also be treated."
+        quality: best
+        reply: ["Teresa: Nobody told me that. It helps to know it's not just me."]
+        mentor: "Good. You linked her mood to tetrabenazine and planned a review and treatment for depression."
+
+  - id: T9
+    checkpoint: C7
+    options:
+      - text: "I'll ask Luis to go through the house and take away anything risky."
+        quality: poor
+        reply: ["Teresa: So now I'm a prisoner in my own home?"]
+        mentor: "Imposing a plan makes her resist. Build it with her, and involve Luis with her consent."
+      - text: "Let's write down a plan together for when the thoughts come. Would you be OK with Luis taking the sleeping tablets away and looking after your medicines?"
+        quality: best
+        reply: ["Teresa: If you explain it to him... yes. I don't want him to be the one who finds me."]
+        mentor: "Good. A safety plan written with her, including making means safer, with her agreement."
+      - text: "Can you promise me you won't do anything?"
+        quality: partial
+        reply: ["Teresa: I promise."]
+        mentor: "A promise is not a safety plan. Agree written steps and make the home safer."
+
+  - id: T10
+    checkpoint: C8
+    options:
+      - text: "I'll refer you to psychiatry. They'll send you an appointment."
+        quality: partial
+        reply: ["Teresa: All right."]
+        mentor: "A routine referral may take weeks. Active thoughts with preparation need assessment the same day."
+      - text: "Let's see how things go and meet again in three months."
+        quality: poor
+        flag: R4
+        reply: ["Teresa: Three months. Fine."]
+        mentor: "Active thoughts with preparation need a safety plan and urgent assessment the same day."
+      - text: "I'm worried enough that I'd like you to see the mental health team today. Luis can come with you."
+        quality: best
+        reply: ["Teresa: Today? I'm not crazy.", "Teresa: (pause) ...If Luis comes with me, I'll go."]
+        mentor: "Good. You explained the reason and arranged urgent assessment with support. Give 9-8-8 as well."
+
+  - id: T11
+    checkpoint: C9
+    before: ["(Luis comes back in. With Teresa's agreement, you explain the plan.)"]
+    options:
+      - text: "Luis, you'll need to keep an eye on her from now on."
+        quality: partial
+        reply: ["Luis: I already do. All the time."]
+        mentor: "This adds to his load without asking how he is. Ask about the carer too."
+      - text: "That's everything for today. Any questions?"
+        quality: poor
+        reply: ["Luis: No... I suppose not."]
+        mentor: "Luis has carried this alone. Ask how he is coping and offer carer support."
+      - text: "Luis, how are you coping with all this?"
+        quality: best
+        reply: ["Luis: Honestly? I'm exhausted. I don't sleep, and I'm scared to leave her alone.", "Luis: I haven't told the kids. They've got enough to deal with."]
+        mentor: "Good. You uncovered the carer's strain. Point him to carer support and family services."
+
+closing: "Before they leave: the crisis line 9-8-8 (call or text, any time), the mental health team today, and an early follow-up."

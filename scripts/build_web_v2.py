@@ -5,7 +5,7 @@ Build web/hd_anchor_v2.html from the reviewed scenario files, so the website and
 scenarios share one source of truth. Re-run after changing any scenario file.
 
 Usage:  python3 scripts/build_web_v2.py
-Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md
+Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional)
 Writes: web/hd_anchor_v2.html
 Never exported to the page: hidden items, behaviour rules, mentor_only, met_if (patient/mentor only).
 """
@@ -87,12 +87,14 @@ def main():
                         "opening": per["opening_line"],
                         "companion": ({"name": comp["name"], "relation": comp.get("relation", "")} if comp else None)},
             "cards": parse_cards(d / "knowledge_cards.md"),
-            "checkpoints": [{"id": c["id"], "name": c["name"], "met": c["feedback_met"],
+            "checkpoints": [{"id": c["id"], "name": c["name"], "hint": c.get("hint", ""), "met": c["feedback_met"],
                              "missed": c["feedback_missed"], "src": c.get("source"),
                              "card": c.get("knowledge_card")} for c in cps["checkpoints"]],
             "flags": [{"id": r["id"], "name": r["name"], "fb": r["feedback"], "src": r.get("source")}
                       for r in cps["red_flags"]],
             "prep": parse_prep(d / "family_prep_sheet.md"),
+            "guided": (yaml.safe_load((d / "guided.yaml").read_text(encoding="utf-8"))
+                       if (d / "guided.yaml").exists() else None),
         })
     src = {k: re.sub(r"\s*Status:.*$", "", " ".join(v)).strip() for k, v in sorted(sources.items(), key=lambda kv: int(kv[0][1:]))}
     payload = json.dumps({"scenarios": data, "sources": src}, ensure_ascii=False).replace("</", "<\\/")

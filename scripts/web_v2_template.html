@@ -42,6 +42,12 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 .fb{border-radius:8px;padding:9px 12px;margin:8px 0;font-size:.93rem}.fb.ok{background:var(--okbg);border-left:4px solid var(--ok)}.fb.no{background:var(--nobg);border-left:4px solid var(--no)}
 .safe{border:2px solid var(--no);border-radius:10px;padding:10px 13px;margin:10px 0;background:var(--card);font-size:.92rem}
 .list{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:10px 14px;white-space:pre-wrap}
+.mode{display:flex;gap:6px;margin:4px 0 10px;flex-wrap:wrap}.mode button{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 12px;font:inherit;color:var(--mute);cursor:pointer}.mode button.on{border-color:var(--acc);color:var(--acc);font-weight:600;background:var(--accbg)}
+.bub.me{background:var(--accbg);border-radius:12px 12px 3px 12px;margin-left:auto}
+.line{display:flex;flex-direction:column}.line.me{align-items:flex-end}
+.stage{font-size:.86rem;color:var(--mute);font-style:italic;margin:6px 0}
+.choice{display:block;width:100%;text-align:left;margin:6px 0}.choice.tried{opacity:.55;text-decoration:line-through}
+.prog{font-size:.84rem;color:var(--mute);margin-bottom:6px}
 #gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
 #gate>div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}#gate[hidden]{display:none}
 @media print{.tabs,.no-print,#gate,.bar{display:none!important}body{background:#fff}}
@@ -76,7 +82,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 </div>
 <script>
 var D=/*__DATA__*/null;
-var st={sc:0,step:0,hints:true,ticks:{},flags:{},shown:{},famsc:0,famq:{}};
+var st={sc:0,step:0,hints:true,mode:{},g:{},ticks:{},flags:{},shown:{},famsc:0,famq:{}};
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
 function linkify(h){return h.replace(/(https?:\/\/[^\s<)]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
 function srcChips(ids){if(!ids)return"";if(!Array.isArray(ids))ids=[ids];return ids.map(function(i){return '<a class="chip" href="#src-'+i+'" onclick="go(\'src\')">'+esc(i.toUpperCase())+'</a>'}).join("")}
@@ -89,14 +95,9 @@ function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+pick
  var names=["1. Learn","2. Practise","3. Feedback"];
  h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+'</div>';
  if(st.step===0){h+='<div class="card"><h3 style="margin-top:0">The situation</h3><p>'+esc(s.brief)+'</p><p class="note">Setting: '+esc(s.setting)+'</p><h3>In this conversation, aim to</h3><ul>'+s.goals.map(function(g){return"<li>"+esc(g)+"</li>"}).join("")+'</ul></div><h2>Key facts</h2>'+s.cards.map(cardHtml).join("")+'<div class="no-print"><button class="btn pri" onclick="step(1)">Start practising</button></div>'}
- if(st.step===1){var p=s.patient,who=esc(p.name)+(p.age?", "+p.age:"")+(p.companion?' · with '+esc(p.companion.name)+(p.companion.relation?' ('+esc(p.companion.relation)+')':''):'');
-  h+='<div class="card"><div class="who">'+who+'</div><div class="chat"><div class="who">'+esc(p.name)+'</div><div class="bub">'+esc(p.opening)+'</div></div>'+
-  '<div class="inrow"><input disabled placeholder="Type what you would say…"><button class="btn pri" disabled>Send</button></div>'+
-  '<p class="note">The live AI patient is not connected in this prototype. It is being tested on a local open-source model. For now, think through or say aloud how you would respond, then go to Feedback.</p>'+
-  '<label class="toggle"><input type="checkbox" '+(st.hints?'checked':'')+' onchange="st.hints=this.checked;clin()"> Mentor hints</label>'+
-  (st.hints?'<div class="hintbox">When connected, the mentor will offer short hints here if you have not yet covered an important step. Switch hints off to practise as a test.</div>':'<p class="note">Hints are off (test mode).</p>')+
-  '</div><div class="no-print"><button class="btn pri" onclick="step(2)">I have finished. Show feedback</button></div>'}
- if(st.step===2){var key=s.id,t=st.ticks[key]||(st.ticks[key]={}),f=st.flags[key]||(st.flags[key]={}),shown=st.shown[key];
+ if(st.step===1){h+=practise(s)}
+ if(st.step===2){var key=s.id,t=st.ticks[key]||(st.ticks[key]={}),f=st.flags[key]||(st.flags[key]={}),shown=st.shown[key],gd=st.g[key]&&st.g[key].done;
+  if(gd)h+='<div class="fb ok">Filled in from your guided practice. A step counts as done if you chose the best response on the first try.</div>';
   h+='<div class="card"><h3 style="margin-top:0">Self-check</h3><p class="note">Tick what you did. When the AI mentor is connected, it will fill this in for you from the conversation.</p>'+
   s.checkpoints.map(function(c){return '<label class="chk"><input type="checkbox" '+(t[c.id]?'checked':'')+' onchange="tick(\'ticks\',\''+c.id+'\',this.checked)"><span>'+esc(c.name)+'</span></label>'}).join("")+
   '<h3>Did any of these happen?</h3>'+s.flags.map(function(r){return '<label class="chk"><input type="checkbox" '+(f[r.id]?'checked':'')+' onchange="tick(\'flags\',\''+r.id+'\',this.checked)"><span>'+esc(r.name)+'</span></label>'}).join("")+
@@ -105,10 +106,46 @@ function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+pick
    h+='<h2>Your feedback: '+n+' of '+s.checkpoints.length+' steps</h2>'+s.checkpoints.map(function(c){var ok=!!t[c.id];return '<div class="fb '+(ok?'ok':'no')+'"><b>'+esc(c.name)+'.</b> '+esc(ok?c.met:c.missed)+' '+srcChips(c.src)+(c.card&&!ok?' <a class="chip" href="#card-'+c.card+'" onclick="step(0)">review the key facts</a>':'')+'</div>'}).join("");
    var hit=s.flags.filter(function(r){return f[r.id]});if(hit.length)h+='<h3>Things to avoid next time</h3>'+hit.map(function(r){return '<div class="fb no"><b>'+esc(r.name)+'.</b> '+esc(r.fb)+' '+srcChips(r.src)+'</div>'}).join("")}}
  document.getElementById("clin").innerHTML=h}
+
+function speak(l){var m=l.match(/^([A-Z][a-z]+):\s*(.*)$/);if(!m)return '<div class="stage">'+esc(l)+'</div>';return '<div class="line"><div class="who">'+esc(m[1])+'</div><div class="bub">'+esc(m[2])+'</div></div>'}
+function me(t){return '<div class="line me"><div class="who">You</div><div class="bub me">'+esc(t)+'</div></div>'}
+function practise(s){var key=s.id,p=s.patient,gd=s.guided,mode=st.mode[key]||(gd?"g":"f"),h="";
+ var who=esc(p.name)+(p.age?", "+p.age:"")+(p.companion?' · with '+esc(p.companion.name)+(p.companion.relation?' ('+esc(p.companion.relation)+')':''):'');
+ h+='<div class="mode"><button class="'+(mode==="g"?"on":"")+'" '+(gd?'':'disabled title="Coming soon for this scenario"')+' onclick="setMode(\'g\')">Guided: choose a response'+(gd?'':' (coming soon)')+'</button><button class="'+(mode==="f"?"on":"")+'" onclick="setMode(\'f\')">Free conversation</button></div>';
+ h+='<label class="toggle"><input type="checkbox" '+(st.hints?'checked':'')+' onchange="st.hints=this.checked;clin()"> Mentor hints</label>';
+ if(mode==="f"){h+='<div class="card"><div class="who">'+who+'</div><div class="chat"><div class="who">'+esc(p.name)+'</div><div class="bub">'+esc(p.opening)+'</div></div>'+
+  '<div class="inrow"><input disabled placeholder="Type what you would say…"><button class="btn pri" disabled>Send</button></div>'+
+  '<p class="note">The live AI patient is not connected yet. It is being tested on a local open-source model. For now, think through how you would respond, then go to Feedback and tick what you did.</p></div>'+
+  '<div class="no-print"><button class="btn pri" onclick="step(2)">I have finished. Show feedback</button></div>';return h}
+ var g=st.g[key]||(st.g[key]={i:0,tried:[],log:[],first:{},flags:{},done:false}),T=gd.turns,cps={};s.checkpoints.forEach(function(c){cps[c.id]=c});
+ h+='<div class="card"><div class="who">'+who+'</div><div class="prog">Step '+Math.min(g.i+1,T.length)+' of '+T.length+'</div><div class="chat">';
+ gd.opening.forEach(function(l){h+=speak(l)});
+ g.log.forEach(function(e){(e.pre||[]).forEach(function(l){h+=speak(l)});h+=me(e.text);e.reply.forEach(function(l){h+=speak(l)})});
+ if(!g.done){var t=T[g.i];(t.before||[]).forEach(function(l){h+=speak(l)});if(t.patient_asks)h+=speak(t.patient_asks)}
+ var t0=g.done?null:T[g.i],last=(!g.done&&g.tried.length)?t0.options[g.tried[g.tried.length-1]]:null;
+ if(last)h+=me(last.text)+last.reply.map(speak).join("");
+ h+='</div>';
+ if(g.done){h+='<div class="fb ok"><b>Conversation complete.</b> '+esc(gd.closing||"")+'</div><div class="no-print"><button class="btn pri" onclick="step(2)">See your feedback</button> <button class="btn" onclick="resetSc();step(1)">Start again</button></div></div>';return h}
+ var t=t0;
+ var cl=[].concat(t.checkpoint||[]),hint=t.hint||(cps[cl[0]]&&cps[cl[0]].hint);if(st.hints&&!g.tried.length&&hint)h+='<div class="hintbox" style="margin-top:10px"><b>Mentor hint:</b> '+esc(hint)+'</div>';
+ if(last){h+='<div class="fb '+(last.quality==="best"?"ok":"no")+'"><b>Mentor:</b> '+esc(last.mentor)+'</div>'}
+ if(last&&last.quality==="best"){h+='<div class="no-print"><button class="btn pri" onclick="gNext()">Continue</button></div>'}
+ else{h+='<h3>'+(last?'Try another response':'What do you say?')+'</h3>';t.options.forEach(function(o,oi){var tr=g.tried.indexOf(oi)>=0;h+='<button class="btn choice'+(tr?' tried':'')+'" '+(tr?'disabled':'')+' onclick="gPick('+oi+')">'+esc(o.text)+'</button>'})}
+ h+='</div>';return h}
+function setMode(m){st.mode[D.scenarios[st.sc].id]=m;clin()}
+function gPick(oi){var s=D.scenarios[st.sc],g=st.g[s.id],t=s.guided.turns[g.i],o=t.options[oi];
+ if(!g.tried.length)[].concat(t.checkpoint||[]).forEach(function(c){g.first[c]=(g.first[c]!==false)&&o.quality==="best"});
+ if(o.flag)g.flags[o.flag]=true;g.tried.push(oi);clin()}
+function gNext(){var s=D.scenarios[st.sc],key=s.id,g=st.g[key],t=s.guided.turns[g.i],o=t.options[g.tried[g.tried.length-1]];
+ g.log.push({text:o.text,reply:o.reply,pre:(t.before||[]).concat(t.patient_asks?[t.patient_asks]:[])});
+ g.i++;g.tried=[];
+ if(g.i>=s.guided.turns.length){g.done=true;var tk=st.ticks[key]={},fl=st.flags[key]={};
+  Object.keys(g.first).forEach(function(c){tk[c]=g.first[c]});Object.keys(g.flags).forEach(function(r){fl[r]=true});st.shown[key]=1}
+ clin()}
 function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
 function step(i){st.step=i;clin()}
 function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
-function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];clin()}
+function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
 function fam(){var s=D.scenarios[st.famsc],p=s.prep,q=st.famq[s.id]||(st.famq[s.id]={});
  var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2>'+picker(st.famsc,"pickFam");
  h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');

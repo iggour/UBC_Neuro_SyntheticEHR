@@ -1,0 +1,220 @@
+# Scenario 2: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor (often a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try (every turn linked to it).
+# A turn may list several checkpoints, and may give its own hint.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-27. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "(Leah sits down, holding Marco's hand.)"
+  - "Leah: I've been awake since four. Please just tell me."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "How are you both feeling about today?"
+        quality: partial
+        reply: ["Leah: Like I'm going to be sick. Please."]
+        mentor: "A kind question, but she is waiting. Briefly confirm she still wants the result, then give it."
+      - text: "Before we get to that, how was the drive in? The weather's been awful."
+        quality: poor
+        flag: R1
+        reply: ["Leah: Please. Just say it."]
+        mentor: "Small talk before the result increases distress."
+      - text: "Thank you both for coming. Leah, I have your result here. Do you still want to hear it today?"
+        quality: best
+        reply: ["Leah: Yes. Please.", "Marco: We're ready."]
+        mentor: "Good. You confirmed she still wants the result and acknowledged Marco."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "I'm sorry, Leah. The result shows that you have inherited the gene change for HD."
+        quality: best
+        reply: ["Leah: ..."]
+        mentor: "Good. A short warning, then the result in plain words."
+      - text: "The results are... somewhat concerning."
+        quality: poor
+        flag: R1
+        reply: ["Leah: Concerning how? Is it positive?"]
+        mentor: "Vague news increases distress. Say it plainly."
+      - text: "Your CAG repeat number came back at 43."
+        quality: partial
+        reply: ["Leah: What does that mean? Just tell me if I have it."]
+        mentor: "A number is not plain language. Say what the result means."
+
+  - id: T3
+    checkpoint: C3
+    options:
+      - text: "The good news is you don't have any symptoms yet."
+        quality: partial
+        reply: ["Leah: That's the good news?"]
+        mentor: "True, but too soon. Allow silence and respond to her emotion first."
+      - text: "(Stay quiet for a moment.) Take your time."
+        quality: best
+        reply: ["(A long silence. Marco holds her hand.)", "Leah: (crying) I knew. I think I knew."]
+        mentor: "Good. You allowed silence before adding anything."
+      - text: "Let me explain what this means: the gene, the repeat size, treatments, and the options for having children."
+        quality: poor
+        flag: R4
+        reply: ["Leah: Stop. I can't take any of that in right now."]
+        mentor: "Information given in shock is not taken in. Respond to emotion first."
+
+  - id: T4
+    checkpoint: C3
+    options:
+      - text: "Try not to worry too much. Treatments are getting better all the time."
+        quality: poor
+        flag: R3
+        reply: ["Leah: (says nothing)"]
+        mentor: "Hope is important, but reassurance now can sound like you are not hearing her."
+      - text: "This is a lot to hear. What's going through your mind?"
+        quality: best
+        reply: ["Leah: So when will it start? How long do I have?"]
+        mentor: "Good. You invited her to say what matters to her most."
+      - text: "Do you have any questions?"
+        quality: partial
+        reply: ["Leah: I... I don't know. I can't think."]
+        mentor: "Too early for questions. Ask what is going through her mind."
+
+  - id: T5
+    checkpoint: C4
+    options:
+      - text: "It's hard to say. It could be decades."
+        quality: partial
+        reply: ["Leah: Decades? Really?"]
+        mentor: "Avoid any timeframe, even a hopeful one. Onset cannot be predicted for one person."
+      - text: "Nobody can predict that for one person. This result means you carry the gene change. It isn't a diagnosis, and you have no symptoms now."
+        quality: best
+        reply: ["Leah: So I'm not sick. But I will be."]
+        mentor: "Good. Honest about what the result does and does not mean."
+      - text: "With 43 repeats, symptoms usually start around your mid-forties."
+        quality: poor
+        flag: R2
+        reply: ["Leah: Mid-forties. That's... seventeen years."]
+        mentor: "Onset cannot be predicted reliably for an individual."
+
+  - id: T6
+    checkpoint: C5
+    options:
+      - text: "There's quite a lot you'll need to know about inheritance, penetrance, research and family planning, so let me go through it."
+        quality: poor
+        flag: R4
+        reply: ["Leah: I'm sorry, I'm not taking any of this in."]
+        mentor: "Offer detail at a later appointment."
+      - text: "What would be most helpful to talk about today? I'll write things down for you, and we'll meet again soon for the rest."
+        quality: best
+        reply: ["Leah: Just the next few days. I can't do more than that today."]
+        mentor: "Good. She chose how much to take in, and you offered a written summary and another appointment."
+      - text: "Here's a booklet that explains everything."
+        quality: partial
+        reply: ["Leah: Okay. (She doesn't open it.)"]
+        mentor: "Written information helps, but first ask what she has understood and what she wants to know today."
+
+  - id: T7
+    checkpoint: C4
+    hint: "Marco is asking about treatment. What is honest, and what can wait for next time?"
+    patient_asks: "Marco: Is there anything that can stop it? Any treatment?"
+    options:
+      - text: "There's no cure yet, but there are treatments for symptoms. Let's talk about that properly next time."
+        quality: best
+        reply: ["Marco: Okay. Next time."]
+        mentor: "Good. Honest, with hope, and without overload."
+      - text: "A cure is just around the corner."
+        quality: poor
+        flag: R3
+        reply: ["Marco: Really?", "(Leah looks at him, then away.)"]
+        mentor: "Hope is important, but it must be honest."
+      - text: "Nothing, I'm afraid."
+        quality: partial
+        reply: ["Marco: Nothing at all?"]
+        mentor: "Honest about a cure, but there are treatments for symptoms."
+
+  - id: T8
+    checkpoint: C6
+    options:
+      - text: "How are you feeling in general?"
+        quality: partial
+        reply: ["Leah: Numb."]
+        mentor: "She disclosed passive thoughts at her first visit. Ask about them directly."
+      - text: "Last time you mentioned some dark thoughts. Have they come back since?"
+        quality: best
+        reply: ["Leah: Last night, while I was waiting. That I couldn't live with it.", "Leah: I don't have a plan. Marco's staying with me, and I'd call the line."]
+        mentor: "Good. A positive result is a high-risk moment. You asked directly and confirmed support for tonight."
+      - text: "You're okay though, aren't you?"
+        quality: poor
+        reply: ["Leah: I said I was fine last time, didn't I?"]
+        mentor: "A leading question invites 'yes'. Ask plainly about thoughts of not wanting to live."
+
+  - id: T9
+    checkpoint: C7
+    options:
+      - text: "Have you thought about who you'll tell in your family?"
+        quality: best
+        reply: ["Leah: My brother. Actually, I'm relieved for him.", "Leah: If I've got it, Daniel probably hasn't, right?"]
+        mentor: "Good. This uncovered a misunderstanding about her brother's risk."
+      - text: "The good news is your brother is probably safe, then."
+        quality: poor
+        flag: R5
+        reply: ["Leah: That's what I thought. I'll tell him tonight."]
+        mentor: "Each child has an independent 50% chance. Her result does not change Daniel's risk."
+      - text: "You'll want to tell your family at some point."
+        quality: partial
+        reply: ["Leah: I guess."]
+        mentor: "Whether to tell is her choice. Ask openly who she might tell."
+
+  - id: T10
+    checkpoint: C7
+    options:
+      - text: "That's not quite how it works."
+        quality: partial
+        reply: ["Leah: Then how does it work?"]
+        mentor: "Explain clearly: each child has their own 50% chance."
+      - text: "Yes, that's probably right."
+        quality: poor
+        flag: R5
+        reply: ["Leah: Good. At least one of us."]
+        mentor: "Her brother's risk remains 50%."
+      - text: "I can see why it feels that way, but each child has their own 50% chance. Your result doesn't change Daniel's. Whether and when to tell him is up to you."
+        quality: best
+        reply: ["Leah: Oh. I really thought... Okay. I need to think about how to tell him."]
+        mentor: "Good. You corrected the belief kindly and left the decision with her."
+
+  - id: T11
+    checkpoint: C9
+    hint: "She has a lot ahead of her. Have you asked how they both feel about the future?"
+    options:
+      - text: "You'll still be able to have a normal wedding and family."
+        quality: poor
+        flag: R3
+        reply: ["Leah: (quietly) You don't know that."]
+        mentor: "Hope must be honest. Explore how she feels about the future instead."
+      - text: "How are you both feeling about the future, about your plans?"
+        quality: best
+        reply: ["Leah: Honestly? I've been thinking I should call off the wedding. So Marco can have a normal life.", "Marco: Leah... what?"]
+        mentor: "Good. This uncovered a big worry Marco did not know about."
+      - text: "Any other questions before you go?"
+        quality: partial
+        reply: ["Leah: No."]
+        mentor: "Ask about the future and their plans, so important worries can come out."
+
+  - id: T12
+    checkpoint: [C8, C9]
+    options:
+      - text: "Have you thought about IVF with embryo testing?"
+        quality: poor
+        flag: R4
+        reply: ["Leah: I can't think about that right now."]
+        mentor: "Reproductive options belong at a later appointment, when she is ready."
+      - text: "Let's book a follow-up in a few months."
+        quality: partial
+        reply: ["Leah: A few months. Okay."]
+        mentor: "Contact within about a week is recommended after a result."
+      - text: "That's a big thing to think about, and it doesn't need deciding today. The wedding and children are things we can talk through at a later appointment. I'll call you within a week, and here are numbers you can use any time, including 9-8-8."
+        quality: best
+        reply: ["Leah: Okay. Not today.", "Marco: We'll come back together."]
+        mentor: "Good. You left room for later questions and arranged early follow-up and support."
+
+closing: "Next steps: a phone call within a week, another appointment for the rest of her questions, and 9-8-8 (call or text) at any time."

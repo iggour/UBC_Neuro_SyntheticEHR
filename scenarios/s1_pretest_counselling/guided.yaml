@@ -1,0 +1,181 @@
+# Scenario 1: guided mode (choose a response)
+# Pre-written branching practice. No AI is used: every patient reply and mentor note below is fixed.
+# Each turn has one best response, one partial, and one poor (often a red flag).
+# A checkpoint counts as met only if its best response is chosen on the first try.
+# Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
+# Drafted by: Claude (Anthropic), 2026-10-27. Reviewed by: PENDING (project clinician)
+
+opening:
+  - "Leah: Hi. I'll be honest, I just want the blood test today. I can't keep not knowing."
+
+turns:
+  - id: T1
+    checkpoint: C1
+    options:
+      - text: "Sure, we can take the blood today."
+        quality: poor
+        flag: R1
+        reply: ["Leah: Really? Great. Can we do it now?"]
+        mentor: "Testing on the day skips counselling and time to reflect. Find out what is behind the urgency first."
+      - text: "I can hear how hard the waiting has been. What made you decide to come now?"
+        quality: best
+        reply: ["Leah: Marco and I are getting married in eight months. We want kids soon.", "Leah: He knows about Mum, but I've sort of played down that I could have it. If I do... I'm scared he'll leave."]
+        mentor: "Good. An open question about 'why now' uncovered the wedding, plans for children and her fear about Marco."
+      - text: "Why do you want the test?"
+        quality: partial
+        reply: ["Leah: I just need to know. There's a lot going on this year."]
+        mentor: "Close. Asking 'what made you decide to come now?' invites more than a reason for testing."
+
+  - id: T2
+    checkpoint: C2
+    options:
+      - text: "Don't worry, you're young and healthy. You'll probably be fine."
+        quality: poor
+        flag: R2
+        reply: ["Leah: You don't know that."]
+        mentor: "Her risk is 50%. Reassurance without basis can damage trust when the result comes."
+      - text: "Let me start by explaining how HD is inherited."
+        quality: partial
+        reply: ["Leah: Okay..."]
+        mentor: "Find out what she already knows first. It shows you what to explain and what to correct."
+      - text: "Before I explain anything, what do you already know about HD and about this test?"
+        quality: best
+        reply: ["Leah: I know Mum has it and I've got a fifty-fifty chance. The test tells you if you've got the gene. That's about it."]
+        mentor: "Good. You started from what she knows."
+
+  - id: T3
+    checkpoint: C3
+    options:
+      - text: "Whether to test is completely your choice: now, later or never. Nobody, including Marco, your family or an insurer, should pressure you."
+        quality: best
+        reply: ["Leah: Nobody's pressuring me. Well... a friend said I should buy life insurance before I test."]
+        mentor: "Good. You made clear the decision is hers alone, which also brought out her insurance worry."
+      - text: "Most people in your situation decide to test."
+        quality: partial
+        reply: ["Leah: So I should?"]
+        mentor: "This can sound like steering her. The decision belongs only to her."
+      - text: "You should test for Marco's sake, so he knows what he's getting into."
+        quality: poor
+        flag: R3
+        reply: ["Leah: Wow. Okay."]
+        mentor: "Testing is her own choice. Pressure to test for someone else's sake is not appropriate."
+
+  - id: T4
+    checkpoint: C4
+    options:
+      - text: "It's a simple blood test that gives a yes or no answer."
+        quality: partial
+        reply: ["Leah: Good. Yes or no is what I want."]
+        mentor: "Too simple. Some results fall in an in-between range, and a positive result cannot say when symptoms start."
+      - text: "The test can show whether you inherited the gene change. It can't tell when symptoms would start or how they'd progress, and a few results fall in an in-between range."
+        quality: best
+        reply: ["Leah: So even if it's positive, I won't know when?", "Leah: ...Then what's the point?"]
+        mentor: "Good. You explained what the test can and cannot tell, including in-between results."
+      - text: "With your mum's numbers, you'd likely get symptoms around 50."
+        quality: poor
+        flag: R4
+        reply: ["Leah: Fifty. Okay."]
+        mentor: "Age at onset cannot be predicted reliably for one person."
+
+  - id: T5
+    checkpoint: C5
+    options:
+      - text: "If you're sure, we can do it today and phone you with the result."
+        quality: poor
+        flag: R1
+        reply: ["Leah: Yes, please."]
+        mentor: "Results are given in person, never by phone, and testing comes after counselling and time to reflect."
+      - text: "Usually we meet more than once before testing, with at least a month to think. Results are given in person, and you can stop at any point."
+        quality: best
+        reply: ["Leah: A month? (sighs) I guess that makes sense, if I'm going to hear it properly."]
+        mentor: "Good. You explained the process, the reflection period, results in person and her right to change her mind."
+      - text: "There are a few steps first. We'll sort out the details later."
+        quality: partial
+        reply: ["Leah: What steps?"]
+        mentor: "Be specific: counselling first, usually at least a month to reflect, results in person, and she can stop at any point."
+
+  - id: T6
+    checkpoint: C6
+    options:
+      - text: "Do you have support?"
+        quality: partial
+        reply: ["Leah: I'm fine. I'm a planner."]
+        mentor: "A general question gets a general answer. Ask who could come with her next time."
+      - text: "Okay, let's move on to the forms."
+        quality: poor
+        reply: ["Leah: Sure."]
+        mentor: "She came alone. Ask about support and suggest bringing a companion."
+      - text: "You came on your own today. Who could come with you to the next appointments?"
+        quality: best
+        reply: ["Leah: Marco, I suppose. If I tell him properly."]
+        mentor: "Good. You asked about support and encouraged a companion."
+
+  - id: T7
+    checkpoint: C7
+    hint: "How is she coping with all this?"
+    options:
+      - text: "How have you been coping since your mum's diagnosis?"
+        quality: best
+        reply: ["Leah: Up and down. I joke about it a lot. Some nights are bad."]
+        mentor: "Good. An open question about coping. Notice 'some nights are bad'."
+      - text: "You seem to be coping really well."
+        quality: poor
+        reply: ["Leah: Yep. Totally fine."]
+        mentor: "This closes the topic. Ask how she is coping."
+      - text: "Are you sleeping okay?"
+        quality: partial
+        reply: ["Leah: Mostly."]
+        mentor: "A narrow question. Ask openly how she is coping."
+
+  - id: T8
+    checkpoint: C7
+    hint: "'Some nights are bad.' Have you asked how low it has got?"
+    options:
+      - text: "You're not having any dark thoughts, are you?"
+        quality: poor
+        reply: ["Leah: Ha, no. I'm fine, I'm just a planner."]
+        mentor: "A leading question invites 'no'. Ask plainly about thoughts of not wanting to live."
+      - text: "Have you been feeling down?"
+        quality: partial
+        reply: ["Leah: A bit. Who wouldn't be?"]
+        mentor: "A good start, but ask directly about thoughts of not wanting to live."
+      - text: "Some people in your situation have thoughts of not wanting to live. Have you had thoughts like that?"
+        quality: best
+        reply: ["Leah: Sometimes I think, if I have it, I don't know if I could live with that.", "Leah: I don't have a plan. I wouldn't do anything."]
+        mentor: "Good. Asking directly does not plant the idea. Agree support and give 9-8-8."
+
+  - id: T9
+    checkpoint: C8
+    options:
+      - text: "You really must tell your brother before you test."
+        quality: poor
+        flag: R3
+        reply: ["Leah: That's my decision, isn't it?"]
+        mentor: "Whether and when to tell others is her choice. Explore it; do not require it."
+      - text: "Who else in your family might be affected by your result?"
+        quality: best
+        reply: ["Leah: My brother, Daniel. He's 24. I haven't told him I'm thinking about this. I don't want to scare him."]
+        mentor: "Good. You explored what her result could mean for others."
+      - text: "Does your family know you're here?"
+        quality: partial
+        reply: ["Leah: Not really."]
+        mentor: "Ask more openly about who might be affected by a result."
+
+  - id: T10
+    checkpoint: C9
+    options:
+      - text: "Let me sum up: no test today, we'll meet again in a few weeks, ideally with Marco, and here is 9-8-8 if things ever feel too much. What will you take away from today?"
+        quality: best
+        reply: ["Leah: Not what I came for. But I think I get why.", "Leah: I'll talk to Marco properly before next time."]
+        mentor: "Good. You summarised, checked her understanding and agreed a clear plan."
+      - text: "Any questions? No? Great."
+        quality: partial
+        reply: ["Leah: I guess not."]
+        mentor: "End by summarising, checking what she has understood and booking the next step."
+      - text: "I'm sure it will come back negative."
+        quality: poor
+        flag: R2
+        reply: ["Leah: I hope you're right."]
+        mentor: "Her risk is 50%. Do not predict the result."
+
+closing: "Next steps: a second counselling appointment in a few weeks, ideally with Marco, time to think, and 9-8-8 (call or text) if things ever feel too much."
