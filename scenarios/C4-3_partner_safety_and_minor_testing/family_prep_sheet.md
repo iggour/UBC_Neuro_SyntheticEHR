@@ -1,7 +1,7 @@
 # When caring for someone with HD feels unsafe
 ## Preparation sheet (for partners and family members)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed. If you are in immediate danger, call 911.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice. If you are in immediate danger, call 911.
 
 ### Things worth telling your doctor
 - What happens during outbursts, how often, and whether they are getting worse.

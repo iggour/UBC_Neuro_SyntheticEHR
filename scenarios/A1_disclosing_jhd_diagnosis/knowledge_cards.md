@@ -1,5 +1,5 @@
 # Scenario A1: Knowledge cards (read before practising)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 Source keys as in checkpoints.yaml. Items marked [?] have no confirmed source yet.
 
 ## what-is-juvenile-hd

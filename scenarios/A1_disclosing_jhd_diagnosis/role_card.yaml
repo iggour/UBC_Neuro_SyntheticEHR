@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Group A (juvenile-onset HD), the Novak family. A2 and A3 follow the same family; facts in
 # `family_canonical` must stay identical across A1-A3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: A1_disclosing_jhd_diagnosis
   group: A
-  status: draft
+  status: reviewed
   months_after_A1: 0
   title: "She's just a teenager"
   setting: Paediatric neurology clinic, results appointment, in person. Maya is at school; her parents asked to hear the result first.

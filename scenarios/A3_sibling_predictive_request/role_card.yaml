@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Group A (juvenile-onset HD), the Novak family, about thirteen months after A1.
 # Facts in `family_canonical` must stay identical across A1-A3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: A3_sibling_predictive_request
   group: A
-  status: draft
+  status: reviewed
   months_after_A1: 13
   title: "We just need to know he's safe"
   setting: Medical genetics clinic, appointment requested by the parents, in person. Owen is not present.

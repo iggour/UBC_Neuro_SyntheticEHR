@@ -1,7 +1,7 @@
 # When you are worried about driving and safety at home
 ## Appointment preparation sheet (for family members and carers)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice.
 
 ### Things worth telling the team
 - Any crashes, dents or scratches on the car, tickets, or getting lost on familiar routes.

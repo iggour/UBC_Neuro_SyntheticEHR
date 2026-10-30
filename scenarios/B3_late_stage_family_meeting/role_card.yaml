@@ -2,14 +2,14 @@
 # Role card for the AI-simulated family. FICTIONAL people.
 # Group B (late-onset HD), the Fraser family, about seven years after B1.
 # Facts in `family_canonical` must stay identical across B1-B3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `others`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: B3_late_stage_family_meeting
   group: B
-  status: draft
+  status: reviewed
   months_after_B1: 84
   title: "We can't just let her starve"
   setting: Hospital medical ward, family meeting room, Kamloops, British Columbia. Ruth is resting on the ward. Michael joins by speakerphone.

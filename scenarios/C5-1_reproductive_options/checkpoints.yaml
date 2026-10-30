@@ -1,16 +1,16 @@
 # Scenario C5-1: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Case 5; s40-s46 are new and need human verification).
 # Reused, defined elsewhere (not redefined here):
 #   s6 (scenarios/s1_pretest_counselling): MacLeod R et al. Recommendations for the predictive genetic test in HD.
 #         Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
-#   s19 (scenarios/A1_disclosing_jhd_diagnosis, draft): HSC What is HD? fact sheet. https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
-#   s21 (scenarios/A1_disclosing_jhd_diagnosis, draft): Canadian Paediatric Society. Genetic testing and screening in
+#   s19 (scenarios/A1_disclosing_jhd_diagnosis): HSC What is HD? fact sheet. https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
+#   s21 (scenarios/A1_disclosing_jhd_diagnosis): Canadian Paediatric Society. Genetic testing and screening in
 #         children. 2022. https://cps.ca/en/documents/position/genetic-testing
-#   s35 (scenarios/B1_late_onset_diagnosis, draft): HSC Physician's Guide, chapters 2 (including "Reproductive options and
+#   s35 (scenarios/B1_late_onset_diagnosis): HSC Physician's Guide, chapters 2 (including "Reproductive options and
 #         prenatal testing"), 3, 3a and 8. https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
 #         Note: the guide predates current terms; it says "PGD" where current practice says "PGT-M".
 # New:

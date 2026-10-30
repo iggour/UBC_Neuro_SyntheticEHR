@@ -1,7 +1,7 @@
 # Scenario C5-2: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Case 5; s40-s46 are new and need human verification).
 # Trial status changes quickly: s42 and s43 carry the date they were checked; re-check before each use.
@@ -9,9 +9,9 @@
 #   s8 (scenarios/s1_pretest_counselling): Paulsen JS et al. Critical periods of suicide risk in HD. Am J Psychiatry
 #         2005;162(4):725-31. https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725
 #   s12 (scenarios/s3_suicide_risk_assessment): Dazzi T et al. Psychol Med 2014;44(16):3361-3. https://pubmed.ncbi.nlm.nih.gov/24998511/
-#   s35 (scenarios/B1_late_onset_diagnosis, draft): HSC Physician's Guide, chapters 2, 3, 3a and 8 (chapter 2 includes
+#   s35 (scenarios/B1_late_onset_diagnosis): HSC Physician's Guide, chapters 2, 3, 3a and 8 (chapter 2 includes
 #         "Research and observational trials"). https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
-#   s36 (scenarios/C4-1_recognising_possible_hd, draft): HSC Physician's Guide, chapters 1, 5 and 6.
+#   s36 (scenarios/C4-1_recognising_possible_hd): HSC Physician's Guide, chapters 1, 5 and 6.
 #         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
 # New:
 #   s41 = Ross CA, Reilmann R, Cardoso F, et al. Movement Disorder Society Task Force viewpoint: Huntington's disease

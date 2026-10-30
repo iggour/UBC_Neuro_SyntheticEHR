@@ -9,6 +9,7 @@
 scenario:
   id: s3_suicide_risk_assessment
   title: "Better off without me"
+  content_warning: "Content note: this scenario includes discussion of suicide. Take a break if you need to. In Canada, call or text 9-8-8 at any time."
   setting: Outpatient HD / movement-disorders clinic, routine follow-up, in person.
   trainee_role: Clinician seeing the patient for follow-up (neurologist, resident, student, or genetic counsellor in a multidisciplinary clinic).
   trainee_brief: >

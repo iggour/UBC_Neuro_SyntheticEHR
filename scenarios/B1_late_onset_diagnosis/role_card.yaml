@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Group B (late-onset HD), the Fraser family. B2 and B3 follow the same family; facts in
 # `family_canonical` must stay identical across B1-B3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: B1_late_onset_diagnosis
   group: B
-  status: draft
+  status: reviewed
   months_after_B1: 0
   title: "Nobody in my family had this"
   setting: Neurology (movement disorders) clinic, results appointment, in person.

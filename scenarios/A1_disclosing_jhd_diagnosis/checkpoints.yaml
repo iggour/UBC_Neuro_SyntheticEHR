@@ -1,7 +1,7 @@
 # Scenario A1: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Group A; s16-s26 are new and need human verification; s6 is the reviewed source from s1-s3):
 #   s6 (defined in scenarios/s1_pretest_counselling/checkpoints.yaml): MacLeod R et al. Recommendations for the

@@ -1,7 +1,7 @@
 # Scenario C5-3: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Case 5; s40-s46 are new and need human verification).
 # Laws change: each legal source below carries the date it was checked. Re-check before each use.
@@ -11,7 +11,7 @@
 #         Checked 2026-10-29: page states "current to 2026-09-30". Sections 3-5 (no requirement to take a test or disclose
 #         results as a condition of goods, services or contracts; no collection, use or disclosure of results without written
 #         consent); section 6 exceptions for health care practitioners and researchers.
-#   s35, s36 (scenarios/B1_late_onset_diagnosis and C4-1_recognising_possible_hd, draft): HSC Physician's Guide,
+#   s35, s36 (scenarios/B1_late_onset_diagnosis and C4-1_recognising_possible_hd): HSC Physician's Guide,
 #         chapters 2, 3, 3a, 8 and 1, 5, 6. https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
 # New:
 #   s44 = Canadian Human Rights Act (R.S.C. 1985, c. H-6), s. 3: prohibited grounds include "genetic characteristics";

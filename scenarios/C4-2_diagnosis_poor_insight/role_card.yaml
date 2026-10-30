@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Case 4, the Brennan family, about four months after C4-1.
 # Facts in `family_canonical` must stay identical across C4-1 to C4-3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: C4-2_diagnosis_poor_insight
   group: C4
-  status: draft
+  status: reviewed
   months_after_C4_1: 4
   title: "There's nothing wrong with me"
   setting: Neurology / HD clinic, results appointment, Victoria, British Columbia, in person.

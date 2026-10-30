@@ -1,7 +1,7 @@
 # When HD is diagnosed but the person does not see the changes
 ## Appointment preparation sheet (for partners and family members)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed. If anyone is in immediate danger, call 911.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice. If anyone is in immediate danger, call 911.
 
 ### Things worth knowing
 - Many people with HD do not notice their own changes. This "unawareness" is often part of the illness, not stubbornness or denial.

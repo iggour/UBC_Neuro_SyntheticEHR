@@ -1,7 +1,7 @@
 # When someone you love "hasn't been themselves"
 ## Appointment preparation sheet (for partners and family members)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed. If anyone is in immediate danger, call 911.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice. If anyone is in immediate danger, call 911.
 
 ### Things worth telling the doctor
 - Changes in temper, patience or behaviour, with examples and dates.

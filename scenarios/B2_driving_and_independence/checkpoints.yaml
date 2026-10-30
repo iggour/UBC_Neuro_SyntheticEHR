@@ -1,7 +1,7 @@
 # Scenario B2: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Group B; all new, need human verification):
 #   s31 = Government of British Columbia, RoadSafetyBC. Reporting a patient who may be unfit to drive (Motor Vehicle Act,

@@ -1,7 +1,7 @@
 # Scenario B1: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Group B; s27-s35 are new and need human verification).
 # Reused, defined elsewhere (not redefined here):
@@ -9,11 +9,11 @@
 #         Clin Genet 2013;83(3):221-31. https://pubmed.ncbi.nlm.nih.gov/22642570/
 #   s7 (scenarios/s1_pretest_counselling): Genetic Non-Discrimination Act (Canada, S.C. 2017, c. 3).
 #         https://laws-lois.justice.gc.ca/eng/acts/g-2.5/FullText.html
-#   s19 (scenarios/A1_disclosing_jhd_diagnosis, draft): Huntington Society of Canada, What is HD? fact sheet.
+#   s19 (scenarios/A1_disclosing_jhd_diagnosis): Huntington Society of Canada, What is HD? fact sheet.
 #         https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
-#   s20 (scenarios/A1_disclosing_jhd_diagnosis, draft): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
+#   s20 (scenarios/A1_disclosing_jhd_diagnosis): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
 #         https://pubmed.ncbi.nlm.nih.gov/10964998/
-#   s21 (scenarios/A1_disclosing_jhd_diagnosis, draft): Canadian Paediatric Society. Genetic testing and screening in
+#   s21 (scenarios/A1_disclosing_jhd_diagnosis): Canadian Paediatric Society. Genetic testing and screening in
 #         children. 2022. https://cps.ca/en/documents/position/genetic-testing
 # New:
 #   s27 = Chaganti SS, McCusker EA, Loy CT. What do we know about late onset Huntington's disease?

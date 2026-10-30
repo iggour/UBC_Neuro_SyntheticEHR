@@ -1,7 +1,7 @@
 # Thinking about having children when one partner carries the HD gene
 ## Appointment preparation sheet (for couples)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice.
 
 ### Things worth thinking about before the appointment
 - What matters most to each of you about having a family?

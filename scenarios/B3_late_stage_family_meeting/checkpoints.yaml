@@ -1,13 +1,13 @@
 # Scenario B3: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Group B; s27-s35 are new and need human verification).
 # Reused, defined elsewhere (not redefined here):
-#   s20 (scenarios/A1_disclosing_jhd_diagnosis, draft): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
+#   s20 (scenarios/A1_disclosing_jhd_diagnosis): Baile WF et al. SPIKES. Oncologist 2000;5(4):302-11.
 #         https://pubmed.ncbi.nlm.nih.gov/10964998/
-#   s32, s34, s35 (scenarios/B2_driving_and_independence, draft): BC advance care planning / My Voice guide;
+#   s32, s34, s35 (scenarios/B2_driving_and_independence): BC advance care planning / My Voice guide;
 #         BC long-term care services; HSC Physician's Guide chapters 2, 3, 3a and 8.
 #         https://www2.gov.bc.ca/gov/content/family-social-supports/seniors/health-safety/advance-care-planning
 #         https://www2.gov.bc.ca/gov/content/health/accessing-health-care/home-community-care/care-options-and-cost/long-term-care-services

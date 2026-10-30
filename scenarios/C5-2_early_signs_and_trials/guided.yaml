@@ -4,7 +4,7 @@
 # A checkpoint counts as met only if its best response is chosen on the first try.
 # Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
 # Trial information in this file was checked on 2026-10-29 and must be re-checked before use.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 
 opening:
   - "(You have just finished the examination. Kevin buttons his shirt. Mei watches your face.)"

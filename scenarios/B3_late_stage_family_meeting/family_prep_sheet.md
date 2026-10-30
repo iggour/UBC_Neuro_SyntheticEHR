@@ -1,7 +1,7 @@
 # Preparing for a family meeting about late-stage Huntington disease
 ## Appointment preparation sheet (for family members and carers)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice.
 
 ### Things worth thinking about before the meeting
 - What did your family member say, at any time, about feeding tubes, hospital care or "machines"?

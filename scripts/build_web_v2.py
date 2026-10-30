@@ -6,7 +6,7 @@ scenarios share one source of truth. Re-run after changing any scenario file.
 
 Usage:  python3 scripts/build_web_v2.py
 Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional)
-        Scenarios are listed by family (CASES below): Case 1 is reviewed; Cases 2 and 3 are marked as drafts.
+        Scenarios are listed by family (CASES below). Set a case's draft flag to label it as unreviewed.
 Writes: web/hd_anchor_v2.html
 Never exported to the page: hidden items, behaviour rules, mentor_only, met_if (patient/mentor only).
 """
@@ -32,10 +32,10 @@ TOPIC = {"s1": "Counselling before a predictive genetic test",
 # The website lists scenarios by family ("case"), in this order. Folder names and scenario files are unchanged.
 CASES = [
     {"n": 1, "name": "Leah's family", "draft": False, "shorts": ["s1", "s2", "s3"]},
-    {"n": 2, "name": "Maya's family: juvenile-onset HD", "draft": True, "shorts": ["A1", "A2", "A3"]},
-    {"n": 3, "name": "Ruth's family: late-onset HD", "draft": True, "shorts": ["B1", "B2", "B3"]},
-    {"n": 4, "name": "Mark's family: behavioural onset, poor insight", "draft": True, "shorts": ["C4-1", "C4-2", "C4-3"]},
-    {"n": 5, "name": "Kevin's family: from family planning to early symptoms", "draft": True, "shorts": ["C5-1", "C5-2", "C5-3"]},
+    {"n": 2, "name": "Maya's family: juvenile-onset HD", "draft": False, "shorts": ["A1", "A2", "A3"]},
+    {"n": 3, "name": "Ruth's family: late-onset HD", "draft": False, "shorts": ["B1", "B2", "B3"]},
+    {"n": 4, "name": "Mark's family: behavioural onset, poor insight", "draft": False, "shorts": ["C4-1", "C4-2", "C4-3"]},
+    {"n": 5, "name": "Kevin's family: from family planning to early symptoms", "draft": False, "shorts": ["C5-1", "C5-2", "C5-3"]},
 ]
 # One-line description of the patient for each scenario, shown in the scenario picker.
 DESC = {"s1": "Leah, 28 · at 50% risk, no symptoms · wants a predictive test",
@@ -53,8 +53,6 @@ DESC = {"s1": "Leah, 28 · at 50% risk, no symptoms · wants a predictive test",
         "C5-1": "Kevin, 34 · HD gene carrier (CAG 41), no symptoms · planning a family with Mei",
         "C5-2": "Kevin, 36 · early manifest HD · asks about clinical trials",
         "C5-3": "Kevin, 36 · early manifest HD · what to tell his employer and insurer"}
-# Internal labels in draft source files that should not appear on the website.
-HIDE = [r"\s*Draft for Group [A-Z], not yet clinically reviewed\."]
 
 def parse_sources(path, store):
     key = None
@@ -143,9 +141,8 @@ def main():
                        if (d / "guided.yaml").exists() else None),
         }
         case = case_of.get(short, {"n": 0, "draft": True})
-        item.update({"case": case["n"], "desc": DESC.get(short, ""), "draft": case["draft"]})
-        for pat in HIDE:
-            item["prep"]["note"] = re.sub(pat, "", item["prep"]["note"]).strip()
+        item.update({"case": case["n"], "desc": DESC.get(short, ""), "draft": case["draft"],
+                     "warning": card["scenario"].get("content_warning", "")})
         data.append(item)
     src = {k: re.sub(r"\s*Status:.*$", "", " ".join(v)).strip() for k, v in sorted(sources.items(), key=lambda kv: int(kv[0][1:]))}
     payload = json.dumps({"scenarios": data, "sources": src, "draftSources": draft_src,

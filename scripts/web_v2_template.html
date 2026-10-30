@@ -77,7 +77,7 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 <li><b>Feedback.</b> A checklist shows what you did well and what you missed, with links back to the notes.</li></ol>
 <p>The mentor only uses pre-written advice linked to sources. It does not write advice of its own.</p></div>
 <div class="card"><h2 style="margin-top:0">Current stage</h2><ul>
-<li>Three scenarios for one fictional family are written and clinically reviewed.</li>
+<li>Fifteen scenarios across five fictional families are written and reviewed.</li>
 <li>The AI patient is being tested on a locally hosted open-source model, so no data leaves the institution.</li>
 <li>No human participants in this phase. Testing with trainees will follow ethics approval.</li></ul></div>
 </section>
@@ -101,6 +101,7 @@ function picker(sel,fn){var h="";
 function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+picker(st.sc,"pickSc");
  var names=["1. Learn","2. Practise","3. Feedback"];
  if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
+ if(s.warning)h+='<div class="safe">'+esc(s.warning)+'</div>';
  h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+'</div>';
  if(st.step===0){h+='<div class="card"><h3 style="margin-top:0">The situation</h3><p>'+esc(s.brief)+'</p><p class="note">Setting: '+esc(s.setting)+'</p><h3>In this conversation, aim to</h3><ul>'+s.goals.map(function(g){return"<li>"+esc(g)+"</li>"}).join("")+'</ul></div><h2>Key facts</h2>'+s.cards.map(cardHtml).join("")+'<div class="no-print"><button class="btn pri" onclick="step(1)">Start practising</button></div>'}
  if(st.step===1){h+=practise(s)}
@@ -154,8 +155,9 @@ function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
 function step(i){st.step=i;clin()}
 function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
 function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
+function famPicker(){return '<div class="grid">'+D.scenarios.map(function(s,i){return '<button class="pick'+(i===st.famsc?' sel':'')+'" onclick="pickFam('+i+')"><span class="t">'+esc(s.prep.title)+'</span>'+(s.prep.subtitle?'<span class="d">'+esc(s.prep.subtitle)+'</span>':'')+'</button>'}).join("")+'</div>'}
 function fam(){var s=D.scenarios[st.famsc],p=s.prep,q=st.famq[s.id]||(st.famq[s.id]={});
- var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2>'+picker(st.famsc,"pickFam");
+ var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2><p class="sub">Choose the sheet closest to your situation.</p>'+famPicker();
  if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
  h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');
  p.sections.forEach(function(sec,si){h+='<h3>'+esc(sec.h)+'</h3>';
@@ -168,7 +170,7 @@ function pickFam(i){st.famsc=i;fam()}
 function famTick(k,v){st.famq[D.scenarios[st.famsc].id][k]=v;fam()}
 function copyList(){var t=document.getElementById("mylist").textContent,m=document.getElementById("copied");
  try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied"},function(){m.textContent="Select the text to copy"})}catch(e){m.textContent="Select the text to copy"}}
-function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by a clinical reviewer. Content is paraphrased, not copied.</p><ul>';
+function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by the project team. Content is paraphrased, not copied.</p><ul>';
  var dr=D.draftSources||[];
  Object.keys(D.sources).forEach(function(k){if(dr.indexOf(k)<0)h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
  h+='</ul></div>';

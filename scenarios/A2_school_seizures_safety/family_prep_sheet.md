@@ -1,7 +1,7 @@
 # When your teenager has juvenile Huntington disease and seizures
 ## Appointment preparation sheet (for parents and carers)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft for Group A, not yet clinically reviewed. If a seizure lasts more than five minutes, call 911.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice. If a seizure lasts more than five minutes, call 911.
 
 ### Things worth telling the team
 - Every seizure: the date, what happened, how long it lasted, and what your child was doing before.

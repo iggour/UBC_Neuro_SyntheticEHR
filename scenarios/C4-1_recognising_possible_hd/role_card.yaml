@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Case 4, the Brennan family. C4-2 and C4-3 follow the same family; facts in `family_canonical`
 # must stay identical across C4-1 to C4-3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: C4-1_recognising_possible_hd
   group: C4
-  status: draft
+  status: reviewed
   months_after_C4_1: 0
   title: "Anna made me come"
   setting: Family practice clinic, Victoria, British Columbia, booked appointment, in person.

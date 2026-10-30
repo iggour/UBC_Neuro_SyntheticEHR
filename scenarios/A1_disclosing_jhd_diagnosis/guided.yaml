@@ -3,7 +3,7 @@
 # Each turn has one best response, one partial, and one poor response (some trigger a red flag).
 # A checkpoint counts as met only if its best response is chosen on the first try.
 # Facts must match role_card.yaml. Mentor notes must match checkpoints.yaml and its sources.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 
 opening:
   - "(Sarah and Adam Novak sit down. Maya is at school.)"

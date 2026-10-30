@@ -1,5 +1,5 @@
 # Scenario C5-2: Knowledge cards (read before practising)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 Source keys as in checkpoints.yaml. Items marked [?] have no confirmed source yet.
 Trial information changes quickly. Statements below marked "checked 2026-10-29" must be re-checked before use.
 

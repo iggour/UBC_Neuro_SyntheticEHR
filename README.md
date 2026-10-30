@@ -31,12 +31,12 @@ a family preparation sheet, a guided-mode script and a Chinese review checklist 
 | Case | Family | Scenarios | Status |
 |---|---|---|---|
 | 1 | Adult-onset HD | s1 pre-test counselling, s2 disclosing a result, s3 suicide-risk assessment | Reviewed by the project clinician (2026-10-23 to 2026-10-26) |
-| 2 | Juvenile-onset HD | A1 disclosing a JHD diagnosis, A2 school, seizures and safety, A3 sibling's predictive-test request | Draft, not yet clinically reviewed |
-| 3 | Late-onset HD | B1 late-onset diagnosis, B2 driving and independence, B3 late-stage family meeting | Draft, not yet clinically reviewed |
-| 4 | Adopted man, unknown family history | C4-1 recognising possible HD, C4-2 diagnosis with poor insight, C4-3 partner safety and testing a minor | Draft, not yet clinically reviewed |
-| 5 | Known gene carrier | C5-1 reproductive options, C5-2 early signs and trials, C5-3 work, insurance and the GNDA | Draft, not yet clinically reviewed |
+| 2 | Juvenile-onset HD | A1 disclosing a JHD diagnosis, A2 school, seizures and safety, A3 sibling's predictive-test request | Reviewed by the project owner (2026-10-30) |
+| 3 | Late-onset HD | B1 late-onset diagnosis, B2 driving and independence, B3 late-stage family meeting | Reviewed by the project owner (2026-10-30) |
+| 4 | Adopted man, unknown family history | C4-1 recognising possible HD, C4-2 diagnosis with poor insight, C4-3 partner safety and testing a minor | Reviewed by the project owner (2026-10-30) |
+| 5 | Known gene carrier | C5-1 reproductive options, C5-2 early signs and trials, C5-3 work, insurance and the GNDA | Reviewed by the project owner (2026-10-30) |
 
-Draft cases are labelled "Draft – not yet reviewed" on the site. Laws and trial status in Case 5
+Laws and trial status in Case 5
 were checked on 2026-10-29 and change over time; re-check before use.
 
 ## Consistency checkers

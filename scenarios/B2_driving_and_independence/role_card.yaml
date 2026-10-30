@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Group B (late-onset HD), the Fraser family, about two years after B1 (mild to moderate stage).
 # Facts in `family_canonical` must stay identical across B1-B3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: B2_driving_and_independence
   group: B
-  status: draft
+  status: reviewed
   months_after_B1: 24
   title: "I've been driving for fifty years"
   setting: HD clinic (neurology), routine follow-up, in person, Kamloops, British Columbia.

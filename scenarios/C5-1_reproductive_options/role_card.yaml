@@ -2,14 +2,14 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Case 5, the Walsh-Lin family. C5-2 and C5-3 follow the same family; facts in `family_canonical`
 # must stay identical across C5-1 to C5-3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `companion`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: C5-1_reproductive_options
   group: C5
-  status: draft
+  status: reviewed
   months_after_C5_1: 0
   title: "Is it selfish to have kids?"
   setting: Medical genetics clinic, Vancouver, British Columbia, booked counselling appointment, in person.

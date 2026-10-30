@@ -1,7 +1,7 @@
 # When HD starts: questions about treatment and research
 ## Appointment preparation sheet (for people with HD and their partners)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft, not yet clinically reviewed. Research news changes quickly; this sheet was checked on 2026-10-29.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice. Research news changes quickly; this sheet was checked on 2026-10-29.
 
 ### Things worth telling the team
 - Changes you or others have noticed: movements, typing or handwriting, mistakes at work, mood, sleep.

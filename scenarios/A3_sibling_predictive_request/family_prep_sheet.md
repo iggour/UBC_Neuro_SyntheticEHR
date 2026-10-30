@@ -1,7 +1,7 @@
 # When you are thinking about a Huntington disease test for a child without symptoms
 ## Appointment preparation sheet (for parents)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft for Group A, not yet clinically reviewed.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice.
 
 ### Things worth thinking about before the appointment
 - What are you hoping a test would give you?

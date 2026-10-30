@@ -2,16 +2,17 @@
 # Role card for the AI-simulated patient. FICTIONAL people.
 # Case 4, the Brennan family, about seven months after C4-1 (three months after the diagnosis).
 # Facts in `family_canonical` must stay identical across C4-1 to C4-3 (checked by scripts/check_role_cards.py).
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 # The patient model sees `persona`, `facts`, `hidden` and `behaviour_rules`.
 # The mentor sees everything in this file plus checkpoints.yaml.
 
 scenario:
   id: C4-3_partner_safety_and_minor_testing
   group: C4
-  status: draft
+  status: reviewed
   months_after_C4_1: 7
   title: "I don't know who he is any more"
+  content_warning: "Content note: this scenario includes discussion of domestic violence, firearms and possible suicidal statements. Take a break if you need to. In Canada, call or text 9-8-8 at any time."
   setting: Family practice clinic, Victoria, British Columbia; Anna has booked a visit for herself and come alone.
   trainee_role: Family doctor for both Anna and Mark (or resident or student in the practice).
   trainee_brief: >

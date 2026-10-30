@@ -1,7 +1,7 @@
 # Work, insurance and genetic information
 ## Preparation sheet (for people with HD or the HD gene, and their families)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not legal or medical advice. Draft, not yet clinically reviewed. Laws change: legal points were checked on 2026-10-29.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not legal or medical advice. Laws change: legal points were checked on 2026-10-29.
 
 ### Things worth knowing
 - Canada's Genetic Non-Discrimination Act protects genetic test results: no one can make you take a genetic test, or show your results, to get a service, a job contract or insurance, and they cannot use your results without your written consent.

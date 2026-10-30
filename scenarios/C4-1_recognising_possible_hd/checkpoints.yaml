@@ -1,15 +1,15 @@
 # Scenario C4-1: mentor checkpoints (hybrid mentor)
 # The AI judge only answers "met / not met" for each checkpoint after each trainee turn.
 # All hint and feedback text below is pre-written; the AI never writes its own advice.
-# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
+# Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
 #
 # Sources (Case 4; s36-s39 are new and need human verification).
 # Reused, defined elsewhere (not redefined here):
 #   s12 (scenarios/s3_suicide_risk_assessment): Dazzi T et al. Does asking about suicide and related behaviours induce
 #         suicidal ideation? Psychol Med 2014;44(16):3361-3. https://pubmed.ncbi.nlm.nih.gov/24998511/
-#   s19 (scenarios/A1_disclosing_jhd_diagnosis, draft): Huntington Society of Canada, What is HD? fact sheet.
+#   s19 (scenarios/A1_disclosing_jhd_diagnosis): Huntington Society of Canada, What is HD? fact sheet.
 #         https://hsc.huntingtonsociety.ca/public/factsheet/what-is-hd.pdf
-#   s35 (scenarios/B1_late_onset_diagnosis, draft): HSC Physician's Guide, chapters 2, 3, 3a and 8.
+#   s35 (scenarios/B1_late_onset_diagnosis): HSC Physician's Guide, chapters 2, 3, 3a and 8.
 #         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
 # New:
 #   s36 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed.,

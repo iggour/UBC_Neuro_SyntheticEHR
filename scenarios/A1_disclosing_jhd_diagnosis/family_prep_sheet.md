@@ -1,7 +1,7 @@
 # When your child may have juvenile Huntington disease
 ## Appointment preparation sheet (for parents and carers)
-Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: PENDING (project clinician)
-Educational only. Not medical advice. Draft for Group A, not yet clinically reviewed.
+Drafted by: Claude (Anthropic), 2026-10-29. Reviewed by: project owner (checked 2026-10-30)
+Educational only. Not medical advice.
 
 ### Things worth telling the team
 - Changes at school: grades, concentration, handwriting, or comments from teachers.
