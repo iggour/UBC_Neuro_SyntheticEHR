@@ -6,6 +6,7 @@ scenarios share one source of truth. Re-run after changing any scenario file.
 
 Usage:  python3 scripts/build_web_v2.py
 Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional)
+        records/case*.yaml, records/shared_knowledge_cards.md, records/sources.yaml (Record tab, draft)
         Scenarios are listed by family (CASES below). Set a case's draft flag to label it as unreviewed.
 Writes: web/hd_anchor_v2.html
 Never exported to the page: hidden items, behaviour rules, mentor_only, met_if (patient/mentor only).
@@ -14,6 +15,8 @@ import json, pathlib, re, yaml
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCEN = ROOT / "scenarios"
+RECORDS = ROOT / "records"
+GROUP_CASE = {"B": 3, "C4": 4}      # records/*.yaml name their family by role-card group
 TOPIC = {"s1": "Counselling before a predictive genetic test",
          "s2": "Giving a positive result",
          "s3": "Assessing suicide risk",
@@ -142,10 +145,19 @@ def main():
         }
         case = case_of.get(short, {"n": 0, "draft": True})
         item.update({"case": case["n"], "desc": DESC.get(short, ""), "draft": case["draft"],
-                     "warning": card["scenario"].get("content_warning", "")})
+                     "warning": card["scenario"].get("content_warning", ""),
+                     "month": next((v for k, v in sc.items() if k.startswith("months_after")), 0)})
         data.append(item)
+    records = {}
+    for p in sorted(RECORDS.glob("case*.yaml")):
+        doc = yaml.safe_load(p.read_text(encoding="utf-8"))
+        records[GROUP_CASE[doc["group"]]] = doc["reports"]
+    known = set(sources)
+    parse_sources(RECORDS / "sources.yaml", sources)
+    draft_src += [k for k in sources if k not in known]
     src = {k: re.sub(r"\s*Status:.*$", "", " ".join(v)).strip() for k, v in sorted(sources.items(), key=lambda kv: int(kv[0][1:]))}
-    payload = json.dumps({"scenarios": data, "sources": src, "draftSources": draft_src,
+    payload = json.dumps({"scenarios": data, "sources": src, "draftSources": draft_src, "records": records,
+                          "recordCards": parse_cards(RECORDS / "shared_knowledge_cards.md"),
                           "cases": [{k: c[k] for k in ("n", "name", "draft")} for c in CASES]}, ensure_ascii=False).replace("</", "<\\/")
     tpl = (ROOT / "scripts" / "web_v2_template.html").read_text(encoding="utf-8")
     out = ROOT / "web" / "hd_anchor_v2.html"

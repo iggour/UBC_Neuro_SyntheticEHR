@@ -1,0 +1,108 @@
+# Case 4 (Brennan family): synthetic patient record. FICTIONAL patient. Text-only reports placed on the case timeline.
+# Role cards in scenarios/C4-1 to C4-3 are canonical; scripts/check_publish_v1.py (check 7) compares each report with them.
+# `month` counts from Scenario 1 (C4-1), the same clock as months_after_C4_1. Role cards have no calendar dates, so reports have none.
+# `scenario` is the first scenario in which the report is available. Sources are listed in records/sources.yaml.
+# C4-2 says "blood tests were normal", so every row in `rows` must stay inside its reference range.
+# No report quotes the CAG result: Mark's result is only known at Scenario 2. Reference ranges are illustrative.
+# Drafted by: Claude (Anthropic), 2026-10-30. Reviewed by: PENDING
+
+group: C4
+status: draft
+reports:
+  - id: C4-R1
+    kind: bloods
+    title: Blood tests from the family doctor
+    scenario: C4-2_diagnosis_poor_insight
+    month: 0.25
+    timing: About one week after Scenario 1
+    patient: Mark Brennan
+    age: 45
+    stage: early
+    medications: [No regular medicines]
+    label: "Synthetic – fictional patient"
+    cards: [what-each-test-can-and-cannot-tell-us, explaining-test-results-in-plain-language]
+    sources: [s49]
+    sections:
+      - h: Reason for tests
+        text: >-
+          A 45-year-old man with about 18 months of irritability, problems at work and poor sleep. Looking for medical causes.
+      - h: Comment
+        text: >-
+          All results are within the reference range. These tests look for other causes. They do not test for Huntington disease.
+    rows:
+      - {test: Haemoglobin, result: "148 g/L", range: "135-175", why: General health}
+      - {test: White cell count, result: "6.2 x10^9/L", range: "4.0-11.0", why: General health}
+      - {test: Platelets, result: "240 x10^9/L", range: "150-400", why: General health}
+      - {test: Mean cell volume, result: "92 fL", range: "80-100", why: General health}
+      - {test: Sodium, result: "140 mmol/L", range: "135-145", why: Metabolic cause}
+      - {test: Potassium, result: "4.2 mmol/L", range: "3.5-5.0", why: Metabolic cause}
+      - {test: Creatinine, result: "84 umol/L", range: "60-110", why: Kidney function}
+      - {test: Calcium, result: "2.35 mmol/L", range: "2.10-2.55", why: Metabolic cause}
+      - {test: Fasting glucose, result: "5.2 mmol/L", range: "3.6-6.0", why: Metabolic cause}
+      - {test: ALT, result: "29 U/L", range: "0-50", why: Liver}
+      - {test: GGT, result: "41 U/L", range: "0-60", why: Liver}
+      - {test: TSH, result: "1.9 mIU/L", range: "0.35-5.00", why: Thyroid disease}
+      - {test: Vitamin B12, result: "340 pmol/L", range: "150-650", why: General health}
+
+  - id: C4-R2
+    kind: bloods
+    title: Further tests for other causes of chorea
+    scenario: C4-2_diagnosis_poor_insight
+    month: 2
+    timing: About two months after Scenario 1
+    patient: Mark Brennan
+    age: 45
+    stage: early
+    medications: [No regular medicines]
+    label: "Synthetic – fictional patient"
+    cards: [what-each-test-can-and-cannot-tell-us]
+    sources: [s49, s51]
+    sections:
+      - h: Reason for tests
+        text: >-
+          A 45-year-old man seen in neurology with mild chorea, slowed eye movements and difficulty with a three-step
+          command. Adopted, so family history is unknown. Blood tests from the family doctor were normal.
+      - h: Comment
+        text: >-
+          All results are normal. Other causes tested here are unlikely. These tests do not confirm or exclude Huntington disease.
+    rows:
+      - {test: Blood smear for acanthocytes, result: None seen, range: None seen, why: Chorea-acanthocytosis}
+      - {test: Creatine kinase, result: "130 U/L", range: "40-300", why: Chorea-acanthocytosis}
+      - {test: Ceruloplasmin, result: "0.27 g/L", range: "0.20-0.60", why: Wilson disease}
+      - {test: Antinuclear antibody, result: Negative, range: Negative, why: Lupus}
+      - {test: Antiphospholipid antibodies, result: Negative, range: Negative, why: Antiphospholipid syndrome}
+      - {test: Urine drug screen, result: Negative, range: Negative, why: Drug or toxin effect}
+
+  - id: C4-R3
+    kind: mri
+    title: Brain MRI report
+    scenario: C4-2_diagnosis_poor_insight
+    month: 3
+    timing: About three months after Scenario 1
+    patient: Mark Brennan
+    age: 45
+    stage: early
+    medications: [No regular medicines]
+    label: "Synthetic – fictional patient"
+    cards: [imaging-findings-in-hd, what-each-test-can-and-cannot-tell-us]
+    sources: [s47, s49, s51]
+    sections:
+      - h: Reason for scan
+        text: >-
+          A 45-year-old man with about 18 months of irritability and problems at work, mild chorea, slowed eye movements and
+          difficulty with a three-step command. Adopted, so family history is unknown. Looking for a structural cause.
+      - h: Technique
+        text: >-
+          MRI of the brain without contrast. Mild motion artefact from small involuntary movements.
+      - h: Findings
+        text: >-
+          No infarct, haemorrhage, mass or white matter disease. Mild volume loss in the caudate heads on both sides, a little
+          more than expected at this age, with mild enlargement of the frontal horns of the lateral ventricles. Cerebellum and
+          brainstem are normal. No abnormal metal deposition pattern in the basal ganglia.
+      - h: Impression
+        text: >-
+          1. No structural lesion. 2. Mild caudate volume loss on both sides. This can be seen in Huntington disease but is
+          not specific, and imaging alone cannot confirm the cause. Correlate with the examination and any genetic testing
+          the patient agrees to.
+      - h: Reported by
+        text: Fictional radiologist, synthetic record.

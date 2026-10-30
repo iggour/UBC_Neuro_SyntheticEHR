@@ -41,6 +41,7 @@ A Rare Disease Foundation microgrant was submitted on 2026-10-26.
 - scripts/build_web_v2.py + scripts/web_v2_template.html -> web/hd_anchor_v2.html
   The website is generated from scenarios/. Edit the scenario or the template, then rebuild.
   Never hand-edit web/hd_anchor_v2.html. web/hd_training_prototype.html is the old version.
+- records/                            Synthetic patient records for Cases 3-4 (Record tab, PENDING review)
 - scripts/build_patient_prompt.py     role_card.yaml -> runtime/patient_prompts/<id>.md
 - scripts/gemma_client.py             OpenAI-compatible client (stdlib only)
 - scripts/patient_session.py, chat_patient.py, run_trial_script.py

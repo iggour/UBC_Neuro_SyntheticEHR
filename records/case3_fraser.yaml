@@ -1,0 +1,120 @@
+# Case 3 (Fraser family): synthetic patient record. FICTIONAL patient. Text-only reports placed on the case timeline.
+# Role cards in scenarios/B1-B3 are canonical; scripts/check_publish_v1.py (check 7) compares each report with them.
+# `month` counts from Scenario 1 (B1), the same clock as months_after_B1. Role cards have no calendar dates, so reports have none.
+# `scenario` is the first scenario in which the report is available. Sources are listed in records/sources.yaml.
+# Drafted by: Claude (Anthropic), 2026-10-30. Reviewed by: PENDING
+
+group: B
+status: draft
+reports:
+  - id: B-R1
+    kind: mri
+    title: Brain MRI report
+    scenario: B1_late_onset_diagnosis
+    month: -2
+    timing: About two months before Scenario 1
+    patient: Ruth Fraser
+    age: 68
+    stage: early
+    medications: [One blood pressure tablet a day]
+    label: "Synthetic – fictional patient"
+    cards: [imaging-findings-in-hd, what-each-test-can-and-cannot-tell-us]
+    sources: [s47, s49]
+    sections:
+      - h: Reason for scan
+        text: >-
+          A 68-year-old woman with about two years of fidgety movements, unsteadiness, trouble planning and two falls
+          in the last year (no injuries). High blood pressure. No known family history of neurological illness.
+          Looking for a structural cause of the falls and movements.
+      - h: Technique
+        text: >-
+          MRI of the brain without contrast. Some sequences show mild motion artefact from involuntary movements.
+      - h: Findings
+        text: >-
+          No acute infarct, haemorrhage, mass or subdural collection. Mild volume loss in the caudate heads and putamina
+          on both sides, with mild enlargement of the frontal horns of the lateral ventricles. Scattered small white
+          matter bright spots on T2 and FLAIR, in keeping with small vessel change, common at this age with high blood pressure.
+      - h: Impression
+        text: >-
+          1. No structural cause found for the falls. 2. Mild caudate and putamen volume loss on both sides. This is not
+          specific and imaging alone cannot show the cause. Correlate with the examination and clinical history.
+      - h: Reported by
+        text: Fictional radiologist, synthetic record.
+
+  - id: B-R2
+    kind: genetic
+    title: Genetic test report (HTT CAG repeat)
+    scenario: B1_late_onset_diagnosis
+    month: -1
+    timing: About one month before Scenario 1
+    patient: Ruth Fraser
+    age: 68
+    stage: early
+    cag: "17 / 39"
+    medications: [One blood pressure tablet a day]
+    label: "Synthetic – fictional patient"
+    cards: [what-each-test-can-and-cannot-tell-us, explaining-test-results-in-plain-language]
+    sources: [s1, s28, s49, s50]
+    sections:
+      - h: Reason for test
+        text: >-
+          Diagnostic test in a 68-year-old woman with involuntary movements, unsteadiness and trouble planning. No known
+          family history. Consent recorded after counselling.
+      - h: Test
+        text: Sizing of the CAG repeat in the HTT gene from a blood sample.
+      - h: Result
+        text: >-
+          HTT CAG repeat sizes: 17 and 39.
+      - h: Interpretation
+        text: >-
+          The 17 allele is in the normal range. 39 repeats is in the reduced-penetrance range (36 to 39). In a person with
+          signs of HD, this result supports a diagnosis of Huntington disease. The test does not show when symptoms began,
+          how fast they will change, or whether a relative who inherits an allele of this size will become ill.
+      - h: Measurement note
+        text: >-
+          Stated measurement error for this laboratory is plus or minus 1 repeat at this size. Sizes close to a range
+          boundary should be read with this in mind.
+      - h: Follow-up
+        text: Result to be given in person by the treating clinician. Genetic counselling available for relatives who want it.
+      - h: Reported by
+        text: Fictional clinical molecular geneticist, synthetic record.
+
+  - id: B-R3
+    kind: swallowing
+    title: Swallowing assessment report
+    scenario: B3_late_stage_family_meeting
+    month: 84
+    timing: During the hospital stay in Scenario 3, before the family meeting
+    patient: Ruth Fraser
+    age: 75
+    stage: late
+    medications: [Antibiotics for aspiration pneumonia]
+    label: "Synthetic – fictional patient"
+    cards: [what-each-test-can-and-cannot-tell-us, explaining-test-results-in-plain-language]
+    sources: [s35, s49, s52]
+    sections:
+      - h: Reason for referral
+        text: >-
+          A 75-year-old woman with late-stage Huntington disease, diagnosed seven years ago. Second aspiration pneumonia in
+          three months, now improving on antibiotics. Coughs and chokes at most meals. Meals take over an hour. Has lost a
+          lot of weight over the past year.
+      - h: Background
+        text: >-
+          Uses a wheelchair and needs help with all care. Speaks single words or short phrases. Recognises her family.
+      - h: Assessment
+        text: >-
+          Clinical swallowing assessment at the bedside by the speech-language pathologist. Seated upright with support.
+          Involuntary movements of the head and trunk during the meal. Coughing and choking on most food and drink offered.
+          Managed small amounts of soft food with one-to-one help. Instrumental assessment (videofluoroscopy or endoscopy)
+          was not done during this stay.
+      - h: Impression
+        text: >-
+          Severe swallowing difficulty with a high risk of aspiration on most food and drink. This is part of late-stage
+          Huntington disease and is not expected to improve.
+      - h: Suggestions for the team
+        text: >-
+          Small amounts of soft food with help, only when she is alert and upright. Regular mouth care. Dietitian review.
+          Feeding options and goals of care are for the family meeting, with reference to the wishes Ruth stated at the
+          HD clinic. This report does not make that decision.
+      - h: Reported by
+        text: Fictional speech-language pathologist, synthetic record.

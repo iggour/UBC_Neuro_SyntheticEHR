@@ -51,6 +51,8 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 .grp{margin:1.3rem 0 .5rem}.grp:first-of-type{margin-top:.4rem}
 .pick .d{display:block;font-size:.8rem;color:var(--mute);margin-top:5px;border-top:1px solid var(--line);padding-top:5px}
 .chip.draft{color:var(--warn);border-color:var(--warn);background:var(--warnbg);font-weight:600;vertical-align:middle}
+.steps .chip.draft{font-size:.68rem;white-space:normal}
+.rows{overflow-x:auto}.rows table{width:100%;border-collapse:collapse;font-size:.88rem}.rows th,.rows td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}
 #gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
 #gate>div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}#gate[hidden]{display:none}
 @media print{.tabs,.no-print,#gate,.bar:not(.notice){display:none!important}body{background:#fff}}
@@ -102,7 +104,8 @@ function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+pick
  var names=["1. Learn","2. Practise","3. Feedback"];
  if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
  if(s.warning)h+='<div class="safe">'+esc(s.warning)+'</div>';
- h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+'</div>';
+ h+='<div class="steps">'+names.map(function(n,i){return '<button class="'+(i===st.step?'on':'')+'" onclick="step('+i+')">'+n+'</button>'}).join("")+(D.records[s["case"]]?'<button class="'+(st.step===3?'on':'')+'" onclick="step(3)">Record <span class="chip draft">Draft – not yet reviewed</span></button>':'')+'</div>';
+ if(st.step===3)h+=record(s);
  if(st.step===0){h+='<div class="card"><h3 style="margin-top:0">The situation</h3><p>'+esc(s.brief)+'</p><p class="note">Setting: '+esc(s.setting)+'</p><h3>In this conversation, aim to</h3><ul>'+s.goals.map(function(g){return"<li>"+esc(g)+"</li>"}).join("")+'</ul></div><h2>Key facts</h2>'+s.cards.map(cardHtml).join("")+'<div class="no-print"><button class="btn pri" onclick="step(1)">Start practising</button></div>'}
  if(st.step===1){h+=practise(s)}
  if(st.step===2){var key=s.id,t=st.ticks[key]||(st.ticks[key]={}),f=st.flags[key]||(st.flags[key]={}),shown=st.shown[key],gd=st.g[key]&&st.g[key].done;
@@ -115,6 +118,18 @@ function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+pick
    h+='<h2>Your feedback: '+n+' of '+s.checkpoints.length+' steps</h2>'+s.checkpoints.map(function(c){var ok=!!t[c.id];return '<div class="fb '+(ok?'ok':'no')+'"><b>'+esc(c.name)+'.</b> '+esc(ok?c.met:c.missed)+' '+srcChips(c.src)+(c.card&&!ok?' <a class="chip" href="#card-'+c.card+'" onclick="step(0)">review the key facts</a>':'')+'</div>'}).join("");
    var hit=s.flags.filter(function(r){return f[r.id]});if(hit.length)h+='<h3>Things to avoid next time</h3>'+hit.map(function(r){return '<div class="fb no"><b>'+esc(r.name)+'.</b> '+esc(r.fb)+' '+srcChips(r.src)+'</div>'}).join("")}}
  document.getElementById("clin").innerHTML=h}
+
+function cardChip(id){var c=D.recordCards.filter(function(x){return x.id===id})[0];return c?'<a class="chip" href="#card-'+id+'" onclick="openCard(\''+id+'\')">'+esc(c.title)+'</a>':""}
+function openCard(id){var e=document.getElementById("card-"+id);if(e)e.open=true}
+function reportHtml(r){var h='<div class="card"><span class="chip draft">'+esc(r.label)+'</span><h3>'+esc(r.title)+'</h3><p class="note">'+esc(r.timing)+' · '+esc(r.patient)+', '+r.age+' · Stage: '+esc(r.stage)+' · Medicines: '+esc(r.medications.join("; "))+'</p>';
+ r.sections.forEach(function(x){h+='<h3>'+esc(x.h)+'</h3><p>'+esc(x.text)+'</p>'});
+ if(r.rows)h+='<div class="rows"><table><thead><tr><th>Test</th><th>Result</th><th>Reference</th><th>Why it was done</th></tr></thead><tbody>'+r.rows.map(function(x){return '<tr><td>'+esc(x.test)+'</td><td>'+esc(x.result)+'</td><td>'+esc(x.range)+'</td><td>'+esc(x.why)+'</td></tr>'}).join("")+'</tbody></table></div>';
+ return h+'<p class="note">Knowledge cards: '+r.cards.map(cardChip).join("")+'<br>Sources: '+srcChips(r.sources)+'</p></div>'}
+function record(s){var R=D.records[s["case"]],now=R.filter(function(r){return r.month<=s.month}),later=R.filter(function(r){return r.month>s.month});
+ var h='<div class="bar">Draft – not yet reviewed. These synthetic reports and knowledge cards have not been clinically reviewed; content and sources may change.</div><h2>Patient record so far</h2><p class="sub">Reports you would have at this point in the case, oldest first.</p>';
+ h+=now.length?now.map(reportHtml).join(""):'<div class="card"><p class="note">No reports yet at this point in the case.</p></div>';
+ if(later.length)h+='<details><summary>Later in this case ('+later.length+' report'+(later.length>1?'s':'')+'; results you would not have yet)</summary>'+later.map(reportHtml).join("")+'</details>';
+ return h+'<h2>Shared knowledge cards</h2>'+D.recordCards.map(function(c){return cardHtml(c).replace(" open>",">")}).join("")}
 
 function speak(l){var m=l.match(/^([A-Z][a-z]+):\s*(.*)$/);if(!m)return '<div class="stage">'+esc(l)+'</div>';return '<div class="line"><div class="who">'+esc(m[1])+'</div><div class="bub">'+esc(m[2])+'</div></div>'}
 function me(t){return '<div class="line me"><div class="who">You</div><div class="bub me">'+esc(t)+'</div></div>'}
@@ -174,7 +189,7 @@ function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p 
  var dr=D.draftSources||[];
  Object.keys(D.sources).forEach(function(k){if(dr.indexOf(k)<0)h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
  h+='</ul></div>';
- if(dr.length){h+='<div class="card"><h2 style="margin-top:0">Sources for draft cases (not yet reviewed)</h2><p class="note">Used by Cases 2 and 3, which are drafts. Not yet checked by a clinical reviewer.</p><ul>';
+ if(dr.length){h+='<div class="card"><h2 style="margin-top:0">Sources for draft content (not yet reviewed)</h2><p class="note">Used by the draft Record tabs in Cases 3 and 4. Not yet checked by the project team.</p><ul>';
   dr.forEach(function(k){h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});h+='</ul></div>'}
  h+='<div class="card"><h2 style="margin-top:0">Disclaimers</h2><ul><li>All people and situations are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, treat or triage.</li><li>Always follow local guidelines and your care team.</li></ul></div>';
  document.getElementById("src").innerHTML=h}

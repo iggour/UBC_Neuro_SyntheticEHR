@@ -7,23 +7,23 @@ High-risk scenarios can never auto-pass.
 
 ## Summary
 
-| Scenario | Family | Risk | Why | 1 Numbers | 2 Family | 3 Required | 4 Forbidden | 5 Links | 6 Readability | Overall | Decision |
-|---|---|---|---|---|---|---|---|---|---|---|---|
-| A1_disclosing_jhd_diagnosis | Case 2 | high | minors testing | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| A2_school_seizures_safety | Case 2 | high | safety, medication, legal | PASS | PASS | WARN | PASS | PASS | PASS | WARN | needs human review |
-| A3_sibling_predictive_request | Case 2 | high | safety, minors testing | PASS | WARN | WARN | PASS | WARN | PASS | WARN | needs human review |
-| B1_late_onset_diagnosis | Case 3 | high | minors testing, legal | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| B2_driving_and_independence | Case 3 | high | safety, legal | PASS | PASS | WARN | PASS | PASS | PASS | WARN | needs human review |
-| B3_late_stage_family_meeting | Case 3 | high | legal | PASS | PASS | WARN | PASS | PASS | PASS | WARN | needs human review |
-| C4-1_recognising_possible_hd | Case 4 | high | suicide, safety | PASS | PASS | WARN | WARN | PASS | PASS | WARN | needs human review |
-| C4-2_diagnosis_poor_insight | Case 4 | high | safety, legal, minors testing | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| C4-3_partner_safety_and_minor_testing | Case 4 | high | suicide, safety, minors testing, legal | PASS | PASS | WARN | WARN | WARN | PASS | WARN | needs human review |
-| C5-1_reproductive_options | Case 5 | high | minors testing | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| C5-2_early_signs_and_trials | Case 5 | high | suicide | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| C5-3_work_insurance_and_gnda | Case 5 | high | legal | PASS | PASS | WARN | PASS | PASS | PASS | WARN | needs human review |
-| s1_pretest_counselling | Case 1 | high | suicide, safety, legal | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| s2_disclosing_result | Case 1 | high | suicide, safety | PASS | PASS | WARN | PASS | WARN | PASS | WARN | needs human review |
-| s3_suicide_risk_assessment | Case 1 | high | suicide, safety, medication, legal | PASS | PASS | WARN | WARN | WARN | PASS | WARN | needs human review |
+| Scenario | Family | Risk | Why | 1 Numbers | 2 Family | 3 Required | 4 Forbidden | 5 Links | 6 Readability | 7 Record | Overall | Decision |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| A1_disclosing_jhd_diagnosis | Case 2 | high | minors testing | PASS | PASS | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| A2_school_seizures_safety | Case 2 | high | safety, medication, legal | PASS | PASS | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| A3_sibling_predictive_request | Case 2 | high | safety, minors testing | PASS | WARN | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| B1_late_onset_diagnosis | Case 3 | high | minors testing, legal | PASS | PASS | WARN | PASS | WARN | PASS | WARN | WARN | needs human review |
+| B2_driving_and_independence | Case 3 | high | safety, legal | PASS | PASS | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| B3_late_stage_family_meeting | Case 3 | high | legal | PASS | PASS | WARN | PASS | WARN | PASS | WARN | WARN | needs human review |
+| C4-1_recognising_possible_hd | Case 4 | high | suicide, safety | PASS | PASS | WARN | WARN | PASS | PASS | WARN | WARN | needs human review |
+| C4-2_diagnosis_poor_insight | Case 4 | high | safety, legal, minors testing | PASS | PASS | WARN | PASS | WARN | PASS | WARN | WARN | needs human review |
+| C4-3_partner_safety_and_minor_testing | Case 4 | high | suicide, safety, minors testing, legal | PASS | PASS | WARN | WARN | PASS | PASS | N/A | WARN | needs human review |
+| C5-1_reproductive_options | Case 5 | high | minors testing | PASS | PASS | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| C5-2_early_signs_and_trials | Case 5 | high | suicide | PASS | PASS | WARN | PASS | WARN | PASS | N/A | WARN | needs human review |
+| C5-3_work_insurance_and_gnda | Case 5 | high | legal | PASS | PASS | WARN | PASS | PASS | PASS | N/A | WARN | needs human review |
+| s1_pretest_counselling | Case 1 | high | suicide, safety, legal | PASS | PASS | WARN | PASS | WARN | PASS | N/A | WARN | needs human review |
+| s2_disclosing_result | Case 1 | high | suicide, safety | PASS | PASS | WARN | PASS | WARN | PASS | N/A | WARN | needs human review |
+| s3_suicide_risk_assessment | Case 1 | high | suicide, safety, medication, legal | PASS | PASS | WARN | WARN | WARN | PASS | N/A | WARN | needs human review |
 
 ## Findings by scenario
 
@@ -38,9 +38,6 @@ Risk: high. Decision: needs human review.
 - WARN: s19 still says it needs human verification
 - WARN: s20 still says it needs human verification
 - WARN: s21 still says it needs human verification
-
-**5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
 
 **6 Readability**
 - PASS: grade 5.0, reading ease 72.6 (242 words, target grade 8 or below)
@@ -77,9 +74,6 @@ Risk: high. Decision: needs human review.
 - WARN: s21 still says it needs human verification
 - WARN: s26 still says it needs human verification
 
-**5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
-
 **6 Readability**
 - PASS: grade 4.7, reading ease 75.8 (244 words, target grade 8 or below)
 
@@ -98,10 +92,23 @@ Risk: high. Decision: needs human review.
 - WARN: s35 still says it needs human verification
 
 **5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
+- WARN: 403: https://neurology.testcatalog.org/show/HAD
 
 **6 Readability**
 - PASS: grade 6.3, reading ease 63.1 (229 words, target grade 8 or below)
+
+**7 Record**
+- WARN: case3_fraser.yaml still says Reviewed by: PENDING
+- WARN: s20 still says it needs human verification
+- WARN: s28 still says it needs human verification
+- WARN: s35 still says it needs human verification
+- WARN: s47 still says it needs human verification
+- WARN: s48 still says it needs human verification
+- WARN: s49 still says it needs human verification
+- WARN: s50 still says it needs human verification
+- WARN: s51 still says it needs human verification
+- WARN: s52 still says it needs human verification
+- WARN: s53 still says it needs human verification
 
 ### B2_driving_and_independence
 
@@ -128,8 +135,23 @@ Risk: high. Decision: needs human review.
 - WARN: s34 still says it needs human verification
 - WARN: s35 still says it needs human verification
 
+**5 Links**
+- WARN: 403: https://neurology.testcatalog.org/show/HAD
+
 **6 Readability**
 - PASS: grade 6.0, reading ease 66.0 (260 words, target grade 8 or below)
+
+**7 Record**
+- WARN: s20 still says it needs human verification
+- WARN: s28 still says it needs human verification
+- WARN: s35 still says it needs human verification
+- WARN: s47 still says it needs human verification
+- WARN: s48 still says it needs human verification
+- WARN: s49 still says it needs human verification
+- WARN: s50 still says it needs human verification
+- WARN: s51 still says it needs human verification
+- WARN: s52 still says it needs human verification
+- WARN: s53 still says it needs human verification
 
 ### C4-1_recognising_possible_hd
 
@@ -148,6 +170,9 @@ Risk: high. Decision: needs human review.
 **6 Readability**
 - PASS: grade 5.7, reading ease 66.8 (226 words, target grade 8 or below)
 
+**7 Record**
+- WARN: case4_brennan.yaml still says Reviewed by: PENDING
+
 ### C4-2_diagnosis_poor_insight
 
 Risk: high. Decision: needs human review.
@@ -162,11 +187,23 @@ Risk: high. Decision: needs human review.
 - WARN: s39 still says it needs human verification
 
 **5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
+- WARN: 403: https://neurology.testcatalog.org/show/HAD
 - WARN: no response (curl 28): https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-disability-benefit.html
 
 **6 Readability**
 - PASS: grade 6.5, reading ease 62.4 (249 words, target grade 8 or below)
+
+**7 Record**
+- WARN: s20 still says it needs human verification
+- WARN: s28 still says it needs human verification
+- WARN: s35 still says it needs human verification
+- WARN: s47 still says it needs human verification
+- WARN: s48 still says it needs human verification
+- WARN: s49 still says it needs human verification
+- WARN: s50 still says it needs human verification
+- WARN: s51 still says it needs human verification
+- WARN: s52 still says it needs human verification
+- WARN: s53 still says it needs human verification
 
 ### C4-3_partner_safety_and_minor_testing
 
@@ -189,9 +226,6 @@ Risk: high. Decision: needs human review.
 - WARN: means of harm next to suicide wording; confirm no detail in role_card.yaml: "disclose_when: Trainee asks specifically about weapons or firearms at home, or a"
 - WARN: means of harm next to suicide wording; confirm no detail in role_card.yaml: "thrown, arm grabbed), a firearm back in the house at an unknown location, and a "
 
-**5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
-
 **6 Readability**
 - PASS: grade 4.5, reading ease 76.4 (234 words, target grade 8 or below)
 
@@ -204,9 +238,6 @@ Risk: high. Decision: needs human review.
 - WARN: s21 still says it needs human verification
 - WARN: s35 still says it needs human verification
 - WARN: s40 still says it needs human verification
-
-**5 Links**
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
 
 **6 Readability**
 - PASS: grade 5.0, reading ease 74.0 (203 words, target grade 8 or below)
@@ -250,7 +281,6 @@ Risk: high. Decision: needs human review.
 
 **5 Links**
 - WARN: 403: https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
 - WARN: 403: https://neurology.testcatalog.org/show/HAD
 
 **6 Readability**
@@ -265,7 +295,6 @@ Risk: high. Decision: needs human review.
 
 **5 Links**
 - WARN: 403: https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725
-- WARN: 403: https://doi.org/10.1002/jgc4.70226
 - WARN: 403: https://neurology.testcatalog.org/show/HAD
 
 **6 Readability**
@@ -289,14 +318,13 @@ Risk: high. Decision: needs human review.
 
 ## Source links
 
-64 unique URLs: 59 reachable, 5 could not be verified, 0 broken. A 403, 429, 5xx or timeout usually means the site blocks scripts, not that the link is dead, so those are WARN and need a manual click.
+71 unique URLs: 67 reachable, 4 could not be verified, 0 broken. A 403, 429, 5xx or timeout usually means the site blocks scripts, not that the link is dead, so those are WARN and need a manual click.
 
 | Result | Code | URL | Used by |
 |---|---|---|---|
 | WARN | 403 | https://ajp.psychiatryonline.org/doi/full/10.1176/appi.ajp.162.4.725 | 4 scenario(s) |
-| WARN | 403 | https://doi.org/10.1002/jgc4.70226 | 8 scenario(s) |
 | WARN | 403 | https://journals.sagepub.com/doi/10.1177/18796397261499360 | 1 scenario(s) |
-| WARN | 403 | https://neurology.testcatalog.org/show/HAD | 2 scenario(s) |
+| WARN | 403 | https://neurology.testcatalog.org/show/HAD | 5 scenario(s) |
 | WARN | no response (curl 28) | https://www.canada.ca/en/services/benefits/publicpensions/cpp/cpp-disability-benefit.html | 1 scenario(s) |
 
 ## What this script cannot catch

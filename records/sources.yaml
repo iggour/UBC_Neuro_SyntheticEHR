@@ -1,0 +1,30 @@
+# Sources for the synthetic patient records (Case 3 and Case 4 pilot). Same format as the headers of
+# scenarios/*/checkpoints.yaml, so the website and the publish check read them the same way.
+# Drafted by: Claude (Anthropic), 2026-10-30. Reviewed by: PENDING
+#
+# Sources (records pilot; s47-s53 are new and need human verification).
+# Reused, defined elsewhere (not redefined here): s1, s20, s28, s35.
+# New:
+#   s47 = Boothe R, Houghton DJ, Milburn J. Reading between the striatal lines: magnetic resonance imaging insights into
+#         Huntington disease. Ochsner J 2025;25(4):218-221. https://pmc.ncbi.nlm.nih.gov/articles/PMC12704476/
+#         Status: full text read by Claude 2026-10-30; needs human verification.
+#   s48 = Ross CA, Aylward EH, Wild EJ, et al. Huntington disease: natural history, biomarkers and prospects for
+#         therapeutics. Nat Rev Neurol 2014;10(4):204-16. https://pubmed.ncbi.nlm.nih.gov/24614516/
+#         Status: abstract read by Claude 2026-10-30; needs human verification.
+#   s49 = Huntington Society of Canada. A Physician's Guide to the Management of Huntington Disease, 3rd ed., PDF pages 21-22
+#         (genetic test and MRI limits), 42 (swallowing referral) and 79 (imaging and blood tests, juvenile HD chapter).
+#         https://hsc.huntingtonsociety.ca/public/resources/physicians-guide.pdf
+#         Status: pages read by Claude 2026-10-30; needs human verification.
+#   s50 = Quarrell OW, Handley O, O'Donovan K, et al. Discrepancies in reporting the CAG repeat lengths for Huntington's
+#         disease. Eur J Hum Genet 2012;20(1):20-6. https://pubmed.ncbi.nlm.nih.gov/21811303/
+#         Status: abstract read by Claude 2026-10-30; needs human verification.
+#   s51 = Martinez-Ramirez D, Walker RH, Rodriguez-Violante M, Gatto EM. Review of hereditary and acquired rare choreas.
+#         Tremor Other Hyperkinet Mov 2020;10:24. https://pmc.ncbi.nlm.nih.gov/articles/PMC7413136/
+#         Status: full text read by Claude 2026-10-30; needs human verification.
+#   s52 = Pizzorni N, Pirola F, Ciammola A, Schindler A. Management of dysphagia in Huntington's disease: a descriptive
+#         review. Neurol Sci 2020;41(6):1405-17. https://pubmed.ncbi.nlm.nih.gov/31989345/
+#         Status: abstract read by Claude 2026-10-30; needs human verification.
+#   s53 = Agency for Healthcare Research and Quality. TeamSTEPPS tool: Teach-Back.
+#         https://www.ahrq.gov/teamstepps-program/curriculum/communication/tools/teachback.html
+#         Supporting: Yen PH, Leasure AR. Fed Pract 2019;36(6):284-9. https://pubmed.ncbi.nlm.nih.gov/31258322/
+#         Status: search summary only, the page refused automated access, searched by Claude 2026-10-30; needs human verification.

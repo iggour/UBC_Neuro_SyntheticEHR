@@ -19,6 +19,8 @@ Checks (each reports PASS / WARN / FAIL per scenario):
     4  Forbidden content: self-harm method details, quantities or doses linked to self-harm
     5  Source links: live request to every URL (404/410/DNS failure = broken)
     6  Readability of the family prep sheet (Flesch-Kincaid grade)
+    7  Synthetic records (records/case*.yaml) against role cards: fictional label, name, age, CAG, stage vs
+       imaging, timeline, medications, normal results, hidden items, sources, cards and the site's draft mark
 
 Risk tier: high = suicide, safety, medication, minors testing or legal; otherwise low.
 High-risk scenarios can never auto-pass: their decision is always "needs human review".
@@ -34,8 +36,9 @@ import check_role_cards as crc
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PASS, WARN, FAIL, NA = "PASS", "WARN", "FAIL", "N/A"
 RANK = {NA: 0, PASS: 1, WARN: 2, FAIL: 3}
-CHECKS = {1: "Numbers", 2: "Family", 3: "Required", 4: "Forbidden", 5: "Links", 6: "Readability"}
-NOTICE = "All patients are fictional. AI-generated content for education only. Not medical advice."
+CHECKS = {1: "Numbers", 2: "Family", 3: "Required", 4: "Forbidden", 5: "Links", 6: "Readability", 7: "Record"}
+RECORD_LABEL, RECORD_DRAFT = "Synthetic – fictional patient", "Draft – not yet reviewed"
+NOTICE ="All patients are fictional. AI-generated content for education only. Not medical advice."
 
 # CAG categories; same ranges as the reviewed knowledge cards ([s1] in s1_pretest_counselling).
 CAG_CATS = {"normal": (0, 26), "intermediate": (27, 35), "reduced penetrance": (36, 39), "full penetrance": (40, 999)}
@@ -72,6 +75,14 @@ MEANS = r"firearm\w*|rifle\w*|\bguns?\b"
 PROHIBIT = r"\b(?:never|do not|don't|does not|must not|should not|avoid\w*|without)\b"
 DRUGS = r"tetrabenazine|deutetrabenazine|valbenazine|antidepressant|seizure medicine|olanzapine|risperidone|sertraline"
 WORDS = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10}
+# Records: a medicine named in a report must also be in the role card it is linked to.
+MED_TERMS = (rf"{DRUGS}|blood pressure|antibiotics?|no regular medicines?|"
+             r"\b\w+(?:azine|pril|sartan|olol|dipine|statin|cillin|mycin|floxacin|oxetine|zepam)\b")
+BRAIN_REGION = r"caudate|putamen|putamina|striat|frontal horn"
+SEVERE_WORDS = r"\b(?:marked|severe|advanced|pronounced|extensive|moderate|boxcar)\b"
+MILD_WORDS = r"\b(?:mild|subtle|slight|minimal)\b"
+NO_ATROPHY = r"\bno (?:\w+ )?(?:atrophy|volume loss)\b|\bnormal (?:caudate|putamen|striat)"
+FIRST_MONTH = -24                     # earliest report date: symptoms start about two years before the first scenario
 
 
 def read(p):
@@ -294,7 +305,7 @@ def check_family(fid, members, results):
 def parse_sources(root):
     """{key: text} from the comment headers of every checkpoints.yaml; definitions are merged."""
     blocks = {}
-    for p in sorted((root / "scenarios").glob("*/checkpoints.yaml")):
+    for p in sorted((root / "scenarios").glob("*/checkpoints.yaml")) + sorted((root / "records").glob("sources.yaml")):
         cur = []
         for line in read(p).splitlines():
             m = re.match(r"#\s+(s\d+(?:,\s*s\d+)*)\s*(=|\()", line)
@@ -326,23 +337,26 @@ def cited_keys(s):
     return keys
 
 
+def check_source(k, b, out, check, today):
+    if not urls_in(b):
+        add(out, check, FAIL, f"{k} has no source URL")
+    dates = re.findall(r"(?:verified|checked|reviewer|searched|accessed|read)[^.]{0,40}?(20\d\d-\d\d-\d\d)", b, re.I)
+    if not dates:
+        add(out, check, FAIL, f"{k} has no check date")
+    elif re.search(r"\b(act|code|law|trial|legislation)\b", b, re.I):
+        age = (today - datetime.date.fromisoformat(max(dates))).days
+        if age > STALE_DAYS:
+            add(out, check, WARN, f"{k}: law/trial source last checked {age} days ago")
+    if re.search(r"needs? (?:human )?verification", b, re.I):
+        add(out, check, WARN, f"{k} still says it needs human verification")
+
+
 def check_required(s, out, sources, known, site, today, cats):
     for num, name, probs in crc.check_scenario(s, known):
         for p in probs or []:
             add(out, 3, FAIL, f"structure ({name}): {p}")
     for k in sorted(cited_keys(s), key=lambda x: int(x[1:])):
-        b = sources.get(k, "")
-        if not urls_in(b):
-            add(out, 3, FAIL, f"{k} has no source URL")
-        dates = re.findall(r"(?:verified|checked|reviewer|searched|accessed|read)[^.]{0,40}?(20\d\d-\d\d-\d\d)", b, re.I)
-        if not dates:
-            add(out, 3, FAIL, f"{k} has no check date")
-        elif re.search(r"\b(act|code|law|trial|legislation)\b", b, re.I):
-            age = (today - datetime.date.fromisoformat(max(dates))).days
-            if age > STALE_DAYS:
-                add(out, 3, WARN, f"{k}: law/trial source last checked {age} days ago")
-        if re.search(r"needs? (?:human )?verification", b, re.I):
-            add(out, 3, WARN, f"{k} still says it needs human verification")
+        check_source(k, sources.get(k, ""), out, 3, today)
     for p in sorted(s["dir"].glob("*")):
         if p.suffix in (".yaml", ".md") and "Reviewed by: PENDING" in read(p):
             add(out, 3, WARN, f"{p.name} still says Reviewed by: PENDING")
@@ -363,28 +377,30 @@ def check_required(s, out, sources, known, site, today, cats):
 
 
 # ---------------------------------------------------------------- check 4
+def scan_forbidden(body, name, out):
+    for line in body.splitlines():
+        if line.lstrip().startswith("content_warning:"):    # the warning itself names the topic
+            continue
+        for sent in re.split(r"(?<=[.!?])\s+", line):
+            method = re.search(METHOD, sent, re.I)
+            harm = re.search(SELFHARM, sent, re.I)
+            qty = re.search(QTY, sent, re.I)
+            banned = re.search(PROHIBIT, sent, re.I)
+            where = f"{name}: \"{sent.strip()[:80]}\""
+            if harm and qty:
+                add(out, 4, FAIL, f"quantity with self-harm ({qty.group(0)}) in {where}")
+            if method and harm and not banned:
+                add(out, 4, FAIL, f"method term ({method.group(0)}) in {where}")
+            elif method and not banned:
+                add(out, 4, WARN, f"method term ({method.group(0)}), check the context in {where}")
+            if harm and re.search(MEANS, sent, re.I) and not name.startswith("审核"):
+                add(out, 4, WARN, f"means of harm next to suicide wording; confirm no detail in {where}")
+
+
 def check_forbidden(root, s, out):
     for p in public_files(root, s):
         body = read(p)
-        if p.suffix == ".yaml":
-            body = strip_comments(body)
-        for n, line in enumerate(body.splitlines(), 1):
-            if line.lstrip().startswith("content_warning:"):    # the warning itself names the topic
-                continue
-            for sent in re.split(r"(?<=[.!?])\s+", line):
-                method = re.search(METHOD, sent, re.I)
-                harm = re.search(SELFHARM, sent, re.I)
-                qty = re.search(QTY, sent, re.I)
-                banned = re.search(PROHIBIT, sent, re.I)
-                where = f"{p.name}: \"{sent.strip()[:80]}\""
-                if harm and qty:
-                    add(out, 4, FAIL, f"quantity with self-harm ({qty.group(0)}) in {where}")
-                if method and harm and not banned:
-                    add(out, 4, FAIL, f"method term ({method.group(0)}) in {where}")
-                elif method and not banned:
-                    add(out, 4, WARN, f"method term ({method.group(0)}), check the context in {where}")
-                if harm and re.search(MEANS, sent, re.I) and not p.name.startswith("审核"):
-                    add(out, 4, WARN, f"means of harm next to suicide wording; confirm no detail in {where}")
+        scan_forbidden(strip_comments(body) if p.suffix == ".yaml" else body, p.name, out)
 
 
 # ---------------------------------------------------------------- check 5
@@ -456,6 +472,182 @@ def check_readability(s, out):
     return r
 
 
+# ---------------------------------------------------------------- check 7
+def report_text(r):
+    parts = [r.get("title", "")] + [x.get("text", "") for x in r.get("sections", [])]
+    parts += [f"{x.get('test')}: {x.get('result')}" for x in r.get("rows", [])]
+    return "\n".join(str(p) for p in parts)
+
+
+def role_stage(card):
+    """Clinical stage from the role card: early unless the brief or header says otherwise."""
+    sc = card["scenario"]
+    if re.search(r"late[- ]stage", str(sc.get("trainee_brief", "")), re.I):
+        return "late"
+    return "moderate" if re.search(r"mild[- ]to[- ]moderate", str(card.get("mentor_only", "")), re.I) else "early"
+
+
+def check_stage_imaging(r, stage, out, rid):
+    sents = [x for t in r["sections"] if t["h"] in ("Findings", "Impression")
+             for x in re.split(r"(?<=[.!?])\s+", t["text"]) if re.search(BRAIN_REGION, x, re.I)]
+    if not sents:
+        add(out, 7, WARN, f"{rid}: MRI does not comment on the caudate or putamen")
+    for sent in sents:
+        if stage == "early" and (m := re.search(SEVERE_WORDS, sent, re.I)):
+            add(out, 7, FAIL, f"{rid}: '{m.group(0)}' imaging change does not fit early-stage disease: {sent[:70]}")
+        if stage == "late" and (m := re.search(MILD_WORDS, sent, re.I)):
+            add(out, 7, FAIL, f"{rid}: '{m.group(0)}' imaging change does not fit late-stage disease: {sent[:70]}")
+        if re.search(NO_ATROPHY, sent, re.I):
+            add(out, 7, WARN, f"{rid}: normal striatum reported in manifest disease; possible early on, but look: {sent[:70]}")
+
+
+def check_timing(r, rid, out, scen_months, member_index, stated_dx_month):
+    """Month is inside the window for its scenario and agrees with the wording of the report."""
+    month, i = r["month"], member_index
+    lo = scen_months[i - 1] if i else FIRST_MONTH
+    if not (lo < month <= scen_months[i] if i else lo <= month <= scen_months[i]):
+        add(out, 7, FAIL, f"{rid}: month {month} is outside the window for Scenario {i + 1} ({lo} to {scen_months[i]})")
+    m = re.search(r"(\w+) (week|month|year)s? (before|after) Scenario (\d)", r.get("timing", ""), re.I)
+    during = re.search(r"\b(?:during|in) .*Scenario (\d)", r.get("timing", ""), re.I)
+    if m:
+        n = WORDS.get(m.group(1).lower()) or (int(m.group(1)) if m.group(1).isdigit() else 0)
+        months = n * {"week": 0.25, "month": 1, "year": 12}[m.group(2).lower()]
+        want = scen_months[int(m.group(4)) - 1] + (months if m.group(3).lower() == "after" else -months)
+        if abs(want - month) > 0.5:
+            add(out, 7, FAIL, f"{rid}: timing says '{m.group(0)}' (month {want}) but month is {month}")
+    elif during:
+        if scen_months[int(during.group(1)) - 1] != month:
+            add(out, 7, FAIL, f"{rid}: timing says '{during.group(0)}' but month is {month}")
+    else:
+        add(out, 7, FAIL, f"{rid}: timing does not place the report against a scenario: {r.get('timing')}")
+    for word in re.findall(r"diagnosed (\w+) years? ago", report_text(r), re.I):
+        n = WORDS.get(word.lower()) or (int(word) if word.isdigit() else 0)
+        if abs(month - stated_dx_month - n * 12) > 6:
+            add(out, 7, FAIL, f"{rid}: 'diagnosed {word} years ago' does not fit month {month}")
+
+
+def check_rows(r, rid, out, body):
+    says_normal = "blood tests were normal" in body
+    for x in r.get("rows", []):
+        val, rng = str(x.get("result", "")), str(x.get("range", ""))
+        m = re.fullmatch(r"([\d.]+)-([\d.]+)", rng)
+        num = re.match(r"[\d.]+", val)
+        ok = float(m.group(1)) <= float(num.group(0)) <= float(m.group(2)) if m and num else val == rng
+        if not ok:
+            add(out, 7, FAIL if says_normal else WARN, f"{rid}: {x.get('test')} {val} is outside {rng}"
+                + ("; role card says blood tests were normal" if says_normal else ""))
+
+
+def check_hidden(r, rid, out, members):
+    """Hidden items are not exported to the page, so no run of four words from one may appear in a report."""
+    text = " ".join(re.findall(r"[a-z']+", report_text(r).lower()))
+    for m in members:
+        for h in m["card"].get("hidden", []):
+            words = re.findall(r"[a-z']+", str(h.get("content", "")).lower())
+            for i in range(len(words) - 3):
+                phrase = " ".join(words[i:i + 4])
+                if f" {phrase} " in f" {text} ":
+                    add(out, 7, FAIL, f"{rid}: repeats hidden item {h.get('id')}: '{phrase}'")
+                    break
+
+
+def check_report(r, canon, members, out, site):
+    rid = r.get("id", "?")
+    i = next((n for n, m in enumerate(members) if m["dir"].name == r.get("scenario")), None)
+    card = members[i]["card"]
+    text = report_text(r)
+    if r.get("label") != RECORD_LABEL:
+        add(out, 7, FAIL, f"{rid}: label '{RECORD_LABEL}' is missing")
+    if r.get("patient") != canon.get("patient"):
+        add(out, 7, FAIL, f"{rid}: patient {r.get('patient')} is not {canon.get('patient')}")
+    first = str(canon.get("patient", "")).split()[0]
+    scen_months = [crc.months_after(m["card"]["scenario"]) for m in members]
+    want_age = card["ages_now"][first] + (r["month"] - scen_months[i]) / 12
+    ages = [r.get("age")] + [int(x) for x in re.findall(r"\b(\d{1,3})[- ]year[- ]old\b", text)]
+    for a in ages:
+        if not isinstance(a, int) or abs(a - want_age) >= 1:
+            add(out, 7, FAIL, f"{rid}: age {a} does not fit the role card ({want_age:.1f} at month {r['month']})")
+    canon_cag = cag_pairs("CAG " + str(canon.get("patient_HTT_CAG", "")))
+    pairs = cag_pairs(text) | (cag_pairs("CAG " + str(r["cag"])) if r.get("cag") else set())
+    for a, b in sorted(pairs - canon_cag):
+        add(out, 7, FAIL, f"{rid}: CAG {a}/{b} does not match the role card {sorted(canon_cag)}")
+    for x in sorted(cag_singles(text) - {b for _, b in canon_cag}):
+        add(out, 7, FAIL, f"{rid}: CAG value {x} does not match the role card {sorted(canon_cag)}")
+    for m in re.finditer(r"\b(\d{2,3})\s+(?:CAG\s+)?repeats\b[^.]{0,40}?\b(normal|intermediate|reduced[- ]penetrance|full[- ]penetrance)", text, re.I):
+        lo, hi = CAG_CATS[m.group(2).lower().replace("-", " ")]
+        if not lo <= int(m.group(1)) <= hi:
+            add(out, 7, FAIL, f"{rid}: {m.group(1)} repeats called {m.group(2)} (range {lo}-{hi})")
+    # The result is known from the first scenario whose brief states it; only the genetic report can come earlier.
+    size = max((b for _, b in canon_cag), default=0)
+    dx_month = next((scen_months[n] for n, m in enumerate(members)
+                     if re.search(rf"\b{size}\b", str(m["card"]["scenario"].get("trainee_brief", "")))), 0)
+    if (pairs or cag_singles(text)) and r["month"] < dx_month and r["kind"] != "genetic":
+        add(out, 7, FAIL, f"{rid}: quotes the CAG result at month {r['month']}, before it is known (month {dx_month})")
+    stage = role_stage(card)
+    if r.get("stage") != stage:
+        add(out, 7, FAIL, f"{rid}: stage {r.get('stage')} does not match the role card ({stage})")
+    if r["kind"] == "mri":
+        check_stage_imaging(r, stage, out, rid)
+    check_timing(r, rid, out, scen_months, i, dx_month)
+    # Role cards state medicines when they first matter, so read every card up to the linked scenario.
+    body = "\n".join(strip_comments(read(m["dir"] / "role_card.yaml")) for m in members[:i + 1]).lower()
+    if not r.get("medications"):
+        add(out, 7, FAIL, f"{rid}: no medications line")
+    for term in {t.group(0).lower() for t in re.finditer(MED_TERMS, " ".join(r.get("medications", [])) + "\n" + text, re.I)}:
+        if term.rstrip("s") not in body:
+            add(out, 7, FAIL, f"{rid}: medication '{term}' is not in the role cards up to {members[i]['dir'].name}")
+    check_rows(r, rid, out, body)
+    check_hidden(r, rid, out, members)
+    if r.get("title") not in site:
+        add(out, 7, FAIL, f"{rid}: not on the site page; rebuild it")
+    add(out, 7, PASS, f"{rid}: compared with the role cards")
+
+
+def check_records(root, picked, results, sources, site, today):
+    """Compare every synthetic report with its role cards. Returns {url: [scenario, ...]} for the link check."""
+    urls = {}
+    cards_text = read(root / "records" / "shared_knowledge_cards.md")
+    card_ids = re.findall(r"^## (\S+)", cards_text, re.M)
+    card_keys = set()
+    for tag in re.findall(r"\[([^\]]+)\]", cards_text):
+        card_keys |= set(re.findall(r"\bs\d+\b", tag))
+    linked = set()
+    for p in sorted((root / "records").glob("case*.yaml")):
+        doc = yaml.safe_load(read(p))
+        members = sorted((s for s in picked if family_id(s) == doc["group"]),
+                         key=lambda m: crc.months_after(m["card"]["scenario"]))
+        canon = members[0]["card"].get("family_canonical") or {}
+        names = [m["dir"].name for m in members]
+        months = []
+        for r in doc["reports"]:
+            months.append(r["month"])
+            if r.get("scenario") not in names:
+                add(results[names[0]], 7, FAIL, f"{r.get('id')}: unknown scenario {r.get('scenario')}")
+                continue
+            out = results[r["scenario"]]
+            check_report(r, canon, members, out, site)
+            scan_forbidden(report_text(r), p.name, results[names[0]])
+            for c in r.get("cards", []):
+                linked.add(c)
+                if c not in card_ids:
+                    add(out, 7, FAIL, f"{r['id']}: unknown knowledge card {c}")
+            for k in r.get("sources", []) + sorted(card_keys):
+                check_source(k, sources.get(k, ""), out, 7, today)
+                for u in urls_in(sources.get(k, "")):
+                    urls.setdefault(u, set()).add(r["scenario"])
+        if months != sorted(months):
+            add(results[names[0]], 7, FAIL, f"{p.name}: reports are not in timeline order")
+        if "Reviewed by: PENDING" in read(p):
+            add(results[names[0]], 7, WARN, f"{p.name} still says Reviewed by: PENDING")
+        if RECORD_DRAFT not in site.replace("\\u2013", "–"):
+            add(results[names[0]], 7, FAIL, f"site page has no '{RECORD_DRAFT}' mark")
+        for c in sorted(set(card_ids) - linked):
+            add(results[names[-1]], 7, WARN, f"knowledge card {c} is not linked from any report yet")
+    for u in urls_in(read(root / "records" / "审核清单_中文.md")):
+        urls.setdefault(u, set()).update(n for n, r in results.items() if r[7])
+    return {u: sorted(v) for u, v in urls.items()}
+
+
 # ---------------------------------------------------------------- run and report
 def worst(items, default=PASS):
     return max((x[0] for x in items), key=RANK.get, default=default)
@@ -484,6 +676,8 @@ def run(root, links, today):
         members.sort(key=lambda m: crc.months_after(m["card"]["scenario"]))
         onset_check(members, results)
         check_family(fid, members, results)
+    for u, names in check_records(root, picked, results, sources, site, today).items():
+        by_url.setdefault(u, []).extend(n for n in names if n not in by_url.get(u, []))
     link_rows = []
     if links:
         with concurrent.futures.ThreadPoolExecutor(8) as ex:
@@ -505,7 +699,7 @@ def run(root, links, today):
 
 
 def write_report(path, results, meta, link_rows, links, today):
-    cell = lambda name, c: NA if c == 5 and not links else worst(results[name][c])
+    cell = lambda name, c: NA if (c == 5 and not links) or (c == 7 and not results[name][7]) else worst(results[name][c])
     L = ["# Publish check report", "",
          f"Generated by `scripts/check_publish_v1.py` on {today}. Do not edit by hand; re-run the script.", "",
          "This report checks consistency and required items. It does not show that content is clinically correct.",
@@ -560,7 +754,7 @@ def main():
     print(f"{'Scenario':42}{'Risk':6}" + "".join(f"{c:6}" for c in CHECKS) + "Decision")
     for name in results:
         m = meta[name]
-        row = "".join(f"{(NA if c == 5 and a.no_links else worst(results[name][c])):6}" for c in CHECKS)
+        row = "".join(f"{(NA if (c == 5 and a.no_links) or (c == 7 and not results[name][7]) else worst(results[name][c])):6}" for c in CHECKS)
         print(f"{name:42}{m['tier']:6}{row}{m['decision']}")
     print(f"\nReport: {report}")
     sys.exit(0 if all(m["decision"] == "auto-pass" for m in meta.values()) else 1)
