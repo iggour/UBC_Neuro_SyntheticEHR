@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>HD Anchor</title>
+<title>HD Anchor for Clinicians</title>
+<meta name="robots" content="noindex">
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--ink:#1d2433;--mute:#5b6577;--line:#d9dee7;--acc:#2a5db0;--accbg:#e9f0fb;--ok:#1f7a4d;--okbg:#e6f4ec;--no:#b3412b;--nobg:#fbeae6;--warn:#8a6100;--warnbg:#fdf3d8;--bub:#eef1f5}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--ok:#6fd1a0;--okbg:#17342a;--no:#f08d7a;--nobg:#3a1f1a;--warn:#f0cd6b;--warnbg:#3a3010;--bub:#232a35}}
@@ -54,24 +55,30 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 .steps .chip.draft{font-size:.68rem;white-space:normal}
 .rows{overflow-x:auto}.rows table{width:100%;border-collapse:collapse;font-size:.88rem}.rows th,.rows td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--line)}
 #gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
-#gate>div{background:var(--card);border-radius:12px;max-width:520px;padding:18px}#gate[hidden]{display:none}
+#gate>div{background:var(--card);border-radius:12px;max-width:540px;max-height:100%;overflow:auto;padding:18px}#gate[hidden]{display:none}
+a.btn{display:inline-block;text-decoration:none}.gaterow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
 @media print{.tabs,.no-print,#gate,.bar:not(.notice){display:none!important}body{background:#fff}}
 </style></head><body>
-<div id="gate"><div><h2 style="margin-top:0">Before you start</h2>
-<p>This is an educational prototype with <b>fictional</b> patients and families. It is <b>not medical advice</b> and does not diagnose, treat or triage. It is not a substitute for a clinician or care team.</p>
-<p>In an emergency call 911. If you or someone you know has thoughts of ending their life, call or text <b>9-8-8</b> (Canada).</p>
-<button class="btn pri" id="gateok">I understand</button></div></div>
-<div class="wrap">
-<h1>HD Anchor</h1>
+<div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateh"><div>
+<h2 id="gateh" style="margin-top:0">For healthcare professionals and students</h2>
+<p>This is training material for clinicians. It covers sensitive topics, including <b>suicide risk</b>, <b>prognosis</b>, <b>juvenile Huntington disease</b> and <b>late-stage care</b>.</p>
+<p>All patients are <b>fictional</b>. It is <b>not medical advice</b> and does not diagnose, treat or triage.</p>
+<label class="chk"><input type="checkbox" id="gatechk"><span>I am a healthcare professional or student</span></label>
+<div class="gaterow"><button class="btn pri" id="gateok" disabled>Continue</button>
+<a class="btn" href="../families/index.html">I am a patient or family member – take me to the family pages</a></div>
+<p class="note">In an emergency call 911. If you or someone you know has thoughts of ending their life, call or text <b>9-8-8</b> (Canada), any time.</p>
+</div></div>
+<div class="wrap" id="main" inert>
+<h1>HD Anchor for Clinicians</h1>
 <p class="sub">Practising key conversations in Huntington disease care</p>
 <div class="bar notice"><b>All patients are fictional. AI-generated content for education only. Not medical advice.</b></div>
+<p class="note">For patients and families: <a href="../families/index.html">go to the family pages</a>.</p>
 <div class="bar"><b>Pending review.</b> This website is still under review. Content and sources may change.</div>
 <div class="tabs" role="tablist">
 <button role="tab" aria-selected="true" data-t="clin">For clinicians</button>
-<button role="tab" aria-selected="false" data-t="fam">For families</button>
 <button role="tab" aria-selected="false" data-t="src">Sources</button>
 <button role="tab" aria-selected="false" data-t="about">About</button></div>
-<section id="clin"></section><section id="fam" hidden></section><section id="src" hidden></section>
+<section id="clin"></section><section id="src" hidden></section>
 <section id="about" hidden>
 <div class="card"><h2 style="margin-top:0">Why</h2><p>Huntington disease is rare, so many clinicians meet few affected families. Some of the hardest parts of care are conversations: counselling before a genetic test, giving a positive result, and assessing suicide risk. HD Anchor lets clinicians practise these conversations before they happen for real.</p></div>
 <div class="card"><h2 style="margin-top:0">How it works</h2><ol>
@@ -88,14 +95,14 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 </div>
 <script>
 var D=/*__DATA__*/null;
-var st={sc:0,step:0,hints:true,mode:{},g:{},ticks:{},flags:{},shown:{},famsc:0,famq:{}};
+var st={sc:0,step:0,hints:true,mode:{},g:{},ticks:{},flags:{},shown:{}};
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
 function linkify(h){return h.replace(/(https?:\/\/[^\s<)]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
 function srcChips(ids){if(!ids)return"";if(!Array.isArray(ids))ids=[ids];return ids.map(function(i){return '<a class="chip" href="#src-'+i+'" onclick="go(\'src\')">'+esc(i.toUpperCase())+'</a>'}).join("")}
 function point(p){var m=p.match(/^(.*?)\s*\[([^\]]+)\]\s*$/);if(!m)return linkify(esc(p));var tag=m[2],ids=tag.split(/[,\s]+/).filter(function(x){return /^s\d+$/.test(x)});
  var t=linkify(esc(m[1]));if(ids.length)return t+" "+srcChips(ids);return t+' <span class="chip">general clinical practice</span>'}
 function cardHtml(c){return '<details id="card-'+c.id+'" open><summary>'+esc(c.title)+'</summary><div class="card" style="margin-top:6px"><ul>'+c.points.map(function(p){return "<li>"+point(p)+"</li>"}).join("")+'</ul></div></details>'}
-function go(t){document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});["clin","fam","src","about"].forEach(function(x){document.getElementById(x).hidden=x!==t})}
+function go(t){document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});["clin","src","about"].forEach(function(x){document.getElementById(x).hidden=x!==t})}
 function picker(sel,fn){var h="";
  function btn(i,label){var s=D.scenarios[i];return '<button class="pick'+(i===sel?' sel':'')+'" onclick="'+fn+'('+i+')"><span class="n">'+label+'</span><span class="t">'+esc(s.topic)+'</span><span class="q">“'+esc(s.title)+'”</span>'+(s.desc?'<span class="d">'+esc(s.desc)+'</span>':'')+'</button>'}
  D.cases.forEach(function(c){var idx=[];D.scenarios.forEach(function(s,i){if(s["case"]===c.n)idx.push(i)});if(!idx.length)return;
@@ -171,21 +178,6 @@ function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
 function step(i){st.step=i;clin()}
 function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
 function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
-function famPicker(){return '<div class="grid">'+D.scenarios.map(function(s,i){return '<button class="pick'+(i===st.famsc?' sel':'')+'" onclick="pickFam('+i+')"><span class="t">'+esc(s.prep.title)+'</span>'+(s.prep.subtitle?'<span class="d">'+esc(s.prep.subtitle)+'</span>':'')+'</button>'}).join("")+'</div>'}
-function fam(){var s=D.scenarios[st.famsc],p=s.prep,q=st.famq[s.id]||(st.famq[s.id]={});
- var h='<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div><h2>Preparing for an appointment</h2><p class="sub">Choose the sheet closest to your situation.</p>'+famPicker();
- if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
- h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');
- p.sections.forEach(function(sec,si){h+='<h3>'+esc(sec.h)+'</h3>';
-  if(sec.items.length)h+='<ul>'+sec.items.map(function(x){return"<li>"+linkify(esc(x))+"</li>"}).join("")+'</ul>';
-  if(sec.checks.length){h+=sec.checks.map(function(x,qi){var k=si+"-"+qi;return '<label class="chk"><input type="checkbox" '+(q[k]?'checked':'')+' onchange="famTick(\''+k+'\',this.checked)"><span>'+esc(x)+'</span></label>'}).join("");
-   var picked=[];sec.checks.forEach(function(x,qi){if(q[si+"-"+qi])picked.push(x)});
-   h+='<h3>My questions</h3>'+(picked.length?'<div class="list" id="mylist">'+esc(picked.map(function(x,i){return(i+1)+". "+x}).join("\n"))+'</div><div class="no-print" style="margin-top:8px"><button class="btn" onclick="copyList()">Copy</button> <button class="btn" onclick="window.print()">Print</button> <span class="note" id="copied"></span></div>':'<p class="note">Tick the questions above to build your list.</p>')}});
- h+='</div>';document.getElementById("fam").innerHTML=h}
-function pickFam(i){st.famsc=i;fam()}
-function famTick(k,v){st.famq[D.scenarios[st.famsc].id][k]=v;fam()}
-function copyList(){var t=document.getElementById("mylist").textContent,m=document.getElementById("copied");
- try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied"},function(){m.textContent="Select the text to copy"})}catch(e){m.textContent="Select the text to copy"}}
 function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by the project team. Content is paraphrased, not copied.</p><ul>';
  var dr=D.draftSources||[];
  Object.keys(D.sources).forEach(function(k){if(dr.indexOf(k)<0)h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});
@@ -195,6 +187,9 @@ function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p 
  h+='<div class="card"><h2 style="margin-top:0">Disclaimers</h2><ul><li>All people and situations are fictional. No real patient data is used and no personal data is stored.</li><li>Educational use only. This tool does not diagnose, treat or triage.</li><li>Always follow local guidelines and your care team.</li></ul></div>';
  document.getElementById("src").innerHTML=h}
 document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){go(b.dataset.t)}});
-document.getElementById("gateok").onclick=function(){document.getElementById("gate").hidden=true};
-clin();fam();src();
+function enter(){document.getElementById("gate").hidden=true;document.getElementById("main").inert=false;try{sessionStorage.setItem("hdGate","1")}catch(e){}}
+document.getElementById("gatechk").onchange=function(){document.getElementById("gateok").disabled=!this.checked};
+document.getElementById("gateok").onclick=enter;
+try{if(sessionStorage.getItem("hdGate")==="1")enter()}catch(e){}
+clin();src();
 </script></body></html>

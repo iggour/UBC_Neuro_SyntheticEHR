@@ -659,7 +659,7 @@ def run(root, links, today):
     picked = [crc.load(d) for d in dirs]
     results = {s["dir"].name: {c: [] for c in CHECKS} for s in picked}
     sources, known = parse_sources(root), crc.defined_sources()
-    site = read(root / "web" / "hd_anchor_v2.html")
+    site = read(root / "site" / "clinicians" / "index.html")
     meta, by_url = {}, {}
     for s in picked:
         name, out = s["dir"].name, results[s["dir"].name]

@@ -55,8 +55,8 @@ def run_set(title, cases, tmp):
         root.mkdir()
         for name in ("scenarios", "records", "runtime/patient_prompts"):
             shutil.copytree(ROOT / name, root / name)
-        (root / "web").mkdir()
-        shutil.copy(ROOT / "web" / "hd_anchor_v2.html", root / "web")
+        (root / "site" / "clinicians").mkdir(parents=True)
+        shutil.copy(ROOT / "site" / "clinicians" / "index.html", root / "site" / "clinicians")
         p = root / path
         text = p.read_text(encoding="utf-8")
         assert old in text, f"test setup: '{old}' not in {path}"

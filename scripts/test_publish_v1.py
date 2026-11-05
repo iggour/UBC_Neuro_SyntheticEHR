@@ -85,8 +85,8 @@ def main():
             root.mkdir()
             for name in ("scenarios", "runtime/patient_prompts"):
                 shutil.copytree(ROOT / name, root / name)
-            (root / "web").mkdir()
-            shutil.copy(ROOT / "web" / "hd_anchor_v2.html", root / "web")
+            (root / "site" / "clinicians").mkdir(parents=True)
+            shutil.copy(ROOT / "site" / "clinicians" / "index.html", root / "site" / "clinicians")
             mutate(root)
             results, meta, _ = cp.run(root, False, TODAY)
             hit = [x for x in check_order(results, scenario, check, want) if EXPECT.get(label, "") in x[1]]

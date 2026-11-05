@@ -38,9 +38,12 @@ A Rare Disease Foundation microgrant was submitted on 2026-10-26.
 - scenarios/<id>/family_prep_sheet.md Family appointment sheet + question builder (reviewed)
 - scenarios/<id>/guided.yaml          Guided mode: pre-written branching turns (PENDING review)
 - scenarios/<id>/审核清单_*_中文.md     Chinese review checklists
-- scripts/build_web_v2.py + scripts/web_v2_template.html -> web/hd_anchor_v2.html
-  The website is generated from scenarios/. Edit the scenario or the template, then rebuild.
-  Never hand-edit web/hd_anchor_v2.html. web/hd_training_prototype.html is the old version.
+- scripts/build_web_v2.py builds two sites from scenarios/ (never hand-edit the output):
+    site/clinicians/index.html  <- scripts/web_v2_template.html (entry gate, noindex)
+    site/families/index.html    <- scripts/web_families_template.html (family_prep_sheet.md only)
+  Root index.html is a home page that leads with families; web/hd_anchor_v2.html only redirects there.
+  The family site must hold no clinician-only data and never link to the clinician site:
+  run scripts/check_families_site.py after every build. web/hd_training_prototype.html is the old version.
 - records/                            Synthetic patient records for Cases 3-4 (Record tab, PENDING review)
 - scripts/build_patient_prompt.py     role_card.yaml -> runtime/patient_prompts/<id>.md
 - scripts/gemma_client.py             OpenAI-compatible client (stdlib only)

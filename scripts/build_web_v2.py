@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 """
 build_web_v2.py
-Build web/hd_anchor_v2.html from the reviewed scenario files, so the website and the
-scenarios share one source of truth. Re-run after changing any scenario file.
+Build the two websites from the reviewed scenario files, so the sites and the scenarios share one
+source of truth. Re-run after changing any scenario file or either template.
 
 Usage:  python3 scripts/build_web_v2.py
 Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional)
         records/case*.yaml, records/shared_knowledge_cards.md, records/sources.yaml (Record tab, draft)
         Scenarios are listed by family (CASES below). Set a case's draft flag to label it as unreviewed.
-Writes: web/hd_anchor_v2.html
-Never exported to the page: hidden items, behaviour rules, mentor_only, met_if (patient/mentor only).
+Writes: site/clinicians/index.html   clinician training (scripts/web_v2_template.html)
+        site/families/index.html     family prep sheets only (scripts/web_families_template.html)
+        web/hd_anchor_v2.html        redirect from the old address to the home page
+Never exported to the clinician page: hidden items, behaviour rules, mentor_only, met_if.
+The family page gets only family_prep_sheet.md content: no scenario, role card, mentor or source-list
+data, so nothing for clinicians is in its source. scripts/check_families_site.py checks this.
 """
 import json, pathlib, re, yaml
 
@@ -110,8 +114,36 @@ def parse_prep(path):
             out["note"] = (out["note"] + " " + s).strip()
     return out
 
+def family_payload(sheets):
+    """Prep sheets, plus support items and links gathered from them. Nothing else goes to the family page."""
+    support, links = {}, {}
+    for sh in sheets:
+        for sec in sh["sections"]:
+            for x in sec["items"] + sec["checks"]:
+                for u in re.findall(r"https?://[^\s)>]+", x):
+                    links.setdefault(u.rstrip(".,;"), []).append(sh["title"])
+            if sec["h"].lower() == "support":
+                # Crisis lines have their own box; one entry per link; placeholders without a link are left out.
+                for x in sec["items"]:
+                    url = re.search(r"https?://[^\s)>]+", x)
+                    if not re.search(r"9-8-8|\b911\b|link to add", x):
+                        support.setdefault(url.group(0) if url else x, x)
+    return {"sheets": sheets, "support": list(support.values()),
+            "links": [{"url": u, "sheets": sorted(set(t), key=t.index)} for u, t in links.items()]}
+
+REDIRECT = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>HD Anchor</title>
+<meta http-equiv="refresh" content="0; url=../index.html"><meta name="robots" content="noindex"></head>
+<body><p>HD Anchor has moved. <a href="../index.html">Open HD Anchor</a>.</p></body></html>
+"""
+
+def write(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8")
+    print(path.relative_to(ROOT), path.stat().st_size, "bytes")
+
 def main():
-    data, sources, draft_src = [], {}, []
+    data, sources, draft_src, sheets = [], {}, [], []
     cards = [(d, yaml.safe_load((d / "role_card.yaml").read_text(encoding="utf-8")))
              for d in sorted(p for p in SCEN.iterdir() if p.is_dir())]
     order = {s: i for i, c in enumerate(CASES) for s in c["shorts"]}
@@ -139,7 +171,6 @@ def main():
                              "card": c.get("knowledge_card")} for c in cps["checkpoints"]],
             "flags": [{"id": r["id"], "name": r["name"], "fb": r["feedback"], "src": r.get("source")}
                       for r in cps["red_flags"]],
-            "prep": parse_prep(d / "family_prep_sheet.md"),
             "guided": (yaml.safe_load((d / "guided.yaml").read_text(encoding="utf-8"))
                        if (d / "guided.yaml").exists() else None),
         }
@@ -148,6 +179,7 @@ def main():
                      "warning": card["scenario"].get("content_warning", ""),
                      "month": next((v for k, v in sc.items() if k.startswith("months_after")), 0)})
         data.append(item)
+        sheets.append({**parse_prep(d / "family_prep_sheet.md"), "draft": case["draft"]})
     records = {}
     for p in sorted(RECORDS.glob("case*.yaml")):
         doc = yaml.safe_load(p.read_text(encoding="utf-8"))
@@ -159,10 +191,12 @@ def main():
     payload = json.dumps({"scenarios": data, "sources": src, "draftSources": draft_src, "records": records,
                           "recordCards": parse_cards(RECORDS / "shared_knowledge_cards.md"),
                           "cases": [{k: c[k] for k in ("n", "name", "draft")} for c in CASES]}, ensure_ascii=False).replace("</", "<\\/")
-    tpl = (ROOT / "scripts" / "web_v2_template.html").read_text(encoding="utf-8")
-    out = ROOT / "web" / "hd_anchor_v2.html"
-    out.write_text(tpl.replace("/*__DATA__*/null", payload), encoding="utf-8")
-    print(out, out.stat().st_size, "bytes;", len(data), "scenarios;", len(src), "sources")
+    fam = json.dumps(family_payload(sheets), ensure_ascii=False).replace("</", "<\\/")
+    tpl = lambda name: (ROOT / "scripts" / name).read_text(encoding="utf-8")
+    write(ROOT / "site" / "clinicians" / "index.html", tpl("web_v2_template.html").replace("/*__DATA__*/null", payload))
+    write(ROOT / "site" / "families" / "index.html", tpl("web_families_template.html").replace("/*__DATA__*/null", fam))
+    write(ROOT / "web" / "hd_anchor_v2.html", REDIRECT)
+    print(len(data), "scenarios;", len(src), "sources;", len(sheets), "family sheets")
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HD Anchor for Families</title>
+<meta name="description" content="Preparation sheets and question lists for people and families affected by Huntington disease.">
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2433;--mute:#5b6577;--line:#d9dee7;--acc:#2a5db0;--accbg:#e9f0fb;--no:#b3412b;--warn:#8a6100;--warnbg:#fdf3d8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--no:#f08d7a;--warn:#f0cd6b;--warnbg:#3a3010}}
+:root[data-theme="dark"]{--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--no:#f08d7a;--warn:#f0cd6b;--warnbg:#3a3010}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--acc);overflow-wrap:anywhere}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:1.35rem;margin:.2rem 0}h2{font-size:1.12rem;margin:1.1rem 0 .4rem}h3{font-size:1rem;margin:.6rem 0 .3rem}
+.sub{color:var(--mute);margin:0 0 .4rem}
+.bar{background:var(--warnbg);color:var(--warn);border-radius:8px;padding:8px 11px;font-size:.85rem;margin:.5rem 0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line);margin:.6rem 0 1rem}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);padding:9px 11px;font:inherit;cursor:pointer}
+.tabs button[aria-selected="true"]{color:var(--acc);border-color:var(--acc);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
+.pick{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;text-align:left;font:inherit;color:var(--ink);cursor:pointer}
+.pick:hover{border-color:var(--acc)}.pick.sel{border:2px solid var(--acc);background:var(--accbg)}
+.pick .t{font-weight:600;display:block}.pick .d{display:block;font-size:.8rem;color:var(--mute);margin-top:4px}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer}
+.btn:hover{border-color:var(--acc)}
+.note{font-size:.84rem;color:var(--mute)}
+ul{padding-left:1.2rem;margin:.3rem 0}li{margin:.25rem 0}
+.chk{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line)}
+.chk:last-child{border-bottom:0}.chk input{margin-top:5px;width:18px;height:18px;flex:none}
+.safe{border:2px solid var(--no);border-radius:10px;padding:10px 13px;margin:10px 0;background:var(--card);font-size:.92rem}
+.list{background:var(--bg);border:1px dashed var(--line);border-radius:8px;padding:10px 14px;white-space:pre-wrap}
+@media print{.tabs,.no-print,.pickers{display:none!important}body{background:#fff}}
+</style></head><body>
+<div class="wrap">
+<h1>HD Anchor for Families</h1>
+<p class="sub">Getting ready for appointments about Huntington disease</p>
+<div class="bar"><b>Educational only. Not medical advice.</b> Always follow the advice of your own care team.</div>
+<div class="bar"><b>Pending review.</b> These pages are still under review. Content and links may change.</div>
+<div class="safe"><b>If you are worried about someone right now:</b> in an emergency call 911. If someone talks about ending their life, call or text 9-8-8 (Canada), any time.</div>
+<div class="tabs" role="tablist">
+<button role="tab" aria-selected="true" data-t="prep">Prepare for an appointment</button>
+<button role="tab" aria-selected="false" data-t="support">Support</button>
+<button role="tab" aria-selected="false" data-t="src">Sources</button>
+<button role="tab" aria-selected="false" data-t="about">About</button></div>
+<section id="prep"></section><section id="support" hidden></section><section id="src" hidden></section>
+<section id="about" hidden>
+<div class="card"><h2 style="margin-top:0">About these pages</h2>
+<p>These sheets help people with Huntington disease, people at risk, and their families get ready for an appointment. Each sheet lists things worth telling the team, questions you may want to ask, and where to find support.</p>
+<p>Tick the questions that matter to you to build your own list, then copy or print it to take with you.</p>
+<p>The pages are part of HD Anchor, an educational project. They are still under review, they do not diagnose or treat, and they are not a substitute for your care team.</p>
+<p>No personal data is stored. Your ticks stay on this page and are gone when you close it.</p></div>
+</section>
+</div>
+<script>
+var D=/*__DATA__*/null;
+var st={sheet:0,q:{}};
+function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
+function linkify(h){return h.replace(/(https?:\/\/[^\s<)]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
+function go(t){document.querySelectorAll(".tabs button").forEach(function(b){b.setAttribute("aria-selected",b.dataset.t===t)});["prep","support","src","about"].forEach(function(x){document.getElementById(x).hidden=x!==t})}
+function prep(){var p=D.sheets[st.sheet],q=st.q[st.sheet]||(st.q[st.sheet]={});
+ var h='<h2>Choose the sheet closest to your situation</h2><div class="grid pickers">'+D.sheets.map(function(s,i){return '<button class="pick'+(i===st.sheet?' sel':'')+'" onclick="pick('+i+')"><span class="t">'+esc(s.title)+'</span>'+(s.subtitle?'<span class="d">'+esc(s.subtitle)+'</span>':'')+'</button>'}).join("")+'</div>';
+ if(p.draft)h+='<div class="bar">Draft – not yet reviewed. This sheet may change.</div>';
+ h+='<div class="card"><h2 style="margin-top:0">'+esc(p.title)+'</h2>'+(p.subtitle?'<p class="sub">'+esc(p.subtitle)+'</p>':'')+(p.note?'<p class="note">'+esc(p.note)+'</p>':'');
+ p.sections.forEach(function(sec,si){h+='<h3>'+esc(sec.h)+'</h3>';
+  if(sec.items.length)h+='<ul>'+sec.items.map(function(x){return"<li>"+linkify(esc(x))+"</li>"}).join("")+'</ul>';
+  if(sec.checks.length){h+=sec.checks.map(function(x,qi){var k=si+"-"+qi;return '<label class="chk"><input type="checkbox" '+(q[k]?'checked':'')+' onchange="tick(\''+k+'\',this.checked)"><span>'+esc(x)+'</span></label>'}).join("");
+   var picked=[];sec.checks.forEach(function(x,qi){if(q[si+"-"+qi])picked.push(x)});
+   h+='<h3>My questions</h3>'+(picked.length?'<div class="list" id="mylist">'+esc(picked.map(function(x,i){return(i+1)+". "+x}).join("\n"))+'</div><div class="no-print" style="margin-top:8px"><button class="btn" onclick="copyList()">Copy</button> <button class="btn" onclick="window.print()">Print</button> <span class="note" id="copied"></span></div>':'<p class="note">Tick the questions above to build your list.</p>')}});
+ document.getElementById("prep").innerHTML=h+'</div>'}
+function pick(i){st.sheet=i;prep()}
+function tick(k,v){st.q[st.sheet][k]=v;prep()}
+function copyList(){var t=document.getElementById("mylist").textContent,m=document.getElementById("copied");
+ try{navigator.clipboard.writeText(t).then(function(){m.textContent="Copied"},function(){m.textContent="Select the text to copy"})}catch(e){m.textContent="Select the text to copy"}}
+function support(){var h='<div class="card"><h2 style="margin-top:0">In a crisis</h2><ul><li>In an emergency: call 911.</li><li>If you or someone you know has thoughts of ending their life: call or text 9-8-8 (Canada), any time.</li></ul></div>';
+ h+='<div class="card"><h2 style="margin-top:0">Support and information</h2><p class="note">Collected from the support sections of the sheets.</p><ul>'+D.support.map(function(x){return"<li>"+linkify(esc(x))+"</li>"}).join("")+'</ul></div>';
+ document.getElementById("support").innerHTML=h}
+function src(){var h='<div class="card"><h2 style="margin-top:0">Sources and links</h2><p class="note">Every link used on these pages, and the sheets that use it.</p><ul>';
+ D.links.forEach(function(l){h+='<li>'+linkify(esc(l.url))+'<br><span class="note">'+l.sheets.map(esc).join(" · ")+'</span></li>'});
+ document.getElementById("src").innerHTML=h+'</ul></div>'}
+document.querySelectorAll(".tabs button").forEach(function(b){b.onclick=function(){go(b.dataset.t)}});
+prep();support();src();
+</script></body></html>

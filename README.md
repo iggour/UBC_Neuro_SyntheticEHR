@@ -12,12 +12,17 @@ This repository has two parts:
 
 ## Opening the site
 
-- **Online (GitHub Pages):** the repository root `index.html` forwards to `web/hd_anchor_v2.html`.
-- **Locally:** open `web/hd_anchor_v2.html` in a browser. It is a single self-contained file and
-  needs no server or internet connection.
-- **Rebuilding:** the page is generated; do not edit it by hand. Edit the files in `scenarios/`,
-  `scripts/web_v2_template.html` or `scripts/build_web_v2.py`, then run
-  `python3 scripts/build_web_v2.py`.
+- **Two sites, one source.** `site/families/` holds the family preparation sheets only;
+  `site/clinicians/` holds the clinician training, behind an entry gate and marked noindex.
+  The family site never links to the clinician site.
+- **Online (GitHub Pages):** the repository root `index.html` is a home page that leads with the
+  family site. The old address `web/hd_anchor_v2.html` forwards to it.
+- **Locally:** open `index.html`, `site/families/index.html` or `site/clinicians/index.html` in a
+  browser. Each page is self-contained and needs no server or internet connection.
+- **Rebuilding:** the pages are generated; do not edit them by hand. Edit the files in `scenarios/`,
+  `scripts/web_v2_template.html` (clinicians), `scripts/web_families_template.html` (families) or
+  `scripts/build_web_v2.py`, then run `python3 scripts/build_web_v2.py` and
+  `python3 scripts/check_families_site.py`, which confirms no clinician-only data reached the family site.
 - `web/hd_training_prototype.html` is the earlier prototype, kept for reference.
 
 In an emergency call 911. If you or someone you know has thoughts of ending their life, call or
