@@ -107,7 +107,7 @@ code{font-size:.82rem;background:var(--bg);border:1px solid var(--line);border-r
 </div>
 <script>
 var D=/*__DATA__*/null;
-var st={sc:0,step:0,hints:true,mode:{},g:{},ticks:{},flags:{},shown:{}};
+var st={view:"list",sc:0,step:0,hints:true,mode:{},g:{},ticks:{},flags:{},shown:{}};
 function esc(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML}
 function linkify(h){return h.replace(/(https?:\/\/[^\s<)]+)/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>'})}
 function srcChips(ids){if(!ids)return"";if(!Array.isArray(ids))ids=[ids];return ids.map(function(i){return '<a class="chip" href="#src-'+i+'" onclick="go(\'src\')">'+esc(i.toUpperCase())+'</a>'}).join("")}
@@ -120,7 +120,11 @@ function picker(sel,fn){var h="";
  D.cases.forEach(function(c){var idx=[];D.scenarios.forEach(function(s,i){if(s["case"]===c.n)idx.push(i)});if(!idx.length)return;
   h+='<h3 class="grp">Case '+c.n+': '+esc(c.name)+(c.draft?' <span class="chip draft">Draft – not yet reviewed</span>':'')+'</h3><div class="grid">'+idx.map(function(i,k){return btn(i,'Scenario '+(k+1))}).join("")+'</div>'});
  return h}
-function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+picker(st.sc,"pickSc");
+function clin(){var s=D.scenarios[st.sc],h;
+ if(st.view==="list"){document.getElementById("clin").innerHTML='<h2>Choose a conversation</h2>'+picker(-1,"pickSc");document.querySelector(".wrap").classList.remove("wide");return}
+ var cs=D.cases.filter(function(c){return c.n===s["case"]})[0];
+ h='<div class="no-print" style="margin:.4rem 0"><button class="btn" onclick="toList()">&larr; All conversations</button></div>'+
+  '<p class="note" style="margin:.6rem 0 0">'+(cs?'Case '+cs.n+': '+esc(cs.name):'')+'</p><h2 style="margin-top:.1rem">'+esc(s.topic)+'</h2><p class="sub">“'+esc(s.title)+'”'+(s.desc?' · '+esc(s.desc):'')+'</p>';
  var names=["1. Learn","2. Practise","3. Feedback"];
  if(s.draft)h+='<div class="bar">Draft – not yet reviewed. This case has not been clinically reviewed; content and sources may change.</div>';
  if(s.warning)h+='<div class="safe">'+esc(s.warning)+'</div>';
@@ -340,7 +344,13 @@ function gNext(){var s=D.scenarios[st.sc],key=s.id,g=st.g[key],t=s.guided.turns[
  if(g.i>=s.guided.turns.length){g.done=true;var tk=st.ticks[key]={},fl=st.flags[key]={};
   Object.keys(g.first).forEach(function(c){tk[c]=g.first[c]});Object.keys(g.flags).forEach(function(r){fl[r]=true});st.shown[key]=1}
  clin()}
-function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
+function pickSc(i){st.sc=i;st.step=0;st.view="sc";try{history.pushState(null,"","#sc-"+D.scenarios[i].short)}catch(e){}clin();window.scrollTo(0,0)}
+function toList(){st.view="list";try{history.pushState(null,"",location.pathname+location.search)}catch(e){}clin();window.scrollTo(0,0)}
+function fromHash(){var m=location.hash.match(/^#sc-(.+)$/);
+ if(m){var i=-1;D.scenarios.forEach(function(s,k){if(s.short===decodeURIComponent(m[1]))i=k});
+  if(i>=0&&!(st.view==="sc"&&st.sc===i)){st.sc=i;st.step=0;st.view="sc";go("clin");clin();window.scrollTo(0,0)}}
+ else if(!location.hash&&st.view!=="list"){st.view="list";clin()}}
+window.addEventListener("popstate",fromHash);
 function step(i){st.step=i;clin()}
 function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
 function resetSc(){var key=D.scenarios[st.sc].id;delete st.fc[key];delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
@@ -357,5 +367,5 @@ function enter(){document.getElementById("gate").hidden=true;document.getElement
 document.getElementById("gatechk").onchange=function(){document.getElementById("gateok").disabled=!this.checked};
 document.getElementById("gateok").onclick=enter;
 try{if(sessionStorage.getItem("hdGate")==="1")enter()}catch(e){}
-clin();src();
+fromHash();clin();src();
 </script></body></html>

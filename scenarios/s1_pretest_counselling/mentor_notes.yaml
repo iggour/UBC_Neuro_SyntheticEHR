@@ -6,6 +6,14 @@
 # Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
 
 key_facts:
+  C1:
+    card: pre-test-counselling-essentials
+    point: 3
+    text: Allow at least one month between pre-test information and the decision to be tested, unless there is an exceptional reason. [s6]
+  C2:
+    card: what-a-predictive-test-can-and-cannot-tell
+    point: 0
+    text: It shows whether the gene change was inherited. It does not make a clinical diagnosis. [s6]
   C3:
     card: pre-test-counselling-essentials
     point: 1
