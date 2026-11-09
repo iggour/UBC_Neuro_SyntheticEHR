@@ -170,10 +170,11 @@ function practise(s){var key=s.id,gd=s.guided,mode=st.mode[key]||(gd?"g":"f"),h=
  if(last)chat+=me(last.text)+last.reply.map(speak).join("");
  chat+='</div></div>';
  var side='<div class="side"><h3>Mentor</h3>',act='';
- if(g.done){side+='<div class="fb ok" style="margin-top:0"><b>Conversation complete.</b> '+esc(gd.closing||"")+'</div>';
+ if(g.done){side+=(g.prev?'<div class="fb ok" style="margin-top:0"><b>Your last response:</b> '+esc(g.prev)+'</div>':'')+'<div class="fb ok"'+(g.prev?'':' style="margin-top:0"')+'><b>Conversation complete.</b> '+esc(gd.closing||"")+'</div>';
   act='<div class="no-print"><button class="btn pri" onclick="step(2)">See your feedback</button> <button class="btn" onclick="resetSc();step(1)">Start again</button></div>'}
  else{var cl=[].concat(t0.checkpoint||[]),hint=t0.hint||(cps[cl[0]]&&cps[cl[0]].hint);
   if(last)side+='<div class="fb '+(last.quality==="best"?"ok":"no")+'" style="margin-top:0">'+esc(last.mentor)+'</div>';
+  else if(g.prev)side+='<div class="fb ok" style="margin-top:0"><b>Your last response:</b> '+esc(g.prev)+'</div>';
   if(st.hints){if(!last&&hint)side+='<div class="hintbox">'+esc(hint)+'</div>';side+=cl.map(function(c){return factHtml(s,c)}).join("")}
   if(!last&&!(st.hints&&hint))side+='<p class="note" style="margin:0">'+(st.hints?'Choose what you would say.':'Mentor hints are off. The mentor will still comment on each response you choose.')+'</p>';
   if(last&&last.quality==="best")act='<div class="no-print"><button class="btn pri" onclick="gNext()">Continue</button></div>';
@@ -337,7 +338,9 @@ var CK=(function(){
 function setMode(m){st.mode[D.scenarios[st.sc].id]=m;clin()}
 function gPick(oi){var s=D.scenarios[st.sc],g=st.g[s.id],t=s.guided.turns[g.i],o=t.options[oi];
  if(!g.tried.length)[].concat(t.checkpoint||[]).forEach(function(c){g.first[c]=(g.first[c]!==false)&&o.quality==="best"});
- if(o.flag)g.flags[o.flag]=true;g.tried.push(oi);clin()}
+ if(o.flag)g.flags[o.flag]=true;g.tried.push(oi);
+ if(o.quality==="best"){g.prev=o.mentor;gNext()}else{g.prev=null;clin()}
+ var a=document.querySelector(".pact");if(a&&a.scrollIntoView&&a.getBoundingClientRect&&a.getBoundingClientRect().bottom>window.innerHeight)a.scrollIntoView({behavior:"smooth",block:"end"})}
 function gNext(){var s=D.scenarios[st.sc],key=s.id,g=st.g[key],t=s.guided.turns[g.i],o=t.options[g.tried[g.tried.length-1]];
  g.log.push({text:o.text,reply:o.reply,pre:(t.before||[]).concat(t.patient_asks?[t.patient_asks]:[])});
  g.i++;g.tried=[];
