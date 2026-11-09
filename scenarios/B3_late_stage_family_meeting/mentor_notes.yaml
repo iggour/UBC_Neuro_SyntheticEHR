@@ -1,0 +1,44 @@
+# B3_late_stage_family_meeting: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: family-meetings
+    point: 1
+    text: Include everyone who should be there, including family on the phone. [?]
+  C2:
+    card: swallowing-and-tube-feeding
+    point: 0
+    text: Swallowing problems (dysphagia) are part of late-stage HD and can lead to choking, recurrent aspiration pneumonia, weight loss, and fear at mealtimes. [s35]
+  C3:
+    card: deciding-for-someone
+    point: 3
+    text: 'Involve the person as far as possible: some people with late-stage HD can still show agreement or displeasure, even with very little speech. [s35]'
+  C4:
+    card: swallowing-and-tube-feeding
+    point: 4
+    text: In advanced dementia, careful hand feeding has been shown to be as good as tube feeding for death, aspiration pneumonia, function and comfort; tube feeding is linked with agitation, restraints and complications. This evidence is from dementia, not HD. [s33]
+  C5:
+    card: deciding-for-someone
+    point: 2
+    text: A substitute decision maker should decide as the person would have wanted, based on their known wishes and values. [s32, s33]
+  C6:
+    card: family-meetings
+    point: 0
+    text: 'Use a structured approach: set up the meeting, find out what people understand, give information in plain words, respond to emotion, and agree a plan. [s20]'
+  C7:
+    card: family-meetings
+    point: 2
+    text: Disagreement often reflects grief, guilt or fear. Explore what lies behind each view before trying to resolve it. [?]
+  C8:
+    card: care-setting-and-carers
+    point: 0
+    text: People in the late stages of HD need 24-hour supervision and help. This often leads to carer burnout, and most people in late-stage HD move to care outside the home. [s35]
+  C9:
+    card: care-setting-and-carers
+    point: 4
+    text: Many people with HD ask the team not to perform resuscitation or intubation at a certain point in the illness. Wishes should be documented. [s35]

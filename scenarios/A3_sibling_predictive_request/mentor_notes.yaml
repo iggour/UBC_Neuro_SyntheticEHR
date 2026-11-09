@@ -1,0 +1,32 @@
+# A3_sibling_predictive_request: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: testing-healthy-children
+    point: 2
+    text: 'Reasons: no medical benefit in childhood; it protects the child''s right to an open future and the right not to know; a result may change how the child is seen and raised. [s21, s26]'
+  C3:
+    card: testing-healthy-children
+    point: 2
+    text: 'Reasons: no medical benefit in childhood; it protects the child''s right to an open future and the right not to know; a result may change how the child is seen and raised. [s21, s26]'
+  C4:
+    card: testing-healthy-children
+    point: 4
+    text: When parents ask for testing of a healthy child with no medical or other benefit, clinicians are not obliged to test. They should explain their reasons clearly and document the discussion. [s21]
+  C5:
+    card: if-owen-changes
+    point: 2
+    text: When a young person from an HD family has clear neurological signs, a genetic test to confirm the diagnosis is not controversial. This is diagnostic, not predictive, testing. [s16]
+  C6:
+    card: talking-with-owen
+    point: 0
+    text: Children in HD families are affected by the illness of a parent or sibling, and family stress can affect their behaviour. [s18]
+  C8:
+    card: testing-healthy-children
+    point: 6
+    text: Direct-to-consumer genetic testing is not recommended for children. [s21]

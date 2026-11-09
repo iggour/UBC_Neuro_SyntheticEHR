@@ -1,0 +1,40 @@
+# C4-3_partner_safety_and_minor_testing: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: safety-at-home
+    point: 1
+    text: Ask about violence in private, explain confidentiality and its limits, and do not pressure the person to disclose or to leave. [s37]
+  C2:
+    card: safety-at-home
+    point: 2
+    text: 'Assess immediate risk, for example: is the violence getting worse; are there weapons; has the partner threatened to kill; is she afraid to go home. [s37]'
+  C3:
+    card: safety-at-home
+    point: 2
+    text: 'Assess immediate risk, for example: is the violence getting worse; are there weapons; has the partner threatened to kill; is she afraid to go home. [s37]'
+  C4:
+    card: safety-at-home
+    point: 3
+    text: Outbursts in HD can become violent. Safety comes first, and carers should have an exit strategy for leaving the house or calling the police if an outburst threatens to get out of control. [s36]
+  C5:
+    card: irritability-and-carers
+    point: 3
+    text: Treatment of irritability (and any depression) can help; review with the person's HD team. [s36]
+  C6:
+    card: irritability-and-carers
+    point: 5
+    text: 'Point carers to family support, such as the Huntington Society of Canada: https://www.huntingtonsociety.ca/'
+  C7:
+    card: testing-a-teenager
+    point: 3
+    text: A young person can meet a genetic counsellor to talk about their risk and choices before deciding anything; predictive testing protocols include time to reflect. [s6]
+  C8:
+    card: safety-at-home
+    point: 6
+    text: Document carefully, and agree a safe way to contact the person. [s37]

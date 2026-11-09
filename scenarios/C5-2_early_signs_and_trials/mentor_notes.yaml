@@ -1,0 +1,36 @@
+# C5-2_early_signs_and_trials: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: when-hd-starts
+    point: 0
+    text: '"Manifest HD" has traditionally been diagnosed on motor signs: a clinician is 99% confident (diagnostic confidence level 4) of an otherwise unexplained movement disorder in a person with the gene expansion or a family history. [s41]'
+  C2:
+    card: when-hd-starts
+    point: 2
+    text: Information from family or co-workers can help show cognitive change over time. [s41]
+  C3:
+    card: when-hd-starts
+    point: 3
+    text: In early-stage HD, people are largely functional and may continue to work, drive, handle money and live independently. [s36]
+  C4:
+    card: when-hd-starts
+    point: 5
+    text: The time around diagnosis is a critical period for suicide risk in HD. Ask directly; asking does not increase suicidal thoughts. [s8, s12]
+  C5:
+    card: trials-and-research
+    point: 0
+    text: As of 2026-10-29, no treatment had been approved anywhere to slow the progression of HD; several were in clinical trials (checked 2026-10-29). [s43]
+  C6:
+    card: trials-and-research
+    point: 5
+    text: 'To find trials: ClinicalTrials.gov, HDTrialFinder (https://hdtrialfinder.net/), the Huntington Society of Canada, and the HD clinic. [s43, s35]'
+  C7:
+    card: trials-and-research
+    point: 6
+    text: Treatments sold for a fee outside regulated trials (for example "stem cell therapy" clinics) are unproven, can cause harm and debt, and may make a person ineligible for genuine trials. [?]

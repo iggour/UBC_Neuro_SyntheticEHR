@@ -1,0 +1,40 @@
+# B2_driving_and_independence: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: driving-and-hd
+    point: 0
+    text: Driving safety should be discussed periodically with every person with manifest HD and their family. [s35]
+  C2:
+    card: driving-and-hd
+    point: 3
+    text: Family members may fear the person's reaction and should be given a chance to speak to the clinician alone. [s35]
+  C3:
+    card: driving-and-hd
+    point: 5
+    text: 'Advise stopping with care: emphasise concern for safety, explain that slowed reactions may not be visible to the person, and base the advice on history, examination and outside information. [s35]'
+  C4:
+    card: driving-and-hd
+    point: 7
+    text: In British Columbia, clinicians must report a patient with a condition that makes driving dangerous who continues to drive after being warned. RoadSafetyBC makes the licensing decision. [s31]
+  C5:
+    card: driving-and-hd
+    point: 8
+    text: Plan alternatives early (family, friends, community transport), and recognise the person's decision to stop. [s35]
+  C6:
+    card: staying-safe-at-home
+    point: 0
+    text: An occupational therapist can assess driving, home safety and daily activities. [s35]
+  C7:
+    card: staying-safe-at-home
+    point: 3
+    text: Home and community care services in BC can include home support and, when needed, long-term care; a health authority assessment is the starting point. [s34]
+  C8:
+    card: planning-ahead
+    point: 0
+    text: People with HD lose the ability to express complex wishes later in the illness, so plans should be made early. [s35]

@@ -1,0 +1,40 @@
+# C5-1_reproductive_options: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: reproductive-options
+    point: 2
+    text: Different options are appropriate for different people. [s35]
+  C2:
+    card: reproductive-options
+    point: 1
+    text: 'The options: natural conception without testing; IVF with preimplantation genetic testing for a monogenic condition (PGT-M, formerly called PGD); prenatal testing by chorionic villus sampling or amniocentesis; donor sperm (or donor egg); adoption; surrogacy; choosing not to have children. [s35]'
+  C3:
+    card: options-in-detail
+    point: 0
+    text: 'Natural conception: each pregnancy has a 50% chance of inheriting the HD gene expansion. [s19]'
+  C4:
+    card: options-in-detail
+    point: 2
+    text: 'PGT-M: IVF with fertility drugs; embryos are tested and only embryos without the expansion are transferred. It is done at specialised centres and is usually not covered by insurance or government funding. [s35]'
+  C5:
+    card: options-in-detail
+    point: 5
+    text: 'Prenatal testing: chorionic villus sampling at about 11-12 weeks, or amniocentesis after 15 weeks; the purpose is to allow the couple to consider ending the pregnancy if the expansion is found. [s35]'
+  C6:
+    card: non-directive-counselling
+    point: 0
+    text: The genetic counsellor discusses each option without bias, so the couple can make the decision that is right for them. [s35]
+  C7:
+    card: non-directive-counselling
+    point: 0
+    text: The genetic counsellor discusses each option without bias, so the couple can make the decision that is right for them. [s35]
+  C8:
+    card: non-directive-counselling
+    point: 3
+    text: Offer written information, time, and follow-up; refer to an IVF centre, donor programmes or adoption services if the couple wishes. [?]

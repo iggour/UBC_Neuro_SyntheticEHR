@@ -1,0 +1,40 @@
+# B1_late_onset_diagnosis: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: giving-an-unexpected-diagnosis
+    point: 1
+    text: When the patient expects "nothing", check expectations first and give a clear warning before the result. [s20]
+  C2:
+    card: giving-an-unexpected-diagnosis
+    point: 0
+    text: 'SPIKES: Setting; Perception; Invitation; Knowledge (warning shot, plain words, small amounts); Emotions; Strategy and summary. [s20]'
+  C3:
+    card: giving-an-unexpected-diagnosis
+    point: 4
+    text: 'Possible reasons: a parent who died before symptoms were recognised, a past diagnosis under another name, adoption or misattributed parentage, or a new expansion from a parent''s high-normal repeat. [s35]'
+  C4:
+    card: late-onset-hd
+    point: 4
+    text: Progression may be slower than in typical adult-onset HD. [s27]
+  C5:
+    card: risk-for-the-family
+    point: 0
+    text: Each child of a person with an HD gene expansion has a 50% chance of inheriting it. [s19]
+  C6:
+    card: risk-for-the-family
+    point: 5
+    text: Whether to tell relatives, and whether to have a predictive test, is each person's own decision, made with counselling. [s6]
+  C7:
+    card: risk-for-the-family
+    point: 7
+    text: In Canada, no one can be required to take a genetic test or disclose a result as a condition of a contract or service, such as insurance. [s7]
+  C8:
+    card: giving-an-unexpected-diagnosis
+    point: 6
+    text: 'Start planning ahead early: the person''s wishes are easier to record while they can still express complex ideas. [s35]'

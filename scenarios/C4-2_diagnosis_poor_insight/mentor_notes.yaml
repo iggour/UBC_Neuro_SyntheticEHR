@@ -1,0 +1,36 @@
+# C4-2_diagnosis_poor_insight: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: unawareness-in-hd
+    point: 5
+    text: Give the diagnosis with a warning and in plain words, even when the person expects good news. [s20]
+  C2:
+    card: unawareness-in-hd
+    point: 1
+    text: Unawareness in HD differs from psychological denial. It is thought to come from disrupted frontal-basal ganglia pathways, and is sometimes called "organic denial" or anosognosia. [s36]
+  C3:
+    card: unawareness-in-hd
+    point: 2
+    text: A person may talk about specific problems (memory, movements, balance) without accepting that they have HD. Focus on those problems rather than repeatedly confronting the diagnosis. [s36]
+  C4:
+    card: work-and-money
+    point: 1
+    text: The decision to retire or apply for disability should be made with input from social workers and physicians. If employed, become familiar with the employer's disability plan. [s36]
+  C5:
+    card: work-and-money
+    point: 4
+    text: Discussing Power of Attorney early is important because unawareness can become dangerous. [s36]
+  C6:
+    card: work-and-money
+    point: 6
+    text: Each child of a person with HD has a 50% chance of inheriting the gene change. [s19]
+  C7:
+    card: work-and-money
+    point: 8
+    text: In Canada, no one can be required to take a genetic test or disclose a result as a condition of a contract or service. [s7]

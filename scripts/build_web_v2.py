@@ -5,17 +5,26 @@ Build the two websites from the reviewed scenario files, so the sites and the sc
 source of truth. Re-run after changing any scenario file or either template.
 
 Usage:  python3 scripts/build_web_v2.py
-Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional)
+Reads:  scenarios/*/role_card.yaml, checkpoints.yaml, knowledge_cards.md, family_prep_sheet.md, guided.yaml (optional),
+        mentor_notes.yaml (optional: key fact beside each mentor hint, copied from knowledge_cards.md)
+        runtime/patient_prompts/*.md and the layer-3 guidelines (free conversation; see below)
         records/case*.yaml, records/shared_knowledge_cards.md, records/sources.yaml (Record tab, draft)
         Scenarios are listed by family (CASES below). Set a case's draft flag to label it as unreviewed.
 Writes: site/clinicians/index.html   clinician training (scripts/web_v2_template.html)
         site/families/index.html     family prep sheets only (scripts/web_families_template.html)
         web/hd_anchor_v2.html        redirect from the old address to the home page
-Never exported to the clinician page: hidden items, behaviour rules, mentor_only, met_if.
+Never exported to the clinician page: mentor_only, met_if.
+Free conversation (owner decision 2026-11-06): the patient prompt (runtime/patient_prompts/<id>.md, which
+includes hidden items and behaviour rules) and the guideline layer are in the clinician page, because the
+learner's browser sends them to the learner's own model. Anyone can read them in the page source.
 The family page gets only family_prep_sheet.md content: no scenario, role card, mentor or source-list
 data, so nothing for clinicians is in its source. scripts/check_families_site.py checks this.
 """
-import json, pathlib, re, yaml
+import json, pathlib, re, sys, yaml
+
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import check_publish_v1 as cp
+import free_chat_safety as fs
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCEN = ROOT / "scenarios"
@@ -131,6 +140,51 @@ def family_payload(sheets):
     return {"sheets": sheets, "support": list(support.values()),
             "links": [{"url": u, "sheets": sorted(set(t), key=t.index)} for u, t in links.items()]}
 
+def key_facts(d, cards):
+    """mentor_notes.yaml -> {checkpoint id: card point text}. Each text must still match its card point word for word."""
+    p = d / "mentor_notes.yaml"
+    if not p.exists():
+        return {}
+    by_id = {c["id"]: c["points"] for c in cards}
+    out = {}
+    for cid, n in (yaml.safe_load(p.read_text(encoding="utf-8")) or {}).get("key_facts", {}).items():
+        pts = by_id.get(n["card"], [])
+        if n["point"] >= len(pts) or pts[n["point"]] != n["text"]:
+            raise SystemExit(f"{d.name}/mentor_notes.yaml {cid}: text no longer matches {n['card']} point {n['point']}")
+        out[cid] = n["text"]
+    return out
+
+
+def chat_facts(card):
+    """Facts the page's reply checker needs (a port of free_chat_safety.load_facts that works for every scenario)."""
+    first = lambda who: (str(who).split() or [""])[0]
+    ppl = cp.people(card)
+    patient = first(card["persona"]["name"])
+    ages = dict(card.get("ages_now") or {first(w["name"]): w["age"] for w in ppl if w.get("age")})
+    fam = card.get("family_canonical") or {}
+    told = {k: card.get(k) for k in ("persona", "companion", "others", "facts", "hidden", "ages_now", "family_canonical")}
+    dump = yaml.safe_dump(told, allow_unicode=True)
+    known = yaml.safe_dump({k: card.get(k) for k in ("facts", "hidden", "family_canonical", "persona")}, allow_unicode=True)
+    rel = {}
+    if first(fam.get("patient", "")) == patient:
+        for k in ("husband", "wife", "daughter", "son"):
+            if isinstance(fam.get(k), str):
+                rel[k] = first(fam[k])
+    surnames = {str(w["name"]).split()[-1] for w in ppl if len(str(w["name"]).split()) > 1}
+    if fam.get("surname"):
+        surnames.add(first(fam["surname"]))
+    for v in fam.values():          # e.g. "Mei Lin" when the wife kept her own surname
+        for given, sur in re.findall(r"\b([A-Z][a-z]+) ([A-Z][a-z]+)\b", str(v)):
+            if given in ages:
+                surnames.add(sur)
+    pairs = cp.cag_pairs(known)
+    facts_text = yaml.safe_dump({k: card.get(k) for k in ("facts", "hidden")}, allow_unicode=True)
+    return {"patient": patient, "speakers": sorted({first(w["name"]) for w in ppl}), "ages": ages,
+            "names": sorted(set(re.findall(r"\b[A-Z][a-z]+\b", dump))), "surnames": sorted(surnames), "relations": rel,
+            "cag": sorted(list(x) for x in pairs), "cagSingles": sorted(cp.cag_singles(known) | {b for _, b in pairs}),
+            "text": facts_text.lower(), "selfharmOK": bool(re.search(cp.SELFHARM, facts_text, re.I))}
+
+
 REDIRECT = """<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8"><title>HD Anchor</title>
 <meta http-equiv="refresh" content="0; url=../index.html"><meta name="robots" content="noindex"></head>
@@ -166,7 +220,8 @@ def main():
                         "opening": per["opening_line"],
                         "companion": ({"name": comp["name"], "relation": comp.get("relation", "")} if comp else None)},
             "cards": parse_cards(d / "knowledge_cards.md"),
-            "checkpoints": [{"id": c["id"], "name": c["name"], "hint": c.get("hint", ""), "met": c["feedback_met"],
+            "checkpoints": [{"id": c["id"], "name": c["name"], "hint": c.get("hint", ""), "after": c.get("hint_after_turn"),
+                             "met": c["feedback_met"],
                              "missed": c["feedback_missed"], "src": c.get("source"),
                              "card": c.get("knowledge_card")} for c in cps["checkpoints"]],
             "flags": [{"id": r["id"], "name": r["name"], "fb": r["feedback"], "src": r.get("source")}
@@ -174,6 +229,9 @@ def main():
             "guided": (yaml.safe_load((d / "guided.yaml").read_text(encoding="utf-8"))
                        if (d / "guided.yaml").exists() else None),
         }
+        item["notes"] = key_facts(d, item["cards"])
+        item["chat"] = {"prompt": (ROOT / "runtime" / "patient_prompts" / f"{sc['id']}.md").read_text(encoding="utf-8").strip(),
+                        "facts": chat_facts(card)}
         case = case_of.get(short, {"n": 0, "draft": True})
         item.update({"case": case["n"], "desc": DESC.get(short, ""), "draft": case["draft"],
                      "warning": card["scenario"].get("content_warning", ""),
@@ -188,7 +246,8 @@ def main():
     parse_sources(RECORDS / "sources.yaml", sources)
     draft_src += [k for k in sources if k not in known]
     src = {k: re.sub(r"\s*Status:.*$", "", " ".join(v)).strip() for k, v in sorted(sources.items(), key=lambda kv: int(kv[0][1:]))}
-    payload = json.dumps({"scenarios": data, "sources": src, "draftSources": draft_src, "records": records,
+    guide = "\n\n".join([fs.GUIDELINE_NOTE] + [(ROOT / g).read_text(encoding="utf-8").strip() for g in fs.GUIDELINES] + [fs.FINAL_NOTE])
+    payload = json.dumps({"scenarios": data, "sources": src, "guide": guide, "draftSources": draft_src, "records": records,
                           "recordCards": parse_cards(RECORDS / "shared_knowledge_cards.md"),
                           "cases": [{k: c[k] for k in ("n", "name", "draft")} for c in CASES]}, ensure_ascii=False).replace("</", "<\\/")
     fam = json.dumps(family_payload(sheets), ensure_ascii=False).replace("</", "<\\/")

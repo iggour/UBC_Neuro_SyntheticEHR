@@ -57,6 +57,18 @@ details{margin:6px 0}summary{cursor:pointer;color:var(--acc);font-weight:600}
 #gate{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;padding:18px;z-index:9}
 #gate>div{background:var(--card);border-radius:12px;max-width:540px;max-height:100%;overflow:auto;padding:18px}#gate[hidden]{display:none}
 a.btn{display:inline-block;text-decoration:none}.gaterow{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.wrap.wide{max-width:1180px}
+.pgrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;grid-template-areas:"chat side" "act side";gap:0 16px;align-items:start}
+.pchat{grid-area:chat;min-width:0}.pact{grid-area:act;min-width:0}.pside{grid-area:side;position:sticky;top:12px}
+@media (max-width:899px){.pgrid{grid-template-columns:minmax(0,1fr);grid-template-areas:"chat" "side" "act"}.pside{position:static}}
+.side{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:10px 0}.side h3{margin-top:0}
+.fact{border-left:4px solid var(--ok);background:var(--okbg);border-radius:6px;padding:8px 11px;font-size:.9rem;margin-top:8px}
+.field{display:flex;flex-direction:column;gap:3px;margin:8px 0;font-size:.9rem}
+.field input{padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;min-width:0}
+.opt{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:8px 0}.opt.off{opacity:.65}
+.status{font-size:.86rem}.status.ok{color:var(--ok)}.status.no{color:var(--no)}
+.withheld{font-size:.8rem;color:var(--warn);margin:4px 0}.typing{font-size:.86rem;color:var(--mute);margin:6px 0}
+code{font-size:.82rem;background:var(--bg);border:1px solid var(--line);border-radius:4px;padding:1px 4px;word-break:break-all}
 @media print{.tabs,.no-print,#gate,.bar:not(.notice){display:none!important}body{background:#fff}}
 </style></head><body>
 <div id="gate" role="dialog" aria-modal="true" aria-labelledby="gateh"><div>
@@ -88,7 +100,7 @@ a.btn{display:inline-block;text-decoration:none}.gaterow{display:flex;flex-direc
 <p>The mentor only uses pre-written advice linked to sources. It does not write advice of its own.</p></div>
 <div class="card"><h2 style="margin-top:0">Current stage</h2><ul>
 <li>Fifteen scenarios across five fictional families are written and still under review.</li>
-<li>The AI patient is being tested on a locally hosted open-source model, so no data leaves the institution.</li>
+<li>Guided practice needs no AI. Free conversation runs on a model you choose, for example one on your own computer; HD Anchor does not see or store conversations. Our own tests use a locally hosted open-source model.</li>
 <li>No human participants in this phase. Testing with trainees will follow ethics approval.</li></ul></div>
 </section>
 <p class="note">All people are fictional. No personal data is stored.</p>
@@ -125,7 +137,7 @@ function clin(){var s=D.scenarios[st.sc],h='<h2>Choose a conversation</h2>'+pick
   if(shown){var n=s.checkpoints.filter(function(c){return t[c.id]}).length;
    h+='<h2>Your feedback: '+n+' of '+s.checkpoints.length+' steps</h2>'+s.checkpoints.map(function(c){var ok=!!t[c.id];return '<div class="fb '+(ok?'ok':'no')+'"><b>'+esc(c.name)+'.</b> '+esc(ok?c.met:c.missed)+' '+srcChips(c.src)+(c.card&&!ok?' <a class="chip" href="#card-'+c.card+'" onclick="step(0)">review the key facts</a>':'')+'</div>'}).join("");
    var hit=s.flags.filter(function(r){return f[r.id]});if(hit.length)h+='<h3>Things to avoid next time</h3>'+hit.map(function(r){return '<div class="fb no"><b>'+esc(r.name)+'.</b> '+esc(r.fb)+' '+srcChips(r.src)+'</div>'}).join("")}}
- document.getElementById("clin").innerHTML=h}
+ document.getElementById("clin").innerHTML=h;document.querySelector(".wrap").classList.toggle("wide",st.step===1)}
 
 function cardChip(id){var c=D.recordCards.filter(function(x){return x.id===id})[0];return c?'<a class="chip" href="#card-'+id+'" onclick="openCard(\''+id+'\')">'+esc(c.title)+'</a>':""}
 function openCard(id){var e=document.getElementById("card-"+id);if(e)e.open=true}
@@ -141,29 +153,183 @@ function record(s){var R=D.records[s["case"]],now=R.filter(function(r){return r.
 
 function speak(l){var m=l.match(/^([A-Z][a-z]+):\s*(.*)$/);if(!m)return '<div class="stage">'+esc(l)+'</div>';return '<div class="line"><div class="who">'+esc(m[1])+'</div><div class="bub">'+esc(m[2])+'</div></div>'}
 function me(t){return '<div class="line me"><div class="who">You</div><div class="bub me">'+esc(t)+'</div></div>'}
-function practise(s){var key=s.id,p=s.patient,gd=s.guided,mode=st.mode[key]||(gd?"g":"f"),h="";
- var who=esc(p.name)+(p.age?", "+p.age:"")+(p.companion?' · with '+esc(p.companion.name)+(p.companion.relation?' ('+esc(p.companion.relation)+')':''):'');
+function practise(s){var key=s.id,gd=s.guided,mode=st.mode[key]||(gd?"g":"f"),h="";
  h+='<div class="mode"><button class="'+(mode==="g"?"on":"")+'" '+(gd?'':'disabled title="Coming soon for this scenario"')+' onclick="setMode(\'g\')">Guided: choose a response'+(gd?'':' (coming soon)')+'</button><button class="'+(mode==="f"?"on":"")+'" onclick="setMode(\'f\')">Free conversation</button></div>';
  h+='<label class="toggle"><input type="checkbox" '+(st.hints?'checked':'')+' onchange="st.hints=this.checked;clin()"> Mentor hints</label>';
- if(mode==="f"){h+='<div class="card"><div class="who">'+who+'</div><div class="chat"><div class="who">'+esc(p.name)+'</div><div class="bub">'+esc(p.opening)+'</div></div>'+
-  '<div class="inrow"><input disabled placeholder="Type what you would say…"><button class="btn pri" disabled>Send</button></div>'+
-  '<p class="note">The live AI patient is not connected yet. It is being tested on a local open-source model. For now, think through how you would respond, then go to Feedback and tick what you did.</p></div>'+
-  '<div class="no-print"><button class="btn pri" onclick="step(2)">I have finished. Show feedback</button></div>';return h}
+ if(mode==="f")return h+freeChat(s);
  var g=st.g[key]||(st.g[key]={i:0,tried:[],log:[],first:{},flags:{},done:false}),T=gd.turns,cps={};s.checkpoints.forEach(function(c){cps[c.id]=c});
- h+='<div class="card"><div class="who">'+who+'</div><div class="prog">Step '+Math.min(g.i+1,T.length)+' of '+T.length+'</div><div class="chat">';
- gd.opening.forEach(function(l){h+=speak(l)});
- g.log.forEach(function(e){(e.pre||[]).forEach(function(l){h+=speak(l)});h+=me(e.text);e.reply.forEach(function(l){h+=speak(l)})});
- if(!g.done){var t=T[g.i];(t.before||[]).forEach(function(l){h+=speak(l)});if(t.patient_asks)h+=speak(t.patient_asks)}
+ var chat='<div class="card"><div class="who">'+whoLine(s)+'</div><div class="prog">Step '+Math.min(g.i+1,T.length)+' of '+T.length+'</div><div class="chat">';
+ gd.opening.forEach(function(l){chat+=speak(l)});
+ g.log.forEach(function(e){(e.pre||[]).forEach(function(l){chat+=speak(l)});chat+=me(e.text);e.reply.forEach(function(l){chat+=speak(l)})});
+ if(!g.done){var t=T[g.i];(t.before||[]).forEach(function(l){chat+=speak(l)});if(t.patient_asks)chat+=speak(t.patient_asks)}
  var t0=g.done?null:T[g.i],last=(!g.done&&g.tried.length)?t0.options[g.tried[g.tried.length-1]]:null;
- if(last)h+=me(last.text)+last.reply.map(speak).join("");
- h+='</div>';
- if(g.done){h+='<div class="fb ok"><b>Conversation complete.</b> '+esc(gd.closing||"")+'</div><div class="no-print"><button class="btn pri" onclick="step(2)">See your feedback</button> <button class="btn" onclick="resetSc();step(1)">Start again</button></div></div>';return h}
- var t=t0;
- var cl=[].concat(t.checkpoint||[]),hint=t.hint||(cps[cl[0]]&&cps[cl[0]].hint);if(st.hints&&!g.tried.length&&hint)h+='<div class="hintbox" style="margin-top:10px"><b>Mentor hint:</b> '+esc(hint)+'</div>';
- if(last){h+='<div class="fb '+(last.quality==="best"?"ok":"no")+'"><b>Mentor:</b> '+esc(last.mentor)+'</div>'}
- if(last&&last.quality==="best"){h+='<div class="no-print"><button class="btn pri" onclick="gNext()">Continue</button></div>'}
- else{h+='<h3>'+(last?'Try another response':'What do you say?')+'</h3>';t.options.forEach(function(o,oi){var tr=g.tried.indexOf(oi)>=0;h+='<button class="btn choice'+(tr?' tried':'')+'" '+(tr?'disabled':'')+' onclick="gPick('+oi+')">'+esc(o.text)+'</button>'})}
- h+='</div>';return h}
+ if(last)chat+=me(last.text)+last.reply.map(speak).join("");
+ chat+='</div></div>';
+ var side='<div class="side"><h3>Mentor</h3>',act='';
+ if(g.done){side+='<div class="fb ok" style="margin-top:0"><b>Conversation complete.</b> '+esc(gd.closing||"")+'</div>';
+  act='<div class="no-print"><button class="btn pri" onclick="step(2)">See your feedback</button> <button class="btn" onclick="resetSc();step(1)">Start again</button></div>'}
+ else{var cl=[].concat(t0.checkpoint||[]),hint=t0.hint||(cps[cl[0]]&&cps[cl[0]].hint);
+  if(last)side+='<div class="fb '+(last.quality==="best"?"ok":"no")+'" style="margin-top:0">'+esc(last.mentor)+'</div>';
+  if(st.hints){if(!last&&hint)side+='<div class="hintbox">'+esc(hint)+'</div>';side+=cl.map(function(c){return factHtml(s,c)}).join("")}
+  if(!last&&!(st.hints&&hint))side+='<p class="note" style="margin:0">'+(st.hints?'Choose what you would say.':'Mentor hints are off. The mentor will still comment on each response you choose.')+'</p>';
+  if(last&&last.quality==="best")act='<div class="no-print"><button class="btn pri" onclick="gNext()">Continue</button></div>';
+  else{act='<div class="card"><h3 style="margin-top:0">'+(last?'Try another response':'What do you say?')+'</h3>';
+   t0.options.forEach(function(o,oi){var tr=g.tried.indexOf(oi)>=0;act+='<button class="btn choice'+(tr?' tried':'')+'" '+(tr?'disabled':'')+' onclick="gPick('+oi+')">'+esc(o.text)+'</button>'});act+='</div>'}}
+ side+='</div>';
+ return h+'<div class="pgrid"><div class="pchat">'+chat+'</div><div class="pside">'+side+'</div><div class="pact">'+act+'</div></div>'}
+/* ---------- free conversation: the learner's own model, checked in the page ---------- */
+var M={url:"",model:"",key:"",models:[],ready:false,ok:false,stat:""};
+try{var sv=JSON.parse(localStorage.getItem("hdModel")||"{}");M.url=sv.url||"";M.model=sv.model||""}catch(e){}
+st.fc={};
+function escA(s){return esc(s).replace(/"/g,"&quot;")}
+function whoLine(s){var p=s.patient;return esc(p.name)+(p.age?", "+p.age:"")+(p.companion?' · with '+esc(p.companion.name)+(p.companion.relation?' ('+esc(p.companion.relation)+')':''):'')}
+function factHtml(s,cid){var f=s.notes&&s.notes[cid];return f?'<div class="fact"><b>Key fact:</b> '+point(f)+'</div>':''}
+function fc(s){return st.fc[s.id]||(st.fc[s.id]={msgs:[{role:"system",content:s.chat.prompt+"\n\n"+D.guide},{role:"assistant",content:s.patient.opening}],
+ view:[{who:s.chat.facts.patient,text:s.patient.opening}],log:[{who:s.chat.facts.patient,text:s.patient.opening}],turns:0,busy:false,stopped:false,err:"",draft:""})}
+function viewHtml(v){if(v.me)return me(v.text);if(v.note)return '<div class="withheld">'+esc(v.note)+'</div>';return speak(v.who+": "+v.text)}
+function freeChat(s){
+ if(!M.ready)return '<div class="pgrid"><div class="pchat">'+connectHtml()+'</div><div class="pside">'+freeSide(s,null)+'</div></div>';
+ var c=fc(s),h='<div class="card"><div class="who">'+whoLine(s)+'</div><div class="chat">'+c.view.map(viewHtml).join("")+(c.busy?'<div class="typing">'+esc(s.chat.facts.patient)+' is replying…</div>':'')+'</div>';
+ if(c.stopped)h+='<div class="safe"><b>This practice conversation has stopped.</b> Your message sounded as if you may be going through something hard yourself. If you are thinking about ending your life, call or text <b>9-8-8</b> (Canada) any time, or call <b>911</b> in an emergency. If you were speaking as the clinician or quoting the patient, you can start again.</div>';
+ else if(c.turns>=40)h+='<p class="note">This practice conversation has reached its limit of 40 turns.</p>';
+ else h+='<div class="inrow no-print"><input id="fIn" maxlength="1500" placeholder="Type what you would say…"'+(c.busy?' disabled':'')+' onkeydown="if(event.key===\'Enter\'&&!event.isComposing){event.preventDefault();fSend()}"><button class="btn pri"'+(c.busy?' disabled':'')+' onclick="fSend()">Send</button></div>';
+ if(c.err)h+='<div class="fb no">'+esc(c.err)+'</div>';
+ h+='</div><div class="no-print"><button class="btn pri" onclick="step(2)">I have finished. Show feedback</button> <button class="btn" onclick="fRestart()">Start again</button> <button class="btn" onclick="fDownload()">Download conversation</button></div>';
+ return '<div class="pgrid"><div class="pchat">'+h+'</div><div class="pside">'+freeSide(s,c)+'</div></div>'}
+function freeSide(s,c){var h='<div class="side"><h3>Mentor</h3>';
+ if(!st.hints)h+='<p class="note">Mentor hints are off.</p>';
+ else{var n=c?c.turns:0,open=s.checkpoints.filter(function(k){return k.hint&&(k.after||0)<=n});
+  h+='<p class="note" style="margin-top:0">Hints appear as the conversation goes on. The mentor does not read your conversation yet, so a hint may be about something you have already done.</p>';
+  h+=open.length?open.slice().reverse().map(function(k){return '<div class="hintbox" style="margin-top:8px"><b>'+esc(k.name)+'.</b> '+esc(k.hint)+'</div>'+factHtml(s,k.id)}).join(""):'<p class="note">No hints yet.</p>'}
+ if(M.ready)h+='<p class="note" style="margin-top:12px">Model: '+esc(M.model)+' · <a href="#" onclick="M.ready=false;clin();return false">change</a></p>';
+ return h+'</div>'}
+function connectHtml(){var o=(location.protocol==="file:"||location.origin==="null")?"*":location.origin;
+ return '<div class="card"><h3 style="margin-top:0">Choose how to run the AI patient</h3>'+
+ '<div class="opt off"><b>Recommended model, in your browser</b> <span class="chip">Coming soon</span><p class="note" style="margin:4px 0 0">A small model we are testing. It will run inside your browser, with nothing to install.</p></div>'+
+ '<div class="opt"><b>Your own model</b><p class="note" style="margin:4px 0 6px">Any server with an OpenAI-compatible API: Ollama or LM Studio on your computer, or a cloud service you have a key for. We have not tested every model, so quality varies.</p>'+
+ '<div class="mode"><button onclick="preset(\'http://localhost:11434/v1\')">Ollama</button><button onclick="preset(\'http://localhost:1234/v1\')">LM Studio</button></div>'+
+ '<label class="field">Server address<input id="mUrl" value="'+escA(M.url)+'" placeholder="http://localhost:11434/v1" oninput="M.url=this.value.trim()"></label>'+
+ '<label class="field">API key (only if your server needs one)<input id="mKey" type="password" autocomplete="off" value="'+escA(M.key)+'" oninput="M.key=this.value.trim()"></label>'+
+ '<label class="field">Model<input id="mModel" list="mList" value="'+escA(M.model)+'" placeholder="Check the connection to list your models" oninput="M.model=this.value.trim()"></label><datalist id="mList">'+M.models.map(function(m){return '<option value="'+escA(m)+'">'}).join("")+'</datalist>'+
+ '<div class="no-print" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn" onclick="mTest()">Check connection</button><button class="btn pri" onclick="mUse()">Start conversation</button><span class="status '+(M.ok?'ok':'no')+'">'+esc(M.stat)+'</span></div>'+
+ '<details><summary>Setting up Ollama or LM Studio</summary><div class="note"><p><b>Ollama.</b> Install Ollama and download a model. Then let this website connect: quit Ollama, open Terminal and run<br><code>OLLAMA_ORIGINS="'+esc(o)+'" OLLAMA_CONTEXT_LENGTH=8192 ollama serve</code><br>Choose Ollama above and check the connection.</p>'+
+ '<p><b>LM Studio.</b> Load a model with a context length of at least 8,192 tokens. In the Developer tab, start the server and turn on <b>Enable CORS</b>. Choose LM Studio above.</p>'+
+ '<p>The patient instructions are long (about 3,000 tokens), so a short context length cuts them off. Safari may block a connection from this website to your own computer; if it does, use Chrome, Edge or Firefox.</p></div></details></div>'+
+ '<p class="note">Your messages go straight from your browser to the model you choose. HD Anchor has no server of its own and does not see or store your conversation.</p>'+
+ '<p class="note">The patient\'s full profile, including what they have not told you yet, is sent to your model and can be read in this page\'s source. For the best practice, do not read it first.</p></div>'}
+function preset(u){M.url=u;M.ok=false;M.stat="";M.models=[];clin()}
+function fetchT(url,opt,ms){var a=new AbortController(),t=setTimeout(function(){a.abort()},ms);opt.signal=a.signal;return fetch(url,opt).finally(function(){clearTimeout(t)})}
+function hdrs(post){var h={};if(post)h["Content-Type"]="application/json";if(M.key)h.Authorization="Bearer "+M.key;return h}
+function base(){return M.url.replace(/\/+$/,"")}
+async function mTest(){M.ok=false;M.stat="Checking…";clin();
+ try{var r=await fetchT(base()+"/models",{headers:hdrs(false)},15000);
+  if(r.status===401||r.status===403)M.stat="The server refused the request. Check the API key.";
+  else if(!r.ok)M.stat="The server answered with error "+r.status+". Check that the address ends in /v1.";
+  else{var j=await r.json();M.models=((j&&j.data)||[]).map(function(x){return x.id});if(M.models.indexOf(M.model)<0)M.model=M.models[0]||M.model;
+   M.ok=M.models.length>0;M.stat=M.ok?"Connected. "+M.models.length+" model"+(M.models.length>1?"s":"")+" found.":"Connected, but the server lists no models."}}
+ catch(e){M.stat=e.name==="AbortError"?"No answer from the server.":"Could not reach the server. Check that it is running and allows this website (see the setup notes)."}
+ clin()}
+function mUse(){if(!M.url||!M.model){M.stat="Add the server address and a model name.";M.ok=false;clin();return}
+ M.ready=true;try{localStorage.setItem("hdModel",JSON.stringify({url:M.url,model:M.model}))}catch(e){}clin()}
+async function askModel(msgs){var r;
+ try{r=await fetchT(base()+"/chat/completions",{method:"POST",headers:hdrs(true),body:JSON.stringify({model:M.model,messages:msgs,temperature:0.3,max_tokens:300,stream:false})},120000)}
+ catch(e){throw new Error(e.name==="AbortError"?"The model took too long to reply. Try sending again.":"Could not reach the model. Check that it is running, then send again.")}
+ if(!r.ok)throw new Error(r.status===401||r.status===403?"The server refused the request. Check the API key.":"The model server answered with error "+r.status+".");
+ var j;try{j=await r.json()}catch(e){throw new Error("The model sent a reply that could not be read.")}
+ var ch=j&&j.choices&&j.choices[0];if(!ch||!ch.message)throw new Error("The model sent a reply that could not be read.");
+ var t=String(ch.message.content||"").replace(/<think>[\s\S]*?<\/think>/g,"").replace(/^[\s\S]*<\/think>/,"").trim();
+ if(ch.finish_reason==="length"){var m=t.match(/^[\s\S]*[.!?]["')]?/);if(m)t=m[0]}
+ return t}
+async function fSend(){var s=D.scenarios[st.sc],c=fc(s),F=s.chat.facts,el=document.getElementById("fIn"),t=(el?el.value:"").trim();
+ if(!t||c.busy||c.stopped||c.turns>=40)return;
+ c.err="";c.view.push({me:1,text:t});c.log.push({who:"You",text:t});
+ if(CK.distress(t,F)){c.stopped=true;c.log.push({note:"Stopped: the message looked like real distress, so it was not sent to the model."});clin();return}
+ c.msgs.push({role:"user",content:t});c.busy=true;clin();
+ try{var r=await askModel(c.msgs),why=CK.check(r,F);
+  if(why.length){c.log.push({withheld:r,why:why});r=await askModel(c.msgs);why=CK.check(r,F);
+   if(why.length){c.log.push({withheld:r,why:why});r=F.patient+": Sorry, where was I? Could you put that another way?";
+    c.view.push({note:"The model's reply did not pass the safety and consistency check, so a standard line is shown instead."})}}
+  c.msgs.push({role:"assistant",content:r});c.turns++;c.draft="";
+  CK.split(r,F).forEach(function(x){var tx=x[1].replace(/\*/g,"");c.view.push({who:x[0],text:tx});c.log.push({who:x[0],text:tx})})}
+ catch(e){c.msgs.pop();c.view.pop();c.draft=t;c.err=e.message;c.log.push({note:"Error: "+e.message})}
+ c.busy=false;clin();var fi=document.getElementById("fIn");if(fi){fi.value=c.draft;fi.focus()}}
+function fRestart(){delete st.fc[D.scenarios[st.sc].id];clin()}
+function fDownload(){var s=D.scenarios[st.sc],c=fc(s),L=["HD Anchor practice conversation (all people are fictional)","Scenario: "+s.id,"Model: "+M.model,"Date: "+new Date().toISOString().slice(0,16).replace("T"," "),""];
+ c.log.forEach(function(e){if(e.who)L.push(e.who+": "+e.text);else if(e.withheld!=null)L.push("[Reply withheld ("+e.why.map(function(w){return w[0]+(w[1]?": "+w[1]:"")}).join("; ")+")] "+e.withheld);else if(e.note)L.push("["+e.note+"]")});
+ var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([L.join("\n")+"\n"],{type:"text/plain"}));a.download="hd-anchor-"+s.short+"-conversation.txt";document.body.appendChild(a);a.click();a.remove()}
+
+/* ---------- reply checker: a port of scripts/free_chat_safety.py ----------
+   Simple pattern checks. They cannot tell whether a hidden item came out too early, or catch every invented
+   fact, so a reply that passes is not proven correct. Any error inside the checker withholds the reply. */
+var CK=(function(){
+ var TEENS="ten eleven twelve thirteen fourteen fifteen sixteen seventeen eighteen nineteen".split(" "),TENS="twenty thirty forty fifty sixty seventy eighty ninety".split(" "),UNITS="one two three four five six seven eight nine".split(" ");
+ var NUM="\\d{1,3}|(?:"+TENS.join("|")+")(?:[- ](?:"+UNITS.join("|")+"))?|"+TEENS.join("|");
+ var NOT_AGE="(?![- ]?(?:minutes?|hours?|days?|weeks?|months?|miles?|km|blocks?|times?|percent|%))",HEDGE="(?:\\s+(?:only|just|nearly|almost|about))?";
+ function num(x){x=x.toLowerCase();if(/^\d+$/.test(x))return +x;var i=TEENS.indexOf(x);if(i>=0)return i+10;var p=x.split(/[- ]/);return (TENS.indexOf(p[0])+2)*10+(p[1]?UNITS.indexOf(p[1])+1:0)}
+ function all(re,t){var out=[],m;re.lastIndex=0;while((m=re.exec(t))){out.push(m);if(!m[0].length)re.lastIndex++}return out}
+ var DOSE=/\b\d+(?:\.\d+)?\s*(?:mg|mcg|µg|ml|g|milligrams?|micrograms?)\b|\b(?:\d+|two|three|four|five|six|seven|eight|nine|ten)\s+(?:tablets?|pills?|capsules?)\b|\b(?:tablets?|pills?|capsules?|dose)\b[^.?!]{0,30}\b(?:three|four)\s+times\b/gi;
+ var BREAK=/\bas an ai\b|\bi(?:'m| am) an ai\b|artificial intelligence|language model|\bchatbot\b|role[- ]?card|system prompt|\bsimulat(?:ion|ed)\b|training (?:tool|scenario|exercise)|hidden item|disclose_when|\bthe (?:character|trainee)\b/gi;
+ var MEDICAL=/penetrance|autosomal|cyp2d6|metaboli[sz]er|\buhdrs\b|pba-s|phq-?9|c-ssrs|\b\d{1,3}\s*%|\b\d{2}\s*(?:to|-|–)\s*\d{2}\s*(?:cag|repeats)\b|\bfifty percent\b|常染色体/gi;
+ var MEDS=new RegExp("tetrabenazine|deutetrabenazine|valbenazine|antidepressant|seizure medicine|olanzapine|risperidone|sertraline|blood pressure|antibiotics?|no regular medicines?|\\b\\w+(?:azine|pril|sartan|olol|dipine|statin|cillin|mycin|floxacin|oxetine|zepam)\\b|\\b(?:haloperidol|amantadine|riluzole|memantine|donepezil|levodopa|warfarin|aspirin|insulin|metformin|ibuprofen|acetaminophen|tylenol|botox|ssri)\\b","gi");
+ var SELFHARM=/suicid\w*|self-harm\w*|kill(?:ing)? (?:myself|herself|himself|themselves)|end(?:ing)? (?:my|her|his|their) (?:own )?life|tak\w+ (?:my|her|his|their) (?:own )?life|better off without|(?:want\w*|wish\w*) to die|not want\w* to (?:live|be here)/i;
+ var METHOD=/overdos\w*|noose|hang(?:ing|ed)? (?:myself|herself|himself|themselves)|jump\w* (?:off|from|in front)|shoot\w* (?:myself|herself|himself|themselves)|slit\w*|\bwrists?\b|carbon monoxide|poison\w*|suffocat\w*|lethal|stockpil\w*|sav(?:ed|ing|e) up\b[^.]{0,20}(?:tablets|pills|medication)|(?:crash|drive)\w* (?:the car )?(?:off|into)/i;
+ var QTY=/\b\d+(?:\.\d+)?\s*(?:mg|mcg|g|tablets?|pills?|capsules?|bottles?|boxes|packets?)\b|\bhandful\b|\bwhole (?:bottle|box|packet)\b/i;
+ var MEANS=/firearm\w*|rifle\w*|\bguns?\b/i,PROHIBIT=/\b(?:never|do not|don't|does not|must not|should not|avoid\w*|without)\b/i;
+ var RELATIVE="husband|wife|daughter|son|sister|brother|mother|father|friend|grandson|granddaughter";
+ function split(text,F){var who=F.speakers.join("|"),out=[];
+  text.split("\n").forEach(function(line){if(!line.trim())return;var m=line.match(/^[*_ ]*([A-Z][a-z]+)[*_ ]*:[*_ ]*/);
+   var sp=m?m[1]:(out.length?out[out.length-1][0]:F.patient),body=m?line.slice(m[0].length):line;
+   var parts=body.split(new RegExp("(?<=[.!?\"])\\s+[*_]*("+who+")[*_]*:[*_ ]*"));
+   out.push([sp,parts[0].trim()]);for(var i=1;i<parts.length-1;i+=2)out.push([parts[i],parts[i+1].trim()])});
+  return out.filter(function(x){return x[1]})}
+ function selfharm(t,F){var bad=[];
+  t.split("\n").forEach(function(line){line.split(/(?<=[.!?])\s+/).forEach(function(sent){
+   var me=sent.match(METHOD),h=sent.match(SELFHARM),q=sent.match(QTY),ban=PROHIBIT.test(sent);
+   if(h&&q)bad.push(q[0]);
+   if(me&&!ban&&(h||!/^(?:crash|drive)/i.test(me[0])))bad.push(me[0]);
+   if(h&&MEANS.test(sent))bad.push(h[0])})});
+  var harm=t.match(SELFHARM);if(harm&&!F.selfharmOK)bad.push(harm[0]);return bad}
+ function allowedMedical(x,F){var n=function(s){return s.toLowerCase().replace(/fifty percent/g,"50%").replace(/\s*%/g,"%")};return n(F.text).indexOf(n(x))>=0}
+ function cag(t,F){var bad=[],known=F.cag.map(function(p){return p.join("/")});
+  all(/CAG[^.\n]{0,25}?\b(\d{1,3})\s*(?:\/|and)\s*(\d{1,3})\b/g,t).forEach(function(m){var p=[+m[1],+m[2]].sort(function(a,b){return a-b}).join("/");if(known.indexOf(p)<0)bad.push(p)});
+  var singles=all(/\bCAG\s+(\d{1,3})\b(?!\s*\/)/g,t).concat(all(/(?<![-–\d])(?<!to )(?<!than )(?<![Oo]ver )(?<!above )\b(\d{2,3})\s+(?:CAG\s+)?repeats\b/g,t));
+  singles.forEach(function(m){if(F.cagSingles.indexOf(+m[1])<0)bad.push(m[1])});return bad}
+ function meds(t,F){var seen={};all(MEDS,t).forEach(function(m){var x=m[0].toLowerCase();if(x!=="april"&&x!=="magazine")seen[x]=1});
+  return Object.keys(seen).filter(function(x){return F.text.indexOf(x.replace(/s+$/,""))<0})}
+ function ages(sp,t,F){var A=F.ages,bad=[],names=Object.keys(A);
+  all(new RegExp("\\bI(?:'m|\\s+am)"+HEDGE+"\\s+("+NUM+")\\b"+NOT_AGE,"gi"),t).forEach(function(m){if(num(m[1])!==A[sp])bad.push(m[0])});
+  if(names.length)all(new RegExp("\\b("+names.join("|")+")(?:'s|\\s+is|\\s+turned)"+HEDGE+"\\s+("+NUM+")\\b"+NOT_AGE,"gi"),t).forEach(function(m){var k=m[1].charAt(0).toUpperCase()+m[1].slice(1).toLowerCase();if(num(m[2])!==A[k])bad.push(m[0])});
+  if(sp===F.patient)all(new RegExp("\\bmy\\s+(husband|wife|daughter|son)(?:'s|\\s+is|\\s+turned)"+HEDGE+"\\s+("+NUM+")\\b"+NOT_AGE,"gi"),t).forEach(function(m){var r=F.relations[m[1].toLowerCase()];if(r&&num(m[2])!==A[r])bad.push(m[0])});
+  var vals=names.map(function(k){return A[k]});
+  all(new RegExp("\\b("+NUM+")[- ]years?[- ]old\\b","gi"),t).forEach(function(m){var n=num(m[1]);if(vals.indexOf(n)<0&&!new RegExp("\\b"+n+"\\b").test(F.text))bad.push(m[0])});
+  return bad}
+ function names(sp,t,F){var bad=[];
+  all(new RegExp("\\b[Mm]y\\s+("+RELATIVE+")(?:,)?\\s+([A-Z][a-z]+)\\b","g"),t).forEach(function(m){var rel=m[1],nm=m[2],wrong=sp===F.patient&&F.relations[rel]&&nm!==F.relations[rel];if(wrong||F.names.indexOf(nm)<0)bad.push(m[0])});
+  all(/\b(?:[Mm]y name is|I'm|I am|[Cc]all me)\s+([A-Z][a-z]+)\b(?!')/g,t).forEach(function(m){if([sp,"Mrs","Ms","Miss","Dr"].indexOf(m[1])<0)bad.push(m[0])});
+  var A=Object.keys(F.ages);if(A.length)all(new RegExp("\\b("+A.join("|")+")\\s+([A-Z][a-z]+)\\b","g"),t).forEach(function(m){if(F.surnames.indexOf(m[2])<0)bad.push(m[0])});
+  return bad}
+ function check(text,F){try{var t=String(text).replace(/’/g,"'").trim(),R=[];if(!t)return [["empty",""]];
+   if(/[\u3040-\u30ff\u3400-\u9fff\uac00-\ud7a3]/.test(t))R.push(["language","not in English, so the checks cannot read it"]);
+   selfharm(t,F).forEach(function(x){R.push(["self-harm",x])});
+   all(DOSE,t).forEach(function(m){R.push(["dose",m[0]])});
+   all(BREAK,t).forEach(function(m){R.push(["character",m[0]])});
+   all(MEDICAL,t).forEach(function(m){if(!allowedMedical(m[0],F))R.push(["medical-fact",m[0]])});
+   cag(t,F).forEach(function(x){R.push(["cag",x])});
+   meds(t,F).forEach(function(x){R.push(["medication",x])});
+   split(t,F).forEach(function(x){var sp=x[0],part=x[1];if(F.speakers.indexOf(sp)<0)R.push(["name","unknown speaker "+sp]);
+    ages(sp,part,F).forEach(function(y){R.push(["age",y])});names(sp,part,F).forEach(function(y){R.push(["name",y])})});
+   return R}catch(e){return [["filter-error",e.name]]}}
+ function distress(text,F){var t=String(text).replace(/’/g,"'"),not="(?!you\\b|she\\b|he\\b|they\\b|if\\b|whether\\b|people\\b"+F.speakers.map(function(n){return "|"+n.toLowerCase()+"\\b"}).join("")+")",gap="(?:"+not+"[\\w']+\\s+){0,3}";
+  return ["\\b(?:kill|hurt|harm|cut|shoot|hang|poison)(?:ing)?\\s+myself\\b","\\b(?:end|ending|take|taking)\\s+my\\s+(?:own\\s+)?life\\b",
+   "\\bi(?:'m|'d|\\s+am|\\s+would)?\\s+"+gap+"(?:want|wanna|wish|ready|going|deserve|hope|plan\\w*)\\s+(?:to\\s+)?(?:die|be\\s+dead)\\b",
+   "\\bi\\s+wish\\s+i\\s+(?:was|were)\\s+(?:dead|never\\s+born)\\b",
+   "\\bi\\s+"+gap+"(?:don't|do\\s+not|can't|cannot)\\s+(?:want\\s+to\\s+|wanna\\s+)?(?:live|be\\s+alive|be\\s+here\\s+anymore|wake\\s+up|exist|go\\s+on|keep\\s+going|take\\s+(?:it|this)\\s+any\\s*more|do\\s+this\\s+any\\s*more)\\b",
+   "\\bi(?:'m|\\s+am|\\s+feel|\\s+feel\\s+so)\\s+(?:\\w+\\s+)?suicidal\\b","\\bmy\\s+suicidal\\b|\\bi\\s+(?:keep\\s+)?(?:think|thinking|have\\s+thoughts?)\\s+(?:about|of)\\s+(?:suicide|ending\\s+(?:it|things))\\b",
+   "\\bi\\s+\\w*\\s*(?:want|wanna|going)\\s+to\\s+end\\s+(?:it|it\\s+all|things)\\b","\\b(?:no\\s+reason\\s+to\\s+live|nothing\\s+(?:left\\s+)?to\\s+live\\s+for)\\b",
+   "\\b(?:better\\s+off\\s+without\\s+me|better\\s+off\\s+dead)\\b","我[^你她他]{0,6}(?:想|要|打算|准备)[^你她他]{0,4}(?:死|自杀|自残|结束.{0,4}生命)","我[^你她他]{0,6}(?:不想活|活不下去)","(?:伤害|杀了?|杀死)我?自己"]
+   .some(function(p){return new RegExp(p,"i").test(t)})}
+ return {check:check,split:split,distress:distress}})();
+
 function setMode(m){st.mode[D.scenarios[st.sc].id]=m;clin()}
 function gPick(oi){var s=D.scenarios[st.sc],g=st.g[s.id],t=s.guided.turns[g.i],o=t.options[oi];
  if(!g.tried.length)[].concat(t.checkpoint||[]).forEach(function(c){g.first[c]=(g.first[c]!==false)&&o.quality==="best"});
@@ -177,7 +343,7 @@ function gNext(){var s=D.scenarios[st.sc],key=s.id,g=st.g[key],t=s.guided.turns[
 function pickSc(i){st.sc=i;st.step=0;clin();window.scrollTo(0,0)}
 function step(i){st.step=i;clin()}
 function tick(k,id,v){var key=D.scenarios[st.sc].id;st[k][key][id]=v}
-function resetSc(){var key=D.scenarios[st.sc].id;delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
+function resetSc(){var key=D.scenarios[st.sc].id;delete st.fc[key];delete st.ticks[key];delete st.flags[key];delete st.shown[key];delete st.g[key];clin()}
 function src(){var h='<div class="card"><h2 style="margin-top:0">Sources</h2><p class="note">Key facts, checklist items and feedback link to these sources. All have been checked by the project team. Content is paraphrased, not copied.</p><ul>';
  var dr=D.draftSources||[];
  Object.keys(D.sources).forEach(function(k){if(dr.indexOf(k)<0)h+='<li id="src-'+k+'"><b>'+esc(k.toUpperCase())+'</b> '+linkify(esc(D.sources[k]))+'</li>'});

@@ -1,0 +1,40 @@
+# A1_disclosing_jhd_diagnosis: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: giving-the-diagnosis
+    point: 0
+    text: 'SPIKES: Setting; Perception (what do they understand?); Invitation (how much do they want to know?); Knowledge (warning shot, then plain words, in small amounts); Emotions (respond with empathy); Strategy and summary. [s20]'
+  C2:
+    card: giving-the-diagnosis
+    point: 1
+    text: Give a short warning before the news, use plain words, and allow silence. [s20]
+  C3:
+    card: giving-the-diagnosis
+    point: 1
+    text: Give a short warning before the news, use plain words, and allow silence. [s20]
+  C4:
+    card: what-is-juvenile-hd
+    point: 0
+    text: Juvenile-onset HD (JHD) means symptoms start at or before age 20. It is about 5 to 10% of all people with HD. [s16, s19]
+  C5:
+    card: inheritance-and-the-family
+    point: 4
+    text: A parent's own predictive test follows the adult protocol and is their own choice. Offer genetic counselling. [s6]
+  C6:
+    card: telling-maya
+    point: 2
+    text: 'Plan the conversation with the parents: who will tell her, when, where, and in what words; offer to be there. [?]'
+  C7:
+    card: inheritance-and-the-family
+    point: 5
+    text: Predictive testing of a healthy brother or sister is generally deferred until they can decide for themselves. [s21, s6]
+  C8:
+    card: what-is-juvenile-hd
+    point: 5
+    text: 'There is no cure. Care aims to treat symptoms and support function, through a team: neurology, psychology or psychiatry, physiotherapy, occupational therapy, speech-language therapy, the family doctor and the dentist. [s16, s18]'

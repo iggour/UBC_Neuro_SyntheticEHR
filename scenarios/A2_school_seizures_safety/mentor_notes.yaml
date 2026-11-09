@@ -1,0 +1,36 @@
+# A2_school_seizures_safety: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: talking-with-teenagers
+    point: 0
+    text: See the young person and parent together, and also give the young person time alone. [s24]
+  C2:
+    card: talking-with-teenagers
+    point: 1
+    text: 'Explain confidentiality and its limits early: what stays private, and when information must be shared to keep them safe. [s24]'
+  C3:
+    card: school-and-friends
+    point: 4
+    text: Staying in school with friends helps young people feel less isolated. [s25]
+  C4:
+    card: seizures-in-jhd
+    point: 4
+    text: Missed doses are a common reason for breakthrough seizures. Ask about them without judgement and solve problems with the prescriber. [?]
+  C5:
+    card: seizure-safety
+    point: 1
+    text: Swimming only with supervision by someone who knows about the seizures and can help, such as a trained lifeguard, and with a buddy. Avoid diving. [s23]
+  C6:
+    card: seizure-safety
+    point: 4
+    text: A written seizure action plan helps family, school and friends know what to do. [s22]
+  C7:
+    card: school-and-friends
+    point: 3
+    text: An individual education plan may need changing even within one school term, because JHD progresses unevenly. Accommodations can include extra time, seating, help with writing and adapted physical education. [s25]

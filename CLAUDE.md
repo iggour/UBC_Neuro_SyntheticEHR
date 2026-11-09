@@ -49,12 +49,31 @@ A Rare Disease Foundation microgrant was submitted on 2026-10-26.
 - scripts/gemma_client.py             OpenAI-compatible client (stdlib only)
 - scripts/patient_session.py, chat_patient.py, run_trial_script.py
                                       Talk to the AI patient / run the trial scripts
+- scripts/free_chat_server.py, free_chat_safety.py, free_chat_page.html, test_free_chat.py
+                                      Local-only free-text chat test for B2 (branch gemma-free-chat);
+                                      settings in free_chat_config.json (git-ignored). Never deploy.
 - runtime/trial_scripts/              Bilingual trial scripts (rounds A good, B poor, C stress)
 - runtime/transcripts/                Test transcripts (git-ignored)
 - prompts/, demos/, older scripts     Earlier synthetic-EHR work (3-layer prompts, checker v0)
 
 After changing a role card: run build_patient_prompt.py. After changing any scenario file or the
 template: run build_web_v2.py, then open the page and click through all three scenarios.
+
+## Free conversation in the clinician page (owner decisions 2026-11-06)
+- Practise has two modes: guided (default, no AI) and free conversation. In free conversation the learner
+  connects their OWN OpenAI-compatible model (Ollama, LM Studio or a cloud API). A recommended in-browser
+  small model is shown as "coming soon". The lab Gemma server is for the owner's internal testing only and
+  must never be offered to learners, linked, or written into the page.
+- The patient prompt (runtime/patient_prompts/<id>.md, including hidden items) and the guideline layer are
+  exported into the clinician page so the learner's browser can send them to the learner's model. The owner
+  accepted that anyone can read them in the page source; the page says so. mentor_only and met_if stay out.
+- Every model reply passes the page's checker (CK in scripts/web_v2_template.html, a port of
+  scripts/free_chat_safety.py) before it is shown; a failed reply is regenerated once, then replaced by a
+  fixed line. Learner messages that look like real distress stop the conversation and show 9-8-8 / 911.
+  Keep CK and free_chat_safety.py in step when either changes.
+- Mentor side panel: the hint plus one key fact per checkpoint from scenarios/<id>/mentor_notes.yaml (copied
+  word for word from knowledge_cards.md; build_web_v2.py stops if a text no longer matches its card point).
+  Pairings are PENDING review: docs/审核清单_导师知识点_中文.md.
 
 ## Model access
 - Gemma 4 31B (gemma-4-31B-it) on vLLM, OpenAI-compatible, base URL in .env (GEMMA_BASE_URL).

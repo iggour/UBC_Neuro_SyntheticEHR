@@ -1,0 +1,44 @@
+# s2_disclosing_result: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: delivering-a-result
+    point: 0
+    text: Give the result in person, never by phone or mail. The person can decide not to be told, even on the day. [s6]
+  C2:
+    card: delivering-a-result
+    point: 1
+    text: Check readiness, give a short warning, then say the result in plain words. [s9]
+  C3:
+    card: delivering-a-result
+    point: 2
+    text: After the news, allow silence and respond to emotion before giving more information. [s9]
+  C4:
+    card: what-a-positive-result-means
+    point: 0
+    text: It shows the gene change was inherited. It is not a diagnosis of the illness; the person may be well for many years. [s6]
+  C5:
+    card: delivering-a-result
+    point: 3
+    text: Check what has been understood, and offer a written summary and another appointment. [s9]
+  C6:
+    card: after-the-result
+    point: 2
+    text: A positive result is a period of higher risk of distress. Ask directly about thoughts of not wanting to live, and confirm support for the coming days. [s8]
+  C7:
+    card: family-risk
+    point: 0
+    text: Each child of an affected parent has an independent 50% chance of inheriting the gene change. One sibling's result does not change another sibling's risk. [s3]
+  C8:
+    card: after-the-result
+    point: 0
+    text: Contact the person within a week of the result, whatever it is. Start follow-up yourself if there has been no contact after a month. [s6]
+  C9:
+    card: after-the-result
+    point: 3
+    text: 'Reproductive options can be discussed later: going ahead without testing, prenatal diagnosis, preimplantation genetic diagnosis, donor insemination, adoption. [s6]'

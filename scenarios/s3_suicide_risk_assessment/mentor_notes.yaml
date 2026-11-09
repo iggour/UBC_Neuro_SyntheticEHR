@@ -1,0 +1,44 @@
+# s3_suicide_risk_assessment: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: asking-about-suicide
+    point: 3
+    text: Offer time alone; people may not speak openly in front of family. [?]
+  C2:
+    card: suicide-risk-in-hd
+    point: 2
+    text: Depression, anxiety, previous suicidal thoughts, guilt or low self-esteem, and irritability are linked to suicidal thoughts and behaviour in HD. [s11]
+  C3:
+    card: suicide-risk-in-hd
+    point: 3
+    text: Ask about suicidal thoughts especially when mood is low. [s10]
+  C4:
+    card: asking-about-suicide
+    point: 0
+    text: Asking directly about suicide does not increase suicidal thoughts. [s12]
+  C5:
+    card: asking-about-suicide
+    point: 2
+    text: 'If the answer is yes, explore: how often and when; any plan or preparation; access to means at home; intent; past attempts; reasons for living. [?]'
+  C6:
+    card: medication-and-mood
+    point: 2
+    text: Review tetrabenazine with the prescriber and assess and treat depression. [s15, s14]
+  C7:
+    card: safety-plan
+    point: 2
+    text: Making the environment safer means removing or locking away means, such as stored medications, with the person's agreement. [s13]
+  C8:
+    card: medication-and-mood
+    point: 1
+    text: Anyone with HD who expresses suicidal thoughts should be evaluated immediately. [s15]
+  C9:
+    card: supporting-the-carer
+    point: 0
+    text: Carers of people with HD can be under heavy and long-lasting strain. Ask how they are coping and what support they have. [?]

@@ -1,0 +1,36 @@
+# s1_pretest_counselling: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C3:
+    card: pre-test-counselling-essentials
+    point: 1
+    text: The decision belongs only to the person concerned. Family, partners, employers and insurers must not pressure them. [s6]
+  C4:
+    card: what-a-predictive-test-can-and-cannot-tell
+    point: 3
+    text: Pre-test counselling should cover all possible outcomes, including intermediate and reduced-penetrance results. [s6]
+  C5:
+    card: pre-test-counselling-essentials
+    point: 3
+    text: Allow at least one month between pre-test information and the decision to be tested, unless there is an exceptional reason. [s6]
+  C6:
+    card: pre-test-counselling-essentials
+    point: 4
+    text: Encourage the person to bring a companion. Plan follow-up support before and after the test. [s6]
+  C7:
+    card: mood-and-safety
+    point: 0
+    text: In people at risk of HD, suicidal ideation becomes more frequent as early signs appear, and peaks in early-stage disease (about 1 in 5 in one large study). Ask about mood, coping and support. [s8]
+  C8:
+    card: privacy-and-insurance
+    point: 1
+    text: In Canada, the Genetic Non-Discrimination Act means no one may require a person to take a genetic test, or to disclose test results, as a condition of goods, services or a contract. Health care practitioners treating the person and researchers are exempt. [s7]
+  C9:
+    card: pre-test-counselling-essentials
+    point: 5
+    text: Results are given in person, never by phone or mail. The person can decide at any time not to be told. [s6]

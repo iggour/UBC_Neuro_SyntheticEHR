@@ -1,0 +1,32 @@
+# C5-3_work_insurance_and_gnda: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C2:
+    card: what-the-gnda-covers
+    point: 0
+    text: 'Genetic Non-Discrimination Act (checked 2026-10-29; current to 2026-09-30): no one may require a person to take a genetic test, or to disclose genetic test results, as a condition of providing goods or services or entering or continuing a contract; and no one in those situations may collect, use or disclose a person''s genetic test results without written consent. [s7]'
+  C3:
+    card: what-the-gnda-covers
+    point: 3
+    text: The Act does not stop insurers using information about a person's diagnosed condition or symptoms, even if the condition is genetic. Family medical history is not protected. [s46]
+  C4:
+    card: work-and-disclosure
+    point: 2
+    text: In BC, private employers fall under the BC Human Rights Code. It does not list genetic characteristics, but protects physical and mental disability, including a perceived disability; firing someone over a concern they might develop a disability is an example of discrimination (checked 2026-10-29). [s45]
+  C5:
+    card: work-and-disclosure
+    point: 4
+    text: Losing one's usual job is often the first functional loss in HD; a change of role can help people keep working. Decisions about retiring or applying for disability should be made with social workers and physicians; know the employer's disability plan. [s36]
+  C6:
+    card: work-and-disclosure
+    point: 6
+    text: Disclosure at work is usually the person's choice. To ask for accommodation, they may share the functional needs (for example extra time or code-review support) rather than the diagnosis itself. [?]
+  C8:
+    card: work-and-disclosure
+    point: 5
+    text: Social workers can help with disability, insurance and financial planning. [s35]

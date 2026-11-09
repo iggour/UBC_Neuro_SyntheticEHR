@@ -1,0 +1,36 @@
+# C4-1_recognising_possible_hd: key facts shown beside the mentor hints (practice step, side panel)
+# One fact per checkpoint, copied word for word from knowledge_cards.md (already reviewed).
+# Only the pairing (which fact goes with which checkpoint) needs review. Checkpoints with no
+# good match have no key fact; their hint is shown alone.
+# build_web_v2.py checks that each text still matches the card point exactly.
+# Drafted by: Claude (Anthropic), 2026-11-06. Reviewed by: PENDING
+
+key_facts:
+  C1:
+    card: behavioural-onset
+    point: 4
+    text: Families may wish to speak with the clinician privately about irritability and outbursts. [s36]
+  C2:
+    card: behavioural-onset
+    point: 2
+    text: Irritability and temper outbursts are among the most common complaints from families. Irritability can also be a symptom of depression, so assess mood. [s36]
+  C3:
+    card: behavioural-onset
+    point: 8
+    text: Depressed people should always be asked about alcohol and substance use. [s36]
+  C4:
+    card: unknown-family-history
+    point: 3
+    text: People with HD are commonly unaware of mild involuntary movements. [s36]
+  C5:
+    card: unknown-family-history
+    point: 0
+    text: Gene testing is particularly useful when the family history is unknown, for example after adoption. [s35]
+  C6:
+    card: unknown-family-history
+    point: 6
+    text: In primary care, refer to neurology or an HD clinic when HD is suspected; genetic counselling is part of diagnostic testing. [?]
+  C7:
+    card: behavioural-onset
+    point: 7
+    text: Ask whether there are firearms at home. [s36]
