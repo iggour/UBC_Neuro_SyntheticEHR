@@ -72,7 +72,10 @@ EXTRA_MEDS = (r"haloperidol|amantadine|riluzole|memantine|donepezil|levodopa|war
 NOT_MEDS = {"april", "magazine"}        # words that happen to match the drug-name endings in MED_TERMS
 BREAK = (r"\bas an ai\b|\bi(?:'m| am) an ai\b|artificial intelligence|language model|\bchatbot\b|role[- ]?card|"
          r"system prompt|\bsimulat(?:ion|ed)\b|training (?:tool|scenario|exercise)|hidden item|disclose_when|"
-         r"\bthe (?:character|trainee)\b")
+         r"\bthe (?:character|trainee)\b|"
+         r"\bh[1-4](?:_\w+)?\b|\b(?:did not|didn't|has not|hasn't|have not|haven't)(?: yet)? disclose\w*|"
+         r"out of character|role[- ]?play\w*|\bprogrammed\b|\bmy instructions\b")
+LIST = r"^\s*(?:[*\-•]|\d+[.)])\s+\*\*"      # a bold bullet list: a summary, not something a patient says
 MEDICAL = (r"penetrance|autosomal|cyp2d6|metaboli[sz]er|\buhdrs\b|pba-s|phq-?9|c-ssrs|"
            r"\b\d{1,3}\s*%|\b\d{2}\s*(?:to|-|–)\s*\d{2}\s*(?:cag|repeats)\b|\bfifty percent\b|常染色体")
 RELATIVE = r"husband|wife|daughter|son|sister|brother|mother|father|friend|grandson|granddaughter"
@@ -185,6 +188,7 @@ def check_reply(text, facts):
         reasons += [("self-harm", x) for x in check_selfharm(t)]
         reasons += [("dose", m.group(0)) for m in re.finditer(DOSE, t, re.I)]
         reasons += [("character", m.group(0)) for m in re.finditer(BREAK, t, re.I)]
+        reasons += [("character", "bold list") for _ in re.finditer(LIST, t, re.M)][:1]
         reasons += [("medical-fact", m.group(0)) for m in re.finditer(MEDICAL, t, re.I)]
         reasons += [("cag", x) for x in check_cag(t, facts)]
         reasons += [("medication", x) for x in check_meds(t, facts)]
