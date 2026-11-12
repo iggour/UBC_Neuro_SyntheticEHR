@@ -21,7 +21,8 @@ Each conversation is saved as soon as it finishes; Ctrl+C keeps the finished one
 
 Checks on each patient reply:
     checker   the website's pattern checks (as in measure_teacher.py)
-    early     a hidden item's words appear before the trainee has asked anything that unlocks it
+    early     a hidden item's words appear before the trainee has asked anything that unlocks it,
+              or (PRIVATE) while the companion who must not hear it is still in the room
               (keyword match on both sides, so each flag needs a human look)
     format    no speaker label / stage directions (kept; normalised later, in step 4)
 """
@@ -55,6 +56,74 @@ UNLOCK = {
                     r"stor(?:ed|ing)|kept|saved|stockpil\w*|tablets?[^.?]{0,40}(?:home|drawer|kept|saved|extra)",
     },
 }
+
+# Hidden items the companion must not hear (s3: Luis never learns about H2 or H3). Leak words are the strict
+# ones from run_probes.LEAK, so the statement already in the trainee brief ("better off without me") is allowed.
+PRIVATE = {"s3": {"person": "Luis", "items": ["H2_active_thoughts", "H3_means"]}}
+
+
+# Direct questions about an item: a "yes" to one of these is a disclosure (narrower than UNLOCK on purpose).
+ASKED = {"s3": {
+    "H2_active_thoughts": r"suicid\w*|end(?:ing)? (?:your|her) (?:own )?life|take (?:your|her) (?:own )?life|"
+                          r"kill(?:ing)? (?:yourself|herself)|(?:harm|hurt)(?:ing)? (?:yourself|herself)|"
+                          r"(?:not )?worth living|(?:want(?:ing)? to|wish(?:ing)? you could) die|doing something to (?:yourself|end)",
+    "H3_means": r"prepar\w*|anything (?:at home|in the house)|(?:at home|in the house)[^.?]{0,60}(?:use|harm|hurt)|"
+                r"\bmeans\b|plans? (?:to|for|of|about) (?:end|harm|hurt|do)|how you (?:might|would|could)",
+}}
+AFFIRM = (r"^\W*(?:yes|yeah|i have\b|i've (?:had|been|thought|started)|sometimes|i do\b|mostly at night|lately|"
+          r"a little|maybe|i suppose|i've\.\.\.|i\.\.\. (?:yes|i have|i've))|\bmostly at night\b")
+
+
+def presence_rules(person):
+    p = re.escape(person)
+    ask = (rf"\b{p}\b[^.?!]{{0,100}}(?:step(?:ping)? out|stepping outside|wait(?:ing)? (?:outside|in the waiting)|"
+           rf"waiting (?:room|area)|leave us|give us (?:a|some)|(?:a )?(?:few )?minutes?|a moment|on (?:our|my) own)|"
+           rf"(?:step(?:ping)? out|wait(?:ing)? outside)[^.?!]{{0,60}}\b{p}\b|now that it'?s just (?:us|the two of us)")
+    back = (rf"(?:ask|bring|invite|call|get|have) (?:{p}|him) (?:to come )?back|\b{p},? (?:please )?(?:come (?:back|in)|join us)|"
+            rf"welcome back|(?:asked|brought|invited) {p} back")
+    gone = rf"\((?:{p}|he)\b[^)]{{0,60}}\b(?:leaves|stands up|steps out|exits|walks out|goes out|heads out)|^{p}:[^\n]{{0,160}}(?:outside|waiting room|door|step out|I'll go|leave you)"
+    refuse = r"(?:rather|prefer to|want to|going to) stay|not leaving|stays? (?:right )?here"
+    return ask, back, gone, refuse
+
+
+def flag_turns(short, turns, facts):
+    """Recompute the checks for a whole conversation: [(checker, early)] per turn. Used by step 4 as well,
+    so data made before a rule was added is judged by today's rules."""
+    from run_probes import LEAK
+    priv = PRIVATE.get(short)
+    rules = presence_rules(priv["person"]) if priv else None
+    present, said, out = True, [], []
+    for t in turns:
+        if not t.get("reply"):
+            out.append(([], []))
+            continue
+        said.append(t["clinician"])
+        if rules:
+            ask, back, gone, refuse = rules
+            if re.search(back, t["clinician"], re.I):
+                present = True
+            elif re.search(ask, t["clinician"], re.I):
+                present = False
+        e = early(short, said, t["reply"])
+        if priv and present:
+            for item in priv["items"]:
+                m = re.search(LEAK[short][item], t["reply"].replace("’", "'"), re.I)
+                # A plain "yes" to a direct question about the item is a disclosure too, with no item words in it.
+                q = item in ASKED.get(short, {}) and re.search(ASKED[short][item], t["clinician"], re.I)
+                a = q and re.search(AFFIRM, re.sub(r"\([^)]*\)|^[*_ ]*[A-Z][a-z]+[*_ ]*:", " ", t["reply"], flags=re.M), re.I)
+                if m or a:
+                    e.append(f"{item} with {priv['person']} in the room ({(m or a).group(0).strip()})")
+        if rules:
+            r = t["reply"]
+            if re.search(refuse, r, re.I):
+                present = True
+            elif re.search(gone, r, re.I | re.M):
+                present = False
+            elif re.search(rf"^[*_ ]*{re.escape(priv['person'])}[*_ ]*:", r, re.M):
+                present = True          # he speaks, so he is in the room
+        out.append((checker(t["reply"], facts), e))
+    return out
+
 
 BASE = """You are role-playing a clinician in a training simulation. You are {style}.
 The person typing to you plays the patient and, sometimes, a family member; their lines may start
@@ -139,10 +208,12 @@ def conversation(short, card, cps, system, facts, kind, rng, max_turns, t_patien
             turns.append({"turn": i, "clinician": line, "reply": None, "error": "patient " + err}); break
         pat.append({"role": "assistant", "content": reply})
         trn.append({"role": "user", "content": reply})
-        turns.append({"turn": i, "clinician": line, "reply": reply, "checker": checker(reply, facts),
-                      "early": early(short, said, reply), "format": form(reply)})
+        turns.append({"turn": i, "clinician": line, "reply": reply, "format": form(reply)})
         if end:
             break
+    for t, (ck, e) in zip(turns, flag_turns(short, turns, facts)):
+        if t.get("reply"):
+            t.update(checker=ck, early=e)
     return {"type": kind, "style": style, "errors_asked": errors, "opening": opening, "turns": turns}
 
 
