@@ -1,0 +1,25 @@
+{
+  "started": "2026-11-14T05:01:37",
+  "model": "/home/tongyang/models/gemma-4-E4B-it",
+  "data": "/home/tongyang/hd-anchor/data",
+  "prompt_id": "a9c47f7a12",
+  "teacher": "/mnt/DataDrive/vllm/models/gemma-4-31B-it",
+  "settings": {
+    "lora_r": 16,
+    "lora_alpha": 16,
+    "learning_rate": 0.0002,
+    "epochs": 3,
+    "batch_size": 1,
+    "grad_accum": 4,
+    "eval_and_save_every": 50,
+    "early_stop_patience": 3,
+    "load_in_4bit": true
+  },
+  "versions": {
+    "torch": "2.14.1",
+    "transformers": "5.17.0",
+    "unsloth": "2026.11.4",
+    "peft": "0.21.3",
+    "trl": "1.15.0"
+  }
+}

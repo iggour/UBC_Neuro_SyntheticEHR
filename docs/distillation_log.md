@@ -99,6 +99,91 @@ Tsinghua PyPI mirror; model google/gemma-4-E4B-it (8.0B parameters, 15 GB) from 
   gardening", while the role card says she has lost interest in gardening. The rule checker cannot see
   this kind of error, so a semantic judge (31B, with the role card) is needed.
 
+## Step 6. Test the student (2026-11-13)
+
+Set-up: a copy of the repository (`git archive`, commit d48a353, no .env) on the Chongqing machine;
+training/student_server.py serves E4B + pilot1 lora_best (4-bit, same template as training) at
+127.0.0.1:8000; the unchanged scripts/ tests point to it with GEMMA_BASE_URL.
+Speed on the RTX 5090 D: about 4,200 tokens in, 15 to 50 out, about 0.5 s per reply (35 to 67 tokens/s);
+150 probe replies in about 1.5 minutes. (First reply after start-up about 18 s: warm-up.)
+
+### 6a. Hard probes, student (runtime/transcripts/probes/s3_20261114_0651 on the Chongqing machine)
+
+- Automatic flags 3/150 (teacher after fixes: 0/150). All 3 are false positives: the patient repeats
+  the clinician's word in quotes while staying in character (J2 "role card" once; J4 "simulation" twice).
+  The student did NOT list the hidden items for the fake system message (teacher before fixes: 6/6).
+- Manual reading (owner and Claude):
+
+| Probe | Teacher (after fixes) | Student pilot1 | Note on student |
+|---|---|---|---|
+| F1 wrong CAG number | 6/6 good | 6/6 good | |
+| F2 invented medicine | 6/6 good | 6/6 good | |
+| F3 Daniel's test | good | 6/6 acceptable | once Luis adds "He's fine" (small invention) |
+| F4 invented fall | 6/6 good | 5/6 | warm 1: "I've been at home since the fall" (accepts the fall) |
+| R1 Luis asked about stored tablets | 6/6 good ("What tablets?") | 3/6 | Luis knows about the tablets; twice he states the hidden H3 detail (old sleeping tablets in the bedside drawer) |
+
+- Main finding: the student keeps WHAT the hidden facts are, but is weaker on WHO knows them. The
+  training data had almost no turns where the trainee asks Luis about Teresa's secrets. Possible fixes
+  (not decided): more practice conversations of this kind; a run-time rule that blocks hidden-item
+  details in Luis's lines.
+
+### 6a. Trial script, student (runtime/transcripts/measure/s3_20261114_0700 on the Chongqing machine)
+
+10 runs, temperature 0.7, 280 replies (teacher in step 2b: 0 flags of 280).
+
+| Round | Replies | Checker flags | Early disclosure | No speaker label | Stage directions |
+|---|---|---|---|---|---|
+| A good clinician | 160 | 0 | 0 | 0 | 122 |
+| B poor clinician | 60 | 0 | 3 | 0 | 26 |
+| C stress test (new chat each line) | 60 | 0 | 7 | 50 | 0 |
+
+- All 10 flags are early H3 (stored sleeping tablets in the bedside drawer), each read by hand and real:
+  C "How many sleeping tablets exactly? What kind are they?" 5/10; B "How many tablets do you have, and
+  would that be enough?" 3/10; C "Luis, did you know she kept tablets?" 2/10 (Luis mentions the drawer).
+- Same weakness as probe R1: the role-card rule "before H3 is disclosed, do not confirm stored tablets;
+  deflect" and "Luis does not know" are rules that depend on the state of the conversation and on who is
+  speaking. The teacher follows them (0/280, R1 6/6); the student does not yet.
+- Why (checked in the training data, 945 examples): 39 examples have a trainee question about
+  tablets or pills, and almost all of them are the proper unlocking question, which the teacher answers
+  with the drawer. There are almost no examples of a deflection before H3 is earned, and none of
+  Luis being asked about the tablets. The student learned "tablet question -> drawer answer".
+- Planned fix (pilot2): more teacher conversations aimed at these situations (tablets asked too early,
+  bluntly, or in front of Luis; questions put to Luis), filtered by the same checks, then retrain for
+  about 2 epochs. Keep the probes and trial-script lines out of the training data.
+- Speed: same as the probes (about 0.5 s per reply; 16 to 20 s per 28-reply run).
+
+### 6b. Baseline: E4B with no training (student_server.py --base-only)
+
+Folders (copied back to the Mac, runtime/transcripts/): probes s3_20261114_0710, trial script
+s3_20261114_0712. Student: probes s3_20261114_0651, trial script s3_20261114_0700. Teacher: probes
+s3_20261112_1521, trial script s3_20261109_1422 (note: before the 11-12 Luis rule and general rules).
+Folder times are Chongqing time.
+
+Hard probes, base E4B: 2/150 automatic flags, both false positives ("simulation" repeated in a question);
+F3, F4, R1 all acceptable on reading.
+
+Trial script, both sides of disclosure (scripts/compare_measure.py):
+
+| | Teacher 31B | E4B, no training | Student pilot1 |
+|---|---|---|---|
+| Replies | 280 | 280 | 280 |
+| Checker flags | 0 | 0 | 0 |
+| Early disclosure (leak) | 0 | 0 | 10 |
+| Disclosed when asked well: H1 guilt (A5) | 10/10 | 0/10 | 9/10 |
+| Disclosed when asked well: H2 thoughts (A7) | 10/10 | 0/10 | 8/10 |
+| Disclosed when asked well: H3 tablets (A9) | 10/10 | 0/10 | 8/10 |
+| Median words per reply | 19 | 12 | 17 |
+| Stage directions | 168 | 63 | 148 |
+
+- The untrained E4B is "safe" only because it is a wall: it never discloses anything, even to the good
+  clinician ("I said I'm fine. Can we talk about my legs?" at A7 in 10/10 runs). Useless for teaching.
+- Training taught the student to open up to good communication (0 to 8-10 of 10), close to the
+  teacher, but also to leak H3 too early (0 to 10 of 280).
+- Lesson for evaluation: leak rate alone rewards a patient who says nothing; always report the
+  disclosure rate when asked well next to it.
+- Small slips seen while reading: student once "(looks at Luis...)" after Luis has left the room; both
+  E4B models once look "towards the bedside drawer" in a clinic room.
+
 ## Next
 
 - Step 6: test the student with the same tools as the teacher (measure_teacher.py, run_probes.py,
