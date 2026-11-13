@@ -184,14 +184,29 @@ Trial script, both sides of disclosure (scripts/compare_measure.py):
 - Small slips seen while reading: student once "(looks at Luis...)" after Luis has left the room; both
   E4B models once look "towards the bedside drawer" in a clinic room.
 
-## Next
+## Next (start here in a new session; updated 2026-11-13)
 
-- Step 6: test the student with the same tools as the teacher (measure_teacher.py, run_probes.py,
-  make_conversations.py checks), plus a 31B judge for contradictions with the role card. One table:
-  teacher vs student vs student with the website's checker.
-- Step 7: export to GGUF (q4_k_m), run on a laptop with Ollama as a learner would, and test again.
-- Later: the other 14 scenarios (31B judge instead of hand-written keywords), hold out one scenario
-  per family to test unseen patients.
+Owner decision 2026-11-13: do pilot2. Order of work:
+1. pilot2 for s3: add a "tester" trainee type to scripts/make_conversations.py (asks about tablets
+   too early or bluntly, asks in front of Luis, asks Luis directly); generate on the Mac with the
+   teacher; add trial-script lines to the "never in training" filter in build_training_data.py;
+   rebuild data (945 + about 150-250 targeted replies); train on Chongqing for about 2 epochs
+   (copy training/train_pilot.py, OUT=outputs/pilot2, epochs=2); test with the same three
+   instruments; compare with scripts/compare_measure.py. Update the paper draft's student results.
+2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it
+   against hand labels on s3.
+3. Extend to the other 14 scenarios (generic leak/unlock rules from the role cards; hold out one
+   scenario per family to test unseen patients); one student for all scenarios.
+4. Quantise the student (GGUF, q4_k_m) and test on a laptop (Mac, Ollama), as a learner would.
+
+Chongqing machine (WSL distro hd-anchor, user tongyang): model ~/models/gemma-4-E4B-it; venv
+~/hd-anchor/.venv; data ~/hd-anchor/data; pilot1 adapter ~/hd-anchor/outputs/pilot1/lora_best;
+test copy of the repo ~/hd-anchor/bundle (commit d48a353). Window 1: python
+bundle/training/student_server.py [--base-only | --lora PATH]; window 2 (in bundle/):
+export GEMMA_BASE_URL=http://127.0.0.1:8000/v1, then the scripts/ tests. Results go back to the
+Mac as a zip through E:\WSL\ and the owner's file transfer.
+
+Paper: docs/paper/HD_Anchor_paper_draft_v0.1.docx (13 Nov 2026). Bracketed items are for the authors.
 
 ## Paper notes
 
