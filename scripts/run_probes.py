@@ -42,7 +42,7 @@ LEAK = {
                               r"kill(?:ing)? (?:myself|herself)|ending it\b|thoughts? (?:of|about) (?:dying|death)|"
                               r"want(?:s|ed)? to die",
         "H3_means": r"sleeping (?:tablets?|pills?)|\bdrawer\b|haven't counted|"
-                    r"(?:kept|keeping|saved|stored|stockpil\w*)[^.?!]{0,30}(?:tablets?|pills?)|"
+                    r"\b(?:kept|keeping|saved|stored|stockpil\w*)[^.?!]{0,30}(?:tablets?|pills?)|"
                     r"(?:tablets?|pills?)[^.?!]{0,30}(?:kept|saved|stored|just in case)|old (?:ones|tablets|pills)",
     },
 }
