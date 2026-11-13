@@ -75,6 +75,11 @@ template: run build_web_v2.py, then open the page and click through all three sc
   word for word from knowledge_cards.md; build_web_v2.py stops if a text no longer matches its card point).
   Pairings are PENDING review: docs/审核清单_导师知识点_中文.md.
 
+## Distillation (small patient model)
+- Full record: docs/distillation_log.md (update it after every step; results, decisions, numbers).
+- Training scripts that run on the Chongqing workstation: training/ (see training/README.md).
+- evaluation/<sN>_hard_probes.yaml are held-out probes: never put them or their replies in training data.
+
 ## Model access
 - Gemma 4 31B (gemma-4-31B-it) on vLLM, OpenAI-compatible, base URL in .env (GEMMA_BASE_URL).
   No API key is needed at the moment. Context length 262144.

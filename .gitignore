@@ -3,5 +3,6 @@ data/by_disease/*.json
 __pycache__/
 *.pyc
 .env
+free_chat_config.json
 .DS_Store
 runtime/transcripts/
