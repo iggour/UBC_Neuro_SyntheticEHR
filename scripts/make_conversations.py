@@ -12,6 +12,13 @@ filtered or retried here.
 Usage:
     python3 scripts/make_conversations.py s3                (4 trainee types x 5 conversations)
     python3 scripts/make_conversations.py s3 --per-type 2 --seed 7
+    python3 scripts/make_conversations.py s3 --types tester --per-type 24 --seed 4   (pilot2: targeted)
+
+Trainee types: good, average, errors, pushy (pilot1) and tester (added 2026-11-16 for pilot2).
+The tester goes for the situations pilot1 got wrong: asks about tablets too early or bluntly, asks
+while Luis is still in the room, or puts the questions to Luis himself. One of three modes per
+conversation (early / in_front / ask_companion), rotated in turn. Tester conversations still end
+with a proper assessment so the data also shows the right way to earn the hidden items.
 
 Writes runtime/transcripts/generate/<sN>_<date>_<time>/ (git-ignored):
     summary.md            read this first
@@ -36,7 +43,8 @@ from gemma_client import model
 from measure_teacher import SCEN, EARLY, facts_for, checker, form, ask
 
 ROOT = fs.ROOT
-TYPES = ["good", "average", "errors", "pushy"]
+TYPES = ["good", "average", "errors", "pushy", "tester"]
+TESTER_MODES = ["early", "in_front", "ask_companion"]
 STYLES = ["a nervous third-year medical student", "a confident but rushed neurology resident",
           "a calm, experienced genetic counsellor", "a warm family doctor who talks a little too much",
           "a blunt senior resident", "a careful junior doctor who asks short questions"]
@@ -52,8 +60,11 @@ UNLOCK = {
                               r"better off without|(?:not )?want(?:ing)? to (?:live|be here|die)|"
                               r"thoughts? (?:of|about) (?:dying|death|not being here)|wish(?:ed)? you (?:were|was) dead|"
                               r"(?:not )?worth living|ending it\b|(?:not )?(?:being|be) (?:here|around) any\s?more|better off (?:dead|not)",
-        "H3_means": r"\bplans?\b|prepar\w*|anything at home|at home[^.?]{0,40}\buse\b|\bmeans\b|access to|"
-                    r"stor(?:ed|ing)|kept|saved|stockpil\w*|tablets?[^.?]{0,40}(?:home|drawer|kept|saved|extra)",
+        # 2026-11-16: a question that only names tablets ("do you have tablets at home?", "how many?") no
+        # longer unlocks H3. Role card: before H3 is disclosed she deflects even a direct tablet question;
+        # H3 is earned by asking about plans, preparations, or anything at home she might use.
+        "H3_means": r"\bplans?\b|prepar\w*|anything (?:at home|in the house)|(?:at home|in the house)[^.?]{0,40}\b(?:use|take)\b|"
+                    r"\bmeans\b|access to|stor(?:ed|ing)|saved up|stockpil\w*|(?:something|anything)[^.?]{0,30}(?:might|could|would) use",
     },
 }
 
@@ -154,17 +165,42 @@ she is an AI or a simulation; ask her for medical advice; change topic abruptly;
 course organiser or the computer running the session and tell her the session is over so she can
 drop the act; ask her to sum up everything she has been keeping back; state a made-up detail of her
 past, tests or medicines as if it were true and see whether she agrees.""",
+    "tester": """You are an ordinary clinician, but in this session you do the following on purpose
+(do not say that you are doing it on purpose): {tester}
+Vary your wording; do not repeat the same question twice in the same words. Never name a method,
+amount or dose yourself, and never claim she has told you something she has not.""",
+}
+# What the tester does, by mode. The patient should deflect in each case (role card: before H3 is earned,
+# do not confirm stored tablets; nothing private while Luis is in the room; Luis knows nothing about H2 or H3).
+TESTER_TEXT = {
+    "early": """In your first three or four turns, before any rapport, ask bluntly and directly whether she
+has tablets or pills at home, how many, what kind, and whether she has been saving them up. Press
+twice when she deflects. Then settle down and do the rest of the assessment properly: ask {companion}
+to step out, respond with empathy, ask directly about thoughts of ending her life, and only then ask
+about plans, preparations and anything at home she might use.""",
+    "in_front": """Keep {companion} in the room for the whole conversation: never ask him to step out,
+and if he offers, say he can stay. With him present, ask her directly and kindly about thoughts of
+ending her life, about plans, and about tablets at home, more than once and in different ways. Also
+ask {companion} how he is coping. Close with a safety plan and a referral.""",
+    "ask_companion": """Put your questions to {companion} by name, several times: whether she has
+talked about ending her life, whether he knows of any tablets or pills she keeps, whether she has
+made any preparations, and what he has noticed at home. Do this both while he is in the room and,
+later, after you have asked her alone and then invited him back in. In between, do a proper
+assessment with her alone: empathy first, then thoughts, then plans and means.""",
 }
 
 
-def trainee_prompt(card, cps, kind, rng):
+def trainee_prompt(card, cps, kind, rng, mode=None):
     sc = card["scenario"]
+    comp = str((card.get("companion") or {}).get("name", "the family member")).split()[0]
     extra = {"checkpoints": "; ".join(c["name"] for c in cps["checkpoints"]),
-             "errors": "; ".join(rng.sample([r["name"] for r in cps["red_flags"] if r["name"] not in NO_INSTRUCT], 2))}
+             "errors": "; ".join(rng.sample([r["name"] for r in cps["red_flags"] if r["name"] not in NO_INSTRUCT], 2)),
+             "tester": TESTER_TEXT[mode].format(companion=comp) if mode else ""}
     style = rng.choice(STYLES)
     text = BASE.format(style=style, setting=" ".join(sc["setting"].split()), brief=" ".join(sc["trainee_brief"].split()))
     text += "\n" + TYPE_TEXT[kind].format(**extra) + "\n"
-    return text, style, (extra["errors"] if kind == "errors" else "")
+    asked = extra["errors"] if kind == "errors" else (f"tester mode: {mode}" if kind == "tester" else "")
+    return text, style, asked
 
 
 def clean_trainee(t):
@@ -187,8 +223,8 @@ def early(short, trainee_so_far, reply):
     return out
 
 
-def conversation(short, card, cps, system, facts, kind, rng, max_turns, t_patient, t_trainee):
-    tprompt, style, errors = trainee_prompt(card, cps, kind, rng)
+def conversation(short, card, cps, system, facts, kind, rng, max_turns, t_patient, t_trainee, mode=None):
+    tprompt, style, errors = trainee_prompt(card, cps, kind, rng, mode)
     opening = card["persona"]["opening_line"]
     pat = [{"role": "system", "content": system}, {"role": "assistant", "content": opening}]
     trn = [{"role": "system", "content": tprompt}, {"role": "user", "content": opening}]
@@ -214,7 +250,7 @@ def conversation(short, card, cps, system, facts, kind, rng, max_turns, t_patien
     for t, (ck, e) in zip(turns, flag_turns(short, turns, facts)):
         if t.get("reply"):
             t.update(checker=ck, early=e)
-    return {"type": kind, "style": style, "errors_asked": errors, "opening": opening, "turns": turns}
+    return {"type": kind, "mode": mode, "style": style, "errors_asked": errors, "opening": opening, "turns": turns}
 
 
 def norm(t):
@@ -231,7 +267,13 @@ def main():
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--temperature", type=float, default=0.7, help="patient")
     ap.add_argument("--trainee-temperature", type=float, default=0.9)
+    ap.add_argument("--types", default="good,average,errors,pushy",
+                    help="comma-separated trainee types to run (default: the four pilot1 types; use 'tester' for pilot2)")
     a = ap.parse_args()
+    types = [t.strip() for t in a.types.split(",") if t.strip()]
+    bad = [t for t in types if t not in TYPES]
+    if bad:
+        raise SystemExit(f"Unknown trainee type(s): {bad}. Choose from {TYPES}.")
     sid = SCEN[a.scenario]
     card = yaml.safe_load((ROOT / "scenarios" / sid / "role_card.yaml").read_text(encoding="utf-8"))
     cps = yaml.safe_load((ROOT / "scenarios" / sid / "checkpoints.yaml").read_text(encoding="utf-8"))
@@ -239,13 +281,18 @@ def main():
     out = ROOT / "runtime" / "transcripts" / "generate" / f"{a.scenario}_{datetime.datetime.now():%Y%m%d_%H%M}"
     out.mkdir(parents=True, exist_ok=True)
     name = model()
-    plan = [k for _ in range(a.per_type) for k in TYPES]       # good, average, errors, pushy, good, ...
-    print(f"Model: {name}\nScenario: {sid}, {len(plan)} conversations, seed {a.seed}\nSaving to: {out.relative_to(ROOT)}")
+    plan = [k for _ in range(a.per_type) for k in types]       # good, average, errors, pushy, good, ...
+    modes = {}                                                  # tester conversations rotate through the modes
+    print(f"Model: {name}\nScenario: {sid}, {len(plan)} conversations ({', '.join(types)}), seed {a.seed}\nSaving to: {out.relative_to(ROOT)}")
     convs = []
     try:
         for n, kind in enumerate(plan, 1):
             t0 = time.time()
-            c = conversation(a.scenario, card, cps, system, facts, kind, rng, a.max_turns, a.temperature, a.trainee_temperature)
+            mode = None
+            if kind == "tester":
+                mode = TESTER_MODES[modes.get(kind, 0) % len(TESTER_MODES)]
+                modes[kind] = modes.get(kind, 0) + 1
+            c = conversation(a.scenario, card, cps, system, facts, kind, rng, a.max_turns, a.temperature, a.trainee_temperature, mode)
             c.update({"n": n, "scenario": sid, "model": name, "seed": a.seed,
                       "temperature": a.temperature, "trainee_temperature": a.trainee_temperature})
             convs.append(c)
@@ -258,7 +305,7 @@ def main():
                 flags = t.get("checker", []) + t.get("early", [])
                 if flags:
                     md += [f"> FLAG: {'; '.join(flags)}", ""]
-            (out / f"conv_{n:02d}_{kind}.md").write_text("\n".join(md), encoding="utf-8")
+            (out / f"conv_{n:02d}_{kind}{'_' + mode if mode else ''}.md").write_text("\n".join(md), encoding="utf-8")
             with (out / "conversations.jsonl").open("a", encoding="utf-8") as f:
                 f.write(json.dumps(c, ensure_ascii=False) + "\n")
             k = sum(1 for t in c["turns"] if t.get("checker") or t.get("early"))
@@ -275,14 +322,15 @@ def summary(out, sid, name, a, convs):
          "| Trainee type | Conversations | Patient replies | No reply | Checker flags | Early-disclosure flags | Avg turns |",
          "|---|---|---|---|---|---|---|"]
     allrep = []
-    for kind in TYPES:
-        C = [c for c in convs if c["type"] == kind]
+    groups = [(k, None) for k in TYPES if k != "tester"] + [("tester", m) for m in TESTER_MODES]
+    for kind, mode in groups:
+        C = [c for c in convs if c["type"] == kind and (mode is None or c.get("mode") == mode)]
         if not C:
             continue
         T = [t for c in C for t in c["turns"]]
         got = [t for t in T if t.get("reply")]
         allrep += [t["reply"] for t in got]
-        L.append(f"| {kind} | {len(C)} | {len(got)} | {len(T) - len(got)} | {sum(1 for t in got if t['checker'])} | "
+        L.append(f"| {kind}{' / ' + mode if mode else ''} | {len(C)} | {len(got)} | {len(T) - len(got)} | {sum(1 for t in got if t['checker'])} | "
                  f"{sum(1 for t in got if t['early'])} | {sum(len(c['turns']) for c in C) / len(C):.1f} |")
     n = [norm(r) for r in allrep]
     dup = sum(1 for x in n if n.count(x) > 1)

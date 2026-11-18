@@ -12,7 +12,8 @@ Rules, in this order, for each conversation:
     1. Stop the conversation at the first reply that is missing or fails a check (checker or early
        disclosure, recomputed with today's rules). Later turns are dropped: their history contains it.
     2. Stop the conversation at a clinician line that is close to a held-out probe or warm-up line
-       (evaluation/<sN>_hard_probes.yaml), so no exam question reaches the training data.
+       (evaluation/<sN>_hard_probes.yaml) or to a trial-script line (runtime/trial_scripts/<sN>_trial_script.md,
+       added 2026-11-16), so no exam question reaches the training data.
     3. Every reply is rewritten to one format: "Name: (stage direction) words", one line per speaker.
        The history the model sees is rewritten the same way.
     4. A reply whose words (ignoring stage directions) have already been kept --max-repeats times is
@@ -32,6 +33,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import free_chat_safety as fs
 from measure_teacher import SCEN, facts_for
 from make_conversations import flag_turns
+from run_trial_script import parse as trial_rounds, clean as trial_clean
 
 ROOT = fs.ROOT
 BY_SID = {v: k for k, v in SCEN.items()}
@@ -106,6 +108,14 @@ def main():
     if spec_path.exists():
         spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
         probes = [p["text"] for p in spec["probes"]] + list(spec.get("warm_up", []))
+    n_probe = len(probes)
+    if (ROOT / "runtime" / "trial_scripts" / f"{short}_trial_script.md").exists():
+        for lines in trial_rounds(short).values():
+            for raw in lines:
+                _, line = trial_clean(raw)
+                if line and len(line.split()) >= 3:      # skip stage directions and one-word lines
+                    probes.append(line)
+    print(f"Held out of training: {n_probe} probe/warm-up lines + {len(probes) - n_probe} trial-script lines")
 
     rng = random.Random(a.seed)
     order = list(range(len(convs)))
