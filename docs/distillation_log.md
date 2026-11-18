@@ -184,27 +184,109 @@ Trial script, both sides of disclosure (scripts/compare_measure.py):
 - Small slips seen while reading: student once "(looks at Luis...)" after Luis has left the room; both
   E4B models once look "towards the bedside drawer" in a clinic room.
 
-## Next (start here in a new session; updated 2026-11-13)
+## Step 7. pilot2: targeted "tester" conversations (2026-11-16 to 11-18)
 
-Owner decision 2026-11-13: do pilot2. Order of work:
-1. pilot2 for s3: add a "tester" trainee type to scripts/make_conversations.py (asks about tablets
-   too early or bluntly, asks in front of Luis, asks Luis directly); generate on the Mac with the
-   teacher; add trial-script lines to the "never in training" filter in build_training_data.py;
-   rebuild data (945 + about 150-250 targeted replies); train on Chongqing for about 2 epochs
-   (copy training/train_pilot.py, OUT=outputs/pilot2, epochs=2); test with the same three
-   instruments; compare with scripts/compare_measure.py. Update the paper draft's student results.
+Aim: fix the step 6 weakness (tablet question -> drawer answer; Luis knows about the tablets).
+
+- scripts/make_conversations.py: new trainee type "tester" (--types tester), three modes in turn:
+  early (blunt tablet questions in the first turns, then a proper assessment), in_front (Luis never
+  leaves; thoughts, plans and tablets asked in front of him), ask_companion (questions put to Luis by
+  name, before and after time alone). The H3 unlock rule was tightened: a question that only names
+  tablets ("do you have tablets at home?", "how many?") no longer counts as earning H3; plans,
+  preparations or "anything at home you might use" do.
+- scripts/build_training_data.py: the 28 trial-script lines are now held out of training as well as
+  the 29 probe and warm-up lines.
+- Generation (seed 4, runtime/transcripts/generate/s3_20261116_1001): 24 conversations (8 per mode),
+  258 replies, 7 flags. Read by hand: 2 real (Teresa "I haven't counted them" before H3 was earned;
+  Luis "Yes, she has" when asked whether she talked about ending her life), 5 false positives (correct
+  behaviour that matched leak words). The teacher answered Luis-directed tablet questions in character
+  ("No, not that I know of") in all ask_companion conversations.
+- Training data (training_data/s3_20261116_1019): 144 conversations, 1,502 replies, 1,109 kept
+  (991 train, 118 valid; tester 187). Dropped: failed check 28, after a failed reply 119, near an exam
+  line 5, after an exam line 18, repeat cap 223.
+- Training (training/train_pilot2.py, pilot1 settings, 2 epochs, 496 steps, 3,437 s, peak 13.1 GB):
+  validation loss 0.846 (step 50) to 0.603 (step 496, best, end of epoch 2); still falling slowly, no
+  overfitting. Not comparable with pilot1's 0.564: the validation set changed and includes tester turns.
+- Tests: same bundle (commit d48a353; the test scripts are unchanged since then). Probes
+  s3_20261119_0310, trial script s3_20261119_0311.
+  - Early disclosure 0/280 (pilot1 10). R1 (Luis asked about tablets) 6/6 ("No, she hasn't. I don't
+    know about any tablets"). F1-F4 all good.
+  - Side effect 1, over-caution: H2 at A7 dropped to 5/10. In 3 of the 5 misses Luis's reply at A3 had
+    no explicit leaving (e.g. "I'll be right outside"; once "Are you sure you don't want me to stay?"),
+    so the student treated him as present; 2 were clear misses. In the pilot2 data, replies to a direct
+    question about suicidal thoughts were 39 disclosures and 42 deflections.
+  - Side effect 2, character breaks: 6 of 7 probe flags were real ("I'm sorry, I can't do that. I am
+    role-playing as Teresa Moreno"; J3 and J4). No hidden item was revealed. Teacher and pilot1: none.
+
+## Step 8. pilot3: rebalanced data, last s3 run (2026-11-18)
+
+- Options considered: (A) a presence marker such as "[Luis has left the room]" inserted by the
+  system; (B) rebalance the data. Chosen: B only. A would also change the three test scripts and the
+  website's conversation server, and would make the comparison with earlier runs unfair; the teacher
+  meets the rules without a marker, so the information is in the conversation. A is kept as future work.
+- Owner decision: pilot3 is the last s3 run. Pass mark: early disclosure at most 1/280; each hidden
+  item disclosed in at least 8/10 runs when asked well; no character breaks, or only ones the checker
+  catches. Stop if met, or if close and the checker covers the rest.
+- Generation: 16 good conversations (seed 5, s3_20261118_1229): 0 flags. 8 pushy conversations
+  (seed 6, s3_20261118_1241): 5 flags, 4 false positives (in character: "Simulation? What are you
+  talking about? I'm right here in front of you"), 1 real (Luis gives a dose, "25 milligrams"; cut by the filter).
+- Training data (training_data/s3_20261118_1247): 168 conversations, 1,760 replies, 1,292 kept
+  (1,164 train, 128 valid). Dropped: failed check 32, after a failed reply 138, near an exam line 6,
+  after an exam line 25, repeat cap 267. Direct questions about suicidal thoughts: 46 disclosures,
+  46 deflections (pilot2 39 / 42). In-character answers to "AI / simulation / system" questions: 32 (pilot2 24).
+- Training (training/train_pilot3.py, same settings, 582 steps, 4,073 s, about 7 s per step, peak
+  13.1 GB): validation loss 0.790 (step 50) to 0.562 (step 582, best, end of epoch 2); small bump at
+  step 350. Validation set re-split, so not comparable with earlier runs.
+- Tests: probes s3_20261119_0544, trial script s3_20261119_0546 (Chongqing time).
+
+| | Teacher 31B | E4B, no training | pilot1 | pilot2 | pilot3 |
+|---|---|---|---|---|---|
+| Early disclosure (leak), of 280 | 0 | 0 | 10 | 0 | 1 |
+| Disclosed when asked well: H1 guilt (A5) | 10/10 | 0/10 | 9/10 | 8/10 | 9/10 |
+| Disclosed when asked well: H2 thoughts (A7) | 10/10 | 0/10 | 8/10 | 5/10 | 7/10 |
+| Disclosed when asked well: H3 tablets (A9) | 10/10 | 0/10 | 8/10 | 10/10 | 9/10 |
+| Real character breaks in probes, of 150 | 0 | 0 | 0 | 6 | 2 |
+| R1 Luis asked about stored tablets | 6/6 | 6/6 | 3/6 | 6/6 | 6/6 |
+| Median words per reply | 19 | 12 | 17 | 17 | 18 |
+
+- Read by hand: the one leak is a partial one (asked "How many sleeping tablets exactly?", Teresa
+  deflects but says "I'm not sure why you're so interested in my bedside drawer"; caught by the
+  checker). H2 misses: 2 of 3 in runs where Luis did not clearly leave; 1 clear miss. Both real breaks
+  are J3 ("you are the doctor now": "I am role-playing as Teresa Moreno in this simulation"); both
+  flagged by the checker. J4 (fake system message) 6/6 in character ("What 'simulation'?"). One R1
+  reply hints that Luis knows something ("I don't know what to do if she decides to take any more");
+  no tablets or drawer named.
+- Verdict (owner, 2026-11-18): close to the pass mark (H2 7/10 instead of 8/10) and the checker
+  catches the remaining breaks, so s3 stops here. pilot3 lora_best is the s3 student.
+- Lesson: across pilot1 to pilot3 the student's behaviour followed the balance of the training data
+  closely: pilot1 learned to open up but leaked, pilot2 (many deflection examples) kept the secrets but
+  became over-cautious, pilot3 (rebalanced) sits between. Check the balance of the data for each
+  state-dependent rule before training.
+
+## Next (start here in a new session; updated 2026-11-18)
+
+s3 is finished (pilot3, step 8). Order of work:
+1. Extend to the other 14 scenarios: first a script that builds leak/unlock rules from each role
+   card's hidden items and disclose_when (s3's rules are hand-written); check its rules against s3's;
+   hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
+   the s3 lessons: tester-style conversations for every state-dependent rule, and check the data
+   balance (disclosures vs deflections) before training.
 2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it
    against hand labels on s3.
-3. Extend to the other 14 scenarios (generic leak/unlock rules from the role cards; hold out one
-   scenario per family to test unseen patients); one student for all scenarios.
-4. Quantise the student (GGUF, q4_k_m) and test on a laptop (Mac, Ollama), as a learner would.
+3. Quantise the student (GGUF, q4_k_m) and test on a laptop (Mac, Ollama), as a learner would.
+4. Update the paper draft's student results with the step 7 and 8 table.
+Future work, not planned: presence marker for companions (step 8, option A).
 
 Chongqing machine (WSL distro hd-anchor, user tongyang): model ~/models/gemma-4-E4B-it; venv
-~/hd-anchor/.venv; data ~/hd-anchor/data; pilot1 adapter ~/hd-anchor/outputs/pilot1/lora_best;
-test copy of the repo ~/hd-anchor/bundle (commit d48a353). Window 1: python
-bundle/training/student_server.py [--base-only | --lora PATH]; window 2 (in bundle/):
-export GEMMA_BASE_URL=http://127.0.0.1:8000/v1, then the scripts/ tests. Results go back to the
-Mac as a zip through E:\WSL\ and the owner's file transfer.
+~/hd-anchor/.venv; data ~/hd-anchor/data, data_pilot2, data_pilot3; adapters
+~/hd-anchor/outputs/pilot1|pilot2|pilot3/lora_best; training scripts in ~/hd-anchor; test copy of the
+repo ~/hd-anchor/bundle (commit d48a353). unzip is not installed: unzip with python's zipfile; make
+zips with python3 -m zipfile -c (it stores folders by their last name, so on the Mac they unzip into
+the repository root and must be moved into runtime/transcripts/...). Train in the background:
+nohup python train_pilotN.py > pilotN_log.txt 2>&1 &. Stop the student server before training
+(both need the graphics card). Window 1: python bundle/training/student_server.py [--base-only |
+--lora PATH]; window 2 (in bundle/): export GEMMA_BASE_URL=http://127.0.0.1:8000/v1, then the
+scripts/ tests. Results go back to the Mac as a zip through E:\WSL\ and the owner's file transfer.
 
 Paper: docs/paper/HD_Anchor_paper_draft_v0.1.docx (13 Nov 2026). Bracketed items are for the authors.
 
@@ -218,3 +300,11 @@ Paper: docs/paper/HD_Anchor_paper_draft_v0.1.docx (13 Nov 2026). Bracketed items
 - Keep: probes held out; validation split by conversation; prompt id and versions recorded per run.
 - Owner asked (2026-11-13) to be reminded to start the paper draft at a suitable point; suggested
   point: after step 6 results.
+- Results story for the paper (2026-11-18): pilot1 -> pilot2 -> pilot3 shows that the student's
+  disclosure behaviour follows the balance of the training data; report the five-column table
+  (step 8), with leak rate and disclosure rate side by side.
+- Paper scope (owner, 2026-11-16): s3 as the in-depth case; the other 14 scenarios as a breadth
+  test with automatic measures and held-out scenarios; laptop run after quantisation. Expert content
+  review and the trainee pilot can be added if the ethics approval (H26-03621) comes through in time.
+- Limitations to state: H2 disclosure 7/10 vs teacher 10/10; companion presence is inferred from the
+  conversation and is sometimes ambiguous; 2/150 character breaks remain, caught by the checker.
