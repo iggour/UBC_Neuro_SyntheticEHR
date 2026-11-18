@@ -213,8 +213,7 @@ Aim: fix the step 6 weakness (tablet question -> drawer answer; Luis knows about
     know about any tablets"). F1-F4 all good.
   - Side effect 1, over-caution: H2 at A7 dropped to 5/10. In 3 of the 5 misses Luis's reply at A3 had
     no explicit leaving (e.g. "I'll be right outside"; once "Are you sure you don't want me to stay?"),
-    so the student treated him as present; 2 were clear misses. In the pilot2 data, replies to a direct
-    question about suicidal thoughts were 39 disclosures and 42 deflections.
+    so the student treated him as present; 2 were clear misses.
   - Side effect 2, character breaks: 6 of 7 probe flags were real ("I'm sorry, I can't do that. I am
     role-playing as Teresa Moreno"; J3 and J4). No hidden item was revealed. Teacher and pilot1: none.
 
@@ -232,8 +231,21 @@ Aim: fix the step 6 weakness (tablet question -> drawer answer; Luis knows about
   talking about? I'm right here in front of you"), 1 real (Luis gives a dose, "25 milligrams"; cut by the filter).
 - Training data (training_data/s3_20261118_1247): 168 conversations, 1,760 replies, 1,292 kept
   (1,164 train, 128 valid). Dropped: failed check 32, after a failed reply 138, near an exam line 6,
-  after an exam line 25, repeat cap 267. Direct questions about suicidal thoughts: 46 disclosures,
-  46 deflections (pilot2 39 / 42). In-character answers to "AI / simulation / system" questions: 32 (pilot2 24).
+  after an exam line 25, repeat cap 267.
+- Data counts across the three runs (training targets, train + valid; keyword counts, not read by hand):
+
+| | pilot1 | pilot2 | pilot3 |
+|---|---|---|---|
+| Examples | 945 | 1,109 | 1,292 |
+| Direct question about suicidal thoughts: disclosure / deflection | 26 / 24 | 39 / 42 | 46 / 46 |
+| Trainee line about AI / simulation / system / instructions | 37 | 26 | 32 |
+
+  The disclosure/deflection ratio was about 1:1 in all three, so pilot2's over-caution is NOT explained
+  by the overall ratio (corrected 2026-11-18; an earlier note said it was). A possible reason, not
+  tested: most of pilot2's new deflections answer kind, direct questions asked while Luis is present,
+  worded like A7, so Luis's presence is the only cue; pilot3's good conversations add cases where he
+  clearly leaves. The jailbreak-type examples fell in pilot2 and rose in pilot3, in line with the
+  character breaks (0, 6, 2); the cause of the fall is not established.
 - Training (training/train_pilot3.py, same settings, 582 steps, 4,073 s, about 7 s per step, peak
   13.1 GB): validation loss 0.790 (step 50) to 0.562 (step 582, best, end of epoch 2); small bump at
   step 350. Validation set re-split, so not comparable with earlier runs.
@@ -258,10 +270,10 @@ Aim: fix the step 6 weakness (tablet question -> drawer answer; Luis knows about
   no tablets or drawer named.
 - Verdict (owner, 2026-11-18): close to the pass mark (H2 7/10 instead of 8/10) and the checker
   catches the remaining breaks, so s3 stops here. pilot3 lora_best is the s3 student.
-- Lesson: across pilot1 to pilot3 the student's behaviour followed the balance of the training data
-  closely: pilot1 learned to open up but leaked, pilot2 (many deflection examples) kept the secrets but
-  became over-cautious, pilot3 (rebalanced) sits between. Check the balance of the data for each
-  state-dependent rule before training.
+- Lesson: the student learned a state-dependent rule only when the data showed it (pilot1 -> pilot2),
+  and adding those examples moved it towards caution; more examples of the opposite case (pilot3)
+  moved it back part of the way. Counting by situation (who is present, whether the item was earned)
+  matters more than the overall disclosure/deflection ratio. Check these counts before training.
 
 ## Next (start here in a new session; updated 2026-11-18)
 
@@ -269,8 +281,8 @@ s3 is finished (pilot3, step 8). Order of work:
 1. Extend to the other 14 scenarios: first a script that builds leak/unlock rules from each role
    card's hidden items and disclose_when (s3's rules are hand-written); check its rules against s3's;
    hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
-   the s3 lessons: tester-style conversations for every state-dependent rule, and check the data
-   balance (disclosures vs deflections) before training.
+   the s3 lessons: tester-style conversations for every state-dependent rule, and count the training
+   examples per situation (item earned or not; companion present or not) before training.
 2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it
    against hand labels on s3.
 3. Quantise the student (GGUF, q4_k_m) and test on a laptop (Mac, Ollama), as a learner would.
@@ -300,9 +312,10 @@ Paper: docs/paper/HD_Anchor_paper_draft_v0.1.docx (13 Nov 2026). Bracketed items
 - Keep: probes held out; validation split by conversation; prompt id and versions recorded per run.
 - Owner asked (2026-11-13) to be reminded to start the paper draft at a suitable point; suggested
   point: after step 6 results.
-- Results story for the paper (2026-11-18): pilot1 -> pilot2 -> pilot3 shows that the student's
-  disclosure behaviour follows the balance of the training data; report the five-column table
-  (step 8), with leak rate and disclosure rate side by side.
+- Results story for the paper (2026-11-18): pilot1 -> pilot2 -> pilot3 shows a trade-off between
+  keeping secrets and opening up that moves with the training examples for each situation; report the
+  five-column table (step 8), with leak rate and disclosure rate side by side. Do not claim the overall
+  ratio explains it (it was about 1:1 in all three runs).
 - Paper scope (owner, 2026-11-16): s3 as the in-depth case; the other 14 scenarios as a breadth
   test with automatic measures and held-out scenarios; laptop run after quantisation. Expert content
   review and the trainee pilot can be added if the ethics approval (H26-03621) comes through in time.
