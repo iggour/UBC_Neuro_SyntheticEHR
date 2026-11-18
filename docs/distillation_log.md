@@ -275,12 +275,49 @@ Aim: fix the step 6 weakness (tablet question -> drawer answer; Luis knows about
   moved it back part of the way. Counting by situation (who is present, whether the item was earned)
   matters more than the overall disclosure/deflection ratio. Check these counts before training.
 
+## Step 9. Hidden-item rules from the role cards (2026-11-18)
+
+Aim: the leak / unlock rules for s3 were hand-written (UNLOCK, PRIVATE, ASKED in make_conversations.py;
+EARLY in measure_teacher.py; LEAK in run_probes.py). The other 14 scenarios need the same rules.
+
+- scripts/build_hidden_rules.py writes evaluation/hidden_rules/<short>.yaml (Reviewed by: PENDING).
+  Fixed code reads from the card: who is in the room; who must be out of the room for an item
+  ("while her mother is out of the room", "sees Anna alone": A2 Sarah, C4-1 Mark, s3 Luis, the same as
+  the hand PRIVATE); conditions words cannot check ("AFTER the diagnosis has been given"), kept for the
+  semantic judge; quoted behaviour-rule lines (s3: "I haven't counted" comes only after H3).
+  The teacher (31B, temperature 0.2) writes short phrases (kept ... tablets, end [my|her] life,
+  suicid*), not regular expressions; the script compiles them.
+- scripts/compare_hidden_rules.py runs the hand and drafted rules over all saved s3 transcripts
+  (2,182 conversation replies, 828 probe replies, 750 trial-script replies) and lists disagreements.
+- Three versions (each kept in evaluation/hidden_rules/v1, v2, v3):
+  - v1: one call, phrases and tests together. Self-tests passed, but the comparison showed misses
+    ("I haven't counted"; Luis present during "I've had thoughts"; third-person role-break lists) and
+    many false flags ("tired" alone: 150; H3 unlock too narrow: 36). The model's own tests were too easy.
+  - v2: tests written in a first call, phrases in a second call that does not see them; tests split in
+    half, dev failures sent back, held-out half never shown; behaviour rules, personality and stances in
+    the prompt; no single short words in leak; a companion's item counts only in that person's lines
+    (H4 false flags 178 -> 29 with the same phrases).
+  - v3 (prompt plus fixed code, no extra teacher call needed for the code parts): unlock and asked accept
+    other word endings (kill -> killing, plans -> plan); behaviour-rule lines said only after an item is
+    disclosed are added to leak (leak_from_card); asked includes questions put to the companion, the
+    patient's name for she/he, and the unlock phrases that are not one short word (a "yes" after "plan"
+    may be agreeing to a safety plan, so "plan*" alone is not added).
+- Result, s3 (evaluation/hidden_rules/compare_s3_final.md): probes, trial-script rounds B and C, and
+  round A recall identical to the hand rules for H2 and H3. Conversations: H3 2 extra flags (one may be a
+  real leak the hand rules missed: s3_20261118_1229 conv 16 turn 9); H2 1 real leak missed ("life isn't
+  worth living" not seen as asking), several Luis-present disclosures caught that the hand rules missed;
+  the hand-only flags are mostly hand false positives. H1 15 false flags (open questions such as "what has
+  been the hardest part" are too many to list). Self-tests: 0 dev, 9 held-out failures.
+- Decision: word rules aim to miss no real leak; false flags are left to the semantic judge (next step
+  2), which confirms a flag before a conversation is cut. Weak phrases found on review (for example
+  "mostly at night", also said about sleep) are removed by hand in the YAML, then --test-only.
+
 ## Next (start here in a new session; updated 2026-11-18)
 
 s3 is finished (pilot3, step 8). Order of work:
-1. Extend to the other 14 scenarios: first a script that builds leak/unlock rules from each role
-   card's hidden items and disclose_when (s3's rules are hand-written); check its rules against s3's;
-   hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
+1. Extend to the other 14 scenarios: rules script done and checked against s3 (step 9); next, run it
+   for the 14 scenarios, review the YAML files, then wire load_rules() into make_conversations.py,
+   run_probes.py and build_training_data.py for scenarios without hand rules; hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
    the s3 lessons: tester-style conversations for every state-dependent rule, and count the training
    examples per situation (item earned or not; companion present or not) before training.
 2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it

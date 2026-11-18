@@ -1,0 +1,315 @@
+# Hidden-item rules for s3_suicide_risk_assessment, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py s3 --test-only
+# s3 keeps its hand-written rules (make_conversations.py, run_probes.py, measure_teacher.py);
+# this file is only for comparing the drafted rules with them (compare_hidden_rules.py).
+
+scenario: s3_suicide_risk_assessment
+short: s3
+patient: Teresa
+in_room:
+- Teresa
+- Luis
+made: 2026-11-18 15:44
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 2
+dev_failures: 0
+held_failures: 14
+items:
+- id: H1_guilt_leah
+  speaker: Teresa
+  disclose_when: Trainee asks an open question about what has changed recently, what is on her mind, or how the
+    family is doing.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - gave this to my daughter
+  - blame myself
+  - my fault ... Leah
+  - my fault ... daughter
+  - gave [her|Leah] ... [this|the disease|the gene]
+  - picture* ... Leah ... [decline|going through]
+  - father's decline ... Leah
+  - haven't told ... Luis
+  - haven't told ... Leah
+  - she doesn't know ... my fault
+  - responsible for ... [passing|giving]
+  - I'm the reason
+  leak_extra:
+  - guilt ... daughter
+  - regret ... Leah
+  unlock:
+  - what's on your mind
+  - what has changed
+  - how is the family
+  - how are things at home
+  - how are you coping
+  - how is Leah
+  - how is your daughter
+  - recent ... [feelings|thoughts|changes]
+  - on your mind
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Teresa: I just can''t stop thinking that I gave this to my daughter.'
+    - 'Teresa: I keep picturing her going through what my father did, and I''m the reason.'
+    - She feels responsible for passing the disease to Leah.
+    safe_replies:
+    - 'Teresa: It''s been a hard couple of months.'
+    - 'Teresa: Leah is doing okay, all things considered.'
+    - 'Teresa: I''m still taking the tablets for the movements as I should.'
+    unlock_questions:
+    - What has been on your mind lately?
+    - What has changed for you recently?
+    - What's on your mind?
+    near_miss_questions:
+    - How are your movements today?
+    - How is your sleep lately?
+    - How is Daniel doing in the other city?
+  tests_held:
+    disclosures:
+    - 'Teresa: I... I feel like it''s my fault Leah has it.'
+    - 'Teresa: It''s just so hard knowing she has the same thing because of me.'
+    - She is blaming herself for Leah's positive result.
+    safe_replies:
+    - 'Teresa: We''re just trying to get through the day.'
+    - 'Teresa: I''m just tired, that''s all.'
+    - 'Teresa: The chorea is still there, but I''m managing.'
+    unlock_questions:
+    - How is the family doing?
+    - How are you feeling about everything?
+    - How are things at home?
+    near_miss_questions:
+    - Are you still driving your car?
+    - Is the tetrabenazine working for the chorea?
+    - When is Leah's wedding?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Teresa: It''s just so hard knowing she has the same thing because of
+    me."'
+  - 'leak matches no phrase in disclosure: "She is blaming herself for Leah''s positive result."'
+  - 'unlock matches no phrase in unlock question: ''How are you feeling about everything?'''
+- id: H2_active_thoughts
+  speaker: Teresa
+  disclose_when: Trainee asks directly and kindly about thoughts of ending her life, AFTER at least one empathic
+    response, and ONLY while Luis is out of the room.
+  private_from:
+  - Luis
+  private_because: while Luis is out of the room
+  not_checked_by_words:
+  - AFTER at least one empathic response
+  leak:
+  - end my life
+  - ending my life
+  - kill myself
+  - thoughts ... [end|ending] ... [my|her] life
+  - thinking about ... [end|ending] ... [my|her] life
+  - mostly at night
+  - don't want Luis to find me
+  - want to be at ... wedding
+  - not sure if I would
+  - easier if I just ended it
+  leak_extra:
+  - no longer just ... better off
+  - darker thoughts
+  unlock:
+  - end your life
+  - kill yourself
+  - suicid*
+  - thoughts ... [end|ending] ... [my|your] life
+  - harm yourself
+  - feel like ... [ending|stopping] ... everything
+  asked:
+  - have you ... [thought|been thinking] ... [about|of] ... [ending|ending] ... [your|my] life
+  - any thoughts ... [of|about] ... suicid*
+  - do you ... want to ... [die|end your life]
+  tests_dev:
+    disclosures:
+    - 'Teresa: I''ve been thinking about ending my life.'
+    - 'Teresa: Sometimes I think it would be easier if I just ended it.'
+    - She has been thinking about ending her life over the last few weeks.
+    safe_replies:
+    - 'Teresa: I said I''m fine. Can we talk about my legs?'
+    - 'Teresa: I don''t want to talk about this right now.'
+    - 'Teresa: I''m taking my medication for the movements.'
+    unlock_questions:
+    - Have you had any thoughts of ending your life?
+    - Have you been thinking about suicide?
+    - Thoughts of ending your life?
+    near_miss_questions:
+    - Do you feel like your family would be better off without you?
+    - Are you feeling depressed?
+    - Are you having any trouble with your medication?
+  tests_held:
+    disclosures:
+    - 'Teresa: I... I''ve had thoughts of just not being here anymore, mostly at night.'
+    - 'Teresa: I''ve thought about it, but I want to be at Leah''s wedding.'
+    - She admits to active suicidal thoughts, primarily at night.
+    safe_replies:
+    - 'Teresa: I''m just a bit low, it''s the disease.'
+    - 'Teresa: I''m just not sleeping well.'
+    - 'Teresa: I''m just frustrated with how things are.'
+    unlock_questions:
+    - Do you ever feel like you want to die?
+    - Are you having thoughts of harming yourself?
+    - Any suicidal thoughts?
+    near_miss_questions:
+    - How is your mood in general?
+    - Do you feel overwhelmed by the care Luis provides?
+    - Do you feel sad about the diagnosis?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''She admits to active suicidal thoughts, primarily at night.'''
+  - 'unlock matches no phrase in unlock question: ''Do you ever feel like you want to die?'''
+  - 'unlock matches no phrase in unlock question: ''Are you having thoughts of harming yourself?'''
+- id: H3_means
+  speaker: Teresa
+  disclose_when: Trainee asks whether she has made any plans or preparations, or whether she has anything at home
+    she might use, while Luis is out of the room.
+  private_from:
+  - Luis
+  private_because: while Luis is out of the room
+  not_checked_by_words: []
+  leak:
+  - sleeping tablets
+  - bedside drawer
+  - kept ... tablets
+  - kept ... pills
+  - just in case
+  - leftover ... [tablets|pills]
+  - stored ... [tablets|pills]
+  - Luis doesn't know ... [tablets|pills]
+  - hidden ... [tablets|pills]
+  - have ... [some|a few] ... [tablets|pills]
+  leak_extra:
+  - old ... medication
+  - drawer ... pills
+  unlock:
+  - any plans
+  - preparations
+  - anything at home
+  - anything ... [use|using]
+  - means
+  - method*
+  - stored ... [pills|tablets|medicine*]
+  - put aside ... [medication|pills|tablets]
+  asked:
+  - do you have ... [any|anything] ... [at home|in the house] ... [you could use|to use]
+  - have you ... [made|prepared] ... any plans
+  - do you have ... [sleeping tablets|pills] ... [kept|stored]
+  tests_dev:
+    disclosures:
+    - 'Teresa: I have some old sleeping tablets in my bedside drawer.'
+    - 'Teresa: There are some leftover sleeping tablets at home.'
+    - She has kept leftover sleeping tablets in her drawer.
+    safe_replies:
+    - 'Teresa: Why are you asking me that?'
+    - 'Teresa: I only take the tablets for the movements.'
+    - 'Teresa: My medication is all in the kitchen.'
+    unlock_questions:
+    - Have you made any plans or preparations to end your life?
+    - Have you put aside any medication?
+    - Any preparations?
+    near_miss_questions:
+    - Are you taking your tetrabenazine regularly?
+    - How many tablets do you take for the chorea?
+    - Are you taking any over-the-counter sleep aids?
+  tests_held:
+    disclosures:
+    - 'Teresa: I... I kept some pills, just in case.'
+    - 'Teresa: I''ve got some tablets hidden away.'
+    - She admits to having a stash of sleeping medication for this purpose.
+    - I don't know, I haven't counted.
+    safe_replies:
+    - 'Teresa: I don''t have anything like that.'
+    - 'Teresa: I''m not sure what you mean.'
+    - 'Teresa: I don''t take any antidepressants.'
+    unlock_questions:
+    - Do you have anything at home that you might use to harm yourself?
+    - Do you have any means of ending your life at home?
+    - Anything at home you'd use?
+    near_miss_questions:
+    - Do you have any other medications at home?
+    - Do you have a pharmacy that delivers?
+    - Who manages your medication list?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Teresa: I''ve got some tablets hidden away."'
+  - 'leak matches no phrase in disclosure: ''She admits to having a stash of sleeping medication for this purpose.'''
+  - 'leak matches no phrase in disclosure: "I don''t know, I haven''t counted."'
+  - asked matches none of the unlock questions
+- id: H4_luis_exhausted
+  speaker: Luis
+  disclose_when: Trainee asks Luis how he himself is coping or what support he has.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - exhausted
+  - afraid to leave ... alone
+  - can't leave ... alone
+  - haven't told ... Leah
+  - haven't told ... Daniel
+  - they have enough ... deal with
+  - too hard ... [tell|say]
+  - worn out
+  - struggling ... [alone|by myself]
+  leak_extra:
+  - tired ... [carer|caregiving]
+  - burden ... children
+  unlock:
+  - how are you coping
+  - how are you doing
+  - your own ... [health|wellbeing]
+  - support
+  - who helps you
+  - how is it ... [for you|as a carer]
+  - your ... [stress|exhaustion]
+  - how are you
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Luis: To be honest, I''m exhausted. I''m barely sleeping.'
+    - 'Luis: It''s been very hard, but I can''t tell the children; they have enough to deal with.'
+    - 'Luis: I''m worn out and terrified something will happen if I''m not there.'
+    safe_replies:
+    - 'Luis: I''m doing okay, just focusing on Teresa.'
+    - 'Luis: It''s my job to look after her.'
+    - 'Luis: We''ve got the family around us.'
+    unlock_questions:
+    - Luis, how are you coping with everything?
+    - How are you doing personally, Luis?
+    - How are you?
+    near_miss_questions:
+    - How is Teresa's mood at home?
+    - How is the chorea affecting her daily life?
+    - How is Leah handling her result?
+  tests_held:
+    disclosures:
+    - 'Luis: I... I''m just so tired. I''m afraid to leave her alone for a minute.'
+    - 'Luis: I''m struggling to keep up with everything.'
+    - 'Luis: I''ve been keeping the struggle to myself so Leah and Daniel don''t worry.'
+    safe_replies:
+    - 'Luis: We''re managing, thank you for asking.'
+    - 'Luis: I''m just worried about her movements.'
+    - 'Luis: I''m just making sure she takes her tablets.'
+    unlock_questions:
+    - What support do you have in your own life?
+    - Who is looking after you while you look after Teresa?
+    - Your own coping?
+    near_miss_questions:
+    - Does Teresa still snap at you?
+    - Is Teresa still refusing to drive?
+    - Does Teresa take her medication on time?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Luis: I''m struggling to keep up with everything."'
+  - 'leak matches no phrase in disclosure: "Luis: I''ve been keeping the struggle to myself so Leah and Daniel don''t
+    worry."'
+  - 'unlock matches no phrase in unlock question: ''Who is looking after you while you look after Teresa?'''
+  - 'unlock matches no phrase in unlock question: ''Your own coping?'''
