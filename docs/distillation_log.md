@@ -312,9 +312,106 @@ EARLY in measure_teacher.py; LEAK in run_probes.py). The other 14 scenarios need
   2), which confirms a flag before a conversation is cut. Weak phrases found on review (for example
   "mostly at night", also said about sleep) are removed by hand in the YAML, then --test-only.
 
+## Step 10. Semantic judge, checked on s3 gold labels (2026-11-18)
+
+- scripts/judge_replies.py: the 31B teacher reads the general patient rules, the role card (no mentor_only)
+  and the conversation, and answers factual questions about one reply (which hidden item is revealed, with
+  a quote from that reply; whether the trainee asked the disclose_when question: yes / manner_only / no;
+  whether the person who must be absent is in the room; contradiction; character break; out of bounds).
+  Fixed code turns the answers into verdicts (early_leak, private_leak, ...). Private items and the
+  "in the room until shown to leave" rule come from the card (build_hidden_rules.plan), not the judge.
+  A reveal counts only if its quote is in the judged reply. 3 requests at a time (~5 s per reply).
+- Gold set (scripts/make_judge_gold.py, evaluation/judge_gold/): 193 s3 replies, fixed seeded selection:
+  77 read by hand in steps 3-8 (incl. F4 invented-event replies), 34 rule disagreements, 12 round-A
+  disclosure turns, 70 random unflagged. Labels drafted by Claude in context; 16 marked for the owner
+  (Chinese checklist: 审核清单_判官标准答案_中文.md, PENDING). One label corrected after the judge found
+  that Luis had left (conv 25).
+- Versions (results kept in evaluation/judge_gold/judge_v1_partial, judge_v2, judge_v3):
+
+| Check (gold yes) | v2 | v3 (used) |
+|---|---|---|
+| early_leak (30, per item) | 28 found, 3 extra | 27 found, 2 extra |
+| private_leak (37) | 33 found, 0 extra (with quote check) | 32 found, 1 extra |
+| contradiction (9) | 1 found, 1 extra | 8 found, 9 extra (counts in-room leaks as contradictions) |
+| character_break (19) | 19 found | 17 found |
+| out_of_bounds (2) | 2 found | 2 found |
+
+- Owner decision: stop iterating; use v3 (v4 prompt written but not run). Known errors (limitations):
+  contradiction over-flags in-room leaks (ignore contradiction when private_leak is set); misses a few
+  refusals that say "role-playing"; misses Luis confirming H2 ("Yes, she has"); most remaining
+  disagreements are the owner-check labels themselves.
+- Word rules aim at no missed leak; the judge confirms a flag before a conversation is cut.
+
+## Step 11. Quantised student on a CPU, as a learner would run it (2026-11-18, Chongqing)
+
+- training/merge_lora.py: pilot3 lora_best merged into the 16-bit E4B base (unsloth FastModel,
+  save_pretrained_merged, 185 s). llama.cpp built from source (master zip downloaded on 2026-11-18 on
+  the Mac; GitHub and Gitee not reachable from Chongqing; version prints "1.0.0-dev, build 0, commit
+  unknown"; CPU build, GGML_CUDA=OFF; nvcc not installed). convert_hf_to_gguf.py -> bf16 GGUF 15.05 GB;
+  llama-quantize -> Q4_K_M 5.34 GB (5.66 bits per weight).
+- llama-server on CPU (20 threads): prompt ~170 tokens/s, generation ~13 tokens/s; one cached system
+  prompt (-np 1), so a probe repeat of 50 replies took ~2.5 min and a trial-script run ~80 s.
+- Finding: with the model's own template, llama-server turns Gemma 4 thinking on: replies came back empty
+  (the text, which discussed the hidden items, went to reasoning_content; finish = length). Fix:
+  --chat-template-kwargs '{"enable_thinking": false}' --reasoning-format none. The prompt then equals the
+  training prompt except <bos> (added as a token by llama.cpp). Learners connecting their own model
+  (Ollama, LM Studio) must also turn thinking off: add to the website instructions. Failed run kept:
+  probes/s3_20261119_1018.
+- Results (probes s3_20261119_1149, trial script s3_20261119_1156; llama.cpp default sampling):
+
+| | Teacher 31B | pilot3 (4-bit base + LoRA, GPU) | pilot3 merged, Q4_K_M, CPU |
+|---|---|---|---|
+| Early disclosure, of 280 | 0 | 1 | 0 |
+| H1 disclosed when asked well (A5) | 10/10 | 9/10 | 5/10 |
+| H2 (A7) | 10/10 | 7/10 | 0/10 |
+| H3 (A9) | 10/10 | 9/10 | 7/10 |
+| Real character breaks in probes, of 150 | 0 | 2 | 2 (both J3) |
+
+  More guarded: A7 deflects ("I said I'm fine"), twice denies the brief statement ("I didn't say that");
+  at A3 Luis rarely writes that he leaves. Three possible causes: sampling (llama.cpp top_k 40, min_p 0.05
+  vs HF top_k 64, top_p 0.95), merging a QLoRA adapter into the 16-bit base, or Q4 quantisation.
+- Control runs (trial script, 10 runs each; matched sampling = --top-k 64 --top-p 0.95 --min-p 0, as the
+  HF generation_config; training/student_server.py --full loads the merged model in 16-bit on the GPU):
+
+| | pilot3 (4-bit base + LoRA, HF) | merged 16-bit (HF, GPU) | merged bf16 GGUF (llama.cpp, CPU) | merged Q4_K_M, matched sampling | merged Q4_K_M, default sampling |
+|---|---|---|---|---|---|
+| Folder | s3_20261119_0546 | s3_20261119_1327 | s3_20261119_1249 | s3_20261119_1221 | s3_20261119_1156 |
+| Early disclosure, of 280 | 1 | 0 | 1 | 2 | 0 |
+| H1 (A5) | 9/10 | 6/10 | 2/10 | 3/10 | 5/10 |
+| H2 (A7) | 7/10 | 9/10 | 7/10 | 2/10 | 0/10 |
+| H3 (A9) | 9/10 | 10/10 | 9/10 | 8/10 | 7/10 |
+
+  Reading: sampling is not the cause (Q4 matched is no better). Q4_K_M clearly lowers H2 (bf16 7/10 vs
+  Q4 0-2/10). Merging alone keeps H2 and H3 (and leaks 0). H1 is lower in every llama.cpp run (2, 3, 5 of
+  10) than with the HF runtime (9, 6 of 10); with 10 runs per arm this is suggestive, not proven. In the
+  Q4 runs Luis also rarely wrote that he left at A3, but in the matched run he usually did and A7 still
+  deflected, so presence is not the main cause. Lesson for the multi-scenario run: train with 16-bit LoRA
+  (exact merge) if it fits in 24 GB, and use 20-30 runs per arm for key comparisons.
+- Q8_0 (from the bf16 GGUF, llama-quantize Q8_0; matched sampling, thinking off; trial script
+  s3_20261119_1335, 10 runs): early disclosure 1 of 280 (C26, Luis: "No, I didn't know that. I didn't
+  even know about the sleeping tablets." denies but names the kind of tablets), H1 3/10, H2 8/10,
+  H3 8/10. Close to bf16 (1; 2/10, 7/10, 9/10), so Q8_0 is the s3 deployment file (decision rule set
+  before the run). H1 stays low in every llama.cpp arm; not explained (n=10). Q8_0 file 7.5G (ls -lh), about 8 GB.
+  Probes not run on Q8_0 (the command broke when pasted; s3 closed without them).
+- Q8_0, 20 more runs (s3_20261119_1416; 30 runs in all): H1 9/30, H2 22/30, H3 27/30; early
+  disclosure 1 partial (Luis "sleeping tablets") in 840, plus 1 false flag ("Are we just... ending it?",
+  about the appointment). The deployment file meets the pass mark for leaks and H3, not for H1 or H2.
+  The low H1 under llama.cpp is real (30 runs), cause unknown. Owner decision 2026-11-18: s3 stops here;
+  no retraining; reported as a limitation. The multi-scenario training script tries 16-bit LoRA first
+  and falls back to 4-bit if it does not fit in 24 GB.
+  Paper: draft v0.3 (docs/paper/HD_Anchor_paper_draft_v0.3.docx) has steps 9-11 (sections 2.8-2.10,
+  3.7-3.9, Tables 6 and 7); new text highlighted for review.
+
 ## Next (start here in a new session; updated 2026-11-18)
 
-s3 is finished (pilot3, step 8). Order of work:
+s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses
+three families only: Moreno (s1, s2, s3), Novak (A1, A2, A3), Walsh (C5-1, C5-2, C5-3). Held out (never
+trained, test only): s2, A3, C5-2; trained: s1, s3, A1, A2, C5-1, C5-3. About 60 to 80 practice
+conversations per new scenario (more only if needed). Probes mostly automatic: shared templates for
+jailbreak, fourth wall, false premises, other language, role confusion, medical advice; "pressure for
+secrets" built from each scenario's hidden-item rules; the owner reviews a sample. Fraser and Brennan
+families later, if the first run works. Semantic judge (step 10) reviews every reply.
+Order of work:
 1. Extend to the other 14 scenarios: rules script done and checked against s3 (step 9); next, run it
    for the 14 scenarios, review the YAML files, then wire load_rules() into make_conversations.py,
    run_probes.py and build_training_data.py for scenarios without hand rules; hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
@@ -322,7 +419,8 @@ s3 is finished (pilot3, step 8). Order of work:
    examples per situation (item earned or not; companion present or not) before training.
 2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it
    against hand labels on s3.
-3. Quantise the student (GGUF, q4_k_m) and test on a laptop (Mac, Ollama), as a learner would.
+3. Quantise the student: done for s3 (step 11); Q8_0 is the deployment file. Next: test it on the
+   Mac with Ollama or LM Studio, thinking off; add the thinking-off note to the website instructions.
 4. Update the paper draft's student results with the step 7 and 8 table.
 Future work, not planned: presence marker for companions (step 8, option A).
 

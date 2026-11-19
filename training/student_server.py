@@ -4,6 +4,7 @@
 #   python student_server.py                       # E4B + outputs/pilot1/lora_best (the student)
 #   python student_server.py --base-only           # E4B with no LoRA (the "before training" baseline)
 #   python student_server.py --lora /path/to/lora  # another LoRA
+#   python student_server.py --full /path/to/merged # a merged full model in 16-bit (step 11 control)
 #
 # Then, in another WSL window:
 #   GEMMA_BASE_URL=http://127.0.0.1:8000/v1 python scripts/run_probes.py s3
@@ -21,6 +22,7 @@ MAX_LEN = 6144
 ap = argparse.ArgumentParser()
 ap.add_argument("--lora", default=LORA)
 ap.add_argument("--base-only", action="store_true")
+ap.add_argument("--full", help="a full (merged) model folder, loaded in 16-bit (no 4-bit base, no LoRA)")
 ap.add_argument("--port", type=int, default=8000)
 a = ap.parse_args()
 
@@ -28,12 +30,12 @@ from unsloth import FastModel
 import torch
 from transformers import AutoTokenizer
 
-src = MODEL if a.base_only else a.lora
-model, _ = FastModel.from_pretrained(model_name=src, max_seq_length=MAX_LEN, load_in_4bit=True)
+src = a.full or (MODEL if a.base_only else a.lora)
+model, _ = FastModel.from_pretrained(model_name=src, max_seq_length=MAX_LEN, load_in_4bit=not a.full)
 FastModel.for_inference(model)
 tok = AutoTokenizer.from_pretrained(MODEL)
 END = tok.convert_tokens_to_ids("<turn|>")
-NAME = "gemma-4-E4B-it" + ("" if a.base_only else "+" + "/".join(a.lora.rstrip("/").split("/")[-2:]))
+NAME = (a.full.rstrip("/").split("/")[-1] + " (16-bit)") if a.full else "gemma-4-E4B-it" + ("" if a.base_only else "+" + "/".join(a.lora.rstrip("/").split("/")[-2:]))
 lock = threading.Lock()
 print("Serving", NAME, "on http://127.0.0.1:%d/v1" % a.port, flush=True)
 
