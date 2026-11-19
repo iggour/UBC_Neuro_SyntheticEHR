@@ -425,6 +425,21 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
 - Judge: not inside the generation loop (it would add about half as many 31B calls again); run
   judge_replies.py on the generate folders afterwards.
 
+## Step 13. multi1: first multi-scenario student (2026-11-19, started)
+
+- Data (Mac, 31B teacher, seed 11): 40 conversations each for s1, A1, A2, C5-1, C5-3 (owner cut from
+  70 to 40: the aim is to close the loop, not to tune each scenario). Kept examples: s1 235, A1 200,
+  A2 309, C5-1 255, C5-3 189; plus s3 pilot3 data (1,292). Total 2,233 train / 247 valid.
+  Held out (no training data): s2, A3, C5-2. The judge was not run on this data (word rules only, as
+  for pilot1-3).
+- Training: training/train_multi1.py, same settings as pilot3 (4-bit base, LoRA r16, 2 epochs). The
+  16-bit LoRA idea was dropped to avoid a second attempt.
+- Test: training/run_multi1.py runs, unattended: hard probes (1 repeat) on all 9 scenarios with the
+  untrained E4B, then training, then the same probes with the student; results zipped to E:\WSL\.
+  Teacher probes on the same 9 files run on the Mac.
+- Done when: one table of flagged probe replies per scenario for teacher / untrained / student,
+  trained vs held-out scenarios. No reruns; anything unexplained goes into limitations.
+
 ## Next (start here in a new session; updated 2026-11-18)
 
 s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses
