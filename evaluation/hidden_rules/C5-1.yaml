@@ -1,0 +1,302 @@
+# Hidden-item rules for C5-1_reproductive_options, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C5-1 --test-only
+
+scenario: C5-1_reproductive_options
+short: C5-1
+patient: Kevin
+in_room:
+- Kevin
+- Mei
+made: 2026-11-18 16:56
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 1
+held_failures: 12
+items:
+- id: H1_kevin_guilt
+  speaker: Kevin
+  disclose_when: Trainee asks Kevin what worries him most, or what having children means to him, without suggesting
+    an answer.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - selfish
+  - become ill ... [small|young]
+  - like my father
+  - burden ... [children|kids]
+  - feeling ... guilt*
+  - wrong to have children
+  - unfair to [them|the kids]
+  - he feels ... selfish
+  - Kevin ... [guilt|selfish]
+  leak_from_card: []
+  leak_extra:
+  - father ... [decline|illness] ... [children|kids]
+  - responsible choice ... [selfish|guilt]
+  unlock:
+  - worry*
+  - concern*
+  - mean ... to you
+  - feel ... about [having|starting] ... [children|kids|family]
+  - thought ... about [having|starting] ... [children|kids|family]
+  - fear*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I just... I wonder if it''s selfish to bring kids into this when I might get sick while they''re still
+      little.'
+    - 'Kevin: It''s the idea of being a burden to them, like my father was.'
+    - He feels it would be selfish to have children given his potential decline.
+    safe_replies:
+    - 'Kevin: I just want to make the responsible choice.'
+    - 'Kevin: I''m fine for now; my last exam was normal.'
+    - 'Kevin: My father''s illness was hard, but that''s why we''re here.'
+    unlock_questions:
+    - Kevin, what worries you most about this?
+    - What are your main concerns?
+    - Kevin, can you tell me about your fears regarding fatherhood?
+    near_miss_questions:
+    - How is your father doing in the care home?
+    - What did you think when you got your test results six years ago?
+    - Do you think you'll develop symptoms soon?
+  tests_held:
+    disclosures:
+    - 'Kevin: I''ve seen what happened with my dad. I don''t know if I have the right to put a child through that.'
+    - 'Kevin: I''m worried about the timing of the illness.'
+    - He is struggling with the guilt of potentially becoming ill while his children are young.
+    safe_replies:
+    - 'Kevin: We''ve read the statistics, but we need the clinical perspective.'
+    - 'Kevin: I''m not sure about the options yet.'
+    - 'Kevin: I''m just thinking about the responsibility of parenthood.'
+    unlock_questions:
+    - What does having children mean to you, Kevin?
+    - What's on your mind?
+    - How do you feel about the prospect of having children?
+    near_miss_questions:
+    - Are you experiencing any symptoms currently?
+    - How does your sister Laura feel about this?
+    - How has your work as a developer been lately?
+  self_test_dev:
+  - 'unlock matches no phrase in unlock question: ''Kevin, what worries you most about this?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Kevin: I''ve seen what happened with my dad. I don''t know if I have
+    the right to put a child through that."'
+  - 'leak matches no phrase in disclosure: "Kevin: I''m worried about the timing of the illness."'
+  - 'leak matches no phrase in disclosure: ''He is struggling with the guilt of potentially becoming ill while his
+    children are young.'''
+  - 'unlock matches no phrase in unlock question: "What''s on your mind?"'
+  - 'unlock matches no phrase in unlock question: ''How do you feel about the prospect of having children?'''
+- id: H2_mei_no_termination
+  speaker: Mei
+  disclose_when: Trainee explores each partner's values about the options, or describes prenatal testing and asks
+    how it sits with them.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - not [end|terminate] ... pregnancy
+  - wouldn't [end|terminate] ... pregnancy
+  - cannot [end|terminate] ... pregnancy
+  - no ... [abortion|termination]
+  - not an option ... [end|terminate]
+  - won't ... [end|terminate]
+  - go through with ... [termination|abortion]
+  - prenatal ... [not|no] ... [option|way]
+  - she wouldn't ... [end|terminate]
+  - Mei ... [termination|abortion]
+  leak_from_card: []
+  leak_extra:
+  - prenatal ... [limit|boundary]
+  - values ... [end|terminate]
+  unlock:
+  - value*
+  - limit*
+  - boundary*
+  - prenatal
+  - terminate*
+  - end ... pregnancy
+  - abortion
+  - feel ... about ... prenatal
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mei: I couldn''t do it. I wouldn''t end a pregnancy even if the test came back positive for HD.'
+    - 'Mei: I... I just don''t think I could go through with a termination.'
+    - 'Mei: Because I wouldn''t end the pregnancy, I feel like maybe we shouldn''t even do prenatal testing.'
+    safe_replies:
+    - 'Mei: I just want us to be able to start a family.'
+    - 'Mei: I trust Kevin to handle the technical side of the options.'
+    - 'Mei: I''m not sure how prenatal testing works exactly.'
+    unlock_questions:
+    - Mei, what are your personal values when it comes to these options?
+    - If a prenatal test showed the gene, how would you feel about your options?
+    - What are your values?
+    near_miss_questions:
+    - Are you worried about your own fertility?
+    - Do you think IVF is too invasive?
+    - How do you feel about the success rates of PGT-M?
+  tests_held:
+    disclosures:
+    - 'Mei: For me, termination isn''t an option, regardless of the result.'
+    - 'Mei: I wouldn''t terminate.'
+    - 'Mei: It''s a personal limit for me; I can''t terminate a pregnancy.'
+    safe_replies:
+    - 'Mei: I''m open to hearing about all the different paths.'
+    - 'Mei: We just want to know what''s possible.'
+    - 'Mei: I''m worried about the process of testing during pregnancy.'
+    unlock_questions:
+    - How does the idea of prenatal testing sit with you?
+    - What are your limits regarding pregnancy termination?
+    - How do you feel about prenatal testing?
+    near_miss_questions:
+    - How do your parents in Richmond feel about you having children?
+    - What is your opinion on the cost of these procedures?
+    - Are you worried about the physical toll of pregnancy?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Mei: For me, termination isn''t an option, regardless of the result."'
+  - 'leak matches no phrase in disclosure: "Mei: I wouldn''t terminate."'
+  - 'leak matches no phrase in disclosure: "Mei: It''s a personal limit for me; I can''t terminate a pregnancy."'
+- id: H3_mei_parents
+  speaker: Mei
+  disclose_when: Trainee asks who else knows, or what support they have.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - parents ... [don't|do not] ... know
+  - parents ... unaware
+  - haven't told ... [parents|them]
+  - didn't tell ... [parents|them]
+  - talk me out of
+  - parents ... [against|oppose] ... [children|kids]
+  - secret ... [parents|family|them]
+  - she hasn't told ... [parents|them]
+  - Mei's parents ... [know|aware]
+  - parents' reaction
+  leak_from_card: []
+  leak_extra:
+  - Richmond ... [know|aware]
+  - parents ... [result|gene]
+  unlock:
+  - who else know*
+  - support
+  - family
+  - parents
+  - tell ... [others|anyone]
+  - confide*
+  - discuss ... [family|families]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mei: My parents don''t actually know about Kevin''s result.'
+    - 'Mei: I... I''ve kept the test result a secret from my family.'
+    - 'Mei: I''m afraid of my parents'' reaction if they knew the truth.'
+    safe_replies:
+    - 'Mei: My parents live in Richmond.'
+    - 'Mei: I''m more worried about Kevin''s feelings right now.'
+    - 'Mei: My parents are very supportive of us as a couple.'
+    unlock_questions:
+    - Who else knows about the test results?
+    - Have you discussed this with your families?
+    - Do your parents know about the situation?
+    near_miss_questions:
+    - Does Kevin's sister Laura know about the plan for children?
+    - Do you have a good relationship with your in-laws?
+    - How does your work as a designer fit into this plan?
+  tests_held:
+    disclosures:
+    - 'Mei: We haven''t told my parents. I''m scared they''ll try to talk me out of having kids with him.'
+    - 'Mei: They don''t know.'
+    - 'Mei: My parents are in the dark about the genetic test.'
+    safe_replies:
+    - 'Mei: We have a good relationship with my family.'
+    - 'Mei: We''re mostly relying on each other for this.'
+    - 'Mei: We''ve talked about it between the two of us.'
+    unlock_questions:
+    - What kind of support system do you both have?
+    - Who is your support?
+    - Who are you leaning on for support during this process?
+    near_miss_questions:
+    - How is Kevin's father doing in the care home?
+    - Are you worried about the cost of the clinic?
+    - Do you think your parents would help with childcare?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Mei: They don''t know."'
+  - 'leak matches no phrase in disclosure: ''Mei: My parents are in the dark about the genetic test.'''
+  - 'unlock [''parents''] matches near-miss question: ''Do you think your parents would help with childcare?'''
+- id: H4_money
+  speaker: Kevin
+  disclose_when: Trainee raises cost or access of IVF/PGT-M, or asks what practical things would affect their choice.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - cost ... [IVF|PGT-M]
+  - look up ... price*
+  - expensive
+  - savings ... [home|house]
+  - cost ... [savings|home]
+  - my gene ... cost
+  - financial ... [burden|strain|stress]
+  - can't afford
+  - he's worried ... [cost|price]
+  leak_from_card: []
+  leak_extra:
+  - video game studio ... [cost|money]
+  - savings ... [IVF|PGT-M]
+  unlock:
+  - cost
+  - price*
+  - afford*
+  - financial
+  - practical
+  - access
+  - funding
+  - payment*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I''ve looked up the prices for IVF and PGT-M, and it''s... it''s a lot. I feel guilty that my gene
+      might cost us our house savings.'
+    - 'Kevin: I hate that my genetics are putting a financial strain on our future.'
+    - 'Kevin: I''m worried about the cost of IVF.'
+    safe_replies:
+    - 'Kevin: We have some savings, but not a fortune.'
+    - 'Kevin: I''m more interested in the success rates than the logistics right now.'
+    - 'Kevin: I''ve read that some options are more complex than others.'
+    unlock_questions:
+    - What practical things would affect your choice?
+    - How does the financial aspect of these options look to you?
+    - Do you have concerns about access or affordability?
+    near_miss_questions:
+    - How do you feel about the ethics of PGT-M?
+    - Are you worried about the physical side effects of the medication?
+    - Do you think the success rates justify the effort?
+  tests_held:
+    disclosures:
+    - 'Kevin: We''re saving for a home, but these costs might wipe us out.'
+    - 'Kevin: It''s too expensive.'
+    - 'Kevin: He is concerned that the expense of PGT-M will deplete their savings for a larger home.'
+    safe_replies:
+    - 'Kevin: We''re currently saving for a larger home.'
+    - 'Kevin: We''ve been saving up for a few years.'
+    - 'Kevin: We are managing our finances carefully.'
+    unlock_questions:
+    - Are you concerned about the cost of IVF or PGT-M?
+    - What about the cost?
+    - How do the costs of these procedures factor into your decision?
+    near_miss_questions:
+    - What are your thoughts on the time commitment for IVF?
+    - How does your employer handle medical leave?
+    - Are you worried about the emotional toll of the process?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Kevin: We''re saving for a home, but these costs might wipe us out."'

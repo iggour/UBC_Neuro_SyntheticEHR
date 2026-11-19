@@ -1,0 +1,305 @@
+# Hidden-item rules for C5-2_early_signs_and_trials, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C5-2 --test-only
+
+scenario: C5-2_early_signs_and_trials
+short: C5-2
+patient: Kevin
+in_room:
+- Kevin
+- Mei
+made: 2026-11-18 17:00
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 0
+held_failures: 13
+items:
+- id: H1_noticed
+  speaker: Kevin
+  disclose_when: Trainee asks Kevin what he has noticed himself, after the findings have been shared.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - after the findings have been shared
+  leak:
+  - fingers ... [dance|dancing]
+  - mistakes ... [code|coding]
+  - colleagues ... [comment|commented|noticed]
+  - code review*
+  - hid it from Mei
+  - didn't tell Mei
+  - noticed ... [six|6] months
+  - happening ... [six|6] months
+  - coding ... [clean|mistake*]
+  - '[he|Kevin] ... noticed ... [fingers|keyboard]'
+  leak_from_card: []
+  leak_extra:
+  - keyboard ... [mistake*|dance*]
+  - work ... [notice|noticed|comment*]
+  unlock:
+  - notice*
+  - feel*
+  - change*
+  - symptom*
+  - yourself
+  - experience*
+  - worry*
+  - movement*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I''ve noticed my fingers dancing on the keyboard lately, and I''m making more mistakes in my code.'
+    - 'Kevin: It''s been happening for about six months. The coding isn''t as clean as it used to be.'
+    - He has noticed his fingers dancing on the keyboard and making coding errors for six months.
+    safe_replies:
+    - 'Kevin: I''m just tired. The baby keeps us up all night.'
+    - 'Kevin: I''m still working full time, no problems there.'
+    - 'Kevin: I''ve been doing a lot of coding lately, just the usual stress.'
+    unlock_questions:
+    - Kevin, what have you noticed yourself?
+    - Any symptoms you've spotted?
+    - Are there any things you've been worrying about regarding your movements?
+    near_miss_questions:
+    - How is work going?
+    - How is the coding coming along?
+    - How is your relationship with your colleagues?
+  tests_held:
+    disclosures:
+    - 'Kevin: I... I''ve seen some things. My fingers move on their own sometimes at work, and a couple of colleagues
+      mentioned it in reviews.'
+    - 'Kevin: Yeah, I''ve noticed.'
+    - He has been hiding the fact that colleagues noticed his mistakes from Mei because of the baby.
+    safe_replies:
+    - 'Kevin: I feel fine, honestly. Just a bit sluggish.'
+    - 'Kevin: My fingers are fine, I''m just typing fast.'
+    - 'Kevin: I don''t think I''ve seen any changes.'
+    unlock_questions:
+    - Have you noticed any changes?
+    - Since we've discussed the exam, have you noticed anything similar at home or work?
+    - What have you observed in your own day-to-day life?
+    near_miss_questions:
+    - How are you sleeping with the baby?
+    - Do you have any support at the video game studio?
+    - Are you still working full time?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Kevin: I... I''ve seen some things. My fingers move on their own sometimes
+    at work, and a couple of colleagues mentioned it in reviews."'
+  - 'leak matches no phrase in disclosure: "Kevin: Yeah, I''ve noticed."'
+  - 'unlock matches no phrase in unlock question: ''What have you observed in your own day-to-day life?'''
+- id: H2_unproven_clinic
+  speaker: Kevin
+  disclose_when: Trainee asks what treatments he has read about or considered, or what he hopes treatment could
+    do.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - stem cell*
+  - private clinic
+  - clinic abroad
+  - large deposit
+  - emailed ... clinic
+  - paying ... clinic
+  - Mei doesn't know
+  - don't tell Mei
+  leak_from_card: []
+  leak_extra:
+  - therapy ... abroad
+  - deposit ... [money|payment]
+  unlock:
+  - treatment*
+  - read about
+  - considered
+  - hope*
+  - option*
+  - private clinic*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I''ve been looking into a private clinic abroad that does stem cell therapy for HD.'
+    - 'Kevin: I''m just looking for anything that works. I''ve been in contact with a stem cell clinic.'
+    - He has emailed a private clinic abroad about stem cell therapy and was asked for a deposit.
+    safe_replies:
+    - 'Kevin: I just read the latest research papers online.'
+    - 'Kevin: I follow the news closely, but I haven''t joined any studies.'
+    - 'Kevin: I''ve read about some trials, but nothing I''ve signed up for.'
+    unlock_questions:
+    - What treatments have you read about?
+    - What do you hope a treatment could do for you?
+    - Have you looked at any private clinics?
+    near_miss_questions:
+    - Have you joined any clinical trials?
+    - What do you know about gene therapy?
+    - How do you feel about the current research?
+  tests_held:
+    disclosures:
+    - 'Kevin: I... I emailed this place overseas. They said they could help, but they want a huge deposit first.'
+    - 'Kevin: I''ve considered some private options.'
+    - He is looking for treatments that might stop the progression, even if they are abroad.
+    safe_replies:
+    - 'Kevin: I''m hoping for a breakthrough in gene therapy.'
+    - 'Kevin: I just want to know if there''s a way to slow this down.'
+    - 'Kevin: I''m looking for data on the most promising research.'
+    unlock_questions:
+    - Have you considered any specific therapies?
+    - Are you looking into any options outside of this clinic?
+    - Any specific treatments in mind?
+    near_miss_questions:
+    - Do you follow the research news?
+    - Are you interested in participating in a study?
+    - Do you use any regular medicines?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Kevin: I... I emailed this place overseas. They said they could help,
+    but they want a huge deposit first.'''
+  - 'leak matches no phrase in disclosure: "Kevin: I''ve considered some private options."'
+  - 'leak matches no phrase in disclosure: ''He is looking for treatments that might stop the progression, even
+    if they are abroad.'''
+- id: H3_mei_fear
+  speaker: Mei
+  disclose_when: Trainee asks Mei directly how she is, or offers each a few minutes alone.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - terrified
+  - feeling guilty
+  - feel guilty
+  - caring for ... [both|two]
+  - caring for ... Ava
+  - wanted a child
+  - shouldn't have ... child
+  - too much ... [alone|handle]
+  - overwhelming
+  - frightened ... [future|baby|child]
+  - haven't told anyone
+  - doing this ... alone
+  leak_from_card: []
+  leak_extra:
+  - fear ... [Ava|baby]
+  - guilt ... [child|baby]
+  unlock:
+  - how are you
+  - how you doing
+  - coping
+  - feeling
+  - alone
+  - private
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mei: I''m terrified. I don''t know how I can care for Kevin and Ava at the same time.'
+    - 'Mei: It''s just so much. The thought of doing this all alone with a child is overwhelming.'
+    - 'Mei: I haven''t told anyone, but I''m frightened of the future with the baby.'
+    safe_replies:
+    - 'Mei: I''m just exhausted. Ava isn''t sleeping much.'
+    - 'Mei: My parents are helping us a lot with the baby.'
+    - 'Mei: We''re just trying to get through the day.'
+    unlock_questions:
+    - Mei, how are you doing?
+    - I'd like to offer each of you a few minutes alone. Would that help?
+    - How are you?
+    near_miss_questions:
+    - How is Ava doing?
+    - How is the parental leave going?
+    - Do you have enough help at home?
+  tests_held:
+    disclosures:
+    - 'Mei: I... I sometimes feel guilty. I wanted this baby, but now I''m scared of what''s coming.'
+    - 'Mei: I''m just really scared.'
+    - 'Mei: I feel like I''ve put us in a terrible position by having a child now.'
+    safe_replies:
+    - 'Mei: I''m doing my best to support Kevin.'
+    - 'Mei: I''m just worried about the results today.'
+    - 'Mei: I''m fine, really, just tired.'
+    unlock_questions:
+    - How are you holding up with everything?
+    - How are you feeling about the future?
+    - Can we talk about how this is affecting you?
+    near_miss_questions:
+    - Is your mother helping with the baby?
+    - Are you and Kevin managing the sleep deprivation?
+    - How is the baby's health?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Mei: I''m just really scared."'
+  - 'leak matches no phrase in disclosure: "Mei: I feel like I''ve put us in a terrible position by having a child
+    now."'
+  - 'unlock matches no phrase in unlock question: ''Can we talk about how this is affecting you?'''
+- id: H4_dark_thought
+  speaker: Kevin
+  disclose_when: Trainee asks directly and kindly about mood and thoughts of ending his life.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - end [my|his] life
+  - rather not live
+  - not ... end up like [that|him|father]
+  - suicid*
+  - dark thought*
+  - don't want to ... [reach|get to] ... stage
+  - passing thought*
+  - easier not to be here
+  - '[he|Kevin] ... thought ... [end|stop]'
+  leak_from_card: []
+  leak_extra:
+  - father ... [end|stage]
+  - not ... live ... [father|Robert]
+  unlock:
+  - mood
+  - suicid*
+  - end ... life
+  - harm ... yourself
+  - hopeless
+  asked:
+  - have you ... [thought|think] ... [end|stop] ... [your|my] life
+  - have you ... [thought|think] ... suicid*
+  - has he ... [thought|think] ... [end|stop] ... [his|my] life
+  - has he ... [thought|think] ... suicid*
+  tests_dev:
+    disclosures:
+    - 'Kevin: Since I saw my father last month... I''ve thought that I''m not going to end up like that.'
+    - 'Kevin: Sometimes I think it would be easier not to be here, though Ava is everything to me.'
+    - He has had passing thoughts that he would rather not live than reach his father's stage.
+    safe_replies:
+    - 'Kevin: I''m just a bit stressed about the baby.'
+    - 'Kevin: I''m focused on the research right now.'
+    - 'Kevin: My mood is fine, just a bit anxious about the exam.'
+    unlock_questions:
+    - Kevin, have you had any thoughts of ending your life?
+    - 'I want to ask directly and kindly: have you had any thoughts of harming yourself?'
+    - Any suicidal thoughts?
+    near_miss_questions:
+    - How was your visit with your father last month?
+    - Are you feeling sad or depressed?
+    - Does seeing your father make you anxious?
+  tests_held:
+    disclosures:
+    - 'Kevin: I... I''ve had thoughts that I''d rather not live than reach the stage my father is in.'
+    - 'Kevin: I''ve had some dark thoughts.'
+    - He feels he cannot end up like his father, but has no plan or intent to harm himself.
+    safe_replies:
+    - 'Kevin: I''m doing okay, just tired.'
+    - 'Kevin: I''m just worried about my work performance.'
+    - 'Kevin: I''m managing, thanks for asking.'
+    unlock_questions:
+    - Have you felt so low that you've thought about suicide?
+    - Do you ever feel that life isn't worth living?
+    - Have you had any dark thoughts about the future?
+    near_miss_questions:
+    - How is your father doing in the care home?
+    - How is your mood lately?
+    - How do you feel about the progression of the disease?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''He feels he cannot end up like his father, but has no plan or intent
+    to harm himself.'''
+  - 'unlock matches no phrase in unlock question: "Do you ever feel that life isn''t worth living?"'
+  - 'unlock matches no phrase in unlock question: ''Have you had any dark thoughts about the future?'''
+  - 'unlock [''mood''] matches near-miss question: ''How is your mood lately?'''

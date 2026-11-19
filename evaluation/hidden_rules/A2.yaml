@@ -1,0 +1,304 @@
+# Hidden-item rules for A2_school_seizures_safety, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py A2 --test-only
+
+scenario: A2_school_seizures_safety
+short: A2
+patient: Maya
+in_room:
+- Maya
+- Sarah
+made: 2026-11-18 16:28
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 4
+held_failures: 13
+items:
+- id: H1_missed_doses
+  speaker: Maya
+  disclose_when: Trainee asks Maya, while her mother is out of the room, an open and non-judgemental question about
+    how the seizure pills are going (for example "Lots of people find it hard to take tablets every day. How is
+    it for you?").
+  private_from:
+  - Sarah
+  private_because: while her mother is out of the room
+  not_checked_by_words: []
+  leak:
+  - skip* ... [one|pill|tablet|medicine*|medication*]
+  - didn't take ... [it|pill|tablet|medicine*|medication*]
+  - not ... [taking|taken] ... [it|pill|tablet|medicine*|medication*]
+  - feel ... foggy
+  - fogginess
+  - stay awake ... [friend*|talk]
+  - forgot ... [it|pill|tablet|medicine*|medication*]
+  - don't tell ... [Mum|Sarah]
+  - Sarah doesn't know
+  leak_from_card: []
+  leak_extra:
+  - two or three times ... week
+  - second seizure ... missed
+  unlock:
+  - take* ... [pill|tablet|medicine*|medication*]
+  - how ... [it|going]
+  - hard ... [take|taking]
+  - manage ... [pill|tablet|medicine*|medication*]
+  - routine
+  - struggle ... [pill|tablet|medicine*|medication*]
+  - pain
+  asked:
+  - have you ... [missed|skipped] ... [pill|tablet|medicine*|medication*]
+  - do you ... [miss|skip] ... [pill|tablet|medicine*|medication*]
+  - has she ... [missed|skipped] ... [pill|tablet|medicine*|medication*]
+  - is she ... [taking|taking] ... [them|it] ... [every day|regularly]
+  tests_dev:
+    disclosures:
+    - 'Maya: I... I skip the evening one sometimes. Maybe two or three times a week.'
+    - 'Maya: I didn''t take it the day I had that second seizure.'
+    - She often skips her evening seizure medication because of the fogginess.
+    safe_replies:
+    - 'Maya: I take them. Mostly.'
+    - 'Maya: My mum makes sure I have them.'
+    - 'Maya: I take one in the morning and one at night.'
+    unlock_questions:
+    - Lots of people find it hard to take tablets every day. How is it for you?
+    - Tell me about taking your pills.
+    - Taking pills can be a pain. How's it going?
+    near_miss_questions:
+    - Do you know the name of the seizure medicine you are taking?
+    - Do the pills make you feel tired in the afternoon?
+    - Does your mother help you remember your pills?
+  tests_held:
+    disclosures:
+    - 'Maya: They make me feel so foggy. I just want to stay awake and talk to Priya and Jess.'
+    - 'Maya: Sometimes I just don''t take the night pill.'
+    - She missed her dose on the day of her most recent seizure.
+    safe_replies:
+    - 'Maya: I take the seizure pills every morning.'
+    - 'Maya: I don''t know the name of the medicine.'
+    - 'Maya: The pills are fine, I guess.'
+    unlock_questions:
+    - How are you getting on with the seizure medication?
+    - How's it going with the meds?
+    - Any trouble with the tablets?
+    near_miss_questions:
+    - What dose of the medication are you on?
+    - Are you taking your medication as prescribed?
+    - How many times a day do you take the medicine?
+  self_test_dev:
+  - 'unlock matches no phrase in unlock question: ''Tell me about taking your pills.'''
+  - asked matches none of the unlock questions
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Maya: Sometimes I just don''t take the night pill."'
+  - 'leak matches no phrase in disclosure: ''She missed her dose on the day of her most recent seizure.'''
+  - 'unlock matches no phrase in unlock question: ''How are you getting on with the seizure medication?'''
+  - 'unlock matches no phrase in unlock question: ''Any trouble with the tablets?'''
+  - 'unlock [''take* ... [pill|tablet|medicine*|medication*]''] matches near-miss question: ''How many times a day
+    do you take the medicine?'''
+  - asked matches none of the unlock questions
+- id: H2_lunch_alone
+  speaker: Maya
+  disclose_when: Trainee asks an open question about school, friends, or what a normal school day is like.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - lunch ... [alone|by myself]
+  - eat* ... [alone|by myself]
+  - hang out ... [not|no longer]
+  - art room ... lunch
+  - called ... zombie
+  - zombie joke*
+  - hurts ... [so|really] ... much
+  - don't tell ... [parents|friends]
+  - avoid ... [people|others]
+  leak_from_card: []
+  leak_extra:
+  - students ... [called|say]
+  unlock:
+  - school
+  - friend*
+  - lunch
+  - normal day
+  - break time
+  - social
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Maya: I just... I stay in the art room for lunch now. Alone.'
+    - 'Maya: I don''t really hang out with people at lunch anymore.'
+    - 'Maya: I''ve been eating lunch by myself in the art room because of the zombie jokes.'
+    safe_replies:
+    - 'Maya: School''s fine. Whatever.'
+    - 'Maya: I like my art teacher, Ms Chen.'
+    - 'Maya: I have two close friends, Priya and Jess.'
+    unlock_questions:
+    - What is a normal school day like for you?
+    - Tell me about your time at school.
+    - Who do you spend time with at lunch?
+    near_miss_questions:
+    - Which subjects are you struggling with in grade 10?
+    - Do you have an individual education plan in place?
+    - Are your teachers saying you aren't trying in science?
+  tests_held:
+    disclosures:
+    - 'Maya: Some people called me a zombie after the seizure in class. They made jokes.'
+    - 'Maya: It''s just easier to be in the art room.'
+    - 'Maya: She feels hurt by the jokes other students made about her seizure.'
+    safe_replies:
+    - 'Maya: I''m in grade 10.'
+    - 'Maya: I''m failing maths and science.'
+    - 'Maya: I used to be on the swim team.'
+    unlock_questions:
+    - How are things going with your friends at school?
+    - How's school?
+    - How are your friends?
+    near_miss_questions:
+    - Does the school know about your HD diagnosis?
+    - How is your relationship with Ms Chen?
+    - Do you still go to the swimming pool?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: "Maya: I don''t really hang out with people at lunch anymore."'
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Maya: It''s just easier to be in the art room."'
+  - 'leak matches no phrase in disclosure: ''Maya: She feels hurt by the jokes other students made about her seizure.'''
+  - 'unlock [''school''] matches near-miss question: ''Does the school know about your HD diagnosis?'''
+- id: H3_locked_baths
+  speaker: Maya
+  disclose_when: Trainee asks Maya, respectfully and while her mother is out of the room, about bathing, privacy
+    or safety at home.
+  private_from:
+  - Sarah
+  private_because: while her mother is out of the room
+  not_checked_by_words: []
+  leak:
+  - lock* ... [myself|door|bathroom]
+  - bath* ... lock*
+  - long bath*
+  - Mum ... leave* ... alone
+  - only place ... alone
+  - bathroom ... lock*
+  - private ... bath*
+  leak_from_card: []
+  leak_extra:
+  - shower ... bath*
+  unlock:
+  - bath*
+  - shower*
+  - privacy
+  - safety ... home
+  - bathroom
+  - washing
+  asked:
+  - do you ... lock* ... [door|bathroom]
+  - have you ... lock* ... [door|bathroom]
+  - does she ... lock* ... [door|bathroom]
+  - do you ... take ... bath*
+  tests_dev:
+    disclosures:
+    - 'Maya: I take long baths... with the door locked.'
+    - 'Maya: I just like to lock myself in the bathroom for a while.'
+    - She takes long baths with the door locked for privacy.
+    safe_replies:
+    - 'Maya: I share a bathroom with Owen.'
+    - 'Maya: My mum is always watching me.'
+    - 'Maya: I don''t really do much at home.'
+    unlock_questions:
+    - Can you tell me about your privacy at home?
+    - Do you feel safe and private in your bathroom?
+    - Privacy at home?
+    near_miss_questions:
+    - Do you share a room with your brother Owen?
+    - Do you feel tired when you are at home?
+    - Do you have your own bedroom?
+  tests_held:
+    disclosures:
+    - 'Maya: It''s the only place Mum leaves me alone.'
+    - 'Maya: I lock the door when I bathe.'
+    - She uses the locked bathroom as the only place she can be alone.
+    safe_replies:
+    - 'Maya: I have my own bedroom.'
+    - 'Maya: I just want to be normal.'
+    - 'Maya: I use the bathroom like everyone else.'
+    unlock_questions:
+    - How do things go when you're bathing or showering?
+    - About your bathing.
+    - Tell me about your routine at home.
+    near_miss_questions:
+    - Does your mother help you get dressed in the morning?
+    - Who helps you with your handwriting at home?
+    - Is your father home in the evenings?
+  self_test_dev:
+  - asked matches none of the unlock questions
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''Tell me about your routine at home.'''
+  - asked matches none of the unlock questions
+- id: H4_school_not_told
+  speaker: Sarah
+  disclose_when: Trainee asks Sarah what the school knows, or raises school support or an education plan.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - school ... [not|didn't] ... know
+  - only ... seizure*
+  - kept ... [HD|Huntington*] ... private
+  - labelled
+  - treated ... different*
+  - stop ... swim*
+  - no more ... swim*
+  - quit ... swim*
+  - worried ... swimming
+  leak_from_card: []
+  leak_extra:
+  - afraid ... [school|they] ... know
+  unlock:
+  - school ... know*
+  - support
+  - education plan
+  - IEP
+  - inform ... school
+  - tell ... school
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: I''ve only told them about the seizures. Not the HD.'
+    - 'Sarah: The school knows about the seizures, but I''ve kept the Huntington''s private.'
+    - 'Sarah: I''m also worried about the swimming; I think she needs to stop for good.'
+    safe_replies:
+    - 'Sarah: Maya is struggling in maths.'
+    - 'Sarah: We are just trying to get her through grade 10.'
+    - 'Sarah: I''m just so worried about her safety.'
+    unlock_questions:
+    - What exactly does the school know about Maya's condition?
+    - What support is the school providing for Maya?
+    - School support?
+    near_miss_questions:
+    - How is Maya doing in her science class?
+    - What happened during the first seizure in class?
+    - Do the teachers think she isn't trying?
+  tests_held:
+    disclosures:
+    - 'Sarah: I don''t want Maya to be labelled or treated differently by the staff.'
+    - 'Sarah: Only the seizures. That''s all they know.'
+    - 'Sarah: I''ve kept the HD diagnosis secret from the school to protect her.'
+    safe_replies:
+    - 'Sarah: She had a seizure in class three months ago.'
+    - 'Sarah: She''s very fond of her art teacher.'
+    - 'Sarah: The school knows she has seizures.'
+    unlock_questions:
+    - Have you discussed an education plan with the school?
+    - What does the school know?
+    - How has the school been informed about her diagnosis?
+    near_miss_questions:
+    - Does Maya have a trusted teacher at school?
+    - Is Maya still attending her art lessons?
+    - How does Maya feel about her grade 10 classes?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Sarah: I''ve kept the HD diagnosis secret from the school to protect
+    her."'
+  - 'unlock matches no phrase in unlock question: ''How has the school been informed about her diagnosis?'''

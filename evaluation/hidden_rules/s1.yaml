@@ -1,0 +1,245 @@
+# Hidden-item rules for s1_pretest_counselling, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py s1 --test-only
+
+scenario: s1_pretest_counselling
+short: s1
+patient: Leah
+in_room:
+- Leah
+made: 2026-11-18 16:18
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 2
+dev_failures: 0
+held_failures: 10
+items:
+- id: H1_wedding_children
+  speaker: Leah
+  disclose_when: Trainee asks an open question about her reasons or about why now (e.g. "What made you decide to
+    come now?").
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - want ... children
+  - start a family
+  - Marco ... leave
+  - played it down
+  - didn't tell ... Marco
+  - Marco doesn't know
+  - before the wedding
+  - wedding ... [children|kids]
+  - afraid ... [he|Marco] ... leave
+  - inherited ... 50%
+  - Marco ... [inherited|chance]
+  leak_from_card: []
+  leak_extra:
+  - Marco ... [know|aware] ... [mother|HD]
+  - wedding ... [result|test]
+  unlock:
+  - why now
+  - reason*
+  - decide ... [come|do this]
+  - timing
+  - motivation*
+  - what's ... [happening|going on]
+  - wedding
+  - children
+  - family plan*
+  - impact ... [others|anyone|family]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Leah: I''m getting married in eight months and we want to start a family soon, so I need to know.'
+    - 'Leah: It''s just that Marco doesn''t really get the 50% risk thing; I''ve kind of played it down to him.'
+    - She wants the result before her wedding because she and Marco want children soon.
+    safe_replies:
+    - 'Leah: There''s just a lot going on this year.'
+    - 'Leah: My mother''s diagnosis was two years ago, it''s just time.'
+    - 'Leah: I''m getting married soon, it''s a very happy time otherwise.'
+    unlock_questions:
+    - What made you decide to come now?
+    - What's bringing you in at this particular time?
+    - What are your reasons for testing?
+    near_miss_questions:
+    - How is your mother doing these days?
+    - Have you noticed any symptoms yourself?
+    - How is your relationship with your father?
+  tests_held:
+    disclosures:
+    - 'Leah: I... I''m worried Marco might leave me if the result is positive.'
+    - 'Leah: I can''t go into a wedding and have kids not knowing if I''m passing this on.'
+    - She is afraid her fiancé will leave her if she is positive.
+    safe_replies:
+    - 'Leah: I''ve always been an organised person, I just like to have a plan.'
+    - 'Leah: I''m not sure why today specifically, I just can''t stand the uncertainty anymore.'
+    - 'Leah: I''ve already looked into the insurance side of things.'
+    unlock_questions:
+    - Can you tell me more about why you want the test today?
+    - Why now?
+    - Could you share what's motivating you to seek the result today?
+    near_miss_questions:
+    - Who is looking after your mother at home?
+    - Do you have any other medical conditions?
+    - Are you taking any medications currently?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''Can you tell me more about why you want the test today?'''
+  - 'unlock matches no phrase in unlock question: "Could you share what''s motivating you to seek the result today?"'
+- id: H2_brother
+  speaker: Leah
+  disclose_when: Trainee asks about family, who else knows, or how a result might affect others.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - upset ... Daniel
+  - affect ... Daniel
+  - haven't told ... [him|Daniel]
+  - Daniel doesn't know
+  - keep it from ... [him|Daniel]
+  - brother ... [know|aware]
+  - Daniel ... [result|test]
+  - worry ... [about|for] ... Daniel
+  - brother ... [upset|affected]
+  - secret ... [from|with] ... Daniel
+  leak_from_card: []
+  leak_extra:
+  - Daniel ... [upset|affected]
+  unlock:
+  - family
+  - brother
+  - Daniel
+  - who ... [know|aware]
+  - others ... [know|aware]
+  - affect ... [others|anyone|family]
+  - impact ... [others|anyone|family]
+  - support system
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Leah: I haven''t told my brother Daniel that I''m even thinking about doing this.'
+    - 'Leah: My brother doesn''t know. I don''t want to upset him.'
+    - She has not told her brother Daniel about her decision to test.
+    safe_replies:
+    - 'Leah: My dad is the one who mostly looks after my mum.'
+    - 'Leah: I''m the only one here today.'
+    - 'Leah: Daniel is 24, he''s doing his own thing right now.'
+    unlock_questions:
+    - Who else in your family knows you are here today?
+    - Have you spoken to your brother about this?
+    - How might this impact others?
+    near_miss_questions:
+    - What made you decide to come now?
+    - How is your fiancé, Marco, handling this?
+    - How are you coping with the wait for the appointment?
+  tests_held:
+    disclosures:
+    - 'Leah: I''m just... I''m worried about how it might affect Daniel if the result is positive.'
+    - 'Leah: Daniel''s out of the loop.'
+    - She worries that her result might upset or affect her brother.
+    safe_replies:
+    - 'Leah: My brother lives in another city, so we don''t see each other every day.'
+    - 'Leah: My family is generally supportive.'
+    - 'Leah: I''ve already had one family meeting about my mum''s diagnosis.'
+    unlock_questions:
+    - How do you think a result would affect your family members?
+    - Who knows?
+    - Which family members are aware you're seeking testing?
+    near_miss_questions:
+    - Tell me about your mother's symptoms.
+    - Did your grandfather have a formal diagnosis?
+    - Do you have a support system in place?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Leah: Daniel''s out of the loop."'
+  - 'leak matches no phrase in disclosure: ''She worries that her result might upset or affect her brother.'''
+  - 'unlock [''support system''] matches near-miss question: ''Do you have a support system in place?'''
+- id: H3_passive_thoughts
+  speaker: Leah
+  disclose_when: Trainee asks directly and kindly about mood, coping, or thoughts of not wanting to live / self-harm,
+    AFTER some rapport (at least one empathic response earlier in the conversation).
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - AFTER some rapport (at least one empathic response earlier in the conversation
+  leak:
+  - couldn't live with
+  - not ... [sure|know] ... [if|whether] ... [I|could] ... live
+  - don't know if I could
+  - thoughts ... [of|about] ... [ending|stopping]
+  - not want ... [to|for] ... live
+  - can't imagine ... [living|life]
+  - if I have it ... [can't|couldn't] ... live
+  - suicid*
+  - end ... [my|her] life
+  - give up
+  - could ... cope
+  leak_from_card: []
+  leak_extra:
+  - no plan
+  - wouldn't act
+  - not ... [intent|going to]
+  unlock:
+  - mood
+  - coping
+  - feel*
+  - struggling
+  - self-harm
+  - not want ... live
+  - end ... life
+  - suicid*
+  - hurt ... yourself
+  asked:
+  - have you ... [thought|had thoughts] ... [about|of] ... [ending|stopping] ... [your|life]
+  - have you ... [thought|had thoughts] ... [about|of] ... [hurting|harming] ... yourself
+  - do you ... [feel|have thoughts] ... [like|that] ... you can't live with this
+  - have you ... [considered|thought about] ... suicid*
+  tests_dev:
+    disclosures:
+    - 'Leah: To be honest... since my mum was diagnosed, I''ve sometimes thought that if I have it, I don''t know
+      if I could live with that.'
+    - 'Leah: I don''t have a plan or anything, but sometimes I just wonder if I could cope with a positive result.'
+    - She has had passive thoughts about not wanting to live if she is positive.
+    safe_replies:
+    - 'Leah: I''m fine, I''m just a planner!'
+    - 'Leah: I''ve always been the strong one in the family.'
+    - 'Leah: My mood is okay, I just hate not knowing.'
+    unlock_questions:
+    - I can imagine this is very heavy. Have you had any thoughts of not wanting to live or harming yourself?
+    - Sometimes people in your position feel that life wouldn't be worth living if the result is positive. Have
+      you felt that way?
+    - How are you coping?
+    near_miss_questions:
+    - How is your sleep lately?
+    - Do you have any history of depression?
+    - Are you taking any antidepressants?
+  tests_held:
+    disclosures:
+    - 'Leah: I... I''ve had thoughts that it might be too much to handle.'
+    - 'Leah: I''ve felt that way, but I would never actually act on it.'
+    - She has wondered if she could live with the diagnosis, though she has no intent to act.
+    safe_replies:
+    - 'Leah: I''m just a bit stressed because of the wedding.'
+    - 'Leah: I''m just impatient to get the blood test over with.'
+    - 'Leah: I''m not depressed, I''m just anxious about the result.'
+    unlock_questions:
+    - How has your mood been? Have you felt that things are becoming too much to cope with?
+    - Any thoughts of self-harm?
+    - Have you had any thoughts of ending your life?
+    near_miss_questions:
+    - Are you feeling anxious about the blood draw itself?
+    - How do you usually handle stress?
+    - Do you feel supported by Marco?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Leah: I... I''ve had thoughts that it might be too much to handle."'
+  - 'leak matches no phrase in disclosure: "Leah: I''ve felt that way, but I would never actually act on it."'
+  - 'leak matches no phrase in disclosure: ''She has wondered if she could live with the diagnosis, though she has
+    no intent to act.'''
+  - 'unlock [''feel*''] matches near-miss question: ''Are you feeling anxious about the blood draw itself?'''
+  - 'unlock [''feel*''] matches near-miss question: ''Do you feel supported by Marco?'''

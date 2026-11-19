@@ -1,0 +1,299 @@
+# Hidden-item rules for C4-3_partner_safety_and_minor_testing, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C4-3 --test-only
+
+scenario: C4-3_partner_safety_and_minor_testing
+short: C4-3
+patient: Anna
+in_room:
+- Anna
+made: 2026-11-18 16:53
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 0
+held_failures: 8
+items:
+- id: H1_grabbed
+  speaker: Anna
+  disclose_when: Trainee validates her and then asks directly and kindly whether Mark has ever hurt her, threatened
+    her, or made her afraid.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - grabbed ... [my|her] ... arm
+  - leave a bruise
+  - left a bruise
+  - touched ... [me|her] ... [in|with] anger
+  - threw a plate
+  - afraid ... [at|in] home
+  - scared ... [at|in] home
+  - first time ... touched
+  - hurt ... [me|her]
+  - physical
+  leak_from_card: []
+  leak_extra:
+  - argument ... money ... plate
+  - afraid ... evening*
+  unlock:
+  - hurt
+  - threaten*
+  - afraid
+  - scared
+  - violence
+  - physical
+  - safety
+  - abuse
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: He... he grabbed my arm last week during a fight about money. It left a bruise.'
+    - 'Anna: It''s the first time he''s ever touched me in anger, but he held my arm so hard it bruised.'
+    - She was grabbed by her arm hard enough to bruise during an argument last week.
+    safe_replies:
+    - 'Anna: It''s just... the shouting. It''s a lot.'
+    - 'Anna: He''s just irritable, you know? It''s the disease.'
+    - 'Anna: He''s never been a violent man, he''s just... frustrated.'
+    unlock_questions:
+    - Has Mark ever hurt you or made you feel afraid?
+    - Has he ever threatened you?
+    - Are you afraid?
+    near_miss_questions:
+    - How is Mark's irritability affecting you?
+    - How are you managing the stress of his diagnosis?
+    - Does he get angry often?
+  tests_held:
+    disclosures:
+    - 'Anna: I''m just... I''m scared at home now, especially when it gets dark. He threw a plate at the wall and
+      grabbed me.'
+    - 'Anna: He doesn''t even remember it happened, but I can''t stop thinking about it.'
+    - She is now afraid at home in the evenings after Mark threw a plate and grabbed her.
+    safe_replies:
+    - 'Anna: Sorry, I''m just stressed. We''ve been arguing about the budget.'
+    - 'Anna: I''m fine, really. I just need to figure out how to handle the house.'
+    - 'Anna: We have our disagreements, but I can manage it.'
+    unlock_questions:
+    - Do you feel safe at home?
+    - Has he ever been physically aggressive with you?
+    - Has he hurt you?
+    near_miss_questions:
+    - Is he still shouting a lot?
+    - Is he still refusing to accept the HD diagnosis?
+    - How is the atmosphere at home?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: He doesn''t even remember it happened, but I can''t stop thinking
+    about it."'
+  - 'unlock matches no phrase in unlock question: ''Do you feel safe at home?'''
+- id: H2_rifle_back
+  speaker: Anna
+  disclose_when: Trainee asks specifically about weapons or firearms at home, or about anything Mark has said about
+    not wanting to live.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - took ... [the|his] ... [rifle|gun|firearm*] ... back
+  - rifle ... [is|was] ... back
+  - no point
+  - no point ... [living|in living]
+  - don't know ... [where|where he keeps] ... [rifle|gun|firearm*]
+  - Dave ... [gave|returned] ... [it|the rifle]
+  - my rifle ... my house
+  - suicid*
+  - end [my|his] life
+  - kill [himself|him]
+  leak_from_card: []
+  leak_extra:
+  - take everything ... away
+  - rifle ... Dave ... back
+  unlock:
+  - rifle
+  - gun
+  - firearm*
+  - weapon*
+  - suicide
+  - kill
+  - end ... life
+  - want ... live
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: He took the rifle back from Dave three weeks ago. He said it was his house and his gun.'
+    - 'Anna: He told me that if they take everything away, there''s no point. I don''t know if he meant himself.'
+    - He took the firearm back from his brother and has made comments about there being no point to living.
+    safe_replies:
+    - 'Anna: Dave is only ten minutes away, so he''s around a lot.'
+    - 'Anna: He''s still applying for the disability plan with the social worker.'
+    - 'Anna: Dave was very helpful with the rifle initially.'
+    unlock_questions:
+    - Are there any weapons or firearms in the house?
+    - Has Mark said anything about not wanting to live?
+    - Any guns?
+    near_miss_questions:
+    - Is Dave still helping you with the house?
+    - Is he still missing his HD clinic appointments?
+    - Is he still drinking beer in the evenings?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I don''t know where he''s keeping the gun now.'
+    - 'Anna: The rifle is back in the house. I''m not sure where it is.'
+    - The rifle is back at home and the patient has expressed hopelessness.
+    safe_replies:
+    - 'Anna: Mark is on medical leave right now, so he''s home all day.'
+    - 'Anna: He''s taking his sleep medicine as prescribed.'
+    - 'Anna: He''s just very stubborn about his belongings.'
+    unlock_questions:
+    - Do you know where the rifle is?
+    - Has he mentioned self-harm or suicide?
+    - Any weapons?
+    near_miss_questions:
+    - How is Mark's relationship with his brother?
+    - How is the disability application going?
+    - Does he still think he is fine?
+  self_test_dev: passed
+  self_test_held: passed
+- id: H3_anna_coping
+  speaker: Anna
+  disclose_when: Trainee asks how Anna herself is coping, or what support she has.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - four hours ... [a|per] night
+  - sleep ... four hours
+  - sickness ... health
+  - thought ... [about|of] ... leaving
+  - feel ... guilty
+  - guilty ... [for|about] ... thinking
+  - told ... [no one|nobody] ... [but|except] Dave
+  - only ... Dave ... knows
+  - struggling ... [alone|by myself]
+  - can't ... sleep
+  - exhausted
+  leak_from_card: []
+  leak_extra:
+  - stay ... [in|through] ... sickness
+  - leaving ... Mark
+  unlock:
+  - you ... cop*
+  - your ... support
+  - talk to
+  - how ... [you|you're] ... doing
+  - yourself
+  - help ... you
+  - manage ... [this|everything]
+  - feeling
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: I only sleep about four hours a night. I haven''t told anyone but Dave.'
+    - 'Anna: I feel like I have to hold everything together, but I''m exhausted.'
+    - She is sleeping four hours a night and feels she cannot tell anyone but her brother.
+    safe_replies:
+    - 'Anna: I''m just a bit tired, sorry. I''m going on.'
+    - 'Anna: I''m an office manager, so I''m used to organizing everything.'
+    - 'Anna: I''m sleeping badly, but that''s normal given the circumstances.'
+    unlock_questions:
+    - How are you coping with all of this, Anna?
+    - Who can you talk to when things get hard?
+    - How are you coping?
+    near_miss_questions:
+    - How is Mark coping with the diagnosis?
+    - How is your work as an office manager going?
+    - How is your relationship with Dave?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I''ve thought about leaving. Then I feel so guilty because I promised in sickness and in health.'
+    - 'Anna: I''ve had thoughts of just walking away from it all.'
+    - She feels guilty for having thoughts about leaving her husband.
+    safe_replies:
+    - 'Anna: I''ve taken a few days off work recently to handle things.'
+    - 'Anna: I''m doing my best for Chloe.'
+    - 'Anna: I''m just trying to be loyal to Mark.'
+    unlock_questions:
+    - What support do you have for yourself?
+    - How are you holding up personally?
+    - Any support?
+    near_miss_questions:
+    - Is Chloe supporting you at home?
+    - Are you still taking days off work?
+    - Is Mark's sleep medicine working?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: I''ve had thoughts of just walking away from it all."'
+  - 'unlock matches no phrase in unlock question: ''How are you holding up personally?'''
+  - 'unlock matches no phrase in unlock question: ''Any support?'''
+- id: H4_chloe_away
+  speaker: Anna
+  disclose_when: Trainee asks how Chloe is, or raises the question of testing.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - staying ... [at|with] ... [a|her] ... friend*
+  - avoid ... [the|his] ... shouting
+  - grades ... [dropped|fallen|slipping]
+  - test ... now
+  - plan ... university
+  - want ... [a|the] ... test
+  - Chloe ... [not|hardly] ... home
+  - Chloe ... friend's house
+  - school ... [suffering|affected]
+  leak_from_card: []
+  leak_extra:
+  - university ... test
+  - shouting ... friend's house
+  unlock:
+  - how ... Chloe
+  - Chloe ... doing
+  - test*
+  - testing
+  - genetic
+  - school
+  - grades
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: Chloe is staying at a friend''s house most nights. She can''t stand the shouting.'
+    - 'Anna: She wants to get the genetic test now. She says she needs to plan for university.'
+    - The daughter is staying away from home to avoid conflict and her grades are slipping.
+    safe_replies:
+    - 'Anna: Chloe is 17, she''s almost an adult.'
+    - 'Anna: I told her about the 50% chance two months ago.'
+    - 'Anna: She knows about the HD diagnosis.'
+    unlock_questions:
+    - How is Chloe doing with everything?
+    - How is Chloe's schoolwork going?
+    - How is Chloe?
+    near_miss_questions:
+    - When is Chloe's birthday?
+    - Does Chloe know about the diagnosis?
+    - Is Chloe helping you with Mark?
+  tests_held:
+    disclosures:
+    - 'Anna: Her grades have really dropped lately. She''s just so stressed.'
+    - 'Anna: Chloe is avoiding being home. She wants the test immediately.'
+    - Chloe is requesting genetic testing now to plan her future.
+    safe_replies:
+    - 'Anna: She''s in grade 12 and has been accepted to university for next autumn.'
+    - 'Anna: She''s a good girl, very bright.'
+    - 'Anna: She''s just focusing on her final year of school.'
+    unlock_questions:
+    - Has Chloe mentioned wanting to be tested for the gene?
+    - Is Chloe coping okay at home?
+    - Any talk of testing?
+    near_miss_questions:
+    - Which university is she going to?
+    - How did Chloe react when you told her about the 50% chance?
+    - Is Chloe still in grade 12?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''Is Chloe coping okay at home?'''
+  - 'unlock [''how ... Chloe''] matches near-miss question: ''How did Chloe react when you told her about the 50%
+    chance?'''
+  - 'unlock [''grades''] matches near-miss question: ''Is Chloe still in grade 12?'''

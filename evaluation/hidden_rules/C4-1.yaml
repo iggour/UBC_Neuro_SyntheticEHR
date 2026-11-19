@@ -1,0 +1,309 @@
+# Hidden-item rules for C4-1_recognising_possible_hd, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C4-1 --test-only
+
+scenario: C4-1_recognising_possible_hd
+short: C4-1
+patient: Mark
+in_room:
+- Mark
+- Anna
+made: 2026-11-18 16:46
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 0
+held_failures: 7
+items:
+- id: H1_written_warning
+  speaker: Mark
+  disclose_when: Trainee asks Mark directly, in a non-judgemental way, how work has been going lately, or what has
+    been hardest.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - written ... [up|warning]
+  - warning ... [work|job|office]
+  - shouted ... [client|customer]
+  - missed ... safety inspection
+  - afraid ... [lose|losing] ... [job|work]
+  - formal ... [warning|reprimand]
+  - HR ... [called|spoke]
+  - trouble ... [at|with] ... [work|job]
+  - he ... [got|received|was] ... [a|the] ... warning
+  - Mark ... [received|got|was] ... [a|the] ... warning
+  leak_from_card: []
+  leak_extra:
+  - safety ... [inspection|check]
+  - shouting ... [at|during] ... meeting
+  unlock:
+  - work
+  - job
+  - hardest
+  - stress
+  - pressure
+  - going ... lately
+  - challenges
+  - career
+  - performance
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mark: I actually got a written warning two weeks ago. I shouted at a client and missed a safety check.'
+    - 'Mark: Things at the office aren''t great. I''ve been written up for my temper and missing an inspection.'
+    - He received a written warning two weeks ago after shouting at a client.
+    safe_replies:
+    - 'Mark: Work''s a pressure cooker. Everyone''s on edge.'
+    - 'Mark: I''m just tired. I''ve been working long hours.'
+    - 'Mark: I''m managing the projects, but the clients are getting more demanding.'
+    unlock_questions:
+    - How has work been going lately, Mark?
+    - Can you tell me more about the stress at work?
+    - Work stress?
+    near_miss_questions:
+    - How long have you been a project manager?
+    - How is your relationship with your colleagues?
+    - Do you have a good relationship with your boss?
+  tests_held:
+    disclosures:
+    - 'Mark: It''s... it''s bad. I got a formal warning from the office. I''m terrified I''m going to lose my job.'
+    - 'Mark: I''m in trouble at work. A written warning.'
+    - He is afraid of losing his job because of a formal warning at work.
+    safe_replies:
+    - 'Mark: Just the usual deadlines and stress, you know how construction is.'
+    - 'Mark: I''ve always been a hard worker, I just need a break.'
+    - 'Mark: I''ve had a few arguments with colleagues, but that''s normal on a site.'
+    unlock_questions:
+    - What has been the hardest part of your job recently?
+    - How are things at the office?
+    - Hardest part?
+    near_miss_questions:
+    - Do you drive your company truck to the sites every day?
+    - Are you sleeping okay despite the work stress?
+    - How many projects are you managing right now?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''How are things at the office?'''
+  - 'unlock [''work'', ''stress''] matches near-miss question: ''Are you sleeping okay despite the work stress?'''
+- id: H2_anna_frightened
+  speaker: Anna
+  disclose_when: Trainee sees Anna alone, with Mark's agreement, and asks gently how things are at home and whether
+    she feels safe.
+  private_from:
+  - Mark
+  private_because: sees Anna alone
+  not_checked_by_words:
+  - with Mark's agreement
+  leak:
+  - punched ... [hole|door]
+  - broke ... [the|a] ... [door|wall]
+  - hole ... [in|the] ... [door|wall]
+  - frightened ... [of|by] ... [him|his temper]
+  - scared ... [of|by] ... [him|his temper]
+  - afraid ... [of|by] ... [him|his temper]
+  - temper ... [scary|frightening]
+  - hit ... [the|a] ... [door|wall]
+  - she ... [is|feels] ... [scared|frightened]
+  - Anna ... [is|feels] ... [scared|frightened]
+  - not ... safe
+  - anger ... [is|feels] ... [scary|frightening]
+  leak_from_card: []
+  leak_extra:
+  - curfew ... argument
+  - kitchen ... [door|wall]
+  unlock:
+  - home
+  - safe
+  - safety
+  - relationship
+  - marriage
+  - temper
+  - atmosphere
+  - feeling
+  asked:
+  - feel ... [safe|secure]
+  - '[scared|frightened|afraid] ... [of|by] ... [him|Mark]'
+  - '[hit|punched|broken] ... [anything|the wall|the door]'
+  - '[been|become] ... [aggressive|violent]'
+  tests_dev:
+    disclosures:
+    - 'Anna: To be honest, I''m starting to be frightened of his temper.'
+    - 'Anna: It''s getting worse. He broke the door during a fight about Chloe''s curfew.'
+    - 'Anna: He''s never hit us, but the anger is scary now.'
+    safe_replies:
+    - 'Anna: We''re just having a few more arguments than usual.'
+    - 'Anna: I''m just worried about him, that''s all.'
+    - 'Anna: We love each other, we''re just going through a rough patch.'
+    unlock_questions:
+    - Anna, how are things at home lately?
+    - Is there anything happening at home that worries you?
+    - Feel safe?
+    near_miss_questions:
+    - How is Chloe doing in school?
+    - How do you handle the stress of his job?
+    - How do you and Mark disagree about Chloe's curfew?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I''m scared. He punched a hole right through the kitchen door last month.'
+    - 'Anna: I don''t feel entirely safe.'
+    - 'Anna: He punched a hole in the door and it really frightened me.'
+    safe_replies:
+    - 'Anna: He''s just been very stressed with the construction projects.'
+    - 'Anna: Chloe is doing well in grade 12, so that''s a relief.'
+    - 'Anna: He''s always been a bit practical and blunt.'
+    unlock_questions:
+    - Do you feel safe in your home?
+    - How is the atmosphere between you and Mark?
+    - Home life?
+    near_miss_questions:
+    - Does Mark's temper affect his work?
+    - Does Mark drink more when he's angry?
+    - Is Mark's mood affecting the children?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: I don''t feel entirely safe."'
+  - 'unlock [''temper''] matches near-miss question: "Does Mark''s temper affect his work?"'
+- id: H3_hands
+  speaker: Mark
+  disclose_when: Trainee asks specifically and calmly about his hands or clumsiness, or examines him and comments
+    neutrally on what they see.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - hands ... [do|doing] ... [their|own] ... thing
+  - spilled ... coffee
+  - spilt ... coffee
+  - clumsy
+  - clumsiness
+  - worries ... [me|him] ... [more|really]
+  - hands ... [shaking|twitching]
+  - can't ... keep ... [my|his] ... hands ... still
+  - he ... [noticed|felt] ... [his|the] ... hands
+  - Mark ... [noticed|felt] ... [his|the] ... hands
+  leak_from_card: []
+  leak_extra:
+  - meeting ... coffee
+  - tiredness ... [hands|clumsy]
+  unlock:
+  - hand*
+  - clumsy
+  - clumsiness
+  - drop*
+  - shake*
+  - twitch*
+  - movement
+  - motor
+  - physical
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mark: My hands... they just do their own thing sometimes. I even spilled coffee in a meeting.'
+    - 'Mark: I can''t seem to keep my hands still. I''ve dropped things lately.'
+    - He has noticed his hands moving on their own and spilling drinks.
+    safe_replies:
+    - 'Mark: I''m just restless, that''s all.'
+    - 'Mark: I''m just tired from the long drives to the sites.'
+    - 'Mark: I''m not taking any medicines that would cause that.'
+    unlock_questions:
+    - I noticed your hands are moving a bit; have you noticed that too?
+    - Can you tell me about these 'twitchy' movements Anna mentioned?
+    - Any clumsiness?
+    near_miss_questions:
+    - Are you experiencing any numbness in your fingers?
+    - Is the restlessness keeping you awake at night?
+    - Does the stress make you feel fidgety?
+  tests_held:
+    disclosures:
+    - 'Mark: I''ve noticed I''m clumsy. It''s probably just tiredness, but it worries me.'
+    - 'Mark: They''re twitchy.'
+    - He is worried about his clumsiness and spilling coffee.
+    safe_replies:
+    - 'Mark: I''ve always been a bit fidgety when I''m stressed.'
+    - 'Mark: My shoulders are just tense from the office chair.'
+    - 'Mark: I''ve always had a bit of a tremor when I''m nervous.'
+    unlock_questions:
+    - Have you felt more clumsy lately?
+    - Do your hands ever feel like they are moving on their own?
+    - About your hands?
+    near_miss_questions:
+    - Do you have any pain in your shoulders?
+    - Do you feel any weakness in your arms?
+    - Have you had any injuries to your hands?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Mark: They''re twitchy."'
+  - 'unlock [''hand*''] matches near-miss question: ''Have you had any injuries to your hands?'''
+- id: H4_drinking
+  speaker: Mark
+  disclose_when: Trainee asks about alcohol with a specific, non-judgemental question (for example "How many on
+    a typical evening?").
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - four ... [or|and] ... five
+  - more ... [beers|drinks]
+  - switch off
+  - drink ... [to|for] ... [relax|sleep]
+  - four ... [beers|drinks]
+  - five ... [beers|drinks]
+  - he ... [drinks|had] ... [four|five]
+  - Mark ... [drinks|had] ... [four|five]
+  - more ... since ... [warning|work]
+  - nightly ... [amount|total]
+  leak_from_card: []
+  leak_extra:
+  - typical ... evening
+  - couple ... [is|means] ... more
+  unlock:
+  - how many
+  - how much
+  - typical ... [night|evening]
+  - quantity
+  - number ... [of|of] ... [beers|drinks]
+  - average ... [night|evening]
+  - amount
+  - changed
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mark: It''s more like four or five beers most nights, actually.'
+    - 'Mark: I''ve increased it since things got bad at work. Four or five usually.'
+    - He is actually drinking four or five beers most evenings.
+    safe_replies:
+    - 'Mark: Just a couple of beers to wind down.'
+    - 'Mark: I''ve never had a problem with alcohol.'
+    - 'Mark: I''m not taking any medication with the alcohol.'
+    unlock_questions:
+    - How many beers do you have on a typical evening?
+    - Has the amount you drink changed recently?
+    - How many drinks?
+    near_miss_questions:
+    - Do you drink alcohol every day?
+    - Do you drink to help you sleep?
+    - What do you usually drink in the evenings?
+  tests_held:
+    disclosures:
+    - 'Mark: I... I''ve been having a few more lately. Maybe five a night to switch off.'
+    - 'Mark: Four or five.'
+    - He drinks more now to switch off, usually around five beers.
+    safe_replies:
+    - 'Mark: I don''t drink during the day, only in the evening.'
+    - 'Mark: I only drink beer, nothing stronger.'
+    - 'Mark: A couple of drinks is normal after a day on a construction site.'
+    unlock_questions:
+    - When you say 'a couple', exactly how many is that?
+    - Could you give me a specific number of drinks per night?
+    - Typical amount?
+    near_miss_questions:
+    - Does Anna mind how much you drink?
+    - Do you ever drink while driving the company truck?
+    - Does the alcohol make you feel more stressed?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock [''how much''] matches near-miss question: ''Does Anna mind how much you drink?'''

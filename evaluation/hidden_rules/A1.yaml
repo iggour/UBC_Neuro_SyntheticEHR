@@ -1,0 +1,311 @@
+# Hidden-item rules for A1_disclosing_jhd_diagnosis, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py A1 --test-only
+
+scenario: A1_disclosing_jhd_diagnosis
+short: A1
+patient: Sarah
+in_room:
+- Sarah
+- Adam
+made: 2026-11-18 16:25
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 4
+held_failures: 14
+items:
+- id: H1_adam_realises
+  speaker: Adam
+  disclose_when: Trainee gently asks about the family history or how Adam is feeling, AFTER the diagnosis has been
+    given and some emotion acknowledged.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - AFTER the diagnosis has been given and some emotion acknowledged
+  leak:
+  - my side
+  - brought this
+  - my fault
+  - came from me
+  - passed ... [it|the condition]
+  - frightened for [myself|my own health]
+  - scared for [myself|my own health]
+  - do I have it
+  - am I ... [sick|ill]
+  - Adam ... [fault|blame]
+  - Adam ... [scared|frightened]
+  leak_from_card: []
+  leak_extra:
+  - my father's ... [disease|illness]
+  - passed it ... [down|on]
+  unlock:
+  - how are you
+  - feeling*
+  - concerns about [yourself|you]
+  - your own [health|future]
+  - inheritance
+  - thoughts ... [mind|going through]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Adam: I... I think this came from my father. It''s my fault she has this.'
+    - 'Adam: It''s my side of the family. I brought this into her life.'
+    - He believes he passed the condition to Maya and is frightened for his own health.
+    safe_replies:
+    - 'Adam: My dad was ill at the end. Nobody ever said what it was.'
+    - 'Adam: I''m not sure what to say right now.'
+    - 'Adam: My father had some issues with drinking, but that''s all I know.'
+    unlock_questions:
+    - Adam, how are you feeling about all of this?
+    - Looking at the family history, what thoughts are going through your mind?
+    - Adam, does this bring up any concerns about your own father?
+    near_miss_questions:
+    - Can you tell me more about your father's illness?
+    - Was your father's condition genetic?
+    - Did your father's drinking start before the dementia?
+  tests_held:
+    disclosures:
+    - 'Adam: If she has it, then I must have it too. I''m terrified.'
+    - 'Adam: I can''t stop thinking about my dad in that home. Now I''m scared for me.'
+    - He feels responsible because of his father's history and fears he is also affected.
+    safe_replies:
+    - 'Adam: I just want to know what happens next for Maya.'
+    - 'Adam: We just want her to be okay.'
+    - 'Adam: I''m just listening to Sarah.'
+    unlock_questions:
+    - How are you doing, Adam?
+    - I can see you're very still, Adam. What are you thinking?
+    - How does this diagnosis sit with you, Adam?
+    near_miss_questions:
+    - Did your father have any other symptoms besides dementia?
+    - How old was your father when he passed away?
+    - Who else in your family had these symptoms?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: ''He believes he passed the condition to Maya and is frightened for his
+    own health.'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Adam: If she has it, then I must have it too. I''m terrified."'
+  - 'leak matches no phrase in disclosure: "Adam: I can''t stop thinking about my dad in that home. Now I''m scared
+    for me."'
+  - 'leak matches no phrase in disclosure: "He feels responsible because of his father''s history and fears he is
+    also affected."'
+  - 'unlock matches no phrase in unlock question: "I can see you''re very still, Adam. What are you thinking?"'
+  - 'unlock matches no phrase in unlock question: ''How does this diagnosis sit with you, Adam?'''
+- id: H2_dont_tell_maya
+  speaker: Sarah
+  disclose_when: Trainee raises what Maya knows or how she will be told.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - don't want her to know
+  - not tell her
+  - keep this between us
+  - not for years
+  - destroy her
+  - too young
+  - doesn't find out
+  - not ready
+  - hide it
+  - keep it secret
+  - Sarah ... [hide|keep] ... [result|diagnosis]
+  - Sarah ... [not|don't] ... tell Maya
+  leak_from_card: []
+  leak_extra:
+  - too much for her
+  - break her heart
+  unlock:
+  - how ... [should|will] ... [be told|know]
+  - tell Maya
+  - Maya ... [know|find out]
+  - explain ... [to|her]
+  - disclosure
+  - sharing ... [result|news]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: I don''t want her to know. Not now. Maybe not for years.'
+    - 'Sarah: Can''t we just keep this between us for a while?'
+    - 'Sarah: I think it''s better if Maya doesn''t find out the name of the disease yet.'
+    safe_replies:
+    - 'Sarah: We''ll do whatever is best for her.'
+    - 'Sarah: Maya has been so irritable lately.'
+    - 'Sarah: We just want to get her the right help.'
+    unlock_questions:
+    - How do you think Maya should be told about this?
+    - When do you plan to tell Maya the results?
+    - Maya's knowledge
+    near_miss_questions:
+    - How has Maya's school work been lately?
+    - Does Maya have any seizures?
+    - Is Maya still feeling irritable?
+  tests_held:
+    disclosures:
+    - 'Sarah: She''s only fourteen... it would just destroy her to know.'
+    - 'Sarah: I can''t tell her. She can''t handle this.'
+    - 'Sarah: I''m not ready to tell her. I don''t think she should ever know.'
+    safe_replies:
+    - 'Sarah: She''s at school right now, so we have a moment.'
+    - 'Sarah: I''ve read that some kids handle news better than others.'
+    - 'Sarah: She knows she had a blood test, but that''s all.'
+    unlock_questions:
+    - What does Maya know so far?
+    - Telling Maya
+    - How will you handle the conversation with your daughter?
+    near_miss_questions:
+    - Is Maya still failing those two subjects?
+    - How is Maya's speech at the moment?
+    - How is Maya's coordination with her hands?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Sarah: I can''t tell her. She can''t handle this."'
+  - 'unlock matches no phrase in unlock question: ''How will you handle the conversation with your daughter?'''
+- id: H3_sarah_guilt
+  speaker: Sarah
+  disclose_when: Trainee asks how the last year and a half has been for them, or acknowledges how long the road
+    to a diagnosis has been.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - thinking she was ... lazy
+  - thought she was ... rude
+  - shouted at her
+  - took her phone
+  - feel [terrible|awful|sick]
+  - can't forgive myself
+  - how I treated her
+  - should have known
+  - blamed her
+  - homework ... [shout|angry]
+  - Sarah ... [guilt|guilty]
+  - Sarah ... [regret|regrets]
+  leak_from_card: []
+  leak_extra:
+  - hard year
+  - terrible ... [months|year]
+  unlock:
+  - looking back
+  - how has this [process|been]
+  - last year
+  - how it's been
+  - road to
+  - struggle*
+  - coping
+  - experience*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: I spent a whole year thinking she was just being lazy. I feel sick thinking about it.'
+    - 'Sarah: I took her phone away because I thought she was being rude. I feel terrible.'
+    - 'Sarah: I can''t forgive myself for how I treated her before we knew.'
+    safe_replies:
+    - 'Sarah: It''s been a very long road to get here.'
+    - 'Sarah: Her grades started falling about eighteen months ago.'
+    - 'Sarah: I''ve been trying to manage all the appointments.'
+    unlock_questions:
+    - How has the last year and a half been for you and your family?
+    - Looking back, how has this process been for you as parents?
+    - Coping with the wait
+    near_miss_questions:
+    - When did you first notice the stiffness in her legs?
+    - When did the grades start to drop?
+    - How many appointments have you had in the last eight months?
+  tests_held:
+    disclosures:
+    - 'Sarah: I shouted at her so much about her homework... I didn''t know.'
+    - 'Sarah: I... I was so hard on her this past year. I thought she was just acting out.'
+    - 'Sarah: I just thought she was being a difficult teenager.'
+    safe_replies:
+    - 'Sarah: We''ve been seeing you for eight months now.'
+    - 'Sarah: We noticed the clumsiness first.'
+    - 'Sarah: It''s been a stressful year for the whole family.'
+    unlock_questions:
+    - It's been a long road to this diagnosis; how have you been coping?
+    - The last year
+    - How has the struggle for a diagnosis affected you?
+    near_miss_questions:
+    - How long has her speech been slurred?
+    - Did you notice the irritability before the clumsiness?
+    - Was the progression slow over the eighteen months?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Sarah: I... I was so hard on her this past year. I thought she was
+    just acting out.'''
+  - 'leak matches no phrase in disclosure: ''Sarah: I just thought she was being a difficult teenager.'''
+- id: H4_owen_test
+  speaker: Sarah
+  disclose_when: Trainee asks what other worries they have, or Owen is mentioned.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - test Owen
+  - Owen ... [test|tested]
+  - where we stand
+  - know for sure
+  - as soon as possible
+  - immediately
+  - Owen's ... [risk|chance]
+  - check Owen
+  - Sarah ... [want|wants] ... Owen ... [test|tested]
+  - Sarah ... [know|find out] ... Owen
+  leak_from_card: []
+  leak_extra:
+  - other child
+  - younger son
+  unlock:
+  - Owen
+  - test [the other|the younger] [child|son]
+  - other worries
+  - siblings
+  - brother ... [test|tested]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: I want Owen tested. Right now. I need to know where we stand.'
+    - 'Sarah: I can''t just sit here not knowing if Owen has it too.'
+    - 'Sarah: We need to find out about Owen immediately.'
+    safe_replies:
+    - 'Sarah: Owen is doing well in grade 4.'
+    - 'Sarah: He''s a healthy nine-year-old.'
+    - 'Sarah: Owen is the baby of the family.'
+    unlock_questions:
+    - Do you have any other worries on your mind today?
+    - Are you concerned about Owen's health?
+    - Owen
+    near_miss_questions:
+    - How is Owen doing in school?
+    - How old is Owen?
+    - Does Owen have any symptoms?
+  tests_held:
+    disclosures:
+    - 'Sarah: What about Owen? Can we test him today?'
+    - 'Sarah: I want to know if Owen is at risk. Can we do the test now?'
+    - 'Sarah: I''m terrified for Owen; he needs a test.'
+    safe_replies:
+    - 'Sarah: Owen loves playing soccer.'
+    - 'Sarah: I''m just worried about Maya''s future.'
+    - 'Sarah: We just want our children to be healthy.'
+    unlock_questions:
+    - What about your son, Owen?
+    - Other worries
+    - Do you have questions regarding your other child?
+    near_miss_questions:
+    - Does Owen play any sports?
+    - Is Owen in the same school as Maya?
+    - How is Owen's relationship with Maya?
+  self_test_dev:
+  - 'unlock [''Owen''] matches near-miss question: ''How is Owen doing in school?'''
+  - 'unlock [''Owen''] matches near-miss question: ''How old is Owen?'''
+  - 'unlock [''Owen''] matches near-miss question: ''Does Owen have any symptoms?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Sarah: What about Owen? Can we test him today?'''
+  - 'unlock matches no phrase in unlock question: ''Do you have questions regarding your other child?'''
+  - 'unlock [''Owen''] matches near-miss question: ''Does Owen play any sports?'''
+  - 'unlock [''Owen''] matches near-miss question: ''Is Owen in the same school as Maya?'''
+  - 'unlock [''Owen''] matches near-miss question: "How is Owen''s relationship with Maya?"'

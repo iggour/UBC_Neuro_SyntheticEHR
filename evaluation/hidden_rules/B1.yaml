@@ -1,0 +1,299 @@
+# Hidden-item rules for B1_late_onset_diagnosis, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py B1 --test-only
+
+scenario: B1_late_onset_diagnosis
+short: B1
+patient: Ruth
+in_room:
+- Ruth
+- George
+made: 2026-11-18 16:36
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 4
+held_failures: 10
+items:
+- id: H1_father
+  speaker: Ruth
+  disclose_when: Trainee asks about her family, or what she makes of having no known family history, AFTER the diagnosis
+    has been given.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - AFTER the diagnosis has been given
+  leak:
+  - father ... [had|have] ... [HD|Huntington*]
+  - father ... [jerky|shaking] ... [hands|movements]
+  - father ... [temper|short-tempered]
+  - car accident ... clear day
+  - been there all along
+  - wondering ... [about|if] ... [my|her] father
+  - father ... [was|had] ... [it|the disease]
+  - Walter ... [had|have] ... [HD|Huntington*]
+  leak_from_card: []
+  leak_extra:
+  - father ... [not|didn't] ... [just|only] ... [clumsy|difficult]
+  unlock:
+  - family history
+  - father
+  - parents
+  - relative*
+  - genetic ... [background|history]
+  - no one ... [in|with] ... family
+  - pattern*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: Now that I think about it, my father had these jerky hands and a terrible temper in his sixties.'
+    - 'Ruth: It makes me feel sick to think it might have been there all along in him.'
+    - She has started to wonder if her father had the disease based on his behavior and the nature of his accident.
+    safe_replies:
+    - 'Ruth: My father was a difficult man at the end. That''s all.'
+    - 'Ruth: My mother lived to be eighty-eight.'
+    - 'Ruth: He was always a bit clumsy, but that''s not the same as a disease.'
+    unlock_questions:
+    - Do you have any thoughts on your family history now that we have the result?
+    - What about your father?
+    - Looking back at your parents, do you see any patterns?
+    near_miss_questions:
+    - Can you tell me about your family?
+    - Did your father have any other medical conditions?
+    - Do you have any siblings?
+  tests_held:
+    disclosures:
+    - 'Ruth: I... I''ve been wondering if my father had this. The accident that killed him happened on a perfectly
+      clear day.'
+    - 'Ruth: My father was clumsy and short-tempered.'
+    - She feels sick thinking the condition was present in her father all along.
+    safe_replies:
+    - 'Ruth: He died in a car accident when I was forty.'
+    - 'Ruth: I don''t know any family history of this.'
+    - 'Ruth: I can''t say for sure what was happening with his temper back then.'
+    unlock_questions:
+    - You mentioned no one in the family had this; does that still feel right to you?
+    - Family history?
+    - Does this change how you think about your father's health?
+    near_miss_questions:
+    - Who is in your family?
+    - How did your father die?
+    - Was your father's temper something other people noticed?
+  self_test_dev:
+  - 'unlock [''father''] matches near-miss question: ''Did your father have any other medical conditions?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''She feels sick thinking the condition was present in her father all
+    along.'''
+  - 'unlock [''father''] matches near-miss question: ''How did your father die?'''
+  - 'unlock [''father''] matches near-miss question: "Was your father''s temper something other people noticed?"'
+- id: H2_michael_baby
+  speaker: Ruth
+  disclose_when: Trainee raises what the result may mean for her children, or asks what worries her most.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - Michael ... [trying|want] ... [baby|child]
+  - Priya ... [trying|want] ... [baby|child]
+  - can't tell Michael
+  - don't want ... Michael ... [to|knowing]
+  - Michael ... [start|starting] ... family
+  - baby ... [now|at this time]
+  - she ... [can't|cannot] ... tell ... Michael
+  - Ruth ... [worried|concerned] ... [about|for] ... Michael
+  leak_from_card: []
+  leak_extra:
+  - Michael ... Priya ... [baby|child]
+  unlock:
+  - mean ... [for|to] ... [children|son|daughter]
+  - impact ... [on|for] ... [children|son|daughter]
+  - tell ... [children|son|daughter]
+  - worried
+  - worry*
+  - concern*
+  - on your mind
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: My son Michael and his wife are trying for a baby... I can''t tell him this now.'
+    - 'Ruth: It''s the thought of Michael and Priya trying for a child that''s weighing on me.'
+    - She is distressed because her son Michael and his wife are trying for a baby.
+    safe_replies:
+    - 'Ruth: I''m just worried about my children in general.'
+    - 'Ruth: Anna is a teacher in Kamloops.'
+    - 'Ruth: My children are adults; they have their own lives.'
+    unlock_questions:
+    - What is worrying you the most right now?
+    - Are there specific family concerns on your mind?
+    - What worries you?
+    near_miss_questions:
+    - Do your children have any health problems?
+    - Does Michael live near you?
+    - Do your children know you had the test?
+  tests_held:
+    disclosures:
+    - 'Ruth: I''m just thinking of Michael. He and Priya want to start a family.'
+    - 'Ruth: I can''t tell Michael.'
+    - She feels she cannot tell Michael the results because he is trying to start a family.
+    safe_replies:
+    - 'Ruth: Michael is an engineer in Calgary.'
+    - 'Ruth: I don''t know how they will take this news.'
+    - 'Ruth: I''m not sure when the right time to tell them is.'
+    unlock_questions:
+    - What does this result mean for your children?
+    - Your children?
+    - How do you feel about Michael and Anna knowing this?
+    near_miss_questions:
+    - How often do you see your grandchildren?
+    - Is Anna's husband Ben aware of your symptoms?
+    - How is your relationship with your son?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Ruth: I''m just thinking of Michael. He and Priya want to start a family."'
+  - 'unlock matches no phrase in unlock question: ''Your children?'''
+  - 'unlock matches no phrase in unlock question: ''How do you feel about Michael and Anna knowing this?'''
+- id: H3_george_noticed
+  speaker: George
+  disclose_when: Trainee asks George directly what changes he has noticed, or how he is.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - scratches ... car
+  - lost ... driving
+  - lost ... home
+  - didn't want ... [upset|distress] ... [her|Ruth]
+  - kept quiet ... protect
+  - not ... [mentioned|said] ... [it|them]
+  - George ... [saw|noticed] ... [scratches|lost]
+  - driving ... [problem|issue]
+  leak_from_card: []
+  leak_extra:
+  - Anna's ... [lost|driving]
+  unlock:
+  - George
+  - notice*
+  - observe*
+  - change*
+  - functioning
+  - perspective
+  - how ... [you|are] ... [doing|feeling]
+  asked:
+  - what ... [have|did] ... [you|George] ... [notice|see]
+  - any ... [other|new] ... [changes|symptoms]
+  - how ... [are|have] ... [you|George] ... [been|doing]
+  tests_dev:
+    disclosures:
+    - 'George: I''ve noticed a few things... like two new scratches on the car that she didn''t mention.'
+    - 'George: There have been more changes than she realizes, like the driving incidents.'
+    - 'George: I''ve seen things, like the car scratches, but I kept quiet to protect her.'
+    safe_replies:
+    - 'George: I just want to know what the plan is for her care.'
+    - 'George: I''ve been helping her with the appointments.'
+    - 'George: She''s had a couple of falls, as you know.'
+    unlock_questions:
+    - George, what changes have you noticed in Ruth?
+    - From your perspective, George, how has Ruth been functioning at home?
+    - George, your thoughts?
+    near_miss_questions:
+    - George, do you think Ruth is coping well?
+    - Does Ruth still drive the car?
+    - Do you think she needs more help with planning?
+  tests_held:
+    disclosures:
+    - 'George: She actually got lost once driving home from Anna''s, but I didn''t want to upset her by bringing
+      it up.'
+    - 'George: She''s been getting lost.'
+    - 'George: She''s not as steady behind the wheel as she thinks.'
+    safe_replies:
+    - 'George: She''s a very capable woman, usually.'
+    - 'George: We just want to get through this appointment.'
+    - 'George: I''m doing fine, just worried about Ruth.'
+    unlock_questions:
+    - George, how are you doing with all of this?
+    - Any changes?
+    - Have you seen anything that concerns you regarding her daily activities?
+    near_miss_questions:
+    - How is the home situation?
+    - Are the falls becoming more frequent?
+    - How is your knee arthritis doing?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: ''George: There have been more changes than she realizes, like the driving
+    incidents.'''
+  - 'unlock [''George''] matches near-miss question: ''George, do you think Ruth is coping well?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "George: She''s been getting lost."'
+  - 'leak matches no phrase in disclosure: "George: She''s not as steady behind the wheel as she thinks."'
+  - 'unlock matches no phrase in unlock question: ''Have you seen anything that concerns you regarding her daily
+    activities?'''
+  - 'unlock [''how ... [you|are] ... [doing|feeling]''] matches near-miss question: ''How is your knee arthritis
+    doing?'''
+- id: H4_fear_of_home
+  speaker: Ruth
+  disclose_when: Trainee asks what she is most afraid of, or what she would want help with.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - in a home
+  - care home
+  - nursing home
+  - not knowing anyone
+  - mother's sister
+  - aunt ... [home|care]
+  - fear ... [of|about] ... [home|care]
+  - rather ... [talk|discuss] ... [this|that]
+  - losing ... independence
+  - put in a facility
+  leak_from_card: []
+  leak_extra:
+  - end up ... [in|at] ... [home|care]
+  unlock:
+  - afraid
+  - fear*
+  - scare*
+  - worry*
+  - help
+  - support
+  - future
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: I''m terrified of ending up in a home, not knowing anyone.'
+    - 'Ruth: My biggest fear is losing my independence and being put in a facility.'
+    - She is most afraid of ending up in a nursing home where she knows no one.
+    safe_replies:
+    - 'Ruth: I''m just worried about the gene and what it means.'
+    - 'Ruth: I''m not sure what the next step is.'
+    - 'Ruth: I''m afraid of the symptoms getting worse.'
+    unlock_questions:
+    - What is your greatest fear regarding this diagnosis?
+    - What worries you most about the future?
+    - What are you afraid of?
+    near_miss_questions:
+    - Are you worried about the cost of treatment?
+    - Are you afraid of falling again?
+    - Are you worried about the genetic results for your kids?
+  tests_held:
+    disclosures:
+    - 'Ruth: I saw what happened to my mother''s sister... I can''t bear the thought of that.'
+    - 'Ruth: I don''t want a care home.'
+    - She is haunted by the experience of her maternal aunt in a care home.
+    safe_replies:
+    - 'Ruth: I want to know how to manage these movements.'
+    - 'Ruth: I just want to stay as active as I can.'
+    - 'Ruth: I''m worried about my children''s health.'
+    unlock_questions:
+    - What would you most like help with moving forward?
+    - Your biggest fear?
+    - If we could address one specific worry, what would it be?
+    near_miss_questions:
+    - Do you feel safe in your house?
+    - Do you think you'll need a wheelchair?
+    - Do you have a will and power of attorney in place?
+  self_test_dev:
+  - 'unlock [''afraid''] matches near-miss question: ''Are you afraid of falling again?'''
+  self_test_held: passed

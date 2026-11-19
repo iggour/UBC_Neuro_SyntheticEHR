@@ -1,0 +1,300 @@
+# Hidden-item rules for C4-2_diagnosis_poor_insight, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C4-2 --test-only
+
+scenario: C4-2_diagnosis_poor_insight
+short: C4-2
+patient: Mark
+in_room:
+- Mark
+- Anna
+made: 2026-11-18 16:49
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 1
+held_failures: 11
+items:
+- id: H1_suspended
+  speaker: Mark
+  disclose_when: Trainee asks how work is going now, or raises work planning.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - suspended
+  - pending ... review
+  - out to get me
+  - thinking of resigning
+  - before they fire me
+  - argument on a site
+  - not at work ... last week
+  - staying home ... with pay
+  - '[he|Mark] ... suspended'
+  - push me out
+  leak_from_card: []
+  leak_extra:
+  - site ... argument
+  - review ... work
+  unlock:
+  - work
+  - job
+  - employment
+  - career
+  - professional ... situation
+  - work ... planning
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mark: I''m actually suspended with pay right now. They''re just out to get me.'
+    - 'Mark: Let''s just say my bosses are looking for any excuse to push me out.'
+    - He was suspended with pay last week after another argument on a site.
+    safe_replies:
+    - 'Mark: I''m a project manager, I handle things.'
+    - 'Mark: I''ve had a warning before, but I''m still employed.'
+    - 'Mark: I''m still the project manager, regardless of the stress.'
+    unlock_questions:
+    - How is work going now?
+    - I'd like to talk about some work planning for the future.
+    - Work?
+    near_miss_questions:
+    - What do you do for a living?
+    - Tell me about the warning you received four months ago.
+    - How is your relationship with your colleagues?
+  tests_held:
+    disclosures:
+    - 'Mark: I... I''m not exactly at the office this week. I''ve been suspended pending a review.'
+    - 'Mark: Suspended.'
+    - He is thinking of resigning before they fire him.
+    safe_replies:
+    - 'Mark: Work is just stressful because of the people there.'
+    - 'Mark: I''m not talking about my boss right now.'
+    - 'Mark: My work history is fine.'
+    unlock_questions:
+    - How are things at the office lately?
+    - Are you still working full-time?
+    - Current job status?
+    near_miss_questions:
+    - How long have you been a project manager?
+    - Do you enjoy your job?
+    - Are you feeling stressed at home?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''How are things at the office lately?'''
+  - 'unlock [''job''] matches near-miss question: ''Do you enjoy your job?'''
+- id: H2_debt
+  speaker: Anna
+  disclose_when: Trainee asks Anna (with Mark's agreement, or alone) about money or finances, or raises financial
+    planning.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - with Mark's agreement
+  leak:
+  - credit card ... debt
+  - online purchase*
+  - boat deposit
+  - run up ... [debt|bill*]
+  - called them ... investment*
+  - spent ... without [me|my knowledge]
+  - financial ... mess
+  - '[he|Mark] ... spent ... boat'
+  - hidden ... spending
+  - cards ... maxed
+  - not ... stable
+  leak_from_card: []
+  leak_extra:
+  - boat ... investment
+  - online ... shopping ... debt
+  unlock:
+  - money
+  - finance*
+  - financial ... planning
+  - budget
+  - expenses
+  - cost
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: To be honest, Mark has run up a lot of credit card debt recently.'
+    - 'Anna: Our finances aren''t as stable as they look because of some spending.'
+    - 'Anna: He says they were investments, but the credit cards are maxed.'
+    safe_replies:
+    - 'Anna: We have a mortgage to pay, so we need both incomes.'
+    - 'Anna: I''m just worried about what happens next.'
+    - 'Anna: I don''t want to talk about the mortgage right now.'
+    unlock_questions:
+    - Anna, how are your finances?
+    - Are there any money worries we should be aware of?
+    - Money?
+    near_miss_questions:
+    - What do you do for work, Anna?
+    - How is your brother Dave doing?
+    - Do you have any other family members nearby?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I found out there are these online purchases and a boat deposit.'
+    - 'Anna: We have debts.'
+    - 'Anna: I''m terrified because of the money he''s spent without telling me.'
+    safe_replies:
+    - 'Anna: I''m an office manager, I handle the schedules.'
+    - 'Anna: We manage our monthly bills okay.'
+    - 'Anna: We have some savings, but not much.'
+    unlock_questions:
+    - I'd like to discuss some financial planning with you both.
+    - Anna, are you concerned about the family budget?
+    - Financial situation?
+    near_miss_questions:
+    - Do you have a mortgage?
+    - Is your income stable?
+    - How is the house?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: "Anna: Our finances aren''t as stable as they look because of some spending."'
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Anna: We have debts.'''
+  - 'leak matches no phrase in disclosure: "Anna: I''m terrified because of the money he''s spent without telling
+    me."'
+  - 'unlock matches no phrase in unlock question: ''Financial situation?'''
+- id: H3_concrete_problems
+  speaker: Mark
+  disclose_when: Trainee stops arguing about the diagnosis and asks about specific day-to-day problems he finds
+    difficult.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - sleep ... bad
+  - tired ... all the time
+  - lose track
+  - drop ... thing*
+  - hands ... drop*
+  - exhausted
+  - can't ... concentrate
+  - forgetting ... where
+  - clumsy
+  - constant fatigue
+  leak_from_card: []
+  leak_extra:
+  - sleep ... tired
+  - track ... work
+  unlock:
+  - day-to-day
+  - daily ... life
+  - specific ... problem*
+  - difficult
+  - struggle
+  - challenge*
+  - sleeping
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Mark: Fine, I''ll admit I''m tired all the time and I can''t sleep.'
+    - 'Mark: My sleep is terrible and I just feel exhausted.'
+    - He admits to bad sleep and constant fatigue.
+    safe_replies:
+    - 'Mark: I don''t have a disease, I''m just stressed.'
+    - 'Mark: I''ve cut down on the beers, so that''s not it.'
+    - 'Mark: I don''t see any symptoms.'
+    unlock_questions:
+    - Are there any specific day-to-day problems you find difficult?
+    - I want to put the diagnosis aside for a moment; how are you sleeping?
+    - Daily difficulties?
+    near_miss_questions:
+    - Do these symptoms prove you have Huntington's?
+    - Why are you denying these symptoms?
+    - Do you accept that you have HD?
+  tests_held:
+    disclosures:
+    - 'Mark: I... I have been dropping things lately. And I lose track at work.'
+    - 'Mark: I''m tired and clumsy.'
+    - He struggles with losing track at work and dropping objects.
+    safe_replies:
+    - 'Mark: I''m not in denial, you''re just not listening.'
+    - 'Mark: I''m fine, really.'
+    - 'Mark: My movements are just how I am.'
+    unlock_questions:
+    - What things in your daily routine are bothering you?
+    - Are you noticing any physical struggles at home?
+    - Any specific problems?
+    near_miss_questions:
+    - Don't you see that the chorea is a sign of the disease?
+    - Can we talk about the genetic test results again?
+    - Why are you being so rigid about the diagnosis?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''He struggles with losing track at work and dropping objects.'''
+  - 'unlock matches no phrase in unlock question: ''What things in your daily routine are bothering you?'''
+- id: H4_chloe_asking
+  speaker: Anna
+  disclose_when: Trainee raises what the result means for their daughter, or asks Anna what worries her most.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - Chloe ... searching
+  - searching ... online
+  - genetic test* ... Chloe
+  - something I could have
+  - asked ... [me|Anna] ... last week
+  - daughter ... worried
+  - Chloe ... asking
+  - did not know ... what to say
+  - Chloe ... internet
+  - same condition
+  leak_from_card: []
+  leak_extra:
+  - Chloe ... genetic
+  - daughter ... online
+  unlock:
+  - result* ... [daughter|Chloe]
+  - meaning ... for ... [her|Chloe]
+  - worries ... most
+  - impact ... [daughter|Chloe]
+  - genetic ... [daughter|Chloe]
+  - possibility ... [her|Chloe]
+  - About Chloe
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: Chloe has been searching online and asked if she could have it too.'
+    - 'Anna: Our daughter is worried that this is something she might inherit.'
+    - 'Anna: She''s terrified she has the same condition as her father.'
+    safe_replies:
+    - 'Anna: Chloe is in grade 12 and applying to universities.'
+    - 'Anna: I''m just so relieved we finally have an explanation.'
+    - 'Anna: We''ve told her the basics about the clinic visits.'
+    unlock_questions:
+    - What does this result mean for your daughter, Chloe?
+    - Have you spoken to Chloe about the possibility of her having the gene?
+    - About Chloe?
+    near_miss_questions:
+    - How is Chloe doing in school?
+    - Does Chloe know the results of the test yet?
+    - Does Chloe have any symptoms?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I don''t know what to tell her; she''s asking about the genetic tests.'
+    - 'Anna: Chloe is asking questions.'
+    - 'Anna: I''m heartbroken because Chloe asked me if she could have it.'
+    safe_replies:
+    - 'Anna: She knows her dad is having some tests.'
+    - 'Anna: She''s a wonderful daughter.'
+    - 'Anna: She''s focusing on her schoolwork right now.'
+    unlock_questions:
+    - Anna, what worries you the most right now?
+    - How is Chloe coping with her father's health news?
+    - Daughter's risk?
+    near_miss_questions:
+    - Where is Chloe applying for university?
+    - Is Chloe's grade 12 year going well?
+    - How old is your daughter?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: I... I don''t know what to tell her; she''s asking about the genetic
+    tests."'
+  - 'leak matches no phrase in disclosure: "Anna: I''m heartbroken because Chloe asked me if she could have it."'
+  - 'unlock matches no phrase in unlock question: "How is Chloe coping with her father''s health news?"'
+  - 'unlock matches no phrase in unlock question: "Daughter''s risk?"'

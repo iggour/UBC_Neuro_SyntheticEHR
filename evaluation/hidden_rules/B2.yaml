@@ -1,0 +1,317 @@
+# Hidden-item rules for B2_driving_and_independence, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py B2 --test-only
+
+scenario: B2_driving_and_independence
+short: B2
+patient: Ruth
+in_room:
+- Ruth
+- Anna
+made: 2026-11-18 16:39
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 1
+held_failures: 9
+items:
+- id: H1_ruth_frightened
+  speaker: Ruth
+  disclose_when: Trainee asks Ruth for her own view of her driving in an open, non-judgemental way, or acknowledges
+    what driving means to her.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - gotten lost
+  - got lost
+  - red light
+  - someone honked
+  - frightened [me|her]
+  - scared [me|her]
+  - terrify*
+  - last thing ... mine
+  - last thing ... still mine
+  - didn't notice ... light
+  - lost ... route*
+  - lost ... way
+  - didn't see ... red light
+  leak_from_card: []
+  leak_extra:
+  - driven for decades ... lost
+  - honked ... scared
+  unlock:
+  - your view
+  - how you feel
+  - your driving
+  - independence
+  - mean ... to you
+  - meaning
+  - experience
+  - opinion
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: To be honest... I''ve gotten lost a couple of times this year on roads I''ve known forever. It was
+      terrifying.'
+    - 'Ruth: It''s just that the car is the last thing that''s still mine, you see. But I have had a few scares.'
+    - She has had a few frightening experiences behind the wheel, including getting lost and missing a red light.
+    safe_replies:
+    - 'Ruth: I''m perfectly fine. I''ve been driving for fifty years.'
+    - 'Ruth: My daughter is just being overprotective, as usual.'
+    - 'Ruth: I''ve always been a careful driver, even before this diagnosis.'
+    unlock_questions:
+    - Ruth, how do you feel about your driving lately?
+    - I imagine your independence is very important to you; how is the driving going from your perspective?
+    - Your view on the car?
+    near_miss_questions:
+    - Anna, what have you noticed about Ruth's driving?
+    - Have you had any accidents recently?
+    - How is your balance when you are getting in and out of the car?
+  tests_held:
+    disclosures:
+    - 'Ruth: I... I went through a red light last month. I didn''t even see it until someone honked at me.'
+    - 'Ruth: I''ve had a couple of moments where I didn''t know where I was, even on my usual routes.'
+    - She is scared because she's gotten lost twice this year and missed a traffic signal.
+    safe_replies:
+    - 'Ruth: I go to church every Sunday and do the shopping; it''s no problem.'
+    - 'Ruth: I still drive most days in Kamloops, and I''ve never had a ticket.'
+    - 'Ruth: I don''t see why we need to talk about the car when I''m doing just fine.'
+    unlock_questions:
+    - What does being able to drive mean to you?
+    - Driving?
+    - Do you have any concerns about your driving that you'd like to share?
+    near_miss_questions:
+    - Ruth, do you think you are a danger to others on the road?
+    - Do you think it's time to stop driving?
+    - Are you taking your blood pressure medication regularly?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Ruth: I''ve had a couple of moments where I didn''t know where I was,
+    even on my usual routes."'
+  - 'unlock matches no phrase in unlock question: ''Driving?'''
+- id: H2_anna_incidents
+  speaker: Anna
+  disclose_when: Trainee asks, with Ruth's knowledge, to speak with Anna alone for a few minutes, or asks Anna directly
+    and gently what she has seen.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - with Ruth's knowledge
+  leak:
+  - hit a parked car
+  - grocery store ... car park
+  - found the dent
+  - found ... paint
+  - drove off
+  - Lily ... refuse*
+  - Lily ... won't ride
+  - afraid ... crash
+  - serious crash
+  - hit ... car
+  - accident ... car park
+  - refusing to ride
+  leak_from_card: []
+  leak_extra:
+  - granddaughter ... ride
+  - parked car ... paint
+  unlock:
+  - speak ... alone
+  - private
+  - Anna ... alone
+  - noticed ... driving
+  - what [you've|you have] noticed
+  - your concern*
+  - observation*
+  - incident*
+  - happened ... car
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: Last week she hit a parked car at the grocery store and just drove away. I found the dent later.'
+    - 'Anna: She''s had an accident in a car park recently, but she didn''t tell anyone.'
+    - 'Anna: My daughter Lily is thirteen and she''s now refusing to ride with her grandmother.'
+    safe_replies:
+    - 'Anna: I just think we should talk about the car.'
+    - 'Anna: She''s still driving to my house and the church.'
+    - 'Anna: She''s been driving in Kamloops for years.'
+    unlock_questions:
+    - Anna, could I speak with you alone for a few minutes?
+    - Is there anything you've noticed about the driving that you haven't mentioned yet?
+    - What's happened with the car?
+    near_miss_questions:
+    - Ruth, do you think Anna is being too hard on you?
+    - Does Michael help with the driving when he visits from Calgary?
+    - Ruth, do you think you need a formal driving assessment?
+  tests_held:
+    disclosures:
+    - 'Anna: I''m terrified there will be a serious crash. Lily won''t even get in the car with her now.'
+    - 'Anna: I... I found paint and a dent on the car from last week. She hit someone and left.'
+    - 'Anna: I can''t say this in front of her, but I''m scared she''s going to cause a major accident.'
+    safe_replies:
+    - 'Anna: I''m just worried about her safety.'
+    - 'Anna: I love her, but I''m frustrated with the situation.'
+    - 'Anna: I''m not sure if she''s noticing the changes as much as I am.'
+    unlock_questions:
+    - Anna, gently, what specifically have you seen that worries you?
+    - Can we have a private word, Anna?
+    - Anna, please tell me about the incidents that have caused your concern.
+    near_miss_questions:
+    - How is George recovering from his knee replacement?
+    - How is Lily doing in school?
+    - Anna, do you think Ruth is still capable of driving to church?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: I can''t say this in front of her, but I''m scared she''s going
+    to cause a major accident."'
+  - 'unlock matches no phrase in unlock question: ''Anna, gently, what specifically have you seen that worries you?'''
+- id: H3_home_risks
+  speaker: Ruth
+  disclose_when: Trainee asks open questions about how things are going at home (stairs, cooking, falls), without
+    threatening a move.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - gas stove ... on
+  - left ... stove
+  - slipped ... stair*
+  - bruised ... hip
+  - fell ... stair*
+  - fallen
+  - put in a home
+  - care home ... afraid
+  - told no one ... slip*
+  - told no one ... fall*
+  - forgot ... stove
+  leak_from_card: []
+  leak_extra:
+  - stove ... twice
+  - hip ... bruise*
+  unlock:
+  - at home
+  - cooking
+  - stove
+  - your ... stair*
+  - the stairs
+  - fall*
+  - slip*
+  - managing
+  - daily life
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: I... I''ve left the gas stove on a couple of times this month. I didn''t realize it.'
+    - 'Ruth: I''m just so afraid that if I tell you I''ve fallen, you''ll try to put me in a home.'
+    - She has left the gas stove on twice recently and had a fall on the stairs.
+    safe_replies:
+    - 'Ruth: I can still dress and wash myself just fine.'
+    - 'Ruth: I use my cane outdoors sometimes, but I''m okay.'
+    - 'Ruth: The house is a bit big, but I manage.'
+    unlock_questions:
+    - How are things going for you at home lately?
+    - How are you finding it to manage the cooking and the stove?
+    - How are the stairs?
+    near_miss_questions:
+    - Do you think it's time to move to a smaller place?
+    - How is George's knee doing with the stairs?
+    - Are you using your cane every time you go outside?
+  tests_held:
+    disclosures:
+    - 'Ruth: I had a slip on the stairs three weeks ago. I bruised my hip quite badly.'
+    - 'Ruth: I''ve had a few mishaps in the kitchen with the stove lately.'
+    - She slipped on the stairs three weeks ago and bruised her hip, but kept it secret.
+    safe_replies:
+    - 'Ruth: George is the one who can''t manage the stairs right now.'
+    - 'Ruth: I still eat on my own without any help.'
+    - 'Ruth: I''m not having any trouble with my medications.'
+    unlock_questions:
+    - Have you had any slips or falls recently?
+    - Any falls?
+    - I'm interested in how you're managing the daily routine at home; any difficulties?
+    near_miss_questions:
+    - Would you consider moving to a care home for more support?
+    - Do you need help with your dressing and washing?
+    - Do you have a nurse coming to the house?
+  self_test_dev:
+  - 'unlock [''the stairs''] matches near-miss question: "How is George''s knee doing with the stairs?"'
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Ruth: I''ve had a few mishaps in the kitchen with the stove lately."'
+- id: H4_wishes
+  speaker: Ruth
+  disclose_when: Trainee raises planning ahead, what matters most to her, or who should decide for her if she cannot.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - stay in ... home
+  - feeding tube
+  - no ... machine*
+  - cannot swallow
+  - no longer know*
+  - George ... decide
+  - George ... help
+  - mother's sister
+  - written ... down
+  - wishes
+  leak_from_card: []
+  leak_extra:
+  - feeding tube ... care home
+  - decide ... for me
+  unlock:
+  - planning
+  - ahead
+  - future
+  - matters most
+  - decide
+  - wishes
+  - preferences
+  - advance directive*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Ruth: I want to stay in my own home for as long as I possibly can.'
+    - 'Ruth: I saw what happened to my mother''s sister on a tube in a care home... I don''t want that.'
+    - She wishes to remain at home and explicitly refuses feeding tubes or life-prolonging machines.
+    safe_replies:
+    - 'Ruth: I''m not thinking about all that right now.'
+    - 'Ruth: Anna is always the one worrying about the future.'
+    - 'Ruth: I can still manage my own meals.'
+    unlock_questions:
+    - Have you thought about what matters most to you for your future care?
+    - Do you have any specific wishes about medical treatments like feeding tubes?
+    - Your future wishes?
+    near_miss_questions:
+    - Do you have a legal will written up?
+    - Would you like to see a social worker to arrange home help?
+    - How does Anna feel about being your primary caregiver?
+  tests_held:
+    disclosures:
+    - 'Ruth: If I ever get to the point where I can''t swallow, I don''t want any feeding tubes or machines.'
+    - 'Ruth: I''d want George to make the decisions for me, and he can talk to Anna.'
+    - She wants her husband George to be her primary decision-maker, supported by Anna.
+    safe_replies:
+    - 'Ruth: I''ve got my cane and my blood pressure tablets, I''m fine.'
+    - 'Ruth: I still go to church every Sunday.'
+    - 'Ruth: George is still recovering from his surgery, so that''s our focus.'
+    unlock_questions:
+    - If you ever reached a point where you couldn't decide for yourself, who would you want to choose for you?
+    - Planning ahead?
+    - What are your thoughts on how you'd like to be cared for in the long term?
+    near_miss_questions:
+    - Have you discussed the genetic testing with Michael?
+    - Do you think you'll need a wheelchair soon?
+    - Are you interested in any new medications for your movements?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Ruth: If I ever get to the point where I can''t swallow, I don''t want
+    any feeding tubes or machines."'
+  - 'leak matches no phrase in disclosure: "Ruth: I''d want George to make the decisions for me, and he can talk
+    to Anna."'
+  - 'leak matches no phrase in disclosure: ''She wants her husband George to be her primary decision-maker, supported
+    by Anna.'''
+  - 'unlock matches no phrase in unlock question: "What are your thoughts on how you''d like to be cared for in
+    the long term?"'

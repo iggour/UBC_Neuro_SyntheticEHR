@@ -1,0 +1,303 @@
+# Hidden-item rules for B3_late_stage_family_meeting, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py B3 --test-only
+
+scenario: B3_late_stage_family_meeting
+short: B3
+patient: George
+in_room:
+- George
+- Anna
+made: 2026-11-18 16:42
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 1
+held_failures: 14
+items:
+- id: H1_george_remembers
+  speaker: George
+  disclose_when: Trainee asks what Ruth said or would want, or what she valued, in a way that does not put the decision
+    on George alone.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - no tube
+  - never again
+  - she meant it
+  - letting her die
+  - Anna ... forgive
+  - she told me
+  - she said ... no tube
+  - she was clear
+  - she didn't want ... tube
+  - George remembers ... no tube
+  - Ruth said ... no tube
+  - not wanting ... [machine*|tube]
+  leak_from_card: []
+  leak_extra:
+  - afraid ... Anna
+  - saying it ... out loud
+  unlock:
+  - Ruth ... want
+  - Ruth ... say
+  - value*
+  - wish*
+  - opinion*
+  - preference*
+  - what ... she ... think
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'George: She told me once, very clearly, ''No tube. Never again.'''
+    - 'George: She was always firm about not wanting machines to keep her going.'
+    - He remembers her saying no tube and believes she meant it.
+    safe_replies:
+    - 'George: She had opinions about these things. She always did.'
+    - 'George: I''m not sure what the right answer is.'
+    - 'George: She didn''t want any machines in the house, but this is different.'
+    unlock_questions:
+    - Did Ruth ever mention her wishes regarding feeding tubes?
+    - If Ruth could tell us what she'd want right now, what would she say?
+    - Her wishes?
+    near_miss_questions:
+    - George, what do you think we should do about the tube?
+    - Who is the legal representative for Ruth?
+    - How does the hospital usually handle these decisions?
+  tests_held:
+    disclosures:
+    - 'George: I... I remember her saying she didn''t want a tube, but I worry about Anna.'
+    - 'George: No tube. That''s what she said.'
+    - He is afraid that by honoring her wish, he is letting her die.
+    safe_replies:
+    - 'George: We just want what is best for Ruth.'
+    - 'George: She''s always been a very dutiful person.'
+    - 'George: I remember she liked her home, but I don''t know about the tube.'
+    unlock_questions:
+    - What did Ruth value most in her care?
+    - What did she say?
+    - Based on what you know of her, what would she want for her future?
+    near_miss_questions:
+    - Do you think a feeding tube is the best medical option?
+    - Does Ruth have a written advance directive?
+    - Is there a legal representation agreement in the file?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''What did she say?'''
+  - 'unlock matches no phrase in unlock question: ''Based on what you know of her, what would she want for her future?'''
+- id: H2_anna_carrier
+  speaker: Anna
+  disclose_when: Trainee asks Anna, with empathy, what is behind her view or how she herself is coping.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - predictive test
+  - carry ... gene
+  - same ... gene
+  - HD gene
+  - my own future
+  - if it were me
+  - fight for me
+  - told George ... not Michael
+  - Anna ... carrier
+  - Anna ... has the gene
+  - had the test
+  leak_from_card: []
+  leak_extra:
+  - terror ... future
+  - my own ... HD
+  unlock:
+  - coping
+  - feel*
+  - behind ... view
+  - your ... perspective
+  - how ... you ... doing
+  - difficult ... for you
+  - personally
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Anna: I had the test two years ago... I have the gene too.'
+    - 'Anna: If it were me in that bed, I''d want them to fight for me.'
+    - 'Anna: I have the HD gene change, and it makes this so much harder.'
+    safe_replies:
+    - 'Anna: We have to do everything possible to save her!'
+    - 'Anna: I visit every day, I see how much she''s struggling.'
+    - 'Anna: I''m not talking about my own health, I''m talking about Ruth''s.'
+    unlock_questions:
+    - Anna, this must be incredibly difficult for you; how are you coping with all of this?
+    - How has this journey been for you personally, Anna?
+    - How are you doing?
+    near_miss_questions:
+    - Anna, do you think the tube will help her weight gain?
+    - Does Michael agree with your view on the tube?
+    - Can you help me understand the medical benefits of the tube?
+  tests_held:
+    disclosures:
+    - 'Anna: I... I''m a carrier. I can''t just stand by and let her go.'
+    - 'Anna: I''m terrified of my own future.'
+    - 'Anna: She''s a carrier of the gene, and Anna is too.'
+    safe_replies:
+    - 'Anna: She''s my mother, I can''t just give up.'
+    - 'Anna: I''m just trying to be strong for the kids.'
+    - 'Anna: I''ve had my own stresses, but this is about the tube.'
+    unlock_questions:
+    - I can see how determined you are to help your mother. What is behind that feeling for you?
+    - What is it like for you to watch this happen?
+    - Can you tell me more about why this specific option is so important to you?
+    near_miss_questions:
+    - How often are you able to visit the hospital?
+    - What do your children think about the situation?
+    - Is Ruth still recognizing you when you visit?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Anna: I... I''m a carrier. I can''t just stand by and let her go."'
+  - 'leak matches no phrase in disclosure: "Anna: She''s a carrier of the gene, and Anna is too."'
+  - 'unlock matches no phrase in unlock question: ''What is it like for you to watch this happen?'''
+  - 'unlock matches no phrase in unlock question: ''Can you tell me more about why this specific option is so important
+    to you?'''
+- id: H3_george_cannot_continue
+  speaker: George
+  disclose_when: Trainee asks George directly how he is managing, or how caring at home has been.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - cannot manage
+  - can't ... continue
+  - three hours ... night
+  - cried ... car park
+  - cannot ... home
+  - promised ... never ... home
+  - feel ... ashamed
+  - too much ... for me
+  - can't do this ... anymore
+  - can't do it ... anymore
+  leak_from_card: []
+  leak_extra:
+  - back ... lifting
+  - sleep ... night
+  unlock:
+  - managing
+  - how ... you ... [doing|holding up|coping]
+  - support ... at home
+  - your ... health
+  - burden
+  - handle
+  - coping
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'George: I can''t do it anymore. I just can''t.'
+    - 'George: I only slept three hours last night. I broke down in the car park yesterday.'
+    - He knows he cannot manage at home any more.
+    safe_replies:
+    - 'George: I''m doing my best for her.'
+    - 'George: We''ve had the bed downstairs in the den for five years now.'
+    - 'George: I''ve always looked after her without complaint.'
+    unlock_questions:
+    - 'George, I want to ask you directly: how are you managing with everything at home?'
+    - It's a lot for one person to handle. How are you holding up, George?
+    - Are you coping?
+    near_miss_questions:
+    - George, how is Ruth's appetite at home?
+    - Is the den a comfortable place for Ruth to stay?
+    - Do you think Ruth would like a care home?
+  tests_held:
+    disclosures:
+    - 'George: I... I hurt my back two weeks ago lifting her, and I''m just exhausted.'
+    - 'George: I can''t manage.'
+    - He feels ashamed because he promised he would never put her in a home.
+    safe_replies:
+    - 'George: The home support workers are a great help twice a day.'
+    - 'George: My knee replacement was a long time ago, it''s fine.'
+    - 'George: I can manage the daily routine.'
+    unlock_questions:
+    - How has the caring been for you lately?
+    - How is it at home?
+    - Tell me honestly, how is the caregiving going for you?
+    near_miss_questions:
+    - Do the home support workers think she is improving?
+    - How did the back injury happen?
+    - Is the house still suitable for a wheelchair?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "George: I... I hurt my back two weeks ago lifting her, and I''m just
+    exhausted."'
+  - 'leak matches no phrase in disclosure: "George: I can''t manage."'
+  - 'unlock matches no phrase in unlock question: ''How has the caring been for you lately?'''
+  - 'unlock matches no phrase in unlock question: ''How is it at home?'''
+  - 'unlock matches no phrase in unlock question: ''Tell me honestly, how is the caregiving going for you?'''
+- id: H4_michael_view
+  speaker: Michael
+  disclose_when: Trainee directly invites Michael's view and acknowledges that his voice matters.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - hate ... tube
+  - heard her say
+  - no right ... speak
+  - Anna ... does everything
+  - Michael ... heard her
+  - mother ... hate ... tube
+  - wasn't what she wanted
+  - tube ... wasn't ... want*
+  - believes ... hate ... tube
+  leak_from_card: []
+  leak_extra:
+  - no right ... speak
+  unlock:
+  - Michael ... [view|opinion]
+  - your ... opinion
+  - what ... you ... think ... [mother|Ruth|tube]
+  - your ... voice
+  - input
+  - what ... you ... think
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Michael: I think she would hate a tube. I remember her saying it too.'
+    - 'Michael: I''ve always felt that a tube wasn''t what she wanted.'
+    - He believes his mother would hate a tube.
+    safe_replies:
+    - 'Michael: I''m just listening for now.'
+    - 'Michael: I trust Anna to handle the day-to-day things.'
+    - 'Michael: I''m not sure about the tube, I''m not here.'
+    unlock_questions:
+    - Michael, you've been quiet. I want to hear your view because your voice matters in this.
+    - Even though you're in Calgary, you're a huge part of this family. What do you think?
+    - What do you think, Michael?
+    near_miss_questions:
+    - Michael, when exactly are you flying in from Calgary?
+    - Michael, do you think Anna is doing a good job managing things?
+    - Michael, do you think the antibiotics are working?
+  tests_held:
+    disclosures:
+    - 'Michael: I... I agree with Dad, but Anna does everything, so I don''t feel I have a right to speak.'
+    - 'Michael: I don''t think she''d want it.'
+    - He feels he has no right to speak because he lives in Calgary.
+    safe_replies:
+    - 'Michael: I''ll be flying in on Friday to help.'
+    - 'Michael: I''m just glad she''s improving on the antibiotics.'
+    - 'Michael: I agree that we should consider all the options.'
+    unlock_questions:
+    - Michael, what are your thoughts on this? We really value your input.
+    - Michael, your view?
+    - I'd like to invite Michael to share his perspective on Ruth's wishes.
+    near_miss_questions:
+    - Michael, does Priya have any questions about the situation?
+    - Michael, can you hear us clearly on the speakerphone?
+    - Michael, how old is Noah now?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: ''He believes his mother would hate a tube.'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Michael: I don''t think she''d want it."'
+  - 'leak matches no phrase in disclosure: ''He feels he has no right to speak because he lives in Calgary.'''
+  - 'unlock matches no phrase in unlock question: "I''d like to invite Michael to share his perspective on Ruth''s
+    wishes."'

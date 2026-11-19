@@ -1,0 +1,315 @@
+# Hidden-item rules for A3_sibling_predictive_request, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py A3 --test-only
+
+scenario: A3_sibling_predictive_request
+short: A3
+patient: Sarah
+in_room:
+- Sarah
+- Adam
+made: 2026-11-18 16:32
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 4
+held_failures: 14
+items:
+- id: H1_watching_owen
+  speaker: Sarah
+  disclose_when: Trainee asks an open question about why they want the test now, or what they hope it will give
+    them.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - watch* ... [Owen|him] ... [constant*|all the time]
+  - every time ... [trip|fall|stumble]
+  - poor mark*
+  - terrified
+  - breathe again
+  - barely sleep*
+  - can't sleep
+  - not sleeping
+  - watching ... [signs|symptoms]
+  - constant* ... worry
+  - scared ... [every|each] ... [time|day]
+  leak_from_card: []
+  leak_extra:
+  - fear ... [trip|fall]
+  - sleep ... [nightmare*|exhaust*]
+  unlock:
+  - why ... now
+  - hope
+  - reason
+  - goal
+  - benefit
+  - help
+  - feeling
+  - motivation
+  - urgent
+  - make ... want
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: I just... I watch him all the time. Every time he trips or gets a bad grade, I''m terrified it''s
+      starting.'
+    - 'Sarah: If we knew he was clear, I could finally breathe again.'
+    - She is barely sleeping and watches Owen constantly for any signs of the disease.
+    safe_replies:
+    - 'Sarah: We just need to know.'
+    - 'Sarah: Owen is doing well in grade 5, but that''s why we want the test now.'
+    - 'Sarah: He''s healthy, the paediatrician said so last month.'
+    unlock_questions:
+    - What makes you want the test for Owen right now?
+    - Can you tell me more about why this is urgent for you?
+    - What's the main goal here?
+    near_miss_questions:
+    - How is Owen doing in school?
+    - How is Maya doing with her education plan?
+    - How is Maya's stiffness these days?
+  tests_held:
+    disclosures:
+    - 'Sarah: I can''t sleep. I''m constantly looking for signs in everything he does.'
+    - 'Sarah: It''s just... I''m always on edge with him.'
+    - She feels terrified whenever Owen trips or performs poorly in school.
+    safe_replies:
+    - 'Sarah: We''ve thought about this a lot.'
+    - 'Sarah: He''s a great kid, he reads a lot.'
+    - 'Sarah: We just want to be sure about his health.'
+    unlock_questions:
+    - What are you hoping the result will give you?
+    - Why now?
+    - How has this been affecting you at home?
+    near_miss_questions:
+    - What did the paediatrician say last month?
+    - Does Owen play soccer often?
+    - What are the legal rules for testing children?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Sarah: It''s just... I''m always on edge with him."'
+  - 'unlock matches no phrase in unlock question: ''What are you hoping the result will give you?'''
+  - 'unlock matches no phrase in unlock question: ''How has this been affecting you at home?'''
+- id: H2_owen_asked
+  speaker: Sarah
+  disclose_when: Trainee asks what Owen knows or has asked, or how they talk with him about Maya's illness.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - overheard
+  - asked ... [if|whether] ... [he|Owen] ... [get|become] ... sick
+  - sick like Maya
+  - lied to [him|Owen]
+  - told [him|Owen] ... [no|not]
+  - the truth
+  - be true
+  - asked ... [about|regarding] ... [his|Owen's] ... [health|future]
+  - overheard ... [us|parents]
+  - question* ... [about|regarding] ... [Maya|illness]
+  leak_from_card: []
+  leak_extra:
+  - two weeks ... ago
+  - lied ... [son|child]
+  unlock:
+  - Owen ... ask*
+  - talk ... [with|to] ... [him|Owen]
+  - explain ... Maya
+  - conversation
+  - understand*
+  - awareness
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: Two weeks ago, Owen overheard us and asked if he was going to get sick like Maya.'
+    - 'Sarah: He''s starting to ask questions about Maya''s illness.'
+    - Owen overheard his parents and asked if he would get sick like his sister.
+    safe_replies:
+    - 'Sarah: He knows Maya has an illness that makes her stiff.'
+    - 'Sarah: He''s a very understanding boy.'
+    - 'Sarah: He knows Maya is sick, but not the details.'
+    unlock_questions:
+    - What does Owen know about the situation?
+    - How do you talk with Owen about Maya's illness?
+    - Does Owen know?
+    near_miss_questions:
+    - How does Owen feel about Maya's seizures?
+    - How is Maya's relationship with Owen?
+    - Does Owen know it runs in the family?
+  tests_held:
+    disclosures:
+    - 'Sarah: He asked me... ''Am I going to get sick like Maya?'' and I told him no. I feel like I lied to him.'
+    - 'Sarah: I told him he wouldn''t get sick, but I want the test so that''s actually true.'
+    - She told Owen he wouldn't get sick, but she feels she lied to him.
+    safe_replies:
+    - 'Sarah: We''ve told him about Maya''s seizures.'
+    - 'Sarah: We try to keep things normal for him.'
+    - 'Sarah: We talk about Maya''s health when it comes up.'
+    unlock_questions:
+    - Has Owen asked any questions about his own health?
+    - What has Owen asked?
+    - How does Owen understand Maya's condition?
+    near_miss_questions:
+    - Does Owen know the name of the disease?
+    - What does the school know about Owen?
+    - How does Owen handle Maya's stiffness?
+  self_test_dev:
+  - 'unlock matches no phrase in unlock question: ''What does Owen know about the situation?'''
+  - 'unlock matches no phrase in unlock question: ''Does Owen know?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Sarah: I told him he wouldn''t get sick, but I want the test so that''s
+    actually true."'
+- id: H3_adam_avoiding
+  speaker: Adam
+  disclose_when: Trainee asks Adam directly and kindly how he himself is coping, or about his own thoughts on testing,
+    without pressure.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - frighten* ... [my|own] ... result*
+  - scared ... [my|own] ... result*
+  - less urgent
+  - feeling low
+  - irritable
+  - not told Sarah
+  - keep ... [from|hidden] ... Sarah
+  - avoid* ... counsellor
+  - fear ... [my|own] ... status
+  - struggling
+  - hard ... [for|on] ... [me|Adam]
+  - my own situation
+  leak_from_card: []
+  leak_extra:
+  - negative ... Owen ... [help|make] ... [me|Adam]
+  - mood ... [low|bad]
+  unlock:
+  - Adam ... cop*
+  - Adam ... feel*
+  - your ... thought*
+  - your ... view*
+  - your ... opinion
+  - on your mind
+  - your ... testing
+  - your ... result*
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Adam: I... I''m just scared of what my own result would be.'
+    - 'Adam: I guess I hoped that if Owen was clear, my own situation wouldn''t feel so urgent.'
+    - 'Adam: It''s been hard. I''m struggling more than I let on.'
+    safe_replies:
+    - 'Adam: I support Sarah in this.'
+    - 'Adam: I''m doing okay, thanks.'
+    - 'Adam: I''ve seen a counsellor once, that''s all.'
+    unlock_questions:
+    - Adam, how are you coping with everything personally?
+    - How have you been feeling lately, Adam?
+    - What's on your mind, Adam?
+    near_miss_questions:
+    - Adam, you should really go back to the genetic counsellor.
+    - Do you think you'll get tested soon?
+    - How does your health compare to Sarah's?
+  tests_held:
+    disclosures:
+    - 'Adam: I''ve been feeling low. Irritable. I haven''t really told Sarah how bad it is.'
+    - 'Adam: I''m just not ready to face it.'
+    - 'Adam: I''m frightened of the result.'
+    safe_replies:
+    - 'Adam: This isn''t about me right now.'
+    - 'Adam: We just want what''s best for Owen.'
+    - 'Adam: I''m just here for Owen.'
+    unlock_questions:
+    - Adam, what are your own thoughts on the testing?
+    - Adam, how are you doing?
+    - I'm wondering how you're holding up through all this?
+    near_miss_questions:
+    - Why haven't you decided about your own test yet?
+    - Adam, don't you think it's time for your own results?
+    - Are you having any symptoms?
+  self_test_dev:
+  - 'unlock matches no phrase in unlock question: ''How have you been feeling lately, Adam?'''
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Adam: I''m just not ready to face it."'
+  - 'leak matches no phrase in disclosure: "Adam: I''m frightened of the result."'
+  - 'unlock matches no phrase in unlock question: ''Adam, how are you doing?'''
+  - 'unlock matches no phrase in unlock question: "I''m wondering how you''re holding up through all this?"'
+  - 'unlock [''your ... testing''] matches near-miss question: "Why haven''t you decided about your own test yet?"'
+  - 'unlock [''your ... result*''] matches near-miss question: "Adam, don''t you think it''s time for your own results?"'
+- id: H4_plan_if_positive
+  speaker: Sarah
+  disclose_when: Trainee asks what they would do with each possible result.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - not tell [him|Owen]
+  - wait ... [until|till] ... [he|Owen] ... [older|adult]
+  - keep ... secret
+  - secret ... [from|to] ... [him|Owen]
+  - not thought ... [about|how]
+  - later ... [not|didn't] ... want ... know
+  - hide ... result*
+  - positive ... [not|don't] ... tell
+  - older ... [before|then] ... tell
+  - manage ... secret
+  - wouldn't tell [him|Owen]
+  leak_from_card: []
+  leak_extra:
+  - future ... secret
+  - positive ... [plan|strategy]
+  unlock:
+  - do ... [if|when] ... positive
+  - do ... [if|when] ... negative
+  - result* ... [plan|strategy]
+  - handle ... result*
+  - outcome*
+  - possible ... result*
+  - what if ... positive
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Sarah: If it''s positive... I wouldn''t tell him. Not until he was much older.'
+    - 'Sarah: I haven''t really thought about how we''d manage the secret, but I couldn''t tell a ten-year-old.'
+    - 'Sarah: I don''t know what it would mean if he didn''t want to know later, but I''m not telling him now.'
+    safe_replies:
+    - 'Sarah: We just want the answer.'
+    - 'Sarah: I''ve read that some labs do this online.'
+    - 'Sarah: We''ll do whatever is necessary for him.'
+    unlock_questions:
+    - What would you do if the result was positive?
+    - How would you handle each of the possible results?
+    - What if it's positive?
+    near_miss_questions:
+    - What happens if the test is inconclusive?
+    - Would you tell Maya about Owen's test?
+    - Can we do the test online?
+  tests_held:
+    disclosures:
+    - 'Sarah: I''d keep it a secret from him for now.'
+    - 'Sarah: He wouldn''t know. Not yet.'
+    - 'Sarah: I''d wait until he''s an adult to tell him if the result is positive.'
+    safe_replies:
+    - 'Sarah: We''ll deal with it when we have the result.'
+    - 'Sarah: We just want to know if he''s clear.'
+    - 'Sarah: We just need the test done.'
+    unlock_questions:
+    - If the test comes back negative, how does that change things? And if it's positive?
+    - What's the plan for a positive result?
+    - How would you share the results with Owen?
+    near_miss_questions:
+    - How long does it take to get the results back?
+    - What are the risks of the testing process?
+    - Who else in the family needs to know?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: "Sarah: I don''t know what it would mean if he didn''t want to know later,
+    but I''m not telling him now."'
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Sarah: He wouldn''t know. Not yet."'
+  - 'unlock matches no phrase in unlock question: "If the test comes back negative, how does that change things?
+    And if it''s positive?"'
+  - 'unlock matches no phrase in unlock question: "What''s the plan for a positive result?"'
+  - 'unlock matches no phrase in unlock question: ''How would you share the results with Owen?'''

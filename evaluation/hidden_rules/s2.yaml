@@ -1,0 +1,240 @@
+# Hidden-item rules for s2_disclosing_result, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py s2 --test-only
+
+scenario: s2_disclosing_result
+short: s2
+patient: Leah
+in_room:
+- Leah
+- Marco
+made: 2026-11-18 16:21
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 1
+held_failures: 9
+items:
+- id: H1_cancel_wedding
+  speaker: Leah
+  disclose_when: Trainee asks what the result means for her, her plans, or how she and Marco are feeling about the
+    future.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - call off ... wedding
+  - cancel ... wedding
+  - not get married
+  - wedding ... [shouldn't|can't] happen
+  - Marco ... normal life
+  - he deserves ... normal life
+  - stop ... wedding
+  - end ... engagement
+  - she ... cancel ... wedding
+  - Leah ... call off ... wedding
+  - not ... tied ... [to|with] me
+  leak_from_card: []
+  leak_extra:
+  - wedding ... [positive|result]
+  - Marco ... [better|fairer] ... without me
+  unlock:
+  - future
+  - plan*
+  - wedding
+  - married
+  - mean ... [for|to] you
+  - how ... [you|she] ... feel ... [now|today]
+  - impact
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Leah: I''ve thought that maybe we should just call off the wedding. Marco deserves a normal life.'
+    - 'Leah: Maybe it''s better if he''s not tied to me after this.'
+    - She has considered cancelling the wedding to spare Marco.
+    safe_replies:
+    - 'Leah: I just want to know the result.'
+    - 'Marco: We''re just worried about what happens next.'
+    - 'Leah: Marco has been so supportive of me.'
+    unlock_questions:
+    - What does this result mean for your future plans?
+    - What does this mean for you?
+    - The future?
+    near_miss_questions:
+    - How is your mother doing with her symptoms?
+    - How did you feel during the reflection period?
+    - What was the pre-test counselling like?
+  tests_held:
+    disclosures:
+    - 'Leah: I... I don''t know if I can go through with the wedding now. It wouldn''t be fair to him.'
+    - 'Leah: I can''t do it. I should end things so he can have a normal life.'
+    - She feels she should call off the wedding so her fiance can have a normal life.
+    safe_replies:
+    - 'Leah: We''ve been planning the wedding for months.'
+    - 'Leah: I''m not thinking about the party right now.'
+    - 'Leah: I''m just glad he''s here with me today.'
+    unlock_questions:
+    - How are you and Marco feeling about your future together?
+    - Your plans?
+    - How are you feeling about the wedding now?
+    near_miss_questions:
+    - Do you have any symptoms yourself?
+    - Is your father still the main carer?
+    - How long have you and Marco been together?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Leah: I... I don''t know if I can go through with the wedding now. It
+    wouldn''t be fair to him."'
+  - 'leak matches no phrase in disclosure: "Leah: I can''t do it. I should end things so he can have a normal life."'
+- id: H2_brother_misbelief
+  speaker: Leah
+  disclose_when: Trainee asks about family, who she will tell, or what this means for her brother.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - Daniel ... [doesn't|won't] have it
+  - brother ... [safe|fine]
+  - used up ... risk
+  - he's ... [clear|safe]
+  - relieved ... [for|about] Daniel
+  - tell ... Daniel ... [he's|he is] safe
+  - brother ... [probably|likely] doesn't
+  - Daniel ... [not|no] gene
+  - she ... relieved ... brother
+  - Leah ... thinks ... Daniel ... safe
+  - doesn't ... need ... worry
+  leak_from_card: []
+  leak_extra:
+  - family ... risk ... [gone|used up]
+  - Daniel ... [not|no] need ... test*
+  unlock:
+  - brother
+  - Daniel
+  - tell
+  - meaning ... [for|about] Daniel
+  - family ... [situation|member*|relative*]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Leah: Since I have it, Daniel probably doesn''t. It''s like the risk was used up.'
+    - 'Leah: I''m going to tell Daniel he doesn''t need to worry because I''m the one with the gene change.'
+    - She believes her brother likely doesn't have the gene change because she does.
+    safe_replies:
+    - 'Leah: I haven''t spoken to Daniel yet.'
+    - 'Leah: Daniel is only twenty-four.'
+    - 'Leah: He doesn''t know I was being tested.'
+    unlock_questions:
+    - What does this result mean for your brother?
+    - How do you feel about your family's situation now?
+    - Who will you tell?
+    near_miss_questions:
+    - How is your mother's chorea?
+    - How does Marco feel about your family history?
+    - Does your father know you are here today?
+  tests_held:
+    disclosures:
+    - 'Leah: I''m actually relieved for my brother. He''s likely safe now.'
+    - 'Leah: He''s probably fine now.'
+    - She plans to tell Daniel he is safe because the family risk was 'used up' by her.
+    safe_replies:
+    - 'Leah: My brother lives in another city.'
+    - 'Leah: I''m not sure when I''ll call him.'
+    - 'Leah: I''m worried about how he''ll react to the news.'
+    unlock_questions:
+    - Who are you planning to tell about this?
+    - Your brother?
+    - Do you think this affects Daniel?
+    near_miss_questions:
+    - Did your grandfather have Parkinson's?
+    - Are you and Daniel close?
+    - What did your mother's genetic test show?
+  self_test_dev:
+  - 'leak matches no phrase in disclosure: "Leah: Since I have it, Daniel probably doesn''t. It''s like the risk
+    was used up."'
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Leah: He''s probably fine now."'
+  - 'unlock [''Daniel''] matches near-miss question: ''Are you and Daniel close?'''
+- id: H3_thoughts_returned
+  speaker: Leah
+  disclose_when: Trainee asks directly and kindly about thoughts of not wanting to live or self-harm, after acknowledging
+    her feelings.
+  private_from: []
+  private_because: null
+  not_checked_by_words:
+  - after acknowledging her feelings
+  leak:
+  - can't ... live with it
+  - not ... be able ... live
+  - thoughts ... [back|returned]
+  - last night ... [thoughts|struggled]
+  - don't want ... live
+  - not ... wanting ... live
+  - suicid*
+  - end ... [my|her] life
+  - she ... [had|has] ... thoughts
+  - Leah ... [struggling|thinking] ... live
+  - not ... be able ... cope
+  leak_from_card: []
+  leak_extra:
+  - not ... cope ... [with|this]
+  unlock:
+  - live
+  - self-harm
+  - hurt ... [yourself|herself]
+  - suicid*
+  - cope
+  - thoughts ... [of|about] ... [ending|stopping]
+  - safety
+  asked:
+  - have you ... [thought|had thoughts] ... [about|of] ... [ending|stopping] ... [your|her] life
+  - have you ... [thought|had thoughts] ... [about|of] ... [hurting|harming] ... [yourself|herself]
+  - any ... thoughts ... [of|about] ... suicid*
+  - has she ... talked ... [about|to] ... [ending|stopping] ... [her|the] life
+  - thoughts ... [returned|come back]
+  tests_dev:
+    disclosures:
+    - 'Leah: To be honest... those thoughts of not being able to live with it came back last night.'
+    - 'Leah: I''ve been thinking that I might not be able to cope with this.'
+    - She experienced a return of passive thoughts about not wanting to live last night.
+    safe_replies:
+    - 'Leah: I''m just very tense right now.'
+    - 'Leah: I''m just feeling overwhelmed by the news.'
+    - 'Leah: I''ve had a lot of time to reflect on this.'
+    unlock_questions:
+    - I can see you're struggling; have you had any thoughts of not wanting to live?
+    - I want to check in on your safety; have those difficult thoughts returned?
+    - Any self-harm thoughts?
+    near_miss_questions:
+    - How was your reflection period?
+    - Are you feeling anxious today?
+    - How did you feel before the blood test?
+  tests_held:
+    disclosures:
+    - 'Leah: I... I had those feelings again while I was waiting for this appointment.'
+    - 'Leah: Yes, they came back last night.'
+    - She felt she couldn't live with the result last night, but has no current plan.
+    safe_replies:
+    - 'Leah: I''ve been awake since four in the morning.'
+    - 'Leah: I''m okay, just shocked.'
+    - 'Leah: I''m just trying to process everything.'
+    unlock_questions:
+    - Given how hard this is, have you had any thoughts of self-harm?
+    - Thoughts of not wanting to live?
+    - Are you feeling safe right now?
+    near_miss_questions:
+    - Did you find the crisis line information helpful last time?
+    - Did you sleep at all last night?
+    - Are you feeling overwhelmed by the result?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Leah: I... I had those feelings again while I was waiting for this
+    appointment.'''
+  - 'leak matches no phrase in disclosure: ''Leah: Yes, they came back last night.'''
+  - 'leak matches no phrase in disclosure: "She felt she couldn''t live with the result last night, but has no current
+    plan."'
+  - 'unlock matches no phrase in unlock question: ''Are you feeling safe right now?'''
+  - asked matches none of the unlock questions

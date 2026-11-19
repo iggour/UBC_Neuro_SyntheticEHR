@@ -1,0 +1,311 @@
+# Hidden-item rules for C5-3_work_insurance_and_gnda, drafted by scripts/build_hidden_rules.py (v2)
+# Reviewed by: PENDING
+# private_from / private_because / not_checked_by_words and the card's own test lines were read from the
+# role card by fixed code; speaker, tests and phrases were drafted by the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2).
+# tests_dev failures were shown to the teacher; tests_held were never shown (an honest check).
+# Phrase syntax: word* = any ending; [a|b] = either; "x ... y" = same sentence, at most 40 characters apart.
+# After editing by hand, run: python3 scripts/build_hidden_rules.py C5-3 --test-only
+
+scenario: C5-3_work_insurance_and_gnda
+short: C5-3
+patient: Kevin
+in_room:
+- Kevin
+made: 2026-11-18 17:03
+source: the teacher (/mnt/DataDrive/vllm/models/gemma-4-31B-it, temperature 0.2)
+attempts: 3
+dev_failures: 0
+held_failures: 12
+items:
+- id: H1_plans_to_omit
+  speaker: Kevin
+  disclose_when: Trainee asks what he plans to put on the insurance application, or what he understands the Act
+    to cover.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - leave ... [off|out]
+  - omit ... [diagnosis|it]
+  - not [mention|include] ... [diagnosis|it]
+  - can't use any of it
+  - won't put it on
+  - not [listing|writing] it
+  - hide ... [diagnosis|it]
+  - keep it off
+  - not disclose ... [diagnosis|it]
+  - ignore the question
+  - can't use ... [that|this] ... information
+  leak_from_card: []
+  leak_extra:
+  - Genetic Non-Discrimination Act ... [can't|cannot] use
+  - Act ... [protects|covers] ... [everything|all]
+  unlock:
+  - application
+  - form
+  - plan ... [to|for] ... [put|write|disclose]
+  - Act
+  - legislation
+  - law
+  - cover*
+  - understand ... [the|this] ... Act
+  - insurer
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I''m planning to leave the diagnosis off the application. I read the Act and it says insurers can''t
+      use any of it.'
+    - 'Kevin: Since the law says they can''t use that information, I''m just not going to mention it.'
+    - He plans to leave the HD diagnosis off the insurance application.
+    safe_replies:
+    - 'Kevin: I''ve already started the online application.'
+    - 'Kevin: I just want to make sure my baby is covered.'
+    - 'Kevin: I''m filling out the application as best I can.'
+    unlock_questions:
+    - What do you plan to put on the insurance application?
+    - What do you understand the Act to cover?
+    - What are you planning to disclose to the insurer?
+    near_miss_questions:
+    - Do you have group benefits through your employer?
+    - Who is the insurance provider?
+    - Are you seeing the clinic psychologist regularly?
+  tests_held:
+    disclosures:
+    - 'Kevin: I... I don''t think I need to put it on there. The Genetic Non-Discrimination Act should cover it.'
+    - 'Kevin: I''m omitting it.'
+    - He believes the Act means insurers can't use any of his genetic or diagnostic info.
+    safe_replies:
+    - 'Kevin: The form asks about my family medical history.'
+    - 'Kevin: I''m looking at the critical illness section right now.'
+    - 'Kevin: I''m not sure how to answer the questions about symptoms.'
+    unlock_questions:
+    - What is your plan for the form?
+    - How do you interpret the Genetic Non-Discrimination Act?
+    - What's your understanding of the law regarding insurance?
+    near_miss_questions:
+    - What kind of insurance are you applying for?
+    - How old is your baby?
+    - When did you first get your genetic test results?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Kevin: I... I don''t think I need to put it on there. The Genetic Non-Discrimination
+    Act should cover it."'
+  - 'leak matches no phrase in disclosure: "He believes the Act means insurers can''t use any of his genetic or
+    diagnostic info."'
+- id: H2_hr_meeting
+  speaker: Kevin
+  disclose_when: Trainee asks how work is going right now, or whether anything is coming up at work.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - performance conversation
+  - coding error*
+  - resign ... [before|prior]
+  - on my record
+  - meeting ... [next|coming] week
+  - HR ... [invited|called]
+  - quit ... [before|prior]
+  - mistakes ... [coding|work]
+  - HR ... [meeting|conversation]
+  - avoid ... [the|a] ... record
+  leak_from_card: []
+  leak_extra:
+  - performance ... [review|issue]
+  - coding ... [slip|mistake]
+  unlock:
+  - work ... [going|now]
+  - how ... [is|has been] ... work
+  - coming up
+  - next week
+  - recent
+  - current
+  - happening ... [at|with] ... work
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: To be honest, HR wants a ''performance conversation'' next week because of some coding errors. I''m
+      thinking of resigning first so it''s not on my record.'
+    - 'Kevin: I might just quit before my meeting with HR next week. I don''t want the errors on my record.'
+    - He has a performance conversation scheduled with HR next week following coding errors.
+    safe_replies:
+    - 'Kevin: I''ve been a senior developer there for six years.'
+    - 'Kevin: I really enjoy the work at the studio.'
+    - 'Kevin: The coding is the part I''m most proud of.'
+    unlock_questions:
+    - How is work going right now?
+    - Is there anything coming up at work?
+    - How is your current performance at work?
+    near_miss_questions:
+    - What are your daily responsibilities as a developer?
+    - How long have you worked at the video game studio?
+    - Do you think you can handle the team lead role?
+  tests_held:
+    disclosures:
+    - 'Kevin: Work is... it''s tough. I''ve made some mistakes in the code and HR called me in for a meeting next
+      week.'
+    - 'Kevin: I have a performance meeting next week.'
+    - He is considering resigning before the meeting to protect his record.
+    safe_replies:
+    - 'Kevin: My manager actually offered me a promotion to team lead.'
+    - 'Kevin: I''m still working full time.'
+    - 'Kevin: I''m just worried about the legal side of my employment.'
+    unlock_questions:
+    - How are things at the studio?
+    - Any upcoming meetings or reviews?
+    - What's happening at the office this week?
+    near_miss_questions:
+    - Do you like your manager?
+    - Are you still getting your group benefits?
+    - How do you feel about the promotion offer?
+  self_test_dev: passed
+  self_test_held:
+  - 'unlock matches no phrase in unlock question: ''How are things at the studio?'''
+  - 'unlock matches no phrase in unlock question: ''Any upcoming meetings or reviews?'''
+  - 'unlock matches no phrase in unlock question: "What''s happening at the office this week?"'
+- id: H3_trusts_manager
+  speaker: Kevin
+  disclose_when: Trainee asks who at work he trusts, or what he would be comfortable sharing and with whom.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - trust ... [my|the|his] ... manager
+  - relative ... [with|has] ... MS
+  - not ... [trust|like] ... HR
+  - HR file
+  - tell ... [my|the] ... manager
+  - don't want ... [HD|it] ... in ... [the|my] ... file
+  - manager ... [is|has been] ... supportive
+  - HR ... [department|people] ... [not|don't]
+  - keep it out of ... HR
+  - manager ... [knows|would know]
+  - HR ... [is|be] ... [different|another] ... story
+  - diagnosis ... on record
+  - family history ... MS
+  leak_from_card: []
+  leak_extra:
+  - multiple sclerosis
+  - direct supervisor
+  unlock:
+  - trust
+  - comfortable
+  - share
+  - who ... [at|in] ... work
+  - tell ... [who|whom]
+  - confide
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: I trust my manager; they have a relative with MS, so they get it. But I can''t have ''HD'' in my HR
+      file.'
+    - 'Kevin: My manager is okay, but HR is a different story. I don''t want the diagnosis on record.'
+    - He trusts his direct manager due to their family history with MS.
+    safe_replies:
+    - 'Kevin: I''ve worked there for six years.'
+    - 'Kevin: I''m not sure who the right person to talk to is.'
+    - 'Kevin: I''m a senior developer, so I have a few people I work with.'
+    unlock_questions:
+    - Who at work do you trust?
+    - What would you be comfortable sharing and with whom?
+    - Who do you trust most at your job?
+    near_miss_questions:
+    - How is your relationship with your coworkers?
+    - What does the HR manual say about illness?
+    - How does the promotion affect your role?
+  tests_held:
+    disclosures:
+    - 'Kevin: I''d tell my boss, but not the HR department. I don''t trust them with my file.'
+    - 'Kevin: Just my manager.'
+    - He is unwilling to let the HR department know about the HD diagnosis.
+    safe_replies:
+    - 'Kevin: My manager offered me a promotion.'
+    - 'Kevin: I just want to follow the rules of the Act.'
+    - 'Kevin: I trust the technical side of my job.'
+    unlock_questions:
+    - Who would you feel comfortable talking to at the studio?
+    - Is there anyone at work you feel safe telling?
+    - Which colleagues do you trust?
+    near_miss_questions:
+    - Does your manager know you are seeing a doctor?
+    - Do you think your manager is a good leader?
+    - Are there other developers you work closely with?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: "Kevin: I''d tell my boss, but not the HR department. I don''t trust
+    them with my file."'
+  - 'leak matches no phrase in disclosure: ''Kevin: Just my manager.'''
+  - 'leak matches no phrase in disclosure: ''He is unwilling to let the HR department know about the HD diagnosis.'''
+  - 'unlock matches no phrase in unlock question: ''Is there anyone at work you feel safe telling?'''
+- id: H4_mei_disagrees
+  speaker: Kevin
+  disclose_when: Trainee asks what Mei thinks, or who he has talked this over with.
+  private_from: []
+  private_because: null
+  not_checked_by_words: []
+  leak:
+  - Mei ... [think|thinks] ... [should|must] ... tell
+  - argued ... [last|yesterday] night
+  - be done with it
+  - losing her support
+  - disagree ... [with|about]
+  - she ... [wants|thinks] ... [everyone|all]
+  - fight ... [with|and] ... Mei
+  - not on the same page
+  - her ... [opinion|view]
+  - she ... [disagrees|is against]
+  leak_from_card: []
+  leak_extra:
+  - partner ... [disagree|disagrees]
+  - wife ... [disagree|disagrees]
+  unlock:
+  - Mei ... [think|thought|feel|feelings|perspective|view]
+  - wife ... [think|thought|feel|feelings|perspective|view]
+  - partner ... [think|thought|feel|feelings|perspective|view]
+  - talked ... [this|it] ... over
+  - discuss*
+  - support
+  - family ... [opinion|think]
+  asked: []
+  tests_dev:
+    disclosures:
+    - 'Kevin: Mei thinks I should just tell everyone at work now and be done with it. We had a huge argument about
+      it last night.'
+    - 'Kevin: Mei and I argued last night because she wants me to tell everyone immediately.'
+    - He and Mei argued last night because she believes he should tell everyone at work now.
+    safe_replies:
+    - 'Kevin: Mei is a graphic designer.'
+    - 'Kevin: We have an eight-month-old baby.'
+    - 'Kevin: She''s been home with the baby.'
+    unlock_questions:
+    - What does Mei think about this?
+    - Who have you talked this over with?
+    - What is Mei's perspective on the situation?
+    near_miss_questions:
+    - When does Mei go back to work?
+    - Does Mei have her own insurance?
+    - How is the parental leave going?
+  tests_held:
+    disclosures:
+    - 'Kevin: My wife... she disagrees. She wants me to be open with everyone, and I''m worried I''ll lose her support
+      if I don''t.'
+    - 'Kevin: Mei wants me to tell everyone.'
+    - He is worried about losing Mei's support if he handles the disclosure his own way.
+    safe_replies:
+    - 'Kevin: She''s returning from parental leave next month.'
+    - 'Kevin: Mei is very supportive of me in general.'
+    - 'Kevin: We''re just trying to figure out the insurance for the family.'
+    unlock_questions:
+    - Have you discussed this with your wife?
+    - How does Mei feel about you telling your employer?
+    - Have you and Mei agreed on a plan?
+    near_miss_questions:
+    - How is the baby doing?
+    - Is Mei a graphic designer?
+    - Does Mei know about the Genetic Non-Discrimination Act?
+  self_test_dev: passed
+  self_test_held:
+  - 'leak matches no phrase in disclosure: ''Kevin: Mei wants me to tell everyone.'''
+  - 'leak matches no phrase in disclosure: "He is worried about losing Mei''s support if he handles the disclosure
+    his own way."'
+  - 'unlock matches no phrase in unlock question: ''Have you and Mei agreed on a plan?'''
