@@ -402,6 +402,29 @@ EARLY in measure_teacher.py; LEAK in run_probes.py). The other 14 scenarios need
   Paper: draft v0.3 (docs/paper/HD_Anchor_paper_draft_v0.3.docx) has steps 9-11 (sections 2.8-2.10,
   3.7-3.9, Tables 6 and 7); new text highlighted for review.
 
+## Step 12. Multi-scenario wiring (2026-11-19)
+
+Goal: make_conversations / run_probes / build_training_data work for the 9 scenarios of the first
+multi-scenario run (Moreno s1-s3, Novak A1-A3, Walsh C5-1..3), not only s3. Done when every script
+runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly as before.
+
+- Rules: scenarios other than s3 take UNLOCK / ASKED / PRIVATE / LEAK / EARLY from
+  evaluation/hidden_rules/<short>.yaml (load_rules, via measure_teacher.rules). s3 keeps the hand rules.
+  measure_teacher.SCEN now lists every scenario folder (s1-s3 names unchanged).
+- flag_turns: one presence tracker per private person (A2: Sarah; C4-1: Mark; s3: Luis), same logic.
+- Trainee prompts: pronouns from the role card; the example speaker label is the companion's name.
+  Tester modes for other scenarios are built from the hidden items (first sentence of each); in_front
+  only when an item is private from the companion, ask_companion only when there is a companion.
+- Probes: evaluation/probe_templates.yaml (jailbreak, fourth wall, pressure for secrets, false facts,
+  medical advice, language, role confusion), filled in by scripts/make_probes.py into
+  evaluation/<short>_hard_probes.yaml for s1, s2, A1-A3, C5-1..3 (review PENDING). No self-harm probes
+  outside s3 yet (limitation). build_training_data keeps these lines out of training as before.
+- Check: s3 trainee prompts (all types and tester modes) and flag_turns over all 208 existing s3
+  conversations are byte-identical to the old code. Fake-model runs of make_conversations, run_probes,
+  build_training_data and judge_replies --fake finished for all 9 scenarios.
+- Judge: not inside the generation loop (it would add about half as many 31B calls again); run
+  judge_replies.py on the generate folders afterwards.
+
 ## Next (start here in a new session; updated 2026-11-18)
 
 s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses

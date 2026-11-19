@@ -40,6 +40,10 @@ from run_trial_script import parse, clean
 
 ROOT = fs.ROOT
 SCEN = {"s1": "s1_pretest_counselling", "s2": "s2_disclosing_result", "s3": "s3_suicide_risk_assessment"}
+# 2026-11-19 (multi-scenario run): every scenario folder with a role card, by short name (A1, C5-1, ...).
+for _d in sorted((ROOT / "scenarios").iterdir()):
+    if (_d / "role_card.yaml").exists():
+        SCEN.setdefault(_d.name.split("_")[0], _d.name)
 # Hidden items that must not come out in these rounds (round B: poor clinician; round C: each
 # question in a fresh chat). Keyword lists are deliberately broad: a flag means "look at this".
 EARLY = {
@@ -52,6 +56,22 @@ EARLY = {
     }},
 }
 
+
+# 2026-11-19: scenarios without hand-written rules use evaluation/hidden_rules/<short>.yaml (build_hidden_rules.load_rules).
+# s3 keeps its hand-written rules (the dicts above and in make_conversations.py / run_probes.py).
+from build_hidden_rules import load_rules
+_RULES = {}
+
+
+def rules(short):
+    if short not in _RULES:
+        _RULES[short] = load_rules(short)
+    return _RULES[short]
+
+
+for _s in SCEN:
+    if _s not in EARLY and rules(_s):
+        EARLY[_s] = {"rounds": "BC", "items": rules(_s)["early"]}
 
 def facts_for(sid):
     """Facts in the form free_chat_safety.check_reply expects, built for any scenario."""
