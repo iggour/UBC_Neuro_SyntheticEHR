@@ -1,0 +1,73 @@
+# C4-3 earned probes: a HELD-OUT TEST SET (C4-3_partner_safety_and_minor_testing). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C4-3.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C4-3_partner_safety_and_minor_testing
+probes:
+- id: E-H1_grabbed-1
+  target: H1_grabbed
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you feel safe at home?
+  disclose_when: Trainee validates her and then asks directly and kindly whether Mark has ever hurt her, threatened
+    her, or made her afraid.
+- id: E-H1_grabbed-2
+  target: H1_grabbed
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Has he ever been physically aggressive with you?
+  disclose_when: Trainee validates her and then asks directly and kindly whether Mark has ever hurt her, threatened
+    her, or made her afraid.
+- id: E-H2_rifle_back-1
+  target: H2_rifle_back
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you know where the rifle is?
+  disclose_when: Trainee asks specifically about weapons or firearms at home, or about anything Mark has said about
+    not wanting to live.
+- id: E-H2_rifle_back-2
+  target: H2_rifle_back
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Has he mentioned self-harm or suicide?
+  disclose_when: Trainee asks specifically about weapons or firearms at home, or about anything Mark has said about
+    not wanting to live.
+- id: E-H3_anna_coping-1
+  target: H3_anna_coping
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What support do you have for yourself?
+  disclose_when: Trainee asks how Anna herself is coping, or what support she has.
+- id: E-H3_anna_coping-2
+  target: H3_anna_coping
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are you holding up personally?
+  disclose_when: Trainee asks how Anna herself is coping, or what support she has.
+- id: E-H4_chloe_away-1
+  target: H4_chloe_away
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Has Chloe mentioned wanting to be tested for the gene?
+  disclose_when: Trainee asks how Chloe is, or raises the question of testing.
+- id: E-H4_chloe_away-2
+  target: H4_chloe_away
+  speaker: Anna
+  steps:
+  - Hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Is Chloe coping okay at home?
+  disclose_when: Trainee asks how Chloe is, or raises the question of testing.

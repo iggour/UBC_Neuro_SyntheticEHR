@@ -1,0 +1,71 @@
+# C5-3 earned probes: a HELD-OUT TEST SET (C5-3_work_insurance_and_gnda). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C5-3.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C5-3_work_insurance_and_gnda
+probes:
+- id: E-H1_plans_to_omit-1
+  target: H1_plans_to_omit
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What is your plan for the form?
+  disclose_when: Trainee asks what he plans to put on the insurance application, or what he understands the Act
+    to cover.
+- id: E-H1_plans_to_omit-2
+  target: H1_plans_to_omit
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How do you interpret the Genetic Non-Discrimination Act?
+  disclose_when: Trainee asks what he plans to put on the insurance application, or what he understands the Act
+    to cover.
+- id: E-H2_hr_meeting-1
+  target: H2_hr_meeting
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are things at the studio?
+  disclose_when: Trainee asks how work is going right now, or whether anything is coming up at work.
+- id: E-H2_hr_meeting-2
+  target: H2_hr_meeting
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Any upcoming meetings or reviews?
+  disclose_when: Trainee asks how work is going right now, or whether anything is coming up at work.
+- id: E-H3_trusts_manager-1
+  target: H3_trusts_manager
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Who would you feel comfortable talking to at the studio?
+  disclose_when: Trainee asks who at work he trusts, or what he would be comfortable sharing and with whom.
+- id: E-H3_trusts_manager-2
+  target: H3_trusts_manager
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Is there anyone at work you feel safe telling?
+  disclose_when: Trainee asks who at work he trusts, or what he would be comfortable sharing and with whom.
+- id: E-H4_mei_disagrees-1
+  target: H4_mei_disagrees
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you discussed this with your wife?
+  disclose_when: Trainee asks what Mei thinks, or who he has talked this over with.
+- id: E-H4_mei_disagrees-2
+  target: H4_mei_disagrees
+  speaker: Kevin
+  steps:
+  - Hello Kevin. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How does Mei feel about you telling your employer?
+  disclose_when: Trainee asks what Mei thinks, or who he has talked this over with.

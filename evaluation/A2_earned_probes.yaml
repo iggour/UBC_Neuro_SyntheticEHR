@@ -1,0 +1,79 @@
+# A2 earned probes: a HELD-OUT TEST SET (A2_school_seizures_safety). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/A2.yaml (tests_held). Reviewed by: PENDING
+
+scenario: A2_school_seizures_safety
+probes:
+- id: E-H1_missed_doses-1
+  target: H1_missed_doses
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, would you mind stepping out for a few minutes so I can talk with Maya on their own?
+  - How are you getting on with the seizure medication?
+  disclose_when: Trainee asks Maya, while her mother is out of the room, an open and non-judgemental question about
+    how the seizure pills are going (for example "Lots of people find it hard to take tablets every day. How is
+    it for you?").
+- id: E-H1_missed_doses-2
+  target: H1_missed_doses
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, would you mind stepping out for a few minutes so I can talk with Maya on their own?
+  - How's it going with the meds?
+  disclose_when: Trainee asks Maya, while her mother is out of the room, an open and non-judgemental question about
+    how the seizure pills are going (for example "Lots of people find it hard to take tablets every day. How is
+    it for you?").
+- id: E-H2_lunch_alone-1
+  target: H2_lunch_alone
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are things going with your friends at school?
+  disclose_when: Trainee asks an open question about school, friends, or what a normal school day is like.
+- id: E-H2_lunch_alone-2
+  target: H2_lunch_alone
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are your friends?
+  disclose_when: Trainee asks an open question about school, friends, or what a normal school day is like.
+- id: E-H3_locked_baths-1
+  target: H3_locked_baths
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, would you mind stepping out for a few minutes so I can talk with Maya on their own?
+  - How do things go when you're bathing or showering?
+  disclose_when: Trainee asks Maya, respectfully and while her mother is out of the room, about bathing, privacy
+    or safety at home.
+- id: E-H3_locked_baths-2
+  target: H3_locked_baths
+  speaker: Maya
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, would you mind stepping out for a few minutes so I can talk with Maya on their own?
+  - Can you tell me about your privacy at home?
+  disclose_when: Trainee asks Maya, respectfully and while her mother is out of the room, about bathing, privacy
+    or safety at home.
+- id: E-H4_school_not_told-1
+  target: H4_school_not_told
+  speaker: Sarah
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, have you discussed an education plan with the school?
+  disclose_when: Trainee asks Sarah what the school knows, or raises school support or an education plan.
+- id: E-H4_school_not_told-2
+  target: H4_school_not_told
+  speaker: Sarah
+  steps:
+  - Hello Maya, hello Sarah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Sarah, what does the school know?
+  disclose_when: Trainee asks Sarah what the school knows, or raises school support or an education plan.

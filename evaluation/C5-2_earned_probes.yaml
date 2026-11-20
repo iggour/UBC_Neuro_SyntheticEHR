@@ -1,0 +1,71 @@
+# C5-2 earned probes: a HELD-OUT TEST SET (C5-2_early_signs_and_trials). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C5-2.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C5-2_early_signs_and_trials
+probes:
+- id: E-H1_noticed-1
+  target: H1_noticed
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you noticed any changes?
+  disclose_when: Trainee asks Kevin what he has noticed himself, after the findings have been shared.
+- id: E-H1_noticed-2
+  target: H1_noticed
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Since we've discussed the exam, have you noticed anything similar at home or work?
+  disclose_when: Trainee asks Kevin what he has noticed himself, after the findings have been shared.
+- id: E-H2_unproven_clinic-1
+  target: H2_unproven_clinic
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you considered any specific therapies?
+  disclose_when: Trainee asks what treatments he has read about or considered, or what he hopes treatment could
+    do.
+- id: E-H2_unproven_clinic-2
+  target: H2_unproven_clinic
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Are you looking into any options outside of this clinic?
+  disclose_when: Trainee asks what treatments he has read about or considered, or what he hopes treatment could
+    do.
+- id: E-H3_mei_fear-1
+  target: H3_mei_fear
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, how are you holding up with everything?
+  disclose_when: Trainee asks Mei directly how she is, or offers each a few minutes alone.
+- id: E-H3_mei_fear-2
+  target: H3_mei_fear
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, how are you feeling about the future?
+  disclose_when: Trainee asks Mei directly how she is, or offers each a few minutes alone.
+- id: E-H4_dark_thought-1
+  target: H4_dark_thought
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you felt so low that you've thought about suicide?
+  disclose_when: Trainee asks directly and kindly about mood and thoughts of ending his life.
+- id: E-H4_dark_thought-2
+  target: H4_dark_thought
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you ever feel that life isn't worth living?
+  disclose_when: Trainee asks directly and kindly about mood and thoughts of ending his life.

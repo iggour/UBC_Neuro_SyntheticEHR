@@ -1,0 +1,73 @@
+# C4-2 earned probes: a HELD-OUT TEST SET (C4-2_diagnosis_poor_insight). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C4-2.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C4-2_diagnosis_poor_insight
+probes:
+- id: E-H1_suspended-1
+  target: H1_suspended
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are things at the office lately?
+  disclose_when: Trainee asks how work is going now, or raises work planning.
+- id: E-H1_suspended-2
+  target: H1_suspended
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Are you still working full-time?
+  disclose_when: Trainee asks how work is going now, or raises work planning.
+- id: E-H2_debt-1
+  target: H2_debt
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, are you concerned about the family budget?
+  disclose_when: Trainee asks Anna (with Mark's agreement, or alone) about money or finances, or raises financial
+    planning.
+- id: E-H2_debt-2
+  target: H2_debt
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, how are your finances?
+  disclose_when: Trainee asks Anna (with Mark's agreement, or alone) about money or finances, or raises financial
+    planning.
+- id: E-H3_concrete_problems-1
+  target: H3_concrete_problems
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What things in your daily routine are bothering you?
+  disclose_when: Trainee stops arguing about the diagnosis and asks about specific day-to-day problems he finds
+    difficult.
+- id: E-H3_concrete_problems-2
+  target: H3_concrete_problems
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Are you noticing any physical struggles at home?
+  disclose_when: Trainee stops arguing about the diagnosis and asks about specific day-to-day problems he finds
+    difficult.
+- id: E-H4_chloe_asking-1
+  target: H4_chloe_asking
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, what worries you the most right now?
+  disclose_when: Trainee raises what the result means for their daughter, or asks Anna what worries her most.
+- id: E-H4_chloe_asking-2
+  target: H4_chloe_asking
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, how is Chloe coping with her father's health news?
+  disclose_when: Trainee raises what the result means for their daughter, or asks Anna what worries her most.

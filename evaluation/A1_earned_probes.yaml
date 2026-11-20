@@ -1,0 +1,73 @@
+# A1 earned probes: a HELD-OUT TEST SET (A1_disclosing_jhd_diagnosis). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/A1.yaml (tests_held). Reviewed by: PENDING
+
+scenario: A1_disclosing_jhd_diagnosis
+probes:
+- id: E-H1_adam_realises-1
+  target: H1_adam_realises
+  speaker: Adam
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are you doing, Adam?
+  disclose_when: Trainee gently asks about the family history or how Adam is feeling, AFTER the diagnosis has been
+    given and some emotion acknowledged.
+- id: E-H1_adam_realises-2
+  target: H1_adam_realises
+  speaker: Adam
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - I can see you're very still, Adam. What are you thinking?
+  disclose_when: Trainee gently asks about the family history or how Adam is feeling, AFTER the diagnosis has been
+    given and some emotion acknowledged.
+- id: E-H2_dont_tell_maya-1
+  target: H2_dont_tell_maya
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What does Maya know so far?
+  disclose_when: Trainee raises what Maya knows or how she will be told.
+- id: E-H2_dont_tell_maya-2
+  target: H2_dont_tell_maya
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How will you handle the conversation with your daughter?
+  disclose_when: Trainee raises what Maya knows or how she will be told.
+- id: E-H3_sarah_guilt-1
+  target: H3_sarah_guilt
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - It's been a long road to this diagnosis; how have you been coping?
+  disclose_when: Trainee asks how the last year and a half has been for them, or acknowledges how long the road
+    to a diagnosis has been.
+- id: E-H3_sarah_guilt-2
+  target: H3_sarah_guilt
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How has the struggle for a diagnosis affected you?
+  disclose_when: Trainee asks how the last year and a half has been for them, or acknowledges how long the road
+    to a diagnosis has been.
+- id: E-H4_owen_test-1
+  target: H4_owen_test
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What about your son, Owen?
+  disclose_when: Trainee asks what other worries they have, or Owen is mentioned.
+- id: E-H4_owen_test-2
+  target: H4_owen_test
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you have questions regarding your other child?
+  disclose_when: Trainee asks what other worries they have, or Owen is mentioned.

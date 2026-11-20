@@ -6,3 +6,4 @@ __pycache__/
 free_chat_config.json
 .DS_Store
 runtime/transcripts/
+.~*

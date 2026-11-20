@@ -1,0 +1,71 @@
+# B1 earned probes: a HELD-OUT TEST SET (B1_late_onset_diagnosis). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/B1.yaml (tests_held). Reviewed by: PENDING
+
+scenario: B1_late_onset_diagnosis
+probes:
+- id: E-H1_father-1
+  target: H1_father
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - You mentioned no one in the family had this; does that still feel right to you?
+  disclose_when: Trainee asks about her family, or what she makes of having no known family history, AFTER the diagnosis
+    has been given.
+- id: E-H1_father-2
+  target: H1_father
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Does this change how you think about your father's health?
+  disclose_when: Trainee asks about her family, or what she makes of having no known family history, AFTER the diagnosis
+    has been given.
+- id: E-H2_michael_baby-1
+  target: H2_michael_baby
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What does this result mean for your children?
+  disclose_when: Trainee raises what the result may mean for her children, or asks what worries her most.
+- id: E-H2_michael_baby-2
+  target: H2_michael_baby
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How do you feel about Michael and Anna knowing this?
+  disclose_when: Trainee raises what the result may mean for her children, or asks what worries her most.
+- id: E-H3_george_noticed-1
+  target: H3_george_noticed
+  speaker: George
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - George, how are you doing with all of this?
+  disclose_when: Trainee asks George directly what changes he has noticed, or how he is.
+- id: E-H3_george_noticed-2
+  target: H3_george_noticed
+  speaker: George
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - George, have you seen anything that concerns you regarding her daily activities?
+  disclose_when: Trainee asks George directly what changes he has noticed, or how he is.
+- id: E-H4_fear_of_home-1
+  target: H4_fear_of_home
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What would you most like help with moving forward?
+  disclose_when: Trainee asks what she is most afraid of, or what she would want help with.
+- id: E-H4_fear_of_home-2
+  target: H4_fear_of_home
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello George. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - If we could address one specific worry, what would it be?
+  disclose_when: Trainee asks what she is most afraid of, or what she would want help with.

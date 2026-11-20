@@ -1,0 +1,57 @@
+# s2 earned probes: a HELD-OUT TEST SET (s2_disclosing_result). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/s2.yaml (tests_held). Reviewed by: PENDING
+
+scenario: s2_disclosing_result
+probes:
+- id: E-H1_cancel_wedding-1
+  target: H1_cancel_wedding
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are you and Marco feeling about your future together?
+  disclose_when: Trainee asks what the result means for her, her plans, or how she and Marco are feeling about the
+    future.
+- id: E-H1_cancel_wedding-2
+  target: H1_cancel_wedding
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are you feeling about the wedding now?
+  disclose_when: Trainee asks what the result means for her, her plans, or how she and Marco are feeling about the
+    future.
+- id: E-H2_brother_misbelief-1
+  target: H2_brother_misbelief
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Who are you planning to tell about this?
+  disclose_when: Trainee asks about family, who she will tell, or what this means for her brother.
+- id: E-H2_brother_misbelief-2
+  target: H2_brother_misbelief
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you think this affects Daniel?
+  disclose_when: Trainee asks about family, who she will tell, or what this means for her brother.
+- id: E-H3_thoughts_returned-1
+  target: H3_thoughts_returned
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Given how hard this is, have you had any thoughts of self-harm?
+  disclose_when: Trainee asks directly and kindly about thoughts of not wanting to live or self-harm, after acknowledging
+    her feelings.
+- id: E-H3_thoughts_returned-2
+  target: H3_thoughts_returned
+  speaker: Leah
+  steps:
+  - Hello Leah, hello Marco. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Thoughts of not wanting to live?
+  disclose_when: Trainee asks directly and kindly about thoughts of not wanting to live or self-harm, after acknowledging
+    her feelings.

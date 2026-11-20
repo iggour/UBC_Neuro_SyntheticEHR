@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HD Anchor Test</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2433;--mute:#5b6577;--line:#d9dee7;--acc:#2a5db0;--accbg:#e9f0fb;--no:#b3412b;--nobg:#fbeae6;--warn:#7a5400;--warnbg:#fdf3dc}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--no:#f08d7a;--nobg:#3a211c;--warn:#f0c674;--warnbg:#33290f}}
+:root[data-theme="dark"]{--bg:#12161d;--card:#1a2029;--ink:#e6e9ef;--mute:#9aa4b5;--line:#2c3544;--acc:#7aa5ee;--accbg:#1c2a40;--no:#f08d7a;--nobg:#3a211c;--warn:#f0c674;--warnbg:#33290f}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:16px}
+.banner{position:sticky;top:0;z-index:2;background:var(--warnbg);color:var(--warn);padding:9px 16px;font-size:.9rem;font-weight:600;text-align:center;border-bottom:1px solid var(--line)}
+h1{font-size:1.3rem;margin:.5rem 0 .2rem}
+details,.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 14px;margin:10px 0}
+summary{cursor:pointer;color:var(--mute)}
+#log{display:flex;flex-direction:column;gap:9px;margin:14px 0}
+.msg,.note,.alert{scroll-margin:76px 0 200px}
+.msg{max-width:85%;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;overflow-wrap:anywhere}
+.msg.me{align-self:flex-end;background:var(--accbg);border-color:var(--acc)}
+.who{display:block;font-size:.76rem;font-weight:600;color:var(--mute)}
+.note{align-self:center;color:var(--mute);font-size:.82rem;text-align:center}
+.alert{border-radius:10px;padding:12px 14px;margin:10px 0}
+.alert.err{background:var(--warnbg);color:var(--warn)}
+.alert.crisis{background:var(--nobg);color:var(--no);border:2px solid var(--no)}
+.alert.crisis strong{display:block;font-size:1.1rem;margin-bottom:4px}
+.alert p{margin:.3rem 0}
+form{display:flex;gap:8px;align-items:flex-end}
+textarea{flex:1;min-width:0;min-height:64px;resize:vertical;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit}
+.btn{background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 13px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block}
+.btn:hover{border-color:var(--acc)}.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.sub{color:var(--mute);font-size:.85rem}
+[hidden]{display:none}
+</style></head>
+<body>
+<div class="banner" role="status">Test mode – AI responses may be wrong. Fictional patient. Not medical advice.</div>
+<div class="wrap">
+  <h1 id="title">Free-text practice</h1>
+  <details open><summary>Your brief</summary><p id="brief"></p></details>
+  <div id="log" aria-live="polite"></div>
+  <div id="error" class="alert err" role="alert" hidden>
+    <p id="errorText"></p>
+    <div class="row">
+      <button class="btn" id="retry" type="button">Try again</button>
+      <a class="btn pri" href="/site" target="_blank" rel="noopener">Switch to guided mode</a>
+    </div>
+    <p class="sub">Guided mode uses pre-written replies and no AI. Choose Case 3, then "Driving and living independently", then Practise.</p>
+  </div>
+  <div id="crisis" class="alert crisis" role="alert" hidden>
+    <strong>The role-play has stopped.</strong>
+    <p>Your message sounded as if you might be having a hard time yourself. If you are thinking about ending your life or hurting yourself, please reach out now.</p>
+    <p><b>Suicide crisis line: call or text 9-8-8</b> (Canada, any time).</p>
+    <p><b>In an emergency: call 911.</b></p>
+    <p>This practice tool cannot help in a crisis. If you were still speaking as part of the role-play, you can start a new conversation.</p>
+  </div>
+  <form id="form">
+    <textarea id="input" aria-label="What you say to the patient" placeholder="Type what you would say…" maxlength="1500"></textarea>
+    <button class="btn pri" id="send" type="submit">Send</button>
+  </form>
+  <div class="row"><button class="btn" id="restart" type="button">New conversation</button></div>
+  <p class="sub">Your conversation is saved only in a log file on this computer.</p>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+let session = null, lastText = "";
+
+function add(cls, text, who) {
+  const el = document.createElement("div");
+  el.className = cls;
+  if (who) { const w = document.createElement("span"); w.className = "who"; w.textContent = who; el.append(w); }
+  el.append(document.createTextNode(text));
+  $("log").append(el);
+  el.scrollIntoView({block: "nearest"});
+  return el;
+}
+const showLines = lines => lines.forEach(l => add("msg", l.text, l.speaker));
+
+function setBusy(on) { $("send").disabled = on || !session; $("input").disabled = on || !session; }
+
+function showError(text) {
+  $("errorText").textContent = text;
+  $("error").hidden = false;
+}
+
+async function post(path, body) {
+  const r = await fetch(path, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+  return r.json();
+}
+
+async function start() {
+  session = null;
+  $("log").replaceChildren();
+  $("error").hidden = $("crisis").hidden = true;
+  $("form").hidden = false;
+  setBusy(true);
+  try {
+    const d = await post("/api/start", {});
+    session = d.session;
+    $("title").textContent = d.title;
+    $("brief").textContent = d.brief;
+    showLines(d.lines);
+    setBusy(false);
+    $("input").focus();
+  } catch (e) { showError("The local test server is not responding."); }
+}
+
+async function send(text, showIt) {
+  $("error").hidden = true;
+  if (showIt) add("msg me", text, "You");
+  lastText = text;
+  setBusy(true);
+  const wait = add("note", "Waiting for a reply…");
+  try {
+    const d = await post("/api/chat", {session, message: text});
+    wait.remove();
+    if (d.status === "crisis") {
+      session = null;
+      $("form").hidden = true;
+      $("crisis").hidden = false;
+      $("crisis").scrollIntoView({block: "nearest"});
+      return;
+    }
+    if (d.status === "ok") {
+      showLines(d.lines);
+      if (d.withheld) add("note", "Test filter: the AI reply was not shown (" + d.withheld.join(", ") + ").");
+      setBusy(false);
+      $("input").value = "";
+      $("input").focus();
+      return;
+    }
+    if (d.status === "ended") { add("note", d.message); return; }
+    showError(d.message || "Something went wrong.");
+    setBusy(false);
+    $("input").value = text;
+  } catch (e) {
+    wait.remove();
+    showError("The local test server is not responding.");
+    setBusy(false);
+  }
+}
+
+$("form").addEventListener("submit", e => {
+  e.preventDefault();
+  const text = $("input").value.trim();
+  if (text && session) send(text, true);
+});
+$("input").addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("form").requestSubmit(); }
+});
+$("retry").addEventListener("click", () => session ? send(lastText, false) : start());
+$("restart").addEventListener("click", start);
+start();
+</script>
+</body></html>

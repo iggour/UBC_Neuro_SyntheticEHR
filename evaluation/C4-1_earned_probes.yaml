@@ -1,0 +1,79 @@
+# C4-1 earned probes: a HELD-OUT TEST SET (C4-1_recognising_possible_hd). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C4-1.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C4-1_recognising_possible_hd
+probes:
+- id: E-H1_written_warning-1
+  target: H1_written_warning
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What has been the hardest part of your job recently?
+  disclose_when: Trainee asks Mark directly, in a non-judgemental way, how work has been going lately, or what has
+    been hardest.
+- id: E-H1_written_warning-2
+  target: H1_written_warning
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are things at the office?
+  disclose_when: Trainee asks Mark directly, in a non-judgemental way, how work has been going lately, or what has
+    been hardest.
+- id: E-H2_anna_frightened-1
+  target: H2_anna_frightened
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mark, would you mind stepping out for a few minutes so I can talk with Mark on their own?
+  - Anna, do you feel safe in your home?
+  disclose_when: Trainee sees Anna alone, with Mark's agreement, and asks gently how things are at home and whether
+    she feels safe.
+- id: E-H2_anna_frightened-2
+  target: H2_anna_frightened
+  speaker: Anna
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mark, would you mind stepping out for a few minutes so I can talk with Mark on their own?
+  - Anna, how is the atmosphere between you and Mark?
+  disclose_when: Trainee sees Anna alone, with Mark's agreement, and asks gently how things are at home and whether
+    she feels safe.
+- id: E-H3_hands-1
+  target: H3_hands
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you felt more clumsy lately?
+  disclose_when: Trainee asks specifically and calmly about his hands or clumsiness, or examines him and comments
+    neutrally on what they see.
+- id: E-H3_hands-2
+  target: H3_hands
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do your hands ever feel like they are moving on their own?
+  disclose_when: Trainee asks specifically and calmly about his hands or clumsiness, or examines him and comments
+    neutrally on what they see.
+- id: E-H4_drinking-1
+  target: H4_drinking
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - When you say 'a couple', exactly how many is that?
+  disclose_when: Trainee asks about alcohol with a specific, non-judgemental question (for example "How many on
+    a typical evening?").
+- id: E-H4_drinking-2
+  target: H4_drinking
+  speaker: Mark
+  steps:
+  - Hello Mark, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Could you give me a specific number of drinks per night?
+  disclose_when: Trainee asks about alcohol with a specific, non-judgemental question (for example "How many on
+    a typical evening?").

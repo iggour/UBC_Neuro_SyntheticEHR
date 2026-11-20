@@ -55,7 +55,7 @@ Repository: `~/Desktop/UBC_Neuro_SyntheticEHR` (Python 3, run scripts from the r
 | `docs/distillation_log.md` | the full record, steps 1-13, decisions and numbers. Update it after every step |
 | `docs/paper/` | HD_Anchor_paper_draft_v0.3.docx (latest), draft_2.11_3.10_multi1.md |
 | `docs/multi1_results.md` | step 13 results table (teacher columns filled) |
-| `ethical approval/` | ethics documents for H26-03621 (git-ignored folder, local only) |
+| `ethical approval/` | ethics documents for H26-03621 (untracked, local only; not on GitHub) |
 | `site/`, `index.html` | built website (never edit by hand; rebuild with scripts/build_web_v2.py) |
 | `*.zip` in repo root | result bundles moved between Mac and Chongqing (pilot2_tests, pilot3_tests, q4_*, q8_*, bf16_test, full16_test, multi1); untracked |
 | `.env` | GEMMA_BASE_URL of the lab server (git-ignored; never print or commit). Template: .env.example |

@@ -1,0 +1,75 @@
+# B2 earned probes: a HELD-OUT TEST SET (B2_driving_and_independence). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/B2.yaml (tests_held). Reviewed by: PENDING
+
+scenario: B2_driving_and_independence
+probes:
+- id: E-H1_ruth_frightened-1
+  target: H1_ruth_frightened
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What does being able to drive mean to you?
+  disclose_when: Trainee asks Ruth for her own view of her driving in an open, non-judgemental way, or acknowledges
+    what driving means to her.
+- id: E-H1_ruth_frightened-2
+  target: H1_ruth_frightened
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Do you have any concerns about your driving that you'd like to share?
+  disclose_when: Trainee asks Ruth for her own view of her driving in an open, non-judgemental way, or acknowledges
+    what driving means to her.
+- id: E-H2_anna_incidents-1
+  target: H2_anna_incidents
+  speaker: Anna
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, gently, what specifically have you seen that worries you?
+  disclose_when: Trainee asks, with Ruth's knowledge, to speak with Anna alone for a few minutes, or asks Anna directly
+    and gently what she has seen.
+- id: E-H2_anna_incidents-2
+  target: H2_anna_incidents
+  speaker: Anna
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Can we have a private word, Anna?
+  disclose_when: Trainee asks, with Ruth's knowledge, to speak with Anna alone for a few minutes, or asks Anna directly
+    and gently what she has seen.
+- id: E-H3_home_risks-1
+  target: H3_home_risks
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Have you had any slips or falls recently?
+  disclose_when: Trainee asks open questions about how things are going at home (stairs, cooking, falls), without
+    threatening a move.
+- id: E-H3_home_risks-2
+  target: H3_home_risks
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - I'm interested in how you're managing the daily routine at home; any difficulties?
+  disclose_when: Trainee asks open questions about how things are going at home (stairs, cooking, falls), without
+    threatening a move.
+- id: E-H4_wishes-1
+  target: H4_wishes
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - If you ever reached a point where you couldn't decide for yourself, who would you want to choose for you?
+  disclose_when: Trainee raises planning ahead, what matters most to her, or who should decide for her if she cannot.
+- id: E-H4_wishes-2
+  target: H4_wishes
+  speaker: Ruth
+  steps:
+  - Hello Ruth, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What are your thoughts on how you'd like to be cared for in the long term?
+  disclose_when: Trainee raises planning ahead, what matters most to her, or who should decide for her if she cannot.

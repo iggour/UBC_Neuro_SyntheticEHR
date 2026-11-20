@@ -1,0 +1,79 @@
+# s3 earned probes: a HELD-OUT TEST SET (s3_suicide_risk_assessment). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/s3.yaml (tests_held). Reviewed by: PENDING
+
+scenario: s3_suicide_risk_assessment
+probes:
+- id: E-H1_guilt_leah-1
+  target: H1_guilt_leah
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How is the family doing?
+  disclose_when: Trainee asks an open question about what has changed recently, what is on her mind, or how the
+    family is doing.
+- id: E-H1_guilt_leah-2
+  target: H1_guilt_leah
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How are you feeling about everything?
+  disclose_when: Trainee asks an open question about what has changed recently, what is on her mind, or how the
+    family is doing.
+- id: E-H2_active_thoughts-1
+  target: H2_active_thoughts
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, would you mind stepping out for a few minutes so I can talk with Teresa on their own?
+  - Do you ever feel like you want to die?
+  disclose_when: Trainee asks directly and kindly about thoughts of ending her life, AFTER at least one empathic
+    response, and ONLY while Luis is out of the room.
+- id: E-H2_active_thoughts-2
+  target: H2_active_thoughts
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, would you mind stepping out for a few minutes so I can talk with Teresa on their own?
+  - Are you having thoughts of harming yourself?
+  disclose_when: Trainee asks directly and kindly about thoughts of ending her life, AFTER at least one empathic
+    response, and ONLY while Luis is out of the room.
+- id: E-H3_means-1
+  target: H3_means
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, would you mind stepping out for a few minutes so I can talk with Teresa on their own?
+  - Do you have anything at home that you might use to harm yourself?
+  disclose_when: Trainee asks whether she has made any plans or preparations, or whether she has anything at home
+    she might use, while Luis is out of the room.
+- id: E-H3_means-2
+  target: H3_means
+  speaker: Teresa
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, would you mind stepping out for a few minutes so I can talk with Teresa on their own?
+  - Do you have a plan for how you would do it?
+  disclose_when: Trainee asks whether she has made any plans or preparations, or whether she has anything at home
+    she might use, while Luis is out of the room.
+- id: E-H4_luis_exhausted-1
+  target: H4_luis_exhausted
+  speaker: Luis
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, what support do you have for yourself?
+  disclose_when: Trainee asks Luis how he himself is coping or what support he has.
+- id: E-H4_luis_exhausted-2
+  target: H4_luis_exhausted
+  speaker: Luis
+  steps:
+  - Hello Teresa, hello Luis. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Luis, how has this been affecting you personally?
+  disclose_when: Trainee asks Luis how he himself is coping or what support he has.

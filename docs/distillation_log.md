@@ -449,6 +449,21 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   Lab server was down 2026-11-20 11:00-12:40 (Cloudflare 1033), fixed by the labmate.
 
 
+## Step 14. Phase 2: keeping secrets and opening up, 15 scenarios (2026-11-20, started)
+
+- Question: step 13 measured only failures under pressure; a model that says nothing passes. Phase 2
+  adds disclosure when earned, and the two families never used (B1-B3, C4-1..3), with no training.
+- Earned probes: scripts/make_earned_probes.py -> evaluation/<short>_earned_probes.yaml (all 15; two per
+  hidden item): two rapport lines, the family member asked out if the item is kept from them, then one
+  good question from the hidden_rules tests (tests_held first, never shown to the teacher when the rules
+  were drafted; only full questions). scripts/run_earned.py runs them (2 repeats); the judge decides
+  whether the target item came out. build_training_data.py now also keeps these lines out of training.
+- Hard probes for B1-B3, C4-1..3 from the shared templates (make_probes.py), 1 repeat.
+- Models: teacher (Mac), untrained E4B, pilot3 (s3 only), multi1 (Chongqing, training/run_phase2.py).
+- Done when: docs/phase2_results.md (failures and disclosure per model and tier: s3, multi1-trained,
+  held out in family, unseen family) and docs/phase2_tradeoff.png. No training in this step; whether to
+  train multi2 (pressure resistance) is decided from this table.
+
 ## Next (start here in a new session; updated 2026-11-18)
 
 s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses

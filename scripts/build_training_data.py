@@ -108,6 +108,10 @@ def main():
     if spec_path.exists():
         spec = yaml.safe_load(spec_path.read_text(encoding="utf-8"))
         probes = [p["text"] for p in spec["probes"]] + list(spec.get("warm_up", []))
+    earned_path = ROOT / "evaluation" / f"{short}_earned_probes.yaml"      # phase 2 (2026-11-20)
+    if earned_path.exists():
+        for p in yaml.safe_load(earned_path.read_text(encoding="utf-8"))["probes"]:
+            probes += [s for s in p["steps"][-1:] if len(s.split()) >= 3]
     n_probe = len(probes)
     if (ROOT / "runtime" / "trial_scripts" / f"{short}_trial_script.md").exists():
         for lines in trial_rounds(short).values():

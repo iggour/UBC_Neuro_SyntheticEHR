@@ -1,0 +1,57 @@
+# s1 earned probes: a HELD-OUT TEST SET (s1_pretest_counselling). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/s1.yaml (tests_held). Reviewed by: PENDING
+
+scenario: s1_pretest_counselling
+probes:
+- id: E-H1_wedding_children-1
+  target: H1_wedding_children
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Can you tell me more about why you want the test today?
+  disclose_when: Trainee asks an open question about her reasons or about why now (e.g. "What made you decide to
+    come now?").
+- id: E-H1_wedding_children-2
+  target: H1_wedding_children
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Could you share what's motivating you to seek the result today?
+  disclose_when: Trainee asks an open question about her reasons or about why now (e.g. "What made you decide to
+    come now?").
+- id: E-H2_brother-1
+  target: H2_brother
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How do you think a result would affect your family members?
+  disclose_when: Trainee asks about family, who else knows, or how a result might affect others.
+- id: E-H2_brother-2
+  target: H2_brother
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Which family members are aware you're seeking testing?
+  disclose_when: Trainee asks about family, who else knows, or how a result might affect others.
+- id: E-H3_passive_thoughts-1
+  target: H3_passive_thoughts
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How has your mood been? Have you felt that things are becoming too much to cope with?
+  disclose_when: Trainee asks directly and kindly about mood, coping, or thoughts of not wanting to live / self-harm,
+    AFTER some rapport (at least one empathic response earlier in the conversation).
+- id: E-H3_passive_thoughts-2
+  target: H3_passive_thoughts
+  speaker: Leah
+  steps:
+  - Hello Leah. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Any thoughts of self-harm?
+  disclose_when: Trainee asks directly and kindly about mood, coping, or thoughts of not wanting to live / self-harm,
+    AFTER some rapport (at least one empathic response earlier in the conversation).

@@ -1,0 +1,73 @@
+# A3 earned probes: a HELD-OUT TEST SET (A3_sibling_predictive_request). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/A3.yaml (tests_held). Reviewed by: PENDING
+
+scenario: A3_sibling_predictive_request
+probes:
+- id: E-H1_watching_owen-1
+  target: H1_watching_owen
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What are you hoping the result will give you?
+  disclose_when: Trainee asks an open question about why they want the test now, or what they hope it will give
+    them.
+- id: E-H1_watching_owen-2
+  target: H1_watching_owen
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How has this been affecting you at home?
+  disclose_when: Trainee asks an open question about why they want the test now, or what they hope it will give
+    them.
+- id: E-H2_owen_asked-1
+  target: H2_owen_asked
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Has Owen asked any questions about his own health?
+  disclose_when: Trainee asks what Owen knows or has asked, or how they talk with him about Maya's illness.
+- id: E-H2_owen_asked-2
+  target: H2_owen_asked
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What has Owen asked?
+  disclose_when: Trainee asks what Owen knows or has asked, or how they talk with him about Maya's illness.
+- id: E-H3_adam_avoiding-1
+  target: H3_adam_avoiding
+  speaker: Adam
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Adam, what are your own thoughts on the testing?
+  disclose_when: Trainee asks Adam directly and kindly how he himself is coping, or about his own thoughts on testing,
+    without pressure.
+- id: E-H3_adam_avoiding-2
+  target: H3_adam_avoiding
+  speaker: Adam
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Adam, how are you doing?
+  disclose_when: Trainee asks Adam directly and kindly how he himself is coping, or about his own thoughts on testing,
+    without pressure.
+- id: E-H4_plan_if_positive-1
+  target: H4_plan_if_positive
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - If the test comes back negative, how does that change things? And if it's positive?
+  disclose_when: Trainee asks what they would do with each possible result.
+- id: E-H4_plan_if_positive-2
+  target: H4_plan_if_positive
+  speaker: Sarah
+  steps:
+  - Hello Sarah, hello Adam. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What's the plan for a positive result?
+  disclose_when: Trainee asks what they would do with each possible result.

@@ -1,0 +1,71 @@
+# B3 earned probes: a HELD-OUT TEST SET (B3_late_stage_family_meeting). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/B3.yaml (tests_held). Reviewed by: PENDING
+
+scenario: B3_late_stage_family_meeting
+probes:
+- id: E-H1_george_remembers-1
+  target: H1_george_remembers
+  speaker: George
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What did Ruth value most in her care?
+  disclose_when: Trainee asks what Ruth said or would want, or what she valued, in a way that does not put the decision
+    on George alone.
+- id: E-H1_george_remembers-2
+  target: H1_george_remembers
+  speaker: George
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What did she say?
+  disclose_when: Trainee asks what Ruth said or would want, or what she valued, in a way that does not put the decision
+    on George alone.
+- id: E-H2_anna_carrier-1
+  target: H2_anna_carrier
+  speaker: Anna
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, i can see how determined you are to help your mother. What is behind that feeling for you?
+  disclose_when: Trainee asks Anna, with empathy, what is behind her view or how she herself is coping.
+- id: E-H2_anna_carrier-2
+  target: H2_anna_carrier
+  speaker: Anna
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Anna, what is it like for you to watch this happen?
+  disclose_when: Trainee asks Anna, with empathy, what is behind her view or how she herself is coping.
+- id: E-H3_george_cannot_continue-1
+  target: H3_george_cannot_continue
+  speaker: George
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How has the caring been for you lately?
+  disclose_when: Trainee asks George directly how he is managing, or how caring at home has been.
+- id: E-H3_george_cannot_continue-2
+  target: H3_george_cannot_continue
+  speaker: George
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - How is it at home?
+  disclose_when: Trainee asks George directly how he is managing, or how caring at home has been.
+- id: E-H4_michael_view-1
+  target: H4_michael_view
+  speaker: Michael
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Michael, even though you're in Calgary, you're a huge part of this family. What do you think?
+  disclose_when: Trainee directly invites Michael's view and acknowledges that his voice matters.
+- id: E-H4_michael_view-2
+  target: H4_michael_view
+  speaker: Michael
+  steps:
+  - Hello George, hello Anna. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What do you think, Michael?
+  disclose_when: Trainee directly invites Michael's view and acknowledges that his voice matters.

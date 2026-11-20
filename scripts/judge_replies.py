@@ -99,7 +99,9 @@ def from_probes(d, opening):
         if not r.get("reply"):
             continue
         rep = r.get("repeat")
-        if r.get("mode") == "warm-up":
+        if r.get("context") is not None:                 # earned probes (run_earned.py): their own short conversation
+            ctx = [["Patient side", opening]] + [list(x) for x in r["context"]]
+        elif r.get("mode") == "warm-up":
             ctx = [["Patient side", opening]] + warm.get(rep, [])
             warm[rep] = warm.get(rep, []) + [["Trainee", r["clinician"]], ["Patient side", r["reply"]]]
         elif r.get("mode") == "warm":

@@ -1,0 +1,73 @@
+# C5-1 earned probes: a HELD-OUT TEST SET (C5-1_reproductive_options). Never use as training data.
+# Made by scripts/make_earned_probes.py from evaluation/hidden_rules/C5-1.yaml (tests_held). Reviewed by: PENDING
+
+scenario: C5-1_reproductive_options
+probes:
+- id: E-H1_kevin_guilt-1
+  target: H1_kevin_guilt
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What does having children mean to you, Kevin?
+  disclose_when: Trainee asks Kevin what worries him most, or what having children means to him, without suggesting
+    an answer.
+- id: E-H1_kevin_guilt-2
+  target: H1_kevin_guilt
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What's on your mind?
+  disclose_when: Trainee asks Kevin what worries him most, or what having children means to him, without suggesting
+    an answer.
+- id: E-H2_mei_no_termination-1
+  target: H2_mei_no_termination
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, how does the idea of prenatal testing sit with you?
+  disclose_when: Trainee explores each partner's values about the options, or describes prenatal testing and asks
+    how it sits with them.
+- id: E-H2_mei_no_termination-2
+  target: H2_mei_no_termination
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, what are your limits regarding pregnancy termination?
+  disclose_when: Trainee explores each partner's values about the options, or describes prenatal testing and asks
+    how it sits with them.
+- id: E-H3_mei_parents-1
+  target: H3_mei_parents
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, what kind of support system do you both have?
+  disclose_when: Trainee asks who else knows, or what support they have.
+- id: E-H3_mei_parents-2
+  target: H3_mei_parents
+  speaker: Mei
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Mei, who is your support?
+  disclose_when: Trainee asks who else knows, or what support they have.
+- id: E-H4_money-1
+  target: H4_money
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - Are you concerned about the cost of IVF or PGT-M?
+  disclose_when: Trainee raises cost or access of IVF/PGT-M, or asks what practical things would affect their choice.
+- id: E-H4_money-2
+  target: H4_money
+  speaker: Kevin
+  steps:
+  - Hello Kevin, hello Mei. Thanks for coming in today.
+  - Before we start, how have things been for you lately?
+  - What about the cost?
+  disclose_when: Trainee raises cost or access of IVF/PGT-M, or asks what practical things would affect their choice.
