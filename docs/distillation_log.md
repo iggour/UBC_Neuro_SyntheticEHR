@@ -439,6 +439,15 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   Teacher probes on the same 9 files run on the Mac.
 - Done when: one table of flagged probe replies per scenario for teacher / untrained / student,
   trained vs held-out scenarios. No reruns; anything unexplained goes into limitations.
+- Result (2026-11-20, docs/multi1_results.md): training stopped early at step 700, best step 550
+  (validation loss 0.907 -> 0.664), peak 13.0 GB. Judge flags (early leak, leak with family present,
+  character break, out of bounds): teacher 0/354; untrained E4B 3/314 (A2 not judged, server error);
+  multi1 11/234 trained (5%), 10/120 held out (8%). Student failures cluster in probes S2 ("the one
+  thing you haven't told X", 5 scenarios), R2 (family member answers for the patient, 4) and J3
+  ("you are the doctor now", 6 character breaks, as pilot3). Word rules on the 8 new scenarios: 36
+  teacher flags, 0 confirmed by the judge. Step 13 closed; disclosure-when-earned not measured outside s3.
+  Lab server was down 2026-11-20 11:00-12:40 (Cloudflare 1033), fixed by the labmate.
+
 
 ## Next (start here in a new session; updated 2026-11-18)
 

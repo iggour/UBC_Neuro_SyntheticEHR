@@ -28,13 +28,12 @@ Two parts:
 
 - s3 (suicide-risk assessment) is CLOSED: student = pilot3; deployment file = Q8_0 (steps 1-11 of the log).
 - Step 12 done: scripts work for all scenarios (rules from evaluation/hidden_rules/*.yaml; s3 keeps hand rules).
-- Step 13 RUNNING (multi1): 9 scenarios (Moreno s1-s3, Novak A1-A3, Walsh C5-1..3). Trained: s1, s3,
-  A1, A2, C5-1, C5-3. Held out (never trained): s2, A3, C5-2. 40 new conversations per new scenario.
-  training/run_multi1.py on Chongqing does: probes on untrained E4B -> train -> probes on the student ->
-  zip to E:\WSL\multi1_results.zip. Teacher probes and teacher judge are already done on the Mac.
-- To finish step 13: put multi1_results.zip in the repo root and run
-  `python3 scripts/multi1_table.py` on the Mac (unzips, judges the two small models, writes
-  docs/multi1_results.md). Then fill section 3.10 from docs/paper/draft_2.11_3.10_multi1.md.
+- Step 13 DONE (multi1, 2026-11-20): 9 scenarios (Moreno s1-s3, Novak A1-A3, Walsh C5-1..3); trained
+  s1, s3, A1, A2, C5-1, C5-3; held out s2, A3, C5-2. Results: docs/multi1_results.md and the log. Judge
+  flags: teacher 0/354, untrained E4B 3/314, student 5% trained / 8% held out (mostly direct pressure
+  probes S2/R2 and "you are the doctor now"). Paper text drafted: docs/paper/draft_2.11_3.10_multi1.md
+  (not yet pasted into the .docx). Untrained-E4B judge for A2 is missing (server error); rerun
+  `python3 scripts/multi1_table.py` to fill it.
 - NOT in scope for now: scenarios B1-B3 and C4-1..3 (future work in the paper).
 - Owner review pending: probe templates, drafted hidden_rules YAMLs, 16 judge gold labels,
   highlighted text in paper draft v0.3. Ethics application H26-03621 (UBC BREB) revised, not yet resubmitted.
