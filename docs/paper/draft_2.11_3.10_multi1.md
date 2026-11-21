@@ -1,4 +1,4 @@
-# Draft text for paper v0.4: section 2.11 (methods) and 3.10 (results), multi-scenario run
+# Draft text for paper v0.4: sections 2.11-2.12 (methods) and 3.10-3.11 (results), multi-scenario runs
 
 Drafted by Claude, 2026-11-19, for the first author's review. Paste into the .docx when the results
 are in; [brackets] are filled from docs/multi1_results.md.
@@ -57,7 +57,36 @@ as well as on trained ones, but it gave way to direct pressure for secrets more 
 teacher. The untrained model rarely failed these probes, but on s3 it also disclosed nothing to a
 good clinician (section 3.5); disclosure when earned was not measured outside s3.
 
+## 2.12 Opening up when asked well, and unseen families
+
+Hard probes reward a patient that says nothing, so we also measured disclosure when earned. For each
+hidden item of all 15 scenarios, two short scripted openings were made: two rapport lines, a request for
+the family member to step out if the item is kept from them, then one good question taken from the
+rules' test questions (those never shown to the teacher first; only full questions). An item counted as
+disclosed if the judge found it in the reply and judged that the question met its condition. Each opening
+was run twice per model. The six scenarios of the two families never used in training (B1 to B3, C4-1 to
+C4-3) were added to the hard probes. Four models were compared: the teacher, the untrained E4B, pilot3
+(trained on s3 only) and multi1.
+
+## 3.11 Keeping secrets and opening up
+
+[Table 9 = docs/phase2_results.md "By tier"; Figure = docs/phase2_tradeoff.png.]
+
+The teacher made no hard-probe failures and disclosed 38% to 67% of items when asked well; because the
+questions were drafted automatically and some were brief, even the teacher did not disclose every item,
+so models are compared with each other. The untrained E4B rarely failed (0 to 1%) but disclosed little
+(0% on s3, 15% on unseen families). Both students disclosed at about the teacher's level: multi1 66%
+on trained scenarios (teacher 67%), 55% on held-out scenarios (45%) and 40% on unseen families (38%);
+pilot3 54%, 39% and 36%. The cost was 3% to 8% hard-probe failures and a few items revealed to questions
+that did not earn them (multi1 11, pilot3 9, untrained 2, teacher 0, of 232). Multi1 disclosed more than
+pilot3 in every group with similar failures; pilot3, trained on one scenario, already carried most of the
+behaviour to families it had never seen.
+
+So distillation made the small model useful (it opens up when asked well, where the untrained model does
+not) and the behaviour transferred to new patients and families, but the students leaned towards
+openness: under direct pressure they gave way more often than the teacher.
+
 Limitations to add to section 4: rules and probes for the eight new scenarios were drafted and not
 reviewed by hand; one repeat per probe; no self-harm probes outside s3; s3 is about half of the
 training data; the trial-script measures (H1 to H3 disclosure to a good clinician) were run only on s3,
-so the other scenarios were tested for keeping secrets but not for opening up.
+disclosure on the other scenarios was measured with single scripted questions (section 2.12), not full conversations; the judge is the same 31B model as the teacher.

@@ -463,6 +463,22 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
 - Done when: docs/phase2_results.md (failures and disclosure per model and tier: s3, multi1-trained,
   held out in family, unseen family) and docs/phase2_tradeoff.png. No training in this step; whether to
   train multi2 (pressure resistance) is decided from this table.
+- Result (2026-11-21, docs/phase2_results.md, docs/phase2_tradeoff.png; judge errors 0). Failures /
+  disclosure when earned (disclosure counted only if the judge found the question earned the item):
+  | Model | s3 | trained (multi1) | held out, same family | unseen family |
+  | Teacher 31B | 0% / 38% | 0% / 67% | 0% / 45% | 0% / 38% |
+  | E4B untrained | 0% / 0% | 1% / 32% | 1% / 18% | 0% / 15% |
+  | pilot3 (s3 only) | 4% / 56% | 5% / 54% | 8% / 39% | 5% / 36% |
+  | multi1 (6 scenarios) | 6% / 62% | 4% / 66% | 8% / 55% | 3% / 40% |
+  Items revealed to a question that did not earn them: teacher 0, untrained 2, pilot3 9, multi1 11 (of 232).
+- Reading: training brings disclosure from untrained levels to the teacher's (multi1 matches the teacher
+  on trained scenarios and unseen families) at a cost of 3-8% failures under pressure and a few premature
+  disclosures; the students lean towards opening up, the teacher towards caution. multi1 discloses more
+  than pilot3 in every tier with similar failures, but pilot3 (s3 only) already transfers to unseen
+  families, so much of the behaviour carries over from one scenario. The untrained model looks safe only
+  because it says little. Limitations: auto-drafted questions (teacher discloses 38-67%), 1-2 repeats,
+  judge = same 31B as teacher. Step 14 closed; multi2 (pressure resistance) not started.
+
 
 ## Next (start here in a new session; updated 2026-11-18)
 

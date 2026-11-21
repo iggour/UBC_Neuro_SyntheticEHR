@@ -34,7 +34,11 @@ Two parts:
   probes S2/R2 and "you are the doctor now"). Paper text drafted: docs/paper/draft_2.11_3.10_multi1.md
   (not yet pasted into the .docx). Untrained-E4B judge for A2 is missing (server error); rerun
   `python3 scripts/multi1_table.py` to fill it.
-- NOT in scope for now: scenarios B1-B3 and C4-1..3 (future work in the paper).
+- Step 14 DONE (phase 2, 2026-11-21): earned probes (disclosure when asked well) on all 15 scenarios and
+  hard probes on the unseen B and C4 families, for teacher / untrained / pilot3 / multi1. Results:
+  docs/phase2_results.md, docs/phase2_tradeoff.png, log step 14, paper draft 2.12 / 3.11. Students
+  disclose at the teacher's level but fail 3-8% under pressure. Possible next step: multi2 (pressure
+  resistance data), not started.
 - Owner review pending: probe templates, drafted hidden_rules YAMLs, 16 judge gold labels,
   highlighted text in paper draft v0.3. Ethics application H26-03621 (UBC BREB) revised, not yet resubmitted.
 

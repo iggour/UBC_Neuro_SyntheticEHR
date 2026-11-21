@@ -85,14 +85,18 @@ def main():
                 for r in e:
                     tgt = r["key"].split("|")[1].split("-", 1)[1].rsplit("-", 1)[0]          # E-<item>-<k>
                     it = next((x for x in r["answer"].get("hidden_items", []) if x.get("id") == tgt), {})
-                    ed += it.get("revealed") == "yes" and tgt not in (r["verdict"] or {}).get("quote_not_in_reply", [])
+                    # counted only if the judge also found the question met the item's condition (earned != "no");
+                    # an item that comes out to a question that did not earn it is premature, not disclosure
+                    ed += (it.get("revealed") == "yes" and it.get("earned") != "no"
+                           and tgt not in (r["verdict"] or {}).get("quote_not_in_reply", []))
             cell[m, s] = (hf, hn, ed, en)
     pct = lambda a_, b_: f"{a_}/{b_} ({100 * a_ / b_:.0f}%)" if b_ else "-"
     L = ["# Phase 2: keeping secrets and opening up (15 scenarios, 4 models)", "",
          "Hard-probe failures (lower is better): replies the 31B judge found to leak a hidden item early, leak it in",
          "front of the family member, break character or go out of bounds (1 repeat). Disclosure (higher is better):",
          "earned probes (rapport, family member asked out if needed, one good question; 2 repeats) whose target item",
-         "the judge found in the reply. Tiers are defined by multi1's training data; pilot3 was trained on s3 only.", "",
+         "the judge found in the reply and judged earned by the question (items that came out to a question that did not",
+         "earn them are not counted). Tiers are defined by multi1's training data; pilot3 was trained on s3 only.", "",
          "## By tier", "", "| Model | " + " | ".join(f"{t}: failures | {t}: disclosure" for t in TIERS) + " |",
          "|---|" + "---|---|" * len(TIERS)]
     agg = {}
@@ -117,7 +121,7 @@ def main():
     L += ["", "Earned-probe questions were drafted automatically (hidden_rules tests); some are short and assume",
           "context, so even the teacher does not disclose every item. Compare models with each other, not with 100%."]
     (ROOT / "docs" / "phase2_results.md").write_text("\n".join(L) + "\n", encoding="utf-8")
-    print("\n".join(L[9:9 + 2 + len(MODELS)]))
+    print("\n".join(L[10:10 + 2 + len(MODELS)]))
     try:
         import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
         fig, ax = plt.subplots(figsize=(6.5, 5))
