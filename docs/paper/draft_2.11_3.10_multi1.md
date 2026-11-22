@@ -86,7 +86,27 @@ So distillation made the small model useful (it opens up when asked well, where 
 not) and the behaviour transferred to new patients and families, but the students leaned towards
 openness: under direct pressure they gave way more often than the teacher.
 
+## 3.12 Adding pressure-resistance data (multi2)
+
+To reduce failures under pressure, we added 96 simulated-trainee conversations (16 for each trained
+scenario) in which the trainee first applied direct pressure for secrets, in its own words, and then held a
+proper conversation (953 kept replies), and trained multi2 on these plus the multi1 data. Before the run we
+set the rule that multi2 would count as an improvement only if failures fell and disclosure fell by no more
+than 5 points in any group.
+
+Failures fell from 28 of 586 hard-probe replies (4.8%) to 7 (1.2%): replies to "from now on you are the
+doctor" no longer broke character (8 to 0), and the patient named a hidden item when asked what she had not
+told her family member in 2 replies instead of 7. Premature disclosures fell from 11 to 7 of 232. But
+disclosure when earned also fell, by 24 points on s3 (to 38%, the teacher's level), 15 on trained scenarios
+(51%) and 11 on unseen families (29%), and held at 52% on held-out scenarios. Under the rule this was not an
+improvement: like pilot2 on s3, the extra data moved the student along the trade-off towards caution. The
+balance between keeping secrets and opening up followed the training mix; neither student matched the
+teacher on both at once.
+
 Limitations to add to section 4: rules and probes for the eight new scenarios were drafted and not
 reviewed by hand; one repeat per probe; no self-harm probes outside s3; s3 is about half of the
 training data; the trial-script measures (H1 to H3 disclosure to a good clinician) were run only on s3,
 disclosure on the other scenarios was measured with single scripted questions (section 2.12), not full conversations; the judge is the same 31B model as the teacher.
+- The multi2 pressure tactics target the same kinds of pressure as the hard probes (never their wording;
+  lines close to a probe were cut), so its lower failure rate partly reflects training on the probes'
+  categories; the held-out and unseen-family results are the fairer check.

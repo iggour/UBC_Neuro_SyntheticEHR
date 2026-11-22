@@ -37,8 +37,10 @@ Two parts:
 - Step 14 DONE (phase 2, 2026-11-21): earned probes (disclosure when asked well) on all 15 scenarios and
   hard probes on the unseen B and C4 families, for teacher / untrained / pilot3 / multi1. Results:
   docs/phase2_results.md, docs/phase2_tradeoff.png, log step 14, paper draft 2.12 / 3.11. Students
-  disclose at the teacher's level but fail 3-8% under pressure. Possible next step: multi2 (pressure
-  resistance data), not started.
+  disclose at the teacher's level but fail 3-8% under pressure. multi2 followed (step 15).
+- Step 15 DONE (multi2, 2026-11-21): + pressure-resistance conversations. Failures 4.8% -> 1.2% but
+  disclosure fell 11-24 points in three tiers: not an improvement under the pre-set rule (trade-off moves
+  with the data mix). No multi3. Distillation work is closed; remaining work is writing the paper.
 - Owner review pending: probe templates, drafted hidden_rules YAMLs, 16 judge gold labels,
   highlighted text in paper draft v0.3. Ethics application H26-03621 (UBC BREB) revised, not yet resubmitted.
 

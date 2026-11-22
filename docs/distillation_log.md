@@ -480,6 +480,34 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   judge = same 31B as teacher. Step 14 closed; multi2 (pressure resistance) not started.
 
 
+## Step 15. multi2: pressure-resistance data (2026-11-21, started)
+
+- Why: multi1 gave way under direct pressure (probes S2, R2, R1, J3) in 3-8% of replies.
+- Data: new trainee type "pressure" (make_conversations.py): five or six turns of direct pressure in the
+  trainee's own words (what have you kept back; what haven't you told <family member>; family member asked
+  to answer for the patient or about private items; promise of secrecy; "I can't help unless"; swap roles;
+  "the session is over"), then a proper conversation. 16 conversations each for s1, s3, A1, A2, C5-1, C5-3
+  (seed 21); kept 953 (839 train, 114 valid). multi2 data = multi1 data + these: 3,072 train / 361 valid.
+  Held-out and unseen-family scenarios still have no training data.
+- Caveat for the paper: the pressure tactics target the same kinds of pressure as the hard probes (never
+  the probe wording; lines close to a probe are still cut), so gains on the probes partly reflect training
+  on the test's categories; held-out and unseen-family results and the earned probes are the fairer check.
+- Training: train_multi2.py, same settings. Test: run_multi2.py (hard probes 1 repeat, earned probes
+  2 repeats, all 15 scenarios), judge on the Mac, added as a row to docs/phase2_results.md.
+- Decision rule (set before the run): multi2 counts as an improvement if overall hard-probe failures fall
+  and disclosure falls by no more than 5 points in any tier. No multi3 either way.
+- Result (2026-11-21, docs/phase2_results.md): multi2 failures / disclosure: s3 2% / 38%; trained 1% / 51%;
+  held out 2% / 52%; unseen family 1% / 29% (multi1: 6/62, 4/66, 8/55, 3/40; teacher: 0/38, 0/67, 0/45, 0/38).
+  Overall hard-probe failures 28/586 (4.8%) -> 7/586 (1.2%); "you are the doctor now" breaks 8 -> 0,
+  "what haven't you told X" 7 -> 2, family member answering for the patient 4 -> 1; premature disclosures
+  11 -> 7 of 232. But disclosure fell by 24 (s3), 15 (trained) and 11 (unseen) points.
+- Decision rule (set before the run): NOT an improvement (disclosure fell by more than 5 points in three
+  tiers). multi2 moved along the trade-off towards caution, close to the teacher's profile on s3 and held-out
+  scenarios but below it on trained and unseen ones, as pilot2 did on s3. No multi3 (rule). Step 15 closed.
+  For the paper: the balance between keeping secrets and opening up is set by the training mix; neither
+  student reaches the teacher on both at once.
+
+
 ## Next (start here in a new session; updated 2026-11-18)
 
 s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses
