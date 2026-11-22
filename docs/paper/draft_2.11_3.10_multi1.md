@@ -30,6 +30,14 @@ The teacher, the untrained E4B and multi1 answered the hard probes of all nine s
 warm, one repeat). Replies were checked by the word rules and by the semantic judge (section 2.9;
 contradiction not counted).
 
+## 2.13 Statistics
+
+Rates are reported with Wilson 95% confidence intervals. Differences between models were estimated by a
+cluster bootstrap that resampled scenarios (10,000 draws), because replies within a scenario are not
+independent; we report the difference in percentage points with its 95% percentile interval and a two-sided
+p value, pooled over all 15 scenarios, over the six scenarios multi1 was trained on, and over the nine it
+was not. s3 alone is a single cluster and was not tested separately (scripts/phase2_stats.py).
+
 ## 3.10 The other scenarios
 
 New training data. Of 2,061 patient replies in the 200 new conversations, 1,188 were kept as
@@ -86,6 +94,14 @@ So distillation made the small model useful (it opens up when asked well, where 
 not) and the behaviour transferred to new patients and families, but the students leaned towards
 openness: under direct pressure they gave way more often than the teacher.
 
+Statistics (docs/phase2_stats.md). Over all 15 scenarios, training raised disclosure compared with the
+untrained E4B (multi1 +32.8 points, 95% CI +25.0 to +41.1, p<0.001; pilot3 +24.1, +18.1 to +30.9,
+p<0.001) and multi1's disclosure did not differ from the teacher's (+3.9, -5.4 to +14.0, p=0.47), but its
+failures did (+4.8, +2.9 to +6.7, p<0.001). Multi1 disclosed more than pilot3 overall (+8.6, +1.3 to +15.8,
+p=0.03), mainly on the scenarios it was trained on (+10.9, p=0.01); on the nine scenarios new to both models
+the difference was not clear (+7.1, -3.7 to +17.4, p=0.23), and their failure rates did not differ
+(-0.7, -2.9 to +1.4, p=0.59).
+
 ## 3.12 Adding pressure-resistance data (multi2)
 
 To reduce failures under pressure, we added 96 simulated-trainee conversations (16 for each trained
@@ -103,6 +119,10 @@ improvement: like pilot2 on s3, the extra data moved the student along the trade
 balance between keeping secrets and opening up followed the training mix; neither student matched the
 teacher on both at once.
 
+Statistics for multi2 (docs/phase2_stats.md): compared with multi1, failures fell by 3.6 points (95% CI
+-5.4 to -1.8, p<0.001) and disclosure fell by 11.2 points (-19.0 to -3.1, p=0.007); multi2 still failed
+slightly more often than the teacher (+1.2, +0.3 to +2.2, p=0.005).
+
 Limitations to add to section 4: rules and probes for the eight new scenarios were drafted and not
 reviewed by hand; one repeat per probe; no self-harm probes outside s3; s3 is about half of the
 training data; the trial-script measures (H1 to H3 disclosure to a good clinician) were run only on s3,
@@ -110,3 +130,5 @@ disclosure on the other scenarios was measured with single scripted questions (s
 - The multi2 pressure tactics target the same kinds of pressure as the hard probes (never their wording;
   lines close to a probe were cut), so its lower failure rate partly reflects training on the probes'
   categories; the held-out and unseen-family results are the fairer check.
+- Hard probes were run once and earned probes twice per model; between-scenario variation dominates the
+  intervals, so whether training on more scenarios helps on new scenarios (multi1 vs pilot3) stays open.

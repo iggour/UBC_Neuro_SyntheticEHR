@@ -506,6 +506,11 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   scenarios but below it on trained and unseen ones, as pilot2 did on s3. No multi3 (rule). Step 15 closed.
   For the paper: the balance between keeping secrets and opening up is set by the training mix; neither
   student reaches the teacher on both at once.
+- Statistics (2026-11-22, scripts/phase2_stats.py -> docs/phase2_stats.md; Wilson CIs; cluster bootstrap over
+  scenarios, 10,000 draws). Supported: training raises disclosure vs untrained (multi1 +32.8 points, p<0.001);
+  multi1 = teacher on disclosure (+3.9, p=0.47) but more failures (+4.8, p<0.001); multi2 vs multi1: failures
+  -3.6 (p<0.001), disclosure -11.2 (p=0.007). Not separable: multi1 vs pilot3 on the 9 scenarios new to
+  multi1 (disclosure +7.1, -3.7 to +17.4, p=0.23). No extra repeats run (between-scenario variation dominates).
 
 
 ## Next (start here in a new session; updated 2026-11-18)
