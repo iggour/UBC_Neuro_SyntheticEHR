@@ -1,6 +1,6 @@
 # AGENTS.md: handoff for HD Anchor (UBC_Neuro_SyntheticEHR)
 
-Written 2026-11-20 by Claude (Anthropic) for the next coding agent (e.g. GPT Codex). Read this first,
+Written 2026-11-20 (updated 2026-11-23) by Claude (Anthropic) for the next coding agent (e.g. GPT Codex). Read this first,
 then CLAUDE.md (older working rules, still valid) and docs/distillation_log.md (the full experiment record).
 
 ## 1. What the project is
@@ -41,6 +41,10 @@ Two parts:
 - Step 15 DONE (multi2, 2026-11-21): + pressure-resistance conversations. Failures 4.8% -> 1.2% but
   disclosure fell 11-24 points in three tiers: not an improvement under the pre-set rule (trade-off moves
   with the data mix). No multi3. Distillation work is closed; remaining work is writing the paper.
+- NEXT: Step 16, smaller students (Gemma E2B, then a ~1B model) with the same data and tests, aiming at a
+  1-2 GB file for low-friction or in-browser use. Full plan: "Next" section of docs/distillation_log.md.
+- At handoff (2026-11-23) Chongqing is quantising multi1 and multi2 to Q8_0 for the owner's website trial
+  (~/hd-anchor/quant_log.txt). Thinking mode must be off when serving (llama-server flags in the log).
 - Owner review pending: probe templates, drafted hidden_rules YAMLs, 16 judge gold labels,
   highlighted text in paper draft v0.3. Ethics application H26-03621 (UBC BREB) revised, not yet resubmitted.
 

@@ -516,27 +516,38 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   lenient on partial disclosures (3 of 5 disagreements). 14 items await the owner's check (审核清单_judge人工核对_中文.md).
 
 
-## Next (start here in a new session; updated 2026-11-18)
+## Next (start here in a new session; updated 2026-11-23)
 
-s3 is finished (pilot3, step 8). Owner decisions 2026-11-18 (workload): first multi-scenario run uses
-three families only: Moreno (s1, s2, s3), Novak (A1, A2, A3), Walsh (C5-1, C5-2, C5-3). Held out (never
-trained, test only): s2, A3, C5-2; trained: s1, s3, A1, A2, C5-1, C5-3. About 60 to 80 practice
-conversations per new scenario (more only if needed). Probes mostly automatic: shared templates for
-jailbreak, fourth wall, false premises, other language, role confusion, medical advice; "pressure for
-secrets" built from each scenario's hidden-item rules; the owner reviews a sample. Fraser and Brennan
-families later, if the first run works. Semantic judge (step 10) reviews every reply.
-Order of work:
-1. Extend to the other 14 scenarios: rules script done and checked against s3 (step 9); next, run it
-   for the 14 scenarios, review the YAML files, then wire load_rules() into make_conversations.py,
-   run_probes.py and build_training_data.py for scenarios without hand rules; hold out one scenario per family to test unseen patients; one student for all scenarios. Bring
-   the s3 lessons: tester-style conversations for every state-dependent rule, and count the training
-   examples per situation (item earned or not; companion present or not) before training.
-2. A semantic judge (31B + role card) for contradictions such as the gardening reply; check it
-   against hand labels on s3.
-3. Quantise the student: done for s3 (step 11); Q8_0 is the deployment file. Next: test it on the
-   Mac with Ollama or LM Studio, thinking off; add the thinking-off note to the website instructions.
-4. Update the paper draft's student results with the step 7 and 8 table.
-Future work, not planned: presence marker for companions (step 8, option A).
+Distillation on the full-size student is CLOSED (steps 1-15): multi1 = best balance (disclosure at the teacher's
+level, 3-8% failures under pressure); multi2 = safer but less open. Statistics (phase2_stats.md) and judge
+validation (95/100, evaluation/judge_validation/) done. Paper text: docs/paper/draft_2.11_3.10_multi1.md.
+
+Running at handoff (2026-11-23, Chongqing, WSL): merge + GGUF + Q8_0 for multi1 and multi2
+(~/hd-anchor/quant_log.txt; ends with DONE-multi1, DONE-multi2; files ~/models/hd-multi{1,2}-Q8_0.gguf, also
+copied to E:\WSL\, ~7.5 GB each). Purpose: owner's internal website trial. Mac run (when the file arrives):
+llama.cpp llama-server -m hd-multi1-Q8_0.gguf --port 8080 --chat-template-kwargs '{"enable_thinking": false}'
+--reasoning-format none (thinking MUST be off, step 11), then the website's free chat at http://localhost:8080/v1.
+The quantised multi1/multi2 have not been tested; s3 experience: Q8_0 close to unquantised, Q4_K_M much worse.
+
+Step 16 (next): smaller students. Owner's reason: 7.5 GB file and ~8-9 GB RAM is too heavy for a learner who
+wants a 20-minute practice; aim for ~1-2 GB so it could later run in the browser (WebGPU) with no install.
+Order agreed with the owner:
+  1. Same pipeline, smaller base models: Gemma E2B first (same family and chat template, least code change),
+     then a ~1B model (choose by availability, licence, chat template; check context length >= 8k).
+     Training data = data_multi1 (2,233 / 247) so the comparison with multi1 is fair; same settings.
+     Tests = phase 2 set (hard probes 1 repeat + earned probes 2 repeats, all 15 scenarios) -> judge ->
+     new rows in phase2_table.py / phase2_stats.py; then quantise (Q8_0, Q4_K_M) and record file size,
+     RAM and CPU speed.
+  2. Later: shorter system prompt / context distillation (prompt is ~4,200 tokens, heavy for small models).
+  3. Later: in-browser runtime (the clinician page already has a "recommended small model - coming soon" slot).
+  First check: can Chongqing reach Hugging Face or a mirror (hf-mirror.com)? GitHub was not reachable. If not,
+  download base models on the Mac and transfer through E:\WSL\ (several GB each).
+  Set a decision rule BEFORE the runs (e.g. a model is usable if, in every tier, disclosure is within 10 points
+  of multi1 and failures at most twice multi1's) and confirm it with the owner.
+
+Owner to-dos still open: judge-validation checklist (14 items, evaluation/judge_validation/审核清单_judge人工核对_中文.md;
+then python3 scripts/judge_validation.py); paste draft 2.11-2.14 / 3.10-3.12 into the paper .docx (v0.4);
+OneDrive backups (runtime/transcripts + all LoRAs incl. multi2); ethics H26-03621 resubmission via the supervisor.
 
 Chongqing machine (WSL distro hd-anchor, user tongyang): model ~/models/gemma-4-E4B-it; venv
 ~/hd-anchor/.venv; data ~/hd-anchor/data, data_pilot2, data_pilot3; adapters
