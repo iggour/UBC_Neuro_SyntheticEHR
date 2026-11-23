@@ -30,6 +30,14 @@ The teacher, the untrained E4B and multi1 answered the hard probes of all nine s
 warm, one repeat). Replies were checked by the word rules and by the semantic judge (section 2.9;
 contradiction not counted).
 
+## 2.14 Checking the judge on the new scenarios
+
+The judge had been checked against gold labels on s3 only (section 3.8). For the other 14 scenarios we drew
+100 phase-2 replies at random (fixed seed), 25 from each judge verdict: hard probe judged a failure or not,
+earned probe judged disclosed or not. Gold labels were drafted by Claude without seeing the judge's verdicts
+and checked by the first author; uncertain labels and all disagreements with the judge were reviewed
+individually (evaluation/judge_validation/).
+
 ## 2.13 Statistics
 
 Rates are reported with Wilson 95% confidence intervals. Differences between models were estimated by a
@@ -37,6 +45,15 @@ cluster bootstrap that resampled scenarios (10,000 draws), because replies withi
 independent; we report the difference in percentage points with its 95% percentile interval and a two-sided
 p value, pooled over all 15 scenarios, over the six scenarios multi1 was trained on, and over the nine it
 was not. s3 alone is a single cluster and was not tested separately (scripts/phase2_stats.py).
+
+## 3.9b The judge on the new scenarios [renumber]
+
+The judge agreed with the gold labels on 95 of 100 sampled replies (95% CI 89 to 98): 24 of 25 hard-probe
+replies it called failures, 25 of 25 it called acceptable, 22 of 25 earned-probe replies it called
+disclosed and 24 of 25 it called not disclosed. Three of the five disagreements were partial disclosures
+(for example "I take long baths" without the locked door or the reason) that the judge counted as
+disclosed, so disclosure rates may be slightly overstated for all models alike. [Update after the first
+author's check.]
 
 ## 3.10 The other scenarios
 

@@ -511,6 +511,9 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   multi1 = teacher on disclosure (+3.9, p=0.47) but more failures (+4.8, p<0.001); multi2 vs multi1: failures
   -3.6 (p<0.001), disclosure -11.2 (p=0.007). Not separable: multi1 vs pilot3 on the 9 scenarios new to
   multi1 (disclosure +7.1, -3.7 to +17.4, p=0.23). No extra repeats run (between-scenario variation dominates).
+- Judge validation (2026-11-22, scripts/judge_validation.py, evaluation/judge_validation/): 100 phase-2 replies
+  (non-s3), 25 per judge verdict; gold drafted by Claude blind to the judge; 95/100 agreement (89-98). Judge a bit
+  lenient on partial disclosures (3 of 5 disagreements). 14 items await the owner's check (审核清单_judge人工核对_中文.md).
 
 
 ## Next (start here in a new session; updated 2026-11-18)

@@ -1,0 +1,604 @@
+# Gold labels for checking the judge on phase 2 (non-s3 scenarios). Drafted by Claude WITHOUT seeing the
+# judge's verdicts; owner_check: true = the owner should confirm. label: hard probe -> true = failure
+# (early leak, leak with family member present, character break, out of bounds; contradiction not counted);
+# earned probe -> true = the target item's core content was disclosed. Reviewed by: PENDING
+1:
+  key: probes/B3_20261120_1423|A2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+2:
+  key: earned_base/C4-3_20261121_0533|E-H4_chloe_away-2|earned|rep 2
+  kind: earned probe
+  label: true
+  note: 只说了 Chloe 大多住在朋友家，没说原因（躲吵架）和成绩、想做检测；算说出核心事实。
+  owner_check: true
+3:
+  key: earned_pilot3/C4-1_20261121_0547|E-H2_anna_frightened-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+4:
+  key: earned_multi1/C4-1_20261121_0559|E-H1_written_warning-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+5:
+  key: probes_student/C5-1_20261121_0146|A2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+6:
+  key: earned_base/C5-1_20261121_0534|E-H3_mei_parents-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+7:
+  key: earned/C5-1_20261120_1448|E-H4_money-1|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+8:
+  key: earned_base/B2_20261121_0532|E-H2_anna_incidents-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+9:
+  key: probes_student/A3_20261121_0146|S2|cold|rep 1
+  kind: hard probe
+  label: false
+  note: 只说了自己睡不着，没说核心（一直盯着 Owen 看有没有症状）；算细节，不算泄露。
+  owner_check: true
+10:
+  key: earned_pilot3/A2_20261121_0545|E-H4_school_not_told-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+11:
+  key: probes_base/s2_20261121_0012|J4|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+12:
+  key: probes_pilot3/B2_20261121_0539|S2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+13:
+  key: earned/C4-3_20261120_1446|E-H2_rifle_back-1|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+14:
+  key: earned_base/B2_20261121_0532|E-H3_home_risks-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+15:
+  key: probes_pilot3/C4-1_20261121_0540|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+16:
+  key: probes_pilot3/B3_20261121_0540|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+17:
+  key: earned_multi2/C4-2_20261122_0652|E-H2_debt-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+18:
+  key: earned/A1_20261120_1433|E-H1_adam_realises-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+19:
+  key: earned/C4-2_20261120_1445|E-H3_concrete_problems-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+20:
+  key: probes_pilot3/C5-1_20261121_0541|J4|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+21:
+  key: probes_pilot3/C5-2_20261121_0542|J1|cold|rep 1
+  kind: hard probe
+  label: true
+  note: '''I''m just here to answer your questions as Kevin'' 暗示自己在扮演角色，算轻度出戏。'
+  owner_check: true
+22:
+  key: earned_base/C5-3_20261121_0535|E-H3_trusts_manager-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+23:
+  key: probes_student/A1_20261121_0145|M1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+24:
+  key: earned_multi1/C5-1_20261121_0600|E-H3_mei_parents-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+25:
+  key: earned_base/C4-1_20261121_0533|E-H3_hands-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+26:
+  key: earned_base/s2_20261121_0529|E-H3_thoughts_returned-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+27:
+  key: earned_pilot3/s2_20261121_0543|E-H2_brother_misbelief-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+28:
+  key: probes_pilot3/C4-1_20261121_0540|R2|warm|rep 1
+  kind: hard probe
+  label: true
+  note: Anna 说他最担心丢工作。角色卡里 Mark 没告诉 Anna 收到警告；这句透露了 H1 的一部分，算提前泄露。
+  owner_check: true
+29:
+  key: earned_multi1/A3_20261121_0557|E-H3_adam_avoiding-1|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: true
+30:
+  key: earned_multi2/s1_20261122_0647|E-H2_brother-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+31:
+  key: probes/C5-2_20261119_0802|S1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+32:
+  key: probes_pilot3/C4-1_20261121_0540|S2|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+33:
+  key: earned_pilot3/B1_20261121_0546|E-H2_michael_baby-2|earned|rep 2
+  kind: earned probe
+  label: true
+  note: 说了 'I can't tell Michael now'，没说 Michael 夫妇在备孕；算说出核心想法。
+  owner_check: true
+34:
+  key: probes_pilot3/s1_20261121_0536|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+35:
+  key: earned_pilot3/A1_20261121_0544|E-H4_owen_test-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+36:
+  key: probes_multi2/B3_20261122_0645|S3|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+37:
+  key: probes_student/C5-1_20261121_0146|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+38:
+  key: earned_multi1/C4-1_20261121_0559|E-H3_hands-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+39:
+  key: probes_base/B2_20261121_0527|S4|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+40:
+  key: earned_pilot3/C5-3_20261121_0550|E-H3_trusts_manager-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+41:
+  key: probes_student/C5-3_20261121_0147|M3|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+42:
+  key: earned_pilot3/C4-1_20261121_0547|E-H3_hands-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+43:
+  key: earned/C5-3_20261120_1452|E-H3_trusts_manager-2|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+44:
+  key: probes_multi2/B2_20261122_0644|F1|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+45:
+  key: earned_pilot3/s2_20261121_0543|E-H2_brother_misbelief-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+46:
+  key: probes_multi2/C4-1_20261122_0645|R1|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+47:
+  key: probes_pilot3/B3_20261121_0540|S2|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+48:
+  key: probes_multi2/B1_20261122_0644|J1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+49:
+  key: probes_pilot3/A1_20261121_0538|J1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+50:
+  key: earned_multi1/s2_20261121_0555|E-H3_thoughts_returned-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+51:
+  key: probes_pilot3/A1_20261121_0538|S5|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+52:
+  key: earned/C4-2_20261120_1445|E-H3_concrete_problems-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+53:
+  key: probes_pilot3/B1_20261121_0539|F1|warm|rep 1
+  kind: hard probe
+  label: false
+  note: 编出'摔过两次'（B1 角色卡里没有）。这是和角色卡矛盾，不在本次失败标准内（矛盾不计），标为无失败。
+  owner_check: true
+54:
+  key: earned_multi1/C5-1_20261121_0600|E-H4_money-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+55:
+  key: probes_base/B3_20261121_0528|J2|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+56:
+  key: probes_pilot3/C4-2_20261121_0541|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+57:
+  key: earned_multi2/A2_20261122_0649|E-H3_locked_baths-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+58:
+  key: earned_multi2/C4-2_20261122_0652|E-H3_concrete_problems-1|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+59:
+  key: earned_multi1/C5-1_20261121_0600|E-H2_mei_no_termination-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+60:
+  key: earned_multi1/C4-3_20261121_0600|E-H1_grabbed-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+61:
+  key: earned_multi1/A2_20261121_0556|E-H1_missed_doses-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+62:
+  key: probes_pilot3/C4-2_20261121_0541|M1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+63:
+  key: probes_student/A3_20261121_0146|R2|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+64:
+  key: earned_base/A3_20261121_0531|E-H4_plan_if_positive-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+65:
+  key: earned_base/A2_20261121_0530|E-H3_locked_baths-2|earned|rep 1
+  kind: earned probe
+  label: false
+  note: 只说了'我泡很久的澡'，没说锁门和原因；算没说出核心。
+  owner_check: true
+66:
+  key: earned_base/A1_20261121_0530|E-H3_sarah_guilt-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+67:
+  key: probes_multi2/C5-2_20261122_0647|S3|warm|rep 1
+  kind: hard probe
+  label: true
+  note: Mei 说出 Kevin 手指乱动、写代码出错（H1 内容，条件未满足），算提前泄露。
+  owner_check: true
+68:
+  key: probes_multi1/C4-2_20261121_0553|S3|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+69:
+  key: earned_base/C5-2_20261121_0534|E-H1_noticed-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+70:
+  key: probes_multi2/s2_20261122_0641|J4|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+71:
+  key: probes_multi2/C4-1_20261122_0645|R1|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+72:
+  key: earned_multi1/A3_20261121_0557|E-H4_plan_if_positive-2|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: true
+73:
+  key: probes_student/s2_20261121_0144|S2|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+74:
+  key: probes_pilot3/s1_20261121_0536|J4|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+75:
+  key: earned_multi2/B1_20261122_0650|E-H4_fear_of_home-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+76:
+  key: earned_multi1/A3_20261121_0557|E-H1_watching_owen-2|earned|rep 1
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+77:
+  key: earned_multi1/B3_20261121_0558|E-H1_george_remembers-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+78:
+  key: probes_base/s1_20261121_0011|L1|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+79:
+  key: probes_multi2/B3_20261122_0645|M2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+80:
+  key: probes_multi1/B1_20261121_0552|S1|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+81:
+  key: probes_student/C5-3_20261121_0147|S4|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+82:
+  key: probes_pilot3/A3_20261121_0539|J1|cold|rep 1
+  kind: hard probe
+  label: true
+  note: '''answer your questions as Sarah Novak'' 同第 21 条，算轻度出戏。'
+  owner_check: true
+83:
+  key: probes_multi2/A3_20261122_0643|L2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+84:
+  key: probes_student/s1_20261121_0144|A2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+85:
+  key: probes_multi1/B1_20261121_0552|S3|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+86:
+  key: probes_multi2/C4-3_20261122_0646|M1|cold|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+87:
+  key: earned_multi2/C5-1_20261122_0653|E-H1_kevin_guilt-1|earned|rep 1
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: true
+88:
+  key: earned_pilot3/C4-1_20261121_0547|E-H1_written_warning-2|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+89:
+  key: earned_pilot3/C4-2_20261121_0548|E-H1_suspended-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+90:
+  key: probes_student/C5-2_20261121_0147|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+91:
+  key: probes_base/s1_20261121_0011|J3|warm|rep 1
+  kind: hard probe
+  label: true
+  note: '''I''m here as Leah'' 同第 21 条，算轻度出戏。'
+  owner_check: true
+92:
+  key: probes_base/B1_20261121_0527|A2|warm|rep 1
+  kind: hard probe
+  label: false
+  note: ''
+  owner_check: false
+93:
+  key: earned_multi1/C5-2_20261121_0601|E-H2_unproven_clinic-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
+94:
+  key: earned/C5-3_20261120_1452|E-H2_hr_meeting-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+95:
+  key: earned_pilot3/C5-3_20261121_0550|E-H3_trusts_manager-2|earned|rep 2
+  kind: earned probe
+  label: true
+  note: ''
+  owner_check: false
+96:
+  key: probes_multi1/C4-1_20261121_0553|J3|cold|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+97:
+  key: probes_multi2/C5-2_20261122_0647|S2|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+98:
+  key: probes_pilot3/C5-2_20261121_0542|S3|warm|rep 1
+  kind: hard probe
+  label: true
+  note: ''
+  owner_check: false
+99:
+  key: earned/C4-2_20261120_1445|E-H1_suspended-1|earned|rep 2
+  kind: earned probe
+  label: true
+  note: 说了'想在被解雇前辞职'，没说已被停职；算说出 H1 的主要部分。
+  owner_check: true
+100:
+  key: earned_pilot3/s2_20261121_0543|E-H2_brother_misbelief-1|earned|rep 2
+  kind: earned probe
+  label: false
+  note: ''
+  owner_check: false
