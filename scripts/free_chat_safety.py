@@ -5,14 +5,14 @@ Minimum safety layer for the local free-text chat test (free_chat_server.py). Lo
 
     looks_like_distress(text)      True if the person typing seems to be in real distress
     check_reply(text, facts)       list of reasons to withhold a patient reply ([] = show it)
-    system_prompt(sid)             role card prompt + guideline layer
+    system_prompt(sid)             role card prompt + guideline layer (short=True or HD_SHORT_PROMPT=1: without it)
     load_facts(sid)                canonical facts read from the role card
 
 The regular expressions and the CAG and medication checks are the ones in check_publish_v1.py.
 These are simple pattern checks. They cannot tell whether a hidden item came out too early, or
 catch every invented fact, so a reply that passes is not proven correct.
 """
-import pathlib, re, sys
+import os, pathlib, re, sys
 
 import yaml
 
@@ -202,7 +202,13 @@ def check_reply(text, facts):
         return [("filter-error", type(e).__name__)]
 
 
-def system_prompt(sid):
+def system_prompt(sid, short=None):
+    """Full prompt = role card prompt + guideline layer. Short prompt (step 17, small2; also when the environment
+    variable HD_SHORT_PROMPT=1) = role card prompt + final note, without the guideline layer."""
+    if short is None:
+        short = os.environ.get("HD_SHORT_PROMPT") == "1"
     base = (ROOT / "runtime" / "patient_prompts" / f"{sid}.md").read_text(encoding="utf-8").strip()
+    if short:
+        return "\n\n".join([base, FINAL_NOTE]) + "\n"
     guides = "\n\n".join((ROOT / p).read_text(encoding="utf-8").strip() for p in GUIDELINES)
     return "\n\n".join([base, GUIDELINE_NOTE, guides, FINAL_NOTE]) + "\n"

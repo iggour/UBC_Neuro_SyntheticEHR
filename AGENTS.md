@@ -41,8 +41,14 @@ Two parts:
 - Step 15 DONE (multi2, 2026-11-21): + pressure-resistance conversations. Failures 4.8% -> 1.2% but
   disclosure fell 11-24 points in three tiers: not an improvement under the pre-set rule (trade-off moves
   with the data mix). No multi3. Distillation work is closed; remaining work is writing the paper.
-- NEXT: Step 16, smaller students (Gemma E2B, then a ~1B model) with the same data and tests, aiming at a
-  1-2 GB file for low-friction or in-browser use. Full plan: "Next" section of docs/distillation_log.md.
+- Step 16 STARTED (2026-11-23): small1 = Qwen3-1.7B on multi1 data (E2B dropped: ~5 GB GGUF). One command,
+  training/run_small.py; plan, decision rule and done-when in log step 16.
+- 2026-11-26: work split into two papers, each with its own handoff (also in the claude.ai Project):
+  docs/handoff/handoff_A_education_2026-11-26.md (paper A, medical education: design, longitudinal families) and
+  docs/handoff/handoff_B_informatics_2026-11-26.md (paper B, medical informatics: distillation experiments).
+- Steps 16-17 CLOSED (2026-11-24): small1 (Qwen3-1.7B) and small2 (+ short prompt) are NOT usable under the
+  pre-set rule: disclosure close to multi1 but failures under pressure 3-5x multi1 (~15% vs 4%). The short prompt
+  changed no failure rate and halves the first-reply wait. Results: docs/phase2_results.md, log steps 16-17.
 - At handoff (2026-11-23) Chongqing is quantising multi1 and multi2 to Q8_0 for the owner's website trial
   (~/hd-anchor/quant_log.txt). Thinking mode must be off when serving (llama-server flags in the log).
 - Owner review pending: probe templates, drafted hidden_rules YAMLs, 16 judge gold labels,

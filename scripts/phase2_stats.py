@@ -19,7 +19,7 @@ GROUPS = {"all 15 scenarios": pt.ALL,
           "seen by multi1 (6)": [s for s in pt.ALL if pt.TIER[s] in ("s3", "trained (multi1)")],
           "new to multi1 (9)": [s for s in pt.ALL if pt.TIER[s] in ("held out, same family", "unseen family")]}
 PAIRS = [("pilot3", "multi1"), ("multi1", "multi2"), ("teacher", "multi1"), ("teacher", "multi2"),
-         ("base", "multi1"), ("base", "pilot3")]
+         ("base", "multi1"), ("base", "pilot3"), ("multi1", "small1"), ("multi1", "small2"), ("small1", "small2")]
 
 
 def counts(m, s):
@@ -70,6 +70,8 @@ def boot(C, m1, m2, S, kind, rng):
         R = [rng.choice(S) for _ in S]
         ds.append(rate(C, m2, R, kind) - rate(C, m1, R, kind))
     ds = sorted(d for d in ds if not math.isnan(d))
+    if not ds:   # a model with no judged data yet
+        return float("nan"), float("nan"), float("nan"), float("nan")
     lo, hi = ds[int(0.025 * len(ds))], ds[int(0.975 * len(ds)) - 1]
     p = min(1.0, 2 * min(sum(d <= 0 for d in ds), sum(d >= 0 for d in ds)) / len(ds))
     return obs, lo, hi, p
@@ -100,6 +102,8 @@ def main():
             row = []
             for g, S in GROUPS.items():
                 o, lo, hi, p = boot(C, m1, m2, S, kind, rng)
+                if math.isnan(p):
+                    row.append("-"); continue
                 row.append(f"{100*o:+.1f} ({100*lo:+.1f} to {100*hi:+.1f}), p={p:.3f}" if p >= 0.001
                            else f"{100*o:+.1f} ({100*lo:+.1f} to {100*hi:+.1f}), p<0.001")
             L.append(f"| {pt.NAMES[m2]} vs {pt.NAMES[m1]} | " + " | ".join(row) + " |")

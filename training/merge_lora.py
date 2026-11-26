@@ -1,10 +1,10 @@
 # Step 11a: merge a LoRA adapter into the 16-bit E4B base, loaded the same way as training (unsloth FastModel)
-# Usage (Chongqing, ~/hd-anchor, .venv): nohup python merge_lora.py [LORA_DIR] [OUT_DIR] > merge_log.txt 2>&1 &
+# Usage (Chongqing, ~/hd-anchor, .venv): nohup python merge_lora.py [LORA_DIR] [OUT_DIR] [BASE_DIR] > merge_log.txt 2>&1 &
 import os, sys, shutil, time
 os.environ["HF_HUB_OFFLINE"] = "1"
 from unsloth import FastModel
 from transformers import AutoTokenizer
-MODEL = "/home/tongyang/models/gemma-4-E4B-it"
+MODEL = sys.argv[3] if len(sys.argv) > 3 else "/home/tongyang/models/gemma-4-E4B-it"   # base (tokenizer, template files)
 LORA = sys.argv[1] if len(sys.argv) > 1 else "/home/tongyang/hd-anchor/outputs/pilot3/lora_best"
 OUT = sys.argv[2] if len(sys.argv) > 2 else "/home/tongyang/models/hd-s3-pilot3-merged"
 t0 = time.time()

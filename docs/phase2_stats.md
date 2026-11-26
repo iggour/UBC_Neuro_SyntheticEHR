@@ -16,6 +16,8 @@ Rates with Wilson 95% confidence intervals. Differences: cluster bootstrap over 
 | pilot3 (s3 only) | 4% (1-13) 2/50 | 5% (3-10) 10/184 | 8% (4-14) 9/120 | 5% (3-8) 11/232 |
 | multi1 (6 scenarios) | 6% (2-16) 3/50 | 4% (2-8) 8/184 | 8% (5-15) 10/120 | 3% (1-6) 7/232 |
 | multi2 (+ pressure data) | 2% (0-10) 1/50 | 1% (0-3) 1/184 | 2% (1-7) 3/120 | 1% (0-3) 2/232 |
+| small1 (Qwen3-1.7B, multi1 data) | 8% (3-19) 4/50 | 15% (10-21) 27/184 | 21% (15-29) 25/120 | 16% (12-22) 38/232 |
+| small2 (small1 + short prompt) | 12% (6-24) 6/50 | 14% (10-20) 26/184 | 17% (11-24) 20/120 | 15% (11-20) 35/232 |
 
 ### Disclosure when earned
 
@@ -26,6 +28,8 @@ Rates with Wilson 95% confidence intervals. Differences: cluster bootstrap over 
 | pilot3 (s3 only) | 56% (33-77) 9/16 | 54% (43-65) 41/76 | 39% (26-53) 17/44 | 36% (28-46) 35/96 |
 | multi1 (6 scenarios) | 62% (39-82) 10/16 | 66% (55-75) 50/76 | 55% (40-68) 24/44 | 40% (30-50) 38/96 |
 | multi2 (+ pressure data) | 38% (18-61) 6/16 | 51% (40-62) 39/76 | 52% (38-66) 23/44 | 29% (21-39) 28/96 |
+| small1 (Qwen3-1.7B, multi1 data) | 38% (18-61) 6/16 | 68% (57-78) 52/76 | 39% (26-53) 17/44 | 36% (28-46) 35/96 |
+| small2 (small1 + short prompt) | 31% (14-56) 5/16 | 53% (42-63) 40/76 | 55% (40-68) 24/44 | 38% (28-47) 36/96 |
 
 ## 2. Differences between models (second minus first, percentage points)
 
@@ -39,17 +43,23 @@ Rates with Wilson 95% confidence intervals. Differences: cluster bootstrap over 
 | multi2 (+ pressure data) vs Teacher 31B | +1.2 (+0.3 to +2.2), p=0.005 | +0.9 (+0.0 to +1.7), p=0.182 | +1.4 (+0.0 to +2.8), p=0.055 |
 | multi1 (6 scenarios) vs E4B untrained | +4.3 (+1.9 to +6.5), p<0.001 | +3.8 (-0.4 to +7.0), p=0.086 | +4.5 (+1.8 to +7.5), p<0.001 |
 | pilot3 (s3 only) vs E4B untrained | +4.9 (+2.8 to +7.2), p<0.001 | +4.3 (+1.2 to +7.0), p=0.013 | +5.4 (+2.4 to +8.8), p<0.001 |
+| small1 (Qwen3-1.7B, multi1 data) vs multi1 (6 scenarios) | +11.3 (+6.4 to +16.8), p<0.001 | +8.5 (+4.0 to +13.8), p<0.001 | +13.1 (+5.3 to +21.7), p<0.001 |
+| small2 (small1 + short prompt) vs multi1 (6 scenarios) | +10.1 (+6.2 to +13.9), p<0.001 | +9.0 (+2.7 to +15.9), p=0.004 | +10.8 (+5.7 to +15.3), p<0.001 |
+| small2 (small1 + short prompt) vs small1 (Qwen3-1.7B, multi1 data) | -1.2 (-5.3 to +2.5), p=0.610 | +0.4 (-6.7 to +6.2), p=0.914 | -2.3 (-7.5 to +1.8), p=0.400 |
 
 ### Disclosure when earned
 
 | Comparison | all 15 scenarios | seen by multi1 (6) | new to multi1 (9) |
 |---|---|---|---|
-| multi1 (6 scenarios) vs pilot3 (s3 only) | +8.6 (+1.3 to +15.8), p=0.028 | +10.9 (+2.3 to +18.7), p=0.013 | +7.1 (-3.7 to +17.4), p=0.231 |
-| multi2 (+ pressure data) vs multi1 (6 scenarios) | -11.2 (-19.0 to -3.1), p=0.007 | -16.3 (-29.3 to -3.1), p=0.020 | -7.9 (-16.7 to +0.8), p=0.102 |
-| multi1 (6 scenarios) vs Teacher 31B | +3.9 (-5.4 to +14.0), p=0.473 | +3.3 (-6.0 to +13.0), p=0.629 | +4.3 (-9.3 to +19.3), p=0.606 |
-| multi2 (+ pressure data) vs Teacher 31B | -7.3 (-17.4 to +2.7), p=0.178 | -13.0 (-23.9 to -2.2), p=0.023 | -3.6 (-18.1 to +10.9), p=0.670 |
-| multi1 (6 scenarios) vs E4B untrained | +32.8 (+25.0 to +41.1), p<0.001 | +39.1 (+30.4 to +50.0), p<0.001 | +28.6 (+18.1 to +40.0), p<0.001 |
-| pilot3 (s3 only) vs E4B untrained | +24.1 (+18.1 to +30.9), p<0.001 | +28.3 (+17.7 to +41.7), p<0.001 | +21.4 (+14.6 to +27.8), p<0.001 |
+| multi1 (6 scenarios) vs pilot3 (s3 only) | +8.6 (+1.3 to +15.8), p=0.026 | +10.9 (+2.3 to +18.5), p=0.016 | +7.1 (-3.6 to +17.4), p=0.222 |
+| multi2 (+ pressure data) vs multi1 (6 scenarios) | -11.2 (-19.1 to -3.5), p=0.006 | -16.3 (-29.3 to -3.1), p=0.023 | -7.9 (-16.7 to +1.4), p=0.109 |
+| multi1 (6 scenarios) vs Teacher 31B | +3.9 (-5.3 to +14.0), p=0.462 | +3.3 (-6.0 to +13.5), p=0.600 | +4.3 (-9.7 to +19.4), p=0.622 |
+| multi2 (+ pressure data) vs Teacher 31B | -7.3 (-17.2 to +2.6), p=0.170 | -13.0 (-23.9 to -2.1), p=0.024 | -3.6 (-18.1 to +11.1), p=0.699 |
+| multi1 (6 scenarios) vs E4B untrained | +32.8 (+25.0 to +41.1), p<0.001 | +39.1 (+30.4 to +50.0), p<0.001 | +28.6 (+18.6 to +40.0), p<0.001 |
+| pilot3 (s3 only) vs E4B untrained | +24.1 (+17.9 to +30.9), p<0.001 | +28.3 (+17.7 to +40.9), p<0.001 | +21.4 (+14.6 to +27.8), p<0.001 |
+| small1 (Qwen3-1.7B, multi1 data) vs multi1 (6 scenarios) | -5.2 (-13.4 to +3.9), p=0.272 | -2.2 (-16.3 to +16.3), p=0.801 | -7.1 (-16.7 to +2.2), p=0.164 |
+| small2 (small1 + short prompt) vs multi1 (6 scenarios) | -7.3 (-14.2 to -0.8), p=0.031 | -16.3 (-26.1 to -4.8), p=0.009 | -1.4 (-7.6 to +4.2), p=0.759 |
+| small2 (small1 + short prompt) vs small1 (Qwen3-1.7B, multi1 data) | -2.2 (-11.6 to +6.5), p=0.689 | -14.1 (-27.2 to -2.1), p=0.026 | +5.7 (-2.9 to +14.7), p=0.256 |
 
 Notes: s3 is a single scenario and is included in 'all' and 'seen by multi1' but not tested alone.
 Hard probes: 1 repeat per model; earned probes: 2 repeats. A p-value below 0.05 with an interval that

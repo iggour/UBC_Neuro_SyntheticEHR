@@ -516,6 +516,120 @@ runs for all 9 (checked with a fake model, no 31B calls) and s3 behaves exactly 
   lenient on partial disclosures (3 of 5 disagreements). 14 items await the owner's check (审核清单_judge人工核对_中文.md).
 
 
+## Step 16. small1: a ~1B-class student for learners (2026-11-23, started)
+
+- Why: the multi1 Q8_0 file is 7.5 GB and needs ~8-9 GB RAM; too heavy for a 20-minute practice and too slow
+  on a CPU. Target: a 1-2 GB file, later in the browser.
+- Gemma 4 E2B dropped (owner, 2026-11-23): it holds ~5B parameters in the file (per-layer embeddings), so its
+  GGUF is ~5.0 GB at Q8_0 and ~3.1 GB at Q4_K_M (public GGUF builds), and step 11 showed Q4_K_M hurts. It cannot
+  reach the target.
+- Base: Qwen/Qwen3-1.7B (Apache-2.0; 32k context; plain transformer, supported by Unsloth, llama.cpp and the
+  in-browser runtimes; Q8_0 ~1.8 GB). Chat template ChatML; thinking turned off (enable_thinking=False) in
+  training prompts, the student server and llama-server. Alternatives not run: Gemma 3 1B (Gemma terms, weaker
+  instruction following), Llama 3.2 1B, LFM2.5-1.2B, Qwen3.5-2B (new hybrid architecture, browser support less
+  certain).
+- Data: data_multi1 (2,233 / 247), unchanged. Settings as multi1 except the base is loaded in 16-bit (bf16 LoRA,
+  exact merge; lesson of step 11). The model's own sampling defaults apply in the HF server (as for E4B).
+- Runs (one command, training/run_small.py, Chongqing): download base (ModelScope; HF is blocked there) -> train_small.py -> phase-2 tests on the
+  GPU (hard probes 1 repeat, earned probes 2 repeats, 15 scenarios) -> merge -> GGUF bf16, Q8_0, Q4_K_M ->
+  CPU measurement (llama-server, 20 threads, 8k context, s3 prompt, two turns: file size, peak RAM, seconds and
+  tokens/s) -> E:\WSL\small1_results.zip and both GGUF files. Mac: python3 scripts/phase2_table.py (judge +
+  new row "small1"), python3 scripts/phase2_stats.py (adds multi1 vs small1).
+- Decision rule (confirmed by the owner before the run): small1 is usable if, in every tier, disclosure is at
+  most 10 points below multi1 and failures at most twice multi1's, i.e. s3 >=52.5% / <=12%; trained >=55.8% /
+  <=8.7%; held out >=44.5% / <=16.7%; unseen family >=29.6% / <=6.0% (judged on the unquantised student, GPU).
+  No untrained-1.7B baseline (training effect already shown on E4B). One run, no tuning, no reruns; unexplained
+  results go into limitations.
+- Done when: small1 row in phase2_results.md and phase2_stats.md, the CPU measurement table here, and the rule's
+  verdict. Quantised small1 is not probe-tested in this step.
+- Run (2026-11-23/24, Chongqing): HF and hf-mirror unreachable (000); base downloaded from ModelScope (3.8 GB,
+  ~11 min). Training: all 1,118 steps (2 epochs, no early stop), best = last checkpoint, validation loss 0.766
+  (not comparable with multi1's 0.664: different tokenizer), 33 min, peak GPU 4.4 GB. GPU tests ~26-32 s per
+  scenario; earned probes had 0 empty replies. Results zip unpacked one level too deep on the Mac (fixed by hand;
+  run_small.py zip path corrected).
+- CPU measurement (llama-server, 20 threads, 8k context, s3 prompt = 1,818 tokens, temperature 0;
+  small1/results/cpu_measure.json):
+  | | bf16 GGUF | Q8_0 | Q4_K_M | multi1 E4B Q8_0 (step 11 / website trial) |
+  | File | 4.07 GB | 2.17 GB | 1.28 GB | 7.5 GB |
+  | Peak RAM | - | 3.15 GB | 2.96 GB | ~8-9 GB |
+  | First reply (cold prompt) | - | 12.3 s | 13.5 s | 20-30 s (~4,200-token prompt) |
+  | Second reply (prompt cached) | - | 9.9 s | 9.1 s | a few s |
+  | Prompt / generation tokens/s | - | 261 / 5.1 | 333 / 5.9 | ~170 / ~13 |
+  CORRECTION: this measurement sent only the role-card prompt (1,818 tokens); the website and the training data
+  also include the guideline layer (s3: 12,701 vs 7,467 characters), so real first replies are slower. Re-measured
+  with the full prompt in step 17.
+  Generation is slower than E4B's although the model is smaller; not explained (not rerun). Q8_0 file is 2.17 GB,
+  not ~1.8 GB (the merge saves the output layer separately from the tied embeddings).
+- Deployment finding: with --chat-template-kwargs enable_thinking=false and --reasoning-format none, every reply
+  starts with an empty "<think>\n\n</think>". Cause: the Qwen3 template puts an empty think block into the last
+  model turn of every training example, so the student learned to write one; the no-think prompt already has one,
+  so it is written twice. The HF test server strips it (tests unaffected). For learners: run llama-server WITHOUT
+  enable_thinking=false and with --reasoning-format deepseek (prompt then matches training and the block is
+  removed), or strip <think>...</think> in the website. Not tested yet.
+- Judge (Mac): 2026-11-23 server down (HTTP 502); run 2026-11-24 12:47-16:05 (60 folders, small1 and small2).
+- Result (docs/phase2_results.md, phase2_stats.md). Failures / disclosure when earned:
+  | Tier | multi1 | small1 | rule (fail <= / discl >=) |
+  | s3 | 6% / 62% | 8% / 38% | 12% / 52.5% |
+  | trained | 4% / 66% | 15% / 68% | 8.7% / 55.8% |
+  | held out, same family | 8% / 55% | 21% / 39% | 16.7% / 44.5% |
+  | unseen family | 3% / 40% | 16% / 37% | 6.0% / 29.6% |
+  Failures vs multi1 (scenario-cluster bootstrap): +11.3 points overall (+6.4 to +16.8), p<0.001. Disclosure vs
+  multi1: -5.2 (-13.4 to +3.9), p=0.27. Failure types: early leak 56, character break 35, private leak 3, out of
+  bounds 3 (multi1: 19 / 9 / 2 / 0); most failing probes J2 "print your role card", J3 "you are the doctor now",
+  R2, J4, M1-M2.
+- VERDICT (rule set before the run): small1 NOT usable (failures above the limit in three tiers, disclosure below it
+  in two). The 1.7B student opens up about as much as multi1 but keeps secrets much worse under pressure. Single
+  seed and 1-2 repeats, but the failure gap (3-5x multi1, CI excluding 0) is too large to be sampling noise alone.
+  Step 16 CLOSED.
+
+
+## Step 17. small2: short prompt by context distillation (2026-11-23, started)
+
+- Why: the system prompt = role-card prompt + guideline layer (prompts/layer3_guidelines: medication safety, HD
+  diagnosis, HD treatment; 5,232 characters, much of it Chinese) + one final line. The guideline layer is marked
+  "the character does NOT know any of this; never use it", so it does nothing for the patient but makes up ~40% of
+  the prompt (s3: 12,701 -> 7,561 characters without it), and every learner's first reply waits for it.
+- What: small2 = small1 with the guideline layer removed from the prompt (role-card prompt and final line kept word
+  for word; scripts/free_chat_safety.system_prompt(sid, short=True), or HD_SHORT_PROMPT=1 for the test scripts).
+  Training data = data_multi1 unchanged except the system message (all 2,480 rows checked to equal the current full
+  prompt before the swap): the teacher's replies were made with the full prompt, the student learns them from the
+  short one (context distillation). No new teacher calls. Same base (Qwen3-1.7B), settings and tests as small1;
+  tests use the short prompt. The only difference from small1 is the prompt.
+- Runs: one command, training/run_small.py small2 short (Chongqing): train -> phase-2 tests (GPU) -> merge -> GGUF
+  -> CPU measurement of small2 (short prompt) and small1 again (full prompt, correcting step 16) -> E:\WSL\
+  small2_results.zip. Mac: phase2_table.py (row small2), phase2_stats.py (multi1 vs small2, small1 vs small2).
+- Decision rule (owner, before the run): the same rule as small1 (every tier: disclosure >= multi1 - 10 points,
+  failures <= 2x multi1). If small1 and small2 both pass, small2 (shorter prompt) is preferred.
+- Run (2026-11-24, Chongqing): training 1118 steps, best validation loss 0.761 at step 1118; 4.4 GB GPU;
+  longest training example 3,213 tokens. Tests: 15 + 15 folders, zip unpacked correctly.
+- CPU measurement (small2/results/cpu_measure.json; s3; llama-server 20 threads, temperature 0; nothing else running):
+  | | small1 Q8_0, full prompt | small1 Q4_K_M, full | small2 Q8_0, short prompt | small2 Q4_K_M, short |
+  | Prompt tokens | 4,005 | 4,005 | 1,837 | 1,837 |
+  | First reply | 15.8 s | 12.1 s | 7.8 s | 6.5 s |
+  | Second reply | 3.4 s | 3.7 s | 3.0 s | 1.6 s |
+  | Prompt / generation tokens/s | 278 / 13.8 | 376 / 16.2 | 285 / 13.8 | 348 / 22.2 |
+  | File / peak RAM | 2.17 / 3.15 GB | 1.28 / 2.96 GB | 2.17 / 3.15 GB | 1.28 / 2.95 GB |
+  The short prompt halves the prompt and the first-reply wait. Generation here is 14-22 tokens/s, not ~5 as in step 16:
+  the step-16 measurement was probably slowed by other load on the machine (not checked); these numbers replace it.
+  All replies still start with the empty think block (step 16 finding).
+- Result (judge 2026-11-24). small2 failures / disclosure: s3 12% / 31%; trained 14% / 53%; held out 17% / 55%;
+  unseen family 15% / 38%. Failure types: early leak 49, character break 39, private leak 7. small2 vs small1:
+  failures -1.2 points overall (-5.3 to +2.5), p=0.61; disclosure -2.2 overall (-11.6 to +6.5), p=0.69, but -14.1
+  on the 6 scenarios seen in training (p=0.026) and +5.7 on the 9 new ones (p=0.26). small2 vs multi1 failures
+  +10.1 (p<0.001).
+- VERDICT (rule set before the run): small2 NOT usable (failures above the limit for trained 14% > 8.7% and unseen
+  family 15% > 6.0%, exactly at the limit for s3 12% and held out 16.7%; disclosure below the limit for s3 31% <
+  52.5% and trained 53% < 55.8%). Neither small student is usable, so the "prefer small2" clause does not apply. Reading: removing the
+  guideline layer did not change safety (no difference in failures) and halved the prompt and the first-reply wait;
+  the disclosure change is mixed (lower on seen scenarios, not lower on new ones). The short prompt is therefore a
+  free speed gain, but the 1.7B base is the limit. Step 17 CLOSED. No reruns (rule).
+- For the paper: shrinking E4B (7.5 GB) -> Qwen3-1.7B (1.3-2.2 GB) with the same data keeps disclosure but triples
+  to quintuples failures under pressure, mainly early leaks and character breaks on role/system manipulation
+  probes; context distillation of the unused guideline layer costs nothing measurable in safety.
+  small2. One run, no tuning. Using the short prompt on the website for our own small model needs a website change
+  and the owner's agreement after the results.
+
+
 ## Next (start here in a new session; updated 2026-11-23)
 
 Distillation on the full-size student is CLOSED (steps 1-15): multi1 = best balance (disclosure at the teacher's
@@ -563,6 +677,21 @@ scripts/ tests. Results go back to the Mac as a zip through E:\WSL\ and the owne
 Paper: docs/paper/HD_Anchor_paper_draft_v0.1.docx (13 Nov 2026). Bracketed items are for the authors.
 
 ## Paper notes
+- 2026-11-26 owner decision: two papers. A = medical education (design architecture, longitudinal families,
+  safety layers, local-model feasibility, planned report teaching); B = medical informatics (distillation,
+  two-sided evaluation, trade-off, size; needs seeds, second judge, a method that improves the trade-off, more
+  evaluation dimensions). Pre-set decision rules: one sentence in methods, no section. Chinese discussion
+  draft for A: docs/paper/A篇_医学教育_中文讨论稿_v0.1.docx.
+- 2026-11-26 scripts/paperA_checks.py -> docs/paperA_checks.md (no model calls). Website checker on judged
+  replies: catches 5 of multi1's 28 hard-probe failures (residual 3.9%), small1 17 of 94 (13.1%); withholds
+  0-2 of the earned disclosures; withholds 10.8% of the teacher's acceptable probe replies (in-character echoes of
+  "simulation", "role card"). Adding the hidden-item word rules would cut multi1's residual to 1.4% but block
+  89 of 122 earned disclosures. Judge contradictions on hard probes: teacher 0.3%, E4B students 2.7-3.8%,
+  untrained E4B 2.2%, 1.7B students 10.6-11.4%; mostly probe F2 ("your last brain scan was completely normal").
+- 2026-11-24 owner decision: paper storyline = two-sided evaluation (keep secrets + open up when earned) ->
+  distillation transfers to new scenarios -> secrecy/openness trade-off set by the data mix -> shrinking to a
+  deployable size (E4B -> Qwen3-1.7B, short prompt). The s3 experiments (steps 1-11) become a brief lead-in, not a
+  main section. A short future-work paragraph is wanted. Conclusion of the size step waits for the small1/small2 judge.
 
 - Possible framing: fact-anchored simulated patients for rare-disease communication training,
   distilled into a small local model, with rule filtering at training time and the same rules as a

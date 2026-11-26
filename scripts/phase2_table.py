@@ -16,6 +16,8 @@ import argparse, json, pathlib, subprocess, sys, zipfile
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 T = ROOT / "runtime" / "transcripts"
 P1, P2, P3, JUDGE = T / "multi1" / "results", T / "phase2" / "results", T / "multi2" / "results", T / "judge"
+P4 = T / "small1" / "results"   # step 16: Qwen3-1.7B student on multi1 data
+P5 = T / "small2" / "results"   # step 17: same, short prompt (no guideline layer)
 OLD9 = ["s1", "s2", "s3", "A1", "A2", "A3", "C5-1", "C5-2", "C5-3"]
 NEW6 = ["B1", "B2", "B3", "C4-1", "C4-2", "C4-3"]
 ALL = OLD9 + NEW6
@@ -23,8 +25,10 @@ TIER = {"s3": "s3", "s1": "trained (multi1)", "A1": "trained (multi1)", "A2": "t
         "C5-1": "trained (multi1)", "C5-3": "trained (multi1)", "s2": "held out, same family",
         "A3": "held out, same family", "C5-2": "held out, same family", **{s: "unseen family" for s in NEW6}}
 TIERS = ["s3", "trained (multi1)", "held out, same family", "unseen family"]
-MODELS = ["teacher", "base", "pilot3", "multi1", "multi2"]
-NAMES = {"teacher": "Teacher 31B", "base": "E4B untrained", "pilot3": "pilot3 (s3 only)", "multi1": "multi1 (6 scenarios)", "multi2": "multi2 (+ pressure data)"}
+MODELS = ["teacher", "base", "pilot3", "multi1", "multi2", "small1", "small2"]
+NAMES = {"teacher": "Teacher 31B", "base": "E4B untrained", "pilot3": "pilot3 (s3 only)", "multi1": "multi1 (6 scenarios)", "multi2": "multi2 (+ pressure data)",
+         "small1": "small1 (Qwen3-1.7B, multi1 data)",
+         "small2": "small2 (small1 + short prompt)"}
 FAIL = ("early_leak", "private_leak", "character_break", "out_of_bounds")
 
 
@@ -37,8 +41,8 @@ def latest(globs, need=None):
 def hard_src(m, s):
     if m == "teacher":
         return latest([T / "probes" / f"{s}_*"], "31B"), JUDGE / (f"multi1_teacher_{s}" if s in OLD9 else f"p2_hard_teacher_{s}")
-    if m == "multi2":
-        return latest([P3 / "probes_multi2" / f"{s}_*"]), JUDGE / f"p2_hard_multi2_{s}"
+    if m in ("multi2", "small1", "small2"):
+        return latest([{"multi2": P3, "small1": P4, "small2": P5}[m] / f"probes_{m}" / f"{s}_*"]), JUDGE / f"p2_hard_{m}_{s}"
     mm = "student" if m == "multi1" else m
     if m in ("base", "multi1") and s in OLD9:
         return latest([P1 / f"probes_{mm}" / f"{s}_*"]), JUDGE / f"multi1_{mm}_{s}"
@@ -47,7 +51,7 @@ def hard_src(m, s):
 
 def earned_src(m, s):
     d = (latest([T / "earned" / f"{s}_*"], "31B") if m == "teacher" else
-         latest([P3 / "earned_multi2" / f"{s}_*"]) if m == "multi2" else latest([P2 / f"earned_{m}" / f"{s}_*"]))
+         latest([{"multi2": P3, "small1": P4, "small2": P5}[m] / f"earned_{m}" / f"{s}_*"]) if m in ("multi2", "small1", "small2") else latest([P2 / f"earned_{m}" / f"{s}_*"]))
     return d, JUDGE / f"p2_earned_{m}_{s}"
 
 
@@ -60,7 +64,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-judge", action="store_true")
     a = ap.parse_args()
-    for name, dst in (("phase2_results.zip", P2), ("multi2_results.zip", P3)):
+    for name, dst in (("phase2_results.zip", P2), ("multi2_results.zip", P3), ("small1_results.zip", P4), ("small2_results.zip", P5)):
         z = ROOT / name
         if z.exists() and not dst.exists():
             dst.parent.mkdir(parents=True, exist_ok=True)
@@ -130,7 +134,7 @@ def main():
         import matplotlib; matplotlib.use("Agg"); import matplotlib.pyplot as plt
         fig, ax = plt.subplots(figsize=(6.5, 5))
         marks = dict(zip(TIERS, ["*", "o", "s", "^"]))
-        cols = dict(zip(MODELS, ["#222222", "#999999", "#1f77b4", "#d62728", "#2ca02c"]))
+        cols = dict(zip(MODELS, ["#222222", "#999999", "#1f77b4", "#d62728", "#2ca02c", "#9467bd", "#ff7f0e"]))
         for m in MODELS:
             for t in TIERS:
                 hf, hn, ed, en = agg[m, t]

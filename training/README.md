@@ -11,6 +11,8 @@ The full step-by-step record (what was done, why, and the results) is docs/disti
 | smoke_train.py | 5c-4 | Tiny test run: 50 examples, 12 steps, one answer, saves a LoRA |
 | train_pilot.py | 5d | Pilot training on all s3 examples, mock exam every 50 steps, early stop, keeps the best LoRA |
 | student_server.py | 6 | Serves the student (or, with --base-only, untrained E4B) at http://127.0.0.1:8000/v1 so the scripts/ tests run unchanged |
+| train_small.py | 16 | multi1 recipe on a smaller base (default Qwen3-1.7B), 16-bit base + LoRA |
+| run_small.py | 16 | Unattended step 16: download, train, phase-2 tests, merge, GGUF Q8_0/Q4_K_M, CPU measurement, zip |
 
 Training data comes from scripts/build_training_data.py (runtime/transcripts/training_data/<sN>_<date>/).
 
